@@ -1,0 +1,31 @@
+{
+  "name": "@steelbreeze/state",
+  "version": "1.0.0",
+  "description": "Finite state machine for TypeScript and JavaScript",
+  "main": "state.js",
+  "typings": "state.d.ts",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/steelbreeze/state.git"
+  },
+  "keywords": [
+    "finite",
+    "state",
+    "machine",
+    "pseudostate",
+    "region",
+    "orthogonal"
+  ],
+  "author": "David Mesquita-Morris",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/steelbreeze/state/issues"
+  },
+  "homepage": "https://github.com/steelbreeze/state#readme",
+  "dependencies": {
+    "@steelbreeze/delegate": "^1.0.4"
+  }
+}
