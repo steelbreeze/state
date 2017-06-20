@@ -1,0 +1,9 @@
+#!/bin/bash 
+
+export CODECLIMATE_REPO_TOKEN=111df745fd4988fccdb084cd48dfb18cd152e6fb6476c473e911b1fbdfa3de76
+
+# run tests under code coverage
+istanbul cover _mocha -- -u exports -R spec
+
+# send coverage data to code climate
+codeclimate < coverage/lcov.info

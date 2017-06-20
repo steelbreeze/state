@@ -2,8 +2,8 @@
   "name": "@steelbreeze/state",
   "version": "1.0.0",
   "description": "Finite state machine for TypeScript and JavaScript",
-  "main": "state.js",
-  "typings": "state.d.ts",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
   "scripts": {
     "test": "mocha"
   },
@@ -26,6 +26,6 @@
   },
   "homepage": "https://github.com/steelbreeze/state#readme",
   "dependencies": {
-    "@steelbreeze/delegate": "^1.0.4"
+    "@steelbreeze/delegate": "^1.0.5"
   }
 }

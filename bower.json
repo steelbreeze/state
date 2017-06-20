@@ -1,0 +1,53 @@
+{
+	"name": "state",
+	"description": "Hierarchical finite state machine",
+	"main": "lib/web/state.js",
+	"authors": [
+		"David Mesquita-Morris"
+	],
+	"moduleType": [
+		"globals",
+		"node"
+	],
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/steelbreeze/state.js.git"
+	},
+	"keywords": [
+		"state machine",
+		"finite state machine",
+		"uml",
+		"finite",
+		"state",
+		"machine",
+		"region",
+		"orthogonal",
+		"hierarchical",
+		"pseudo",
+		"final",
+		"initial",
+		"deep",
+		"shallow",
+		"history",
+		"fsm",
+		"junction",
+		"choice",
+		"transition",
+		"completion"
+	],
+	"license": [
+		"MIT",
+		"GPL-3.0"
+	],
+	"ignore": [
+		"**/.*",
+		"package.json",
+		"tsconfig.json",
+		"coverage",
+		"scripts",
+		"src",
+		"test",
+		"lib/node",
+		"examples/node"
+	]
+}
