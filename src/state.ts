@@ -336,13 +336,13 @@ export class State extends Vertex {
 	 * The state's entry behavior as defined by the user.
 	 * @hidden
 	 */
-	entryBehavior = delegate();
+	entryBehavior: Delegate = delegate();
 
 	/**
 	 * The state's exit behavior as defined by the user.
 	 * @hidden
 	 */
-	exitBehavior = delegate();
+	exitBehavior: Delegate = delegate();
 
 	/**
 	 * Creates a new instance of the [[State]] class.
@@ -572,13 +572,13 @@ export class Transition {
 	 * The transition's behavior as defined by the user.
 	 * @hidden
 	 */
-	effectBehavior = delegate();
+	effectBehavior: Delegate = delegate();
 
 	/**
 	 * The compiled behavior to effect the state transition.
 	 * @hidden
 	 */
-	onTraverse: Delegate;
+	onTraverse: Delegate = delegate();
 
 	/**
 	 * The transition's guard condition; initially a completion transition, but may be overriden by the user with calls to when and else.
