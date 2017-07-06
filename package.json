@@ -26,6 +26,7 @@
   },
   "homepage": "https://github.com/steelbreeze/state#readme",
   "dependencies": {
-    "@steelbreeze/delegate": "^1.0.7"
+    "@steelbreeze/delegate": "^1.0.7",
+    "@steelbreeze/graph": "^1.0.1"
   }
 }

@@ -49,15 +49,15 @@ export declare function setDefaultRegionName(value: string): string;
  */
 export declare enum PseudoStateKind {
     /*** Turns the [pseudo state]{@link PseudoState} into a dynamic conditional branch: the guard conditions of the outgoing [transitions]{@link Transition} will be evaluated after the transition into the [pseudo state]{@link PseudoState} is traversed. */
-    Choice = 0,
+    Choice = "Choice",
     /** Turns on deep history semantics for the parent [region]{@link Region}: second and subsiquent entry of the parent [region]{@link Region} will use the last known state from the active state configuration contained withn the [state machine instance]{@link IInstance} as the initial state; this behavior will cascade through all child [regions]{@link Region}. */
-    DeepHistory = 1,
+    DeepHistory = "DeepHistory",
     /*** Turns the [pseudo state]{@link PseudoState} into an initial [vertex]{@link Vertex}, meaning is is the default point when the parent [region]{@link Region} is entered. */
-    Initial = 2,
+    Initial = "Initial",
     /*** Turns the [pseudo state]{@link PseudoState} into a static conditional branch: the guard conditions of the outgoing [transitions]{@link Transition} will be evaluated before the transition into the [pseudo state]{@link PseudoState} is traversed. */
-    Junction = 3,
+    Junction = "Junction",
     /** Turns on shallow history semantics for the parent [region]{@link Region}: second and subsiquent entry of the parent [region]{@link Region} will use the last known state from the active state configuration contained withn the [state machine instance]{@link IInstance} as the initial state; this behavior will only apply to the parent [region]{@link Region}. */
-    ShallowHistory = 4,
+    ShallowHistory = "ShallowHistory",
 }
 export declare namespace PseudoStateKind {
     /**
@@ -78,14 +78,14 @@ export declare namespace PseudoStateKind {
  */
 export declare enum TransitionKind {
     /** An external [transition]{@link Transition} is the default transition type; the source [vertex]{@link Vertex} is exited, [transition]{@link Transition} behavior called and target [vertex]{@link Vertex} entered. Where the source and target [vertices]{@link Vertex} are in different parent [regions]{@link Region} the source ancestry is exited up to but not including the least common ancestor; likewise the targe ancestry is enterd. */
-    External = 0,
+    External = "External",
     /**
      * An internal [transition]{@link Transition} executes without exiting or entering the [state]{@link State} in which it is defined.
      * @note The target vertex of an internal [transition]{@link Transition} must be undefined.
      */
-    Internal = 1,
+    Internal = "Internal",
     /** A local [transition]{@link Transition} is one where the target [vertex]{@link Vertex} is a child of the source [vertex]{@link Vertex}; the source [vertex]{@link Vertex} is not exited. */
-    Local = 2,
+    Local = "Local",
 }
 /**
  * Common properties of all elements that make up a [state machine model]{@link StateMachine}.
@@ -329,7 +329,7 @@ export declare class StateMachine implements IElement {
 /** A relationship within a [state machine model]{@link StateMachine} between two [vertices]{@link Vertex} that will effect a state transition in response to an event when its [guard condition]{@link Transition.when} is satisfied. */
 export declare class Transition {
     readonly source: Vertex;
-    readonly target: Vertex;
+    readonly target: Vertex | undefined;
     readonly kind: TransitionKind;
     /**
      * A guard to represent else transitions.
@@ -357,7 +357,7 @@ export declare class Transition {
      * @param target The [vertex]{@link Vertex} to [transition]{@link Transition} to. Leave this as undefined to create an [internal transition]{@link TransitionKind.Internal}.
      * @param kind The kind of the [transition]{@link Transition}; use this to explicitly set [local transition]{@link TransitionKind.Local} semantics as needed.
      */
-    constructor(source: Vertex, target?: Vertex, kind?: TransitionKind);
+    constructor(source: Vertex, target?: Vertex | undefined, kind?: TransitionKind);
     /**
      * Tests the [transition]{@link Transition} to see if it is an [else transition]{@link Transition.else}.
      * @return Returns true if the [transition]{@link Transition} is an [else transition]{@link Transition.else}.
