@@ -49,15 +49,15 @@ export declare function setDefaultRegionName(value: string): string;
  */
 export declare enum PseudoStateKind {
     /*** Turns the [pseudo state]{@link PseudoState} into a dynamic conditional branch: the guard conditions of the outgoing [transitions]{@link Transition} will be evaluated after the transition into the [pseudo state]{@link PseudoState} is traversed. */
-    Choice = "Choice",
+    Choice = 0,
     /** Turns on deep history semantics for the parent [region]{@link Region}: second and subsiquent entry of the parent [region]{@link Region} will use the last known state from the active state configuration contained withn the [state machine instance]{@link IInstance} as the initial state; this behavior will cascade through all child [regions]{@link Region}. */
-    DeepHistory = "DeepHistory",
+    DeepHistory = 1,
     /*** Turns the [pseudo state]{@link PseudoState} into an initial [vertex]{@link Vertex}, meaning is is the default point when the parent [region]{@link Region} is entered. */
-    Initial = "Initial",
+    Initial = 2,
     /*** Turns the [pseudo state]{@link PseudoState} into a static conditional branch: the guard conditions of the outgoing [transitions]{@link Transition} will be evaluated before the transition into the [pseudo state]{@link PseudoState} is traversed. */
-    Junction = "Junction",
+    Junction = 3,
     /** Turns on shallow history semantics for the parent [region]{@link Region}: second and subsiquent entry of the parent [region]{@link Region} will use the last known state from the active state configuration contained withn the [state machine instance]{@link IInstance} as the initial state; this behavior will only apply to the parent [region]{@link Region}. */
-    ShallowHistory = "ShallowHistory",
+    ShallowHistory = 4,
 }
 export declare namespace PseudoStateKind {
     /**
@@ -78,14 +78,14 @@ export declare namespace PseudoStateKind {
  */
 export declare enum TransitionKind {
     /** An external [transition]{@link Transition} is the default transition type; the source [vertex]{@link Vertex} is exited, [transition]{@link Transition} behavior called and target [vertex]{@link Vertex} entered. Where the source and target [vertices]{@link Vertex} are in different parent [regions]{@link Region} the source ancestry is exited up to but not including the least common ancestor; likewise the targe ancestry is enterd. */
-    External = "External",
+    External = 0,
     /**
      * An internal [transition]{@link Transition} executes without exiting or entering the [state]{@link State} in which it is defined.
      * @note The target vertex of an internal [transition]{@link Transition} must be undefined.
      */
-    Internal = "Internal",
+    Internal = 1,
     /** A local [transition]{@link Transition} is one where the target [vertex]{@link Vertex} is a child of the source [vertex]{@link Vertex}; the source [vertex]{@link Vertex} is not exited. */
-    Local = "Local",
+    Local = 2,
 }
 /**
  * Common properties of all elements that make up a [state machine model]{@link StateMachine}.
@@ -196,12 +196,12 @@ export declare class State extends Vertex {
      * The state's entry behavior as defined by the user.
      * @hidden
      */
-    entryBehavior: Delegate;
+    entryBehavior: Delegate<void>;
     /**
      * The state's exit behavior as defined by the user.
      * @hidden
      */
-    exitBehavior: Delegate;
+    exitBehavior: Delegate<void>;
     /**
      * Creates a new instance of the [[State]] class.
      * @param name The name of this [state]{@link State}.
@@ -340,12 +340,12 @@ export declare class Transition {
      * The transition's behavior as defined by the user.
      * @hidden
      */
-    effectBehavior: Delegate;
+    effectBehavior: Delegate<void>;
     /**
      * The compiled behavior to effect the state transition.
      * @hidden
      */
-    onTraverse: Delegate;
+    onTraverse: Delegate<void>;
     /**
      * The transition's guard condition; initially a completion transition, but may be overriden by the user with calls to when and else.
      * @hidden

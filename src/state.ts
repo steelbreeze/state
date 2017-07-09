@@ -132,19 +132,19 @@ export function setDefaultRegionName(value: string): string {
  */
 export enum PseudoStateKind {
 	/*** Turns the [pseudo state]{@link PseudoState} into a dynamic conditional branch: the guard conditions of the outgoing [transitions]{@link Transition} will be evaluated after the transition into the [pseudo state]{@link PseudoState} is traversed. */
-	Choice = "Choice",
+	Choice,// = "Choice",
 
 	/** Turns on deep history semantics for the parent [region]{@link Region}: second and subsiquent entry of the parent [region]{@link Region} will use the last known state from the active state configuration contained withn the [state machine instance]{@link IInstance} as the initial state; this behavior will cascade through all child [regions]{@link Region}. */
-	DeepHistory = "DeepHistory",
+	DeepHistory,// = "DeepHistory",
 
 	/*** Turns the [pseudo state]{@link PseudoState} into an initial [vertex]{@link Vertex}, meaning is is the default point when the parent [region]{@link Region} is entered. */
-	Initial = "Initial",
+	Initial,// = "Initial",
 
 	/*** Turns the [pseudo state]{@link PseudoState} into a static conditional branch: the guard conditions of the outgoing [transitions]{@link Transition} will be evaluated before the transition into the [pseudo state]{@link PseudoState} is traversed. */
-	Junction = "Junction",
+	Junction,// = "Junction",
 
 	/** Turns on shallow history semantics for the parent [region]{@link Region}: second and subsiquent entry of the parent [region]{@link Region} will use the last known state from the active state configuration contained withn the [state machine instance]{@link IInstance} as the initial state; this behavior will only apply to the parent [region]{@link Region}. */
-	ShallowHistory = "ShallowHistory"
+	ShallowHistory// = "ShallowHistory"
 }
 
 export namespace PseudoStateKind {
@@ -172,16 +172,16 @@ export namespace PseudoStateKind {
  */
 export enum TransitionKind {
 	/** An external [transition]{@link Transition} is the default transition type; the source [vertex]{@link Vertex} is exited, [transition]{@link Transition} behavior called and target [vertex]{@link Vertex} entered. Where the source and target [vertices]{@link Vertex} are in different parent [regions]{@link Region} the source ancestry is exited up to but not including the least common ancestor; likewise the targe ancestry is enterd. */
-	External = "External",
+	External,// = "External",
 
 	/**
 	 * An internal [transition]{@link Transition} executes without exiting or entering the [state]{@link State} in which it is defined.
 	 * @note The target vertex of an internal [transition]{@link Transition} must be undefined.
 	 */
-	Internal = "Internal",
+	Internal,// = "Internal",
 
 	/** A local [transition]{@link Transition} is one where the target [vertex]{@link Vertex} is a child of the source [vertex]{@link Vertex}; the source [vertex]{@link Vertex} is not exited. */
-	Local = "Local"
+	Local// = "Local"
 }
 
 /**
@@ -336,13 +336,13 @@ export class State extends Vertex {
 	 * The state's entry behavior as defined by the user.
 	 * @hidden
 	 */
-	entryBehavior: Delegate = delegate();
+	entryBehavior: Delegate<void> = delegate();
 
 	/**
 	 * The state's exit behavior as defined by the user.
 	 * @hidden
 	 */
-	exitBehavior: Delegate = delegate();
+	exitBehavior: Delegate<void> = delegate();
 
 	/**
 	 * Creates a new instance of the [[State]] class.
@@ -572,13 +572,13 @@ export class Transition {
 	 * The transition's behavior as defined by the user.
 	 * @hidden
 	 */
-	effectBehavior: Delegate = delegate();
+	effectBehavior: Delegate<void> = delegate();
 
 	/**
 	 * The compiled behavior to effect the state transition.
 	 * @hidden
 	 */
-	onTraverse: Delegate = delegate();
+	onTraverse: Delegate<void> = delegate();
 
 	/**
 	 * The transition's guard condition; initially a completion transition, but may be overriden by the user with calls to when and else.
@@ -904,9 +904,9 @@ export class DictionaryInstance implements IInstance {
 
 /** @hidden */
 class RuntimeActions {
-	leave = delegate();
-	beginEnter = delegate();
-	endEnter = delegate();
+	leave: Delegate<void> = delegate();
+	beginEnter: Delegate<void> = delegate();
+	endEnter: Delegate<void> = delegate();
 }
 
 /** @hidden */
@@ -1124,7 +1124,7 @@ class Runtime extends Visitor {
 	}
 
 	static traverse(transition: Transition, instance: IInstance, ...message: any[]) {
-		let onTraverse = delegate(transition.onTraverse);
+		let onTraverse: Delegate<void> = delegate(transition.onTraverse);
 
 		// create the compound transition while the target is a junction pseudo state (static conditional branch)
 		while (transition.target && transition.target instanceof PseudoState && transition.target.kind === PseudoStateKind.Junction) {
