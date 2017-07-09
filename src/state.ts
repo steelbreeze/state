@@ -336,13 +336,13 @@ export class State extends Vertex {
 	 * The state's entry behavior as defined by the user.
 	 * @hidden
 	 */
-	entryBehavior: Delegate<void> = delegate();
+	entryBehavior: Delegate = delegate();
 
 	/**
 	 * The state's exit behavior as defined by the user.
 	 * @hidden
 	 */
-	exitBehavior: Delegate<void> = delegate();
+	exitBehavior: Delegate = delegate();
 
 	/**
 	 * Creates a new instance of the [[State]] class.
@@ -572,13 +572,13 @@ export class Transition {
 	 * The transition's behavior as defined by the user.
 	 * @hidden
 	 */
-	effectBehavior: Delegate<void> = delegate();
+	effectBehavior: Delegate = delegate();
 
 	/**
 	 * The compiled behavior to effect the state transition.
 	 * @hidden
 	 */
-	onTraverse: Delegate<void> = delegate();
+	onTraverse: Delegate = delegate();
 
 	/**
 	 * The transition's guard condition; initially a completion transition, but may be overriden by the user with calls to when and else.
@@ -904,9 +904,9 @@ export class DictionaryInstance implements IInstance {
 
 /** @hidden */
 class RuntimeActions {
-	leave: Delegate<void> = delegate();
-	beginEnter: Delegate<void> = delegate();
-	endEnter: Delegate<void> = delegate();
+	leave: Delegate = delegate();
+	beginEnter: Delegate = delegate();
+	endEnter: Delegate = delegate();
 }
 
 /** @hidden */
@@ -1124,7 +1124,7 @@ class Runtime extends Visitor {
 	}
 
 	static traverse(transition: Transition, instance: IInstance, ...message: any[]) {
-		let onTraverse: Delegate<void> = delegate(transition.onTraverse);
+		let onTraverse: Delegate = delegate(transition.onTraverse);
 
 		// create the compound transition while the target is a junction pseudo state (static conditional branch)
 		while (transition.target && transition.target instanceof PseudoState && transition.target.kind === PseudoStateKind.Junction) {

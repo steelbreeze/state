@@ -196,12 +196,12 @@ export declare class State extends Vertex {
      * The state's entry behavior as defined by the user.
      * @hidden
      */
-    entryBehavior: Delegate<void>;
+    entryBehavior: Delegate;
     /**
      * The state's exit behavior as defined by the user.
      * @hidden
      */
-    exitBehavior: Delegate<void>;
+    exitBehavior: Delegate;
     /**
      * Creates a new instance of the [[State]] class.
      * @param name The name of this [state]{@link State}.
@@ -340,12 +340,12 @@ export declare class Transition {
      * The transition's behavior as defined by the user.
      * @hidden
      */
-    effectBehavior: Delegate<void>;
+    effectBehavior: Delegate;
     /**
      * The compiled behavior to effect the state transition.
      * @hidden
      */
-    onTraverse: Delegate<void>;
+    onTraverse: Delegate;
     /**
      * The transition's guard condition; initially a completion transition, but may be overriden by the user with calls to when and else.
      * @hidden
