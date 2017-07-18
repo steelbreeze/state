@@ -1,8 +1,9 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state");
+	state = require("../lib/node/state"),
+	setLogger = require("../lib/node/log").setLogger;
 
-var oldLogger = state.setLogger(console);
+var oldLogger = setLogger(console);
 
 var model = new state.StateMachine("model");
 var initial1 = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
@@ -29,4 +30,4 @@ describe("test/brice.js", function () {
 	});
 });
 
-state.setLogger(oldLogger);
+setLogger(oldLogger);

@@ -1,8 +1,9 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state");
+	state = require("../lib/node/state"),
+	setLogger = require("../lib/node/log").setLogger;
 
-var oldLogger = state.setLogger(console);
+var oldLogger = setLogger(console);
 
 var model = new state.StateMachine("model");
 var initial = new state.PseudoState("initial", model);
@@ -33,4 +34,4 @@ describe("test/params.js", function () {
 	});
 });
 
-state.setLogger(oldLogger);
+setLogger(oldLogger);

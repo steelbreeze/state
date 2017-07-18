@@ -11,64 +11,8 @@
 /** Import other packages */
 import { Tree } from "@steelbreeze/graph";
 import { create as delegate, Delegate } from "@steelbreeze/delegate";
-
-/** Interface used by state.js for managing log and error messages. */
-export interface ILogger {
-	/**
-	 * Passes a log (informational) message.
-	 * @param message Any number of objects constituting the log message.
-	 */
-	log(message?: any, ...optionalParams: any[]): void;
-
-	/**
-	 * Passes an erorr message.
-	 * @param message Any number of objects constituting the error message.
-	 */
-	error(message?: any, ...optionalParams: any[]): void;
-}
-
-/**
- * Default logger implementation.
- * @hidden
- */
-let logger: ILogger = {
-	log(message?: any, ...optionalParams: any[]): void { },
-	error(message?: any, ...optionalParams: any[]): void { throw message; }
-};
-
-/**
- * Overrides the current logging object.
- * @param value An object to pass log and error messages to.
- * @returns Returns the previous logging object in use.
- */
-export function setLogger(value: ILogger): ILogger {
-	const result = logger;
-
-	logger = value;
-
-	return result;
-}
-
-/**
- * Default random number implementation.
- * @hidden
- */
-let random = (max: number) => Math.floor(Math.random() * max);
-
-/**
- * Sets a custom random number generator for state.js.
- * 
- * The default implementation uses [Math.floor(Math.random() * max)]{@linkcode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random}.
- * @param value The new method to generate random numbers.
- * @return Returns the previous random number generator in use.
- */
-export function setRandom(value: (max: number) => number): (max: number) => number {
-	const result = random;
-
-	random = value;
-
-	return result;
-}
+import { logger, setLogger } from "./log";
+import { random } from "./random";
 
 /**
  * Default setting for completion transition behavior.

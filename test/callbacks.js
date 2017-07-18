@@ -1,12 +1,13 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state");
+	state = require("../lib/node/state"),
+	setLogger = require("../lib/node/log").setLogger;
 
 var instance = new state.JSONInstance("callbacks_instance");
 instance.calls = 0;
 instance.logs = 0;
 
-var oldLogger = state.setLogger({ log: function (message) { console.log(message); instance.logs++; } });
+var oldLogger = setLogger({ log: function (message) { console.log(message); instance.logs++; } });
 
 var model = new state.StateMachine("callbacks_model");
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
@@ -42,4 +43,4 @@ describe("Custom logging", function () {
 	});
 });
 
-state.setLogger(oldLogger);
+setLogger(oldLogger);

@@ -12,9 +12,10 @@
 
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state");
+	state = require("../lib/node/state"),
+	setLogger = require("../lib/node/log").setLogger;
 
-var oldLogger = state.setLogger(console);
+var oldLogger = setLogger(console);
 
 // create the state machine model elements
 var model = new state.StateMachine("model");
@@ -54,4 +55,4 @@ describe("Local transition tests", function () {
 	});
 });
 
-state.setLogger(oldLogger);
+setLogger(oldLogger);

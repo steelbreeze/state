@@ -1,8 +1,10 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state");
+	state = require("../lib/node/state"),
+	setLogger = require("../lib/node/log").setLogger,
+	setRandom = require("../lib/node/random").setRandom;
 
-var oldLogger = state.setLogger(console);
+var oldLogger = setLogger(console);
 
 // this test overrides the default implementation of the random selector for choices as we're not looking to test the randomness of hte numbers, but the application of them to choose different transtiions therefore we need to turn the non-deterministic into something deterministic
 var nextRand = 0;
@@ -49,7 +51,7 @@ describe("test/choice.js", function () {
 	});
 
 	describe("With an non-random distribution, each path is called equally", function () {
-		var oldRandom = state.setRandom(randRobin);
+		var oldRandom = setRandom(randRobin);
 
 		var instance2 = new state.DictionaryInstance("instance2");
 		instance2.path1 = 0;
@@ -70,8 +72,8 @@ describe("test/choice.js", function () {
 			assert.equal(33, instance2.path3);
 		});
 
-		state.setRandom(oldRandom);
+		setRandom(oldRandom);
 	});
 });
 
-state.setLogger(oldLogger);
+setLogger(oldLogger);

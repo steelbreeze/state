@@ -1,31 +1,4 @@
 import { Delegate } from "@steelbreeze/delegate";
-/** Interface used by state.js for managing log and error messages. */
-export interface ILogger {
-    /**
-     * Passes a log (informational) message.
-     * @param message Any number of objects constituting the log message.
-     */
-    log(message?: any, ...optionalParams: any[]): void;
-    /**
-     * Passes an erorr message.
-     * @param message Any number of objects constituting the error message.
-     */
-    error(message?: any, ...optionalParams: any[]): void;
-}
-/**
- * Overrides the current logging object.
- * @param value An object to pass log and error messages to.
- * @returns Returns the previous logging object in use.
- */
-export declare function setLogger(value: ILogger): ILogger;
-/**
- * Sets a custom random number generator for state.js.
- *
- * The default implementation uses [Math.floor(Math.random() * max)]{@linkcode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random}.
- * @param value The new method to generate random numbers.
- * @return Returns the previous random number generator in use.
- */
-export declare function setRandom(value: (max: number) => number): (max: number) => number;
 /**
  * Sets a flag controlling completion transition behavior for internal transitions.
  * @param value True to have internal transitions trigger completion transitions.
