@@ -1,6 +1,8 @@
 # state
 Executable finite state machine for TypeScript and JavaScript.
 
+[![Build Status](https://travis-ci.org/steelbreeze/delegate.svg?branch=master)](https://travis-ci.org/steelbreeze/delegate)
+
 > **Notes:**
 >
 >@steelbreeze/state the new home for [state.js](https://github.com/steelbreeze/state.js) and the versioning restarts here from v1.0.0.
