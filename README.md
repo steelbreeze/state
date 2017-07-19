@@ -1,8 +1,6 @@
 # state
 Executable finite state machine for TypeScript and JavaScript.
 
-[![NPM Version][npm-image]][npm-url]
-[![NPM Downloads][downloads-image]][npm-url]
 [![Build Status](https://travis-ci.org/steelbreeze/delegate.svg?branch=master)](https://travis-ci.org/steelbreeze/delegate)
 
 > **Notes:**
@@ -70,7 +68,3 @@ instance enter model.default.stateB
 MIT License
 
 Copyright (c) 2017 David Mesquita-Morris
-
-[npm-image]: https://img.shields.io/npm/v/@steelbreeze/state.svg
-[npm-url]:       https://www.npmjs.com/package/@steelbreeze/state
-[downloads-image]: https://img.shields.io/npm/dm/@steelbreeze/state.svg
