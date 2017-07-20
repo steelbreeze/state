@@ -1,4 +1,5 @@
 import * as state from "../../lib/node/state";
+import * as log from "../../lib/node/log";
 
 const model = new state.StateMachine("model");
 
@@ -27,7 +28,7 @@ hideMoveItemPattern.to(idle);
 
 let instance = new state.DictionaryInstance("florent");
 
-state.setLogger(console);
+log.setLogger(console);
 
 model.initialise(instance);
 

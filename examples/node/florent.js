@@ -1,6 +1,7 @@
 "use strict";
 exports.__esModule = true;
 var state = require("../../lib/node/state");
+var log = require("../../lib/node/log");
 var model = new state.StateMachine("model");
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
 var on = new state.State("on", model);
@@ -24,7 +25,7 @@ idle.to(showMoveItemPattern).when(function (i, s) { return s === "ReleaseInput";
 showMoveItemPattern.to(hideMoveItemPattern).when(function (i, s) { return s === "ReleaseInput"; });
 hideMoveItemPattern.to(idle);
 var instance = new state.DictionaryInstance("florent");
-state.setLogger(console);
+log.setLogger(console);
 model.initialise(instance);
 model.evaluate(instance, "Disable");
 model.evaluate(instance, "Enable");
