@@ -796,7 +796,7 @@ export class JSONInstance implements IInstance {
 	getLastKnownState(region: Region): State | undefined {
 		const regionConfiguration = this.getRegionConfiguration(region);
 
-		let lastKnownState: State | undefined = undefined;
+		let lastKnownState: State | undefined;
 
 		for (const vertex of region.children) {
 			if (vertex instanceof State) {
