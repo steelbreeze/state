@@ -13,6 +13,8 @@ engines:
     checks:
       wrap-iife:
         enabled: false
+      no-void:
+        enabled: false
   fixme:
     enabled: true
 ratings:
