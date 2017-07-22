@@ -5,7 +5,7 @@
 	"main": "lib/index.js",
 	"typings": "lib/index.d.ts",
 	"scripts": {
-		"test": "mocha"
+		"test": "nyc mocha"
 	},
 	"repository": {
 		"type": "git",
@@ -25,8 +25,10 @@
 		"url": "https://github.com/steelbreeze/state/issues"
 	},
 	"homepage": "https://github.com/steelbreeze/state#readme",
+	"devDependencies": {
+		"mocha": "3.4.2"
+	},
 	"dependencies": {
-		"mocha": "3.4.2",
 		"@steelbreeze/delegate": "^1.0.10",
 		"@steelbreeze/graph": "^1.0.3"
 	}
