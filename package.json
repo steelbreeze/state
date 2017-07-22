@@ -26,11 +26,11 @@
 	},
 	"homepage": "https://github.com/steelbreeze/state#readme",
 	"devDependencies": {
-		"nyc": "11.0.3",
-		"mocha": "3.4.2"
+		"nyc": "latest",
+		"mocha": "latest"
 	},
 	"dependencies": {
-		"@steelbreeze/delegate": "^1.0.10",
-		"@steelbreeze/graph": "^1.0.3"
+		"@steelbreeze/delegate": "latest",
+		"@steelbreeze/graph": "latest"
 	}
 }
