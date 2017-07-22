@@ -26,7 +26,7 @@
 	},
 	"homepage": "https://github.com/steelbreeze/state#readme",
 	"devDependencies": {
-		"nyc": "10.0.3",
+		"nyc": "11.0.3",
 		"mocha": "3.4.2"
 	},
 	"dependencies": {
