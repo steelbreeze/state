@@ -32,7 +32,7 @@
 	},
 	"homepage": "https://github.com/steelbreeze/state#readme",
 	"dependencies": {
-		"@steelbreeze/delegate": "latest",
-		"@steelbreeze/graph": "latest"
+		"@steelbreeze/delegate": "^1.0.10",
+		"@steelbreeze/graph": "^1.0.3"
 	}
 }
