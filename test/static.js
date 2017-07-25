@@ -3,7 +3,7 @@ var assert = require("assert"),
 	state = require("../lib/node/state"),
 	setLogger = require("../lib/node/log").setLogger;
 
-var oldLogger = setLogger(console);
+//var oldLogger = setLogger(console);
 
 var model = new state.StateMachine("model");
 var region = new state.Region("region", model);
@@ -37,4 +37,4 @@ describe("test/static.js", function () {
 	});
 });
 
-setLogger(oldLogger);
+//setLogger(oldLogger);

@@ -1,8 +1,7 @@
 var state = require('../lib/node/state.js'),
 	setLogger = require("../lib/node/log").setLogger;
 
-var oldLogger = setLogger(console);
-
+//var oldLogger = setLogger(console);
 
 var model = new state.StateMachine('model');
 var initial = new state.PseudoState('initial', model, state.PseudoStateKind.Initial);
@@ -19,4 +18,4 @@ var instance = new state.DictionaryInstance('instance');
 
 model.initialise(instance);
 
-setLogger(oldLogger);
+//setLogger(oldLogger);

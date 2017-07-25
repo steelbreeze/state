@@ -7,7 +7,7 @@ var instance = new state.JSONInstance("callbacks_instance");
 instance.calls = 0;
 instance.logs = 0;
 
-var oldLogger = setLogger({ log: function (message) { console.log(message); instance.logs++; } });
+var oldLogger = setLogger({ log: function (message) { instance.logs++; } });
 
 var model = new state.StateMachine("callbacks_model");
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);

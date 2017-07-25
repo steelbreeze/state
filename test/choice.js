@@ -4,7 +4,7 @@ var assert = require("assert"),
 	setLogger = require("../lib/node/log").setLogger,
 	setRandom = require("../lib/node/random").setRandom;
 
-var oldLogger = setLogger(console);
+//var oldLogger = setLogger(console);
 
 // this test overrides the default implementation of the random selector for choices as we're not looking to test the randomness of hte numbers, but the application of them to choose different transtiions therefore we need to turn the non-deterministic into something deterministic
 var nextRand = 0;
@@ -76,4 +76,4 @@ describe("test/choice.js", function () {
 	});
 });
 
-setLogger(oldLogger);
+//setLogger(oldLogger);

@@ -3,7 +3,7 @@ var assert = require("assert"),
 	state = require("../lib/node/state"),
 	setLogger = require("../lib/node/log").setLogger;
 
-var oldConsole = setLogger(console);
+//var oldConsole = setLogger(console);
 
 var model = new state.StateMachine("model");
 var initial = new state.PseudoState("initial", model);
@@ -50,4 +50,4 @@ describe("test/florent.js", function () {
 	});
 });
 
-setLogger(oldConsole);
+//setLogger(oldConsole);

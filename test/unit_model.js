@@ -2,7 +2,7 @@ var assert = require("assert"),
 	state = require("../lib/node/state"),
 	setLogger = require("../lib/node/log").setLogger;
 
-var oldLogger = setLogger(console);
+//var oldLogger = setLogger(console);
 
 var model = new state.StateMachine("unit_model");
 var initial = new state.PseudoState("initial", model);
@@ -20,4 +20,4 @@ model.initialise(instance);
 
 model.evaluate(instance, "move");
 
-setLogger(oldLogger);
+//setLogger(oldLogger);
