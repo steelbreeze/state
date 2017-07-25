@@ -1,4 +1,0 @@
-#!/bin/bash
-
-# Create documentation
-typedoc --name state --readme none --module commonjs --out ../../Web\ sites/state.software/docs/v6 ./lib/node/state.d.ts
