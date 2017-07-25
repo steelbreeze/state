@@ -4,6 +4,15 @@
 	"description": "Finite state machine for TypeScript and JavaScript",
 	"main": "lib/index.js",
 	"typings": "lib/index.d.ts",
+	"directories": {
+		"example": "examples",
+		"lib": "lib",
+		"test": "test"
+	},
+	"dependencies": {
+		"@steelbreeze/delegate": "latest",
+		"@steelbreeze/graph": "latest"
+	},
 	"scripts": {
 		"build": "tsc -p .",
 		"test": "nyc --reporter=lcov mocha",
@@ -25,16 +34,14 @@
 		"machine",
 		"pseudostate",
 		"region",
-		"orthogonal"
+		"orthogonal",
+		"TypeScript",
+		"JavaScript"
 	],
 	"author": "David Mesquita-Morris",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/steelbreeze/state/issues"
 	},
-	"homepage": "https://github.com/steelbreeze/state#readme",
-	"dependencies": {
-		"@steelbreeze/delegate": "^1.0.10",
-		"@steelbreeze/graph": "^1.0.3"
-	}
+	"homepage": "https://github.com/steelbreeze/state#readme"
 }
