@@ -820,25 +820,25 @@ export class JSONInstance implements IInstance {
 
 /** Simple implementation of [[IInstance]]; manages the active state configuration in a dictionary. */
 export class DictionaryInstance implements IInstance {
-	private readonly lastState: { [id: string]: State } = {};
-	private readonly currentVertex: { [id: string]: Vertex } = {};
+	private readonly lastState = new Map<Region, State>();
+	private readonly currentVertex = new Map<Region, Vertex>();
 
 	constructor(public readonly name: string) { }
 
 	setCurrent(vertex: Vertex): void {
-		this.currentVertex[vertex.parent.toString()] = vertex;
+		this.currentVertex.set(vertex.parent, vertex);
 
 		if (vertex instanceof State) {
-			this.lastState[vertex.parent.toString()] = vertex;
+			this.lastState.set(vertex.parent, vertex);
 		}
 	}
 
 	getCurrent(region: Region): Vertex | undefined {
-		return this.currentVertex[region.toString()];
+		return this.currentVertex.get(region);
 	}
 
 	getLastKnownState(region: Region): State | undefined {
-		return this.lastState[region.toString()];
+		return this.lastState.get(region);
 	}
 
 	toString(): string {
@@ -855,11 +855,21 @@ class RuntimeActions {
 
 /** @hidden */
 class Runtime extends Visitor {
-	readonly actions: { [id: string]: RuntimeActions } = {};
+	readonly actions = new Map<IElement,RuntimeActions>();
 	readonly transitions = new Array<Transition>();
 
-	getActions(elemenet: IElement): RuntimeActions {
-		return this.actions[elemenet.toString()] || (this.actions[elemenet.toString()] = new RuntimeActions());
+	getActions(elemenet: IElement): RuntimeActions { // TODO: optimise
+		let result = this.actions.get(elemenet);
+
+		if(result) {
+			return result;
+		} else {
+			let newResult = new RuntimeActions();
+
+			this.actions.set(elemenet, newResult);
+
+			return newResult;
+		}
 	}
 
 	visitElement<TElement extends IElement>(element: TElement, deepHistoryAbove: boolean): void {
