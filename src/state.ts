@@ -360,7 +360,7 @@ export class State extends Vertex {
 	 * @param action The behavior to call upon [state]{@link State} exit. Mutiple calls to this method may be made to build complex behavior.
 	 * @return Returns the [state]{@link State} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
-	public exit(action: (instance: IInstance, ...message: any[]) => any) {
+	public exit(action: (instance: IInstance, ...message: any[]) => any) { // TODO: specify a return type?
 		this.exitBehavior = delegate(this.exitBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => { // TODO: test origional is not noOp
 			return action(instance, ...message);
 		});
@@ -375,7 +375,7 @@ export class State extends Vertex {
 	 * @param action The behavior to call upon [state]{@link State} entry. Mutiple calls to this method may be made to build complex behavior.
 	 * @return Returns the [state]{@link State} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
-	public entry(action: (instance: IInstance, ...message: any[]) => any) {
+	public entry(action: (instance: IInstance, ...message: any[]) => any) { // TODO: specify a return type?
 		this.entryBehavior = delegate(this.entryBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => { // TODO: test origional is not noOp
 			return action(instance, ...message);
 		});
@@ -470,7 +470,7 @@ export class StateMachine implements IElement {
 		} else {
 			logger.log(`initialise ${this}`);
 
-			this.onInitialise = this.accept(new Runtime(), false, this.onInitialise);
+			this.onInitialise = this.accept(new Runtime(), false);
 		}
 	}
 
@@ -569,7 +569,7 @@ export class Transition {
 	 * Turns the [transition]{@link Transition} into an [else transition]{@link Transition.isElse}.
 	 * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
-	public else() { // NOTE: no need to invalidate the machine as the transition actions have not changed.
+	public else(): Transition { // NOTE: no need to invalidate the machine as the transition actions have not changed.
 		// TODO: validate that the source is a choice or junction.
 
 		this.guard = Transition.Else;
@@ -582,7 +582,7 @@ export class Transition {
 	 * @param guard The new [guard condition]{@link Guard}.
 	 * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
-	public when(guard: (instance: IInstance, ...message: any[]) => boolean) { // NOTE: no need to invalidate the machine as the transition actions have not changed.
+	public when(guard: (instance: IInstance, ...message: any[]) => boolean): Transition { // NOTE: no need to invalidate the machine as the transition actions have not changed.
 		this.guard = guard;
 
 		return this;
@@ -593,7 +593,7 @@ export class Transition {
 	 * @param action The behavior to call upon [transition]{@link Transition} traversal. Mutiple calls to this method may be made to build complex behavior.
 	 * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
-	public effect(action: (instance: IInstance, ...message: any[]) => any) {
+	public effect(action: (instance: IInstance, ...message: any[]) => any): Transition {
 		this.effectBehavior = delegate(this.effectBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => {
 			return action(instance, ...message);
 		});
@@ -899,7 +899,7 @@ class Runtime extends Visitor {
 		}
 	}
 
-	visitVertex(vertex: Vertex, deepHistoryAbove: boolean) {
+	visitVertex(vertex: Vertex, deepHistoryAbove: boolean): void {
 		super.visitVertex(vertex, deepHistoryAbove);
 
 		this.getActions(vertex).beginEnter = delegate(this.getActions(vertex).beginEnter, (instance: IInstance) => {
@@ -907,7 +907,7 @@ class Runtime extends Visitor {
 		});
 	}
 
-	visitPseudoState(pseudoState: PseudoState, deepHistoryAbove: boolean) {
+	visitPseudoState(pseudoState: PseudoState, deepHistoryAbove: boolean): void {
 		super.visitPseudoState(pseudoState, deepHistoryAbove);
 
 		if (PseudoStateKind.isInitial(pseudoState.kind)) {
@@ -928,7 +928,7 @@ class Runtime extends Visitor {
 		}
 	}
 
-	visitState(state: State, deepHistoryAbove: boolean) {
+	visitState(state: State, deepHistoryAbove: boolean): void {
 		for (const region of state.children) {
 			region.accept(this, deepHistoryAbove);
 
@@ -964,7 +964,7 @@ class Runtime extends Visitor {
 		return delegate(...stateMachine.children.map(region => delegate(this.getActions(region).beginEnter, this.getActions(region).endEnter)));
 	}
 
-	visitTransition(transition: Transition, deepHistoryAbove: boolean) {
+	visitTransition(transition: Transition, deepHistoryAbove: boolean): void {
 		super.visitTransition(transition, deepHistoryAbove);
 
 		this.transitions.push(transition);
@@ -1077,7 +1077,7 @@ class Runtime extends Visitor {
 		return result;
 	}
 
-	static traverse(transition: Transition, instance: IInstance, ...message: any[]) {
+	static traverse(transition: Transition, instance: IInstance, ...message: any[]): void {
 		let onTraverse: Delegate = delegate(transition.onTraverse);
 
 		// create the compound transition while the target is a junction pseudo state (static conditional branch)
