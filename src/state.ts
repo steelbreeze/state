@@ -11,7 +11,7 @@
 /** Import other packages */
 import { Tree } from "@steelbreeze/graph";
 import { create as delegate, Delegate } from "@steelbreeze/delegate";
-import { logger, setLogger } from "./log";
+import { logger } from "./log";
 import { random } from "./random";
 
 /**
@@ -855,13 +855,13 @@ class RuntimeActions {
 
 /** @hidden */
 class Runtime extends Visitor {
-	readonly actions = new Map<IElement,RuntimeActions>();
+	readonly actions = new Map<IElement, RuntimeActions>();
 	readonly transitions = new Array<Transition>();
 
 	getActions(elemenet: IElement): RuntimeActions { // TODO: optimise
 		let result = this.actions.get(elemenet);
 
-		if(result) {
+		if (result) {
 			return result;
 		} else {
 			let newResult = new RuntimeActions();
@@ -895,7 +895,7 @@ class Runtime extends Visitor {
 				actions.endEnter(instance, history, ...message);
 			});
 		} else {
-			this.getActions(region).endEnter = delegate(this.getActions(region).endEnter, this.getActions(regionInitial).beginEnter, this.getActions(regionInitial).endEnter);
+			this.getActions(region).endEnter = delegate(this.getActions(regionInitial).beginEnter, this.getActions(regionInitial).endEnter);
 		}
 	}
 
@@ -912,15 +912,12 @@ class Runtime extends Visitor {
 
 		if (PseudoStateKind.isInitial(pseudoState.kind)) {
 			this.getActions(pseudoState).endEnter = delegate(this.getActions(pseudoState).endEnter, (instance: IInstance, deepHistory: boolean, ...message: any[]) => {
-				if (instance.getLastKnownState(pseudoState.parent)) {
+				let currentState: State | undefined;
+
+				if ((PseudoStateKind.isHistory(pseudoState.kind) || deepHistory) && (currentState = instance.getLastKnownState(pseudoState.parent))) { // SECOND-PASS BUG WAS HERE - was not checking for history semantics, just history
 					this.getActions(pseudoState).leave(instance, false, ...message);
-
-					const currentState = instance.getLastKnownState(pseudoState.parent);
-
-					if (currentState) {
-						this.getActions(currentState).beginEnter(instance, deepHistory || pseudoState.kind === PseudoStateKind.DeepHistory, ...message);
-						this.getActions(currentState).endEnter(instance, deepHistory || pseudoState.kind === PseudoStateKind.DeepHistory, ...message);
-					}
+					this.getActions(currentState).beginEnter(instance, deepHistory || pseudoState.kind === PseudoStateKind.DeepHistory, ...message);
+					this.getActions(currentState).endEnter(instance, deepHistory || pseudoState.kind === PseudoStateKind.DeepHistory, ...message);
 				} else {
 					Runtime.traverse(pseudoState.outgoing[0], instance, false);
 				}
