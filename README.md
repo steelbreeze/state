@@ -1,7 +1,7 @@
 # state
 Executable finite state machine for TypeScript and JavaScript.
 
-[![Build Status](https://travis-ci.org/steelbreeze/delegate.svg?branch=master)](https://travis-ci.org/steelbreeze/delegate)
+[![Build Status](https://travis-ci.org/steelbreeze/state.svg?branch=master)](https://travis-ci.org/steelbreeze/state)
 [![Code Climate](https://codeclimate.com/github/steelbreeze/state/badges/gpa.svg)](https://codeclimate.com/github/steelbreeze/state)
 [![Issue Count](https://codeclimate.com/github/steelbreeze/state/badges/issue_count.svg)](https://codeclimate.com/github/steelbreeze/state)
 [![Test Coverage](https://codeclimate.com/github/steelbreeze/state/badges/coverage.svg)](https://codeclimate.com/github/steelbreeze/state/coverage)
