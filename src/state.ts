@@ -274,7 +274,7 @@ export class PseudoState extends Vertex {
 /** A condition or situation during the life of an object, represented by a [state machine model]{@link StateMachine}, during which it satisfies some condition, performs some activity, or waits for some event. */
 export class State extends Vertex {
 	/** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
-	public readonly children = new Array<Region>(); // TODO: pull out some commonality from state and state machine
+	public readonly children = new Array<Region>();
 
 	/**
 	 * The state's entry behavior as defined by the user.
@@ -360,7 +360,7 @@ export class State extends Vertex {
 	 * @param action The behavior to call upon [state]{@link State} exit. Mutiple calls to this method may be made to build complex behavior.
 	 * @return Returns the [state]{@link State} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
-	public exit(action: (instance: IInstance, ...message: any[]) => any) { // TODO: specify a return type?
+	public exit(action: (instance: IInstance, ...message: any[]) => any): this {
 		this.exitBehavior = delegate(this.exitBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => { // TODO: test origional is not noOp
 			return action(instance, ...message);
 		});
@@ -375,7 +375,7 @@ export class State extends Vertex {
 	 * @param action The behavior to call upon [state]{@link State} entry. Mutiple calls to this method may be made to build complex behavior.
 	 * @return Returns the [state]{@link State} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
-	public entry(action: (instance: IInstance, ...message: any[]) => any) { // TODO: specify a return type?
+	public entry(action: (instance: IInstance, ...message: any[]) => any): this {
 		this.entryBehavior = delegate(this.entryBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => { // TODO: test origional is not noOp
 			return action(instance, ...message);
 		});
@@ -397,7 +397,6 @@ export class State extends Vertex {
 
 /** A specification of the sequences of [states]{@link State} that an object goes through in response to events during its life, together with its responsive actions. */
 export class StateMachine implements IElement {
-
 	/**
 	 * The parent element of the state machine; always undefined.
 	 * @hidden
@@ -569,7 +568,7 @@ export class Transition {
 	 * Turns the [transition]{@link Transition} into an [else transition]{@link Transition.isElse}.
 	 * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
-	public else(): Transition { // NOTE: no need to invalidate the machine as the transition actions have not changed.
+	public else(): this { // NOTE: no need to invalidate the machine as the transition actions have not changed.
 		// TODO: validate that the source is a choice or junction.
 
 		this.guard = Transition.Else;
@@ -582,7 +581,7 @@ export class Transition {
 	 * @param guard The new [guard condition]{@link Guard}.
 	 * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
-	public when(guard: (instance: IInstance, ...message: any[]) => boolean): Transition { // NOTE: no need to invalidate the machine as the transition actions have not changed.
+	public when(guard: (instance: IInstance, ...message: any[]) => boolean): this { // NOTE: no need to invalidate the machine as the transition actions have not changed.
 		this.guard = guard;
 
 		return this;
@@ -593,7 +592,7 @@ export class Transition {
 	 * @param action The behavior to call upon [transition]{@link Transition} traversal. Mutiple calls to this method may be made to build complex behavior.
 	 * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
-	public effect(action: (instance: IInstance, ...message: any[]) => any): Transition {
+	public effect(action: (instance: IInstance, ...message: any[]) => any): this {
 		this.effectBehavior = delegate(this.effectBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => {
 			return action(instance, ...message);
 		});

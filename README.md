@@ -9,7 +9,7 @@ Executable finite state machine for TypeScript and JavaScript.
 
 > **Notes:**
 >
->@steelbreeze/state the new home for [state.js](https://github.com/steelbreeze/state.js) and the versioning restarts here from v1.0.0.
+>@steelbreeze/state the new home for [state.js](https://github.com/steelbreeze/state.js) and the versioning starts here from v6.0.0.
 >
 >This implementation supports node only, a browser implementation via Bower will be available shortly. 
 

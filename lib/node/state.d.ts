@@ -340,19 +340,19 @@ export declare class Transition {
      * Turns the [transition]{@link Transition} into an [else transition]{@link Transition.isElse}.
      * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
      */
-    else(): Transition;
+    else(): this;
     /**
      * Create a user defined [guard condition]{@link Guard} for the [transition]{@link Transition}.
      * @param guard The new [guard condition]{@link Guard}.
      * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
      */
-    when(guard: (instance: IInstance, ...message: any[]) => boolean): Transition;
+    when(guard: (instance: IInstance, ...message: any[]) => boolean): this;
     /**
      * Sets user-definable behavior to execute every time the [transition]{@link Transition} is traversed.
      * @param action The behavior to call upon [transition]{@link Transition} traversal. Mutiple calls to this method may be made to build complex behavior.
      * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
      */
-    effect(action: (instance: IInstance, ...message: any[]) => any): Transition;
+    effect(action: (instance: IInstance, ...message: any[]) => any): this;
     /**
      * Evaulates the [transitions]{@link Transition} guard condition.
      * @param instance The [state machine instance]{@link IInstance} to evaluate the message against.
