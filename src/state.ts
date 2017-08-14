@@ -865,18 +865,14 @@ class Runtime extends Visitor {
 	readonly actions = new Map<IElement, RuntimeActions>();
 	readonly transitions = new Array<Transition>();
 
-	getActions(elemenet: IElement): RuntimeActions { // TODO: optimise
+	getActions(elemenet: IElement): RuntimeActions {
 		let result = this.actions.get(elemenet);
 
-		if (result) {
-			return result;
-		} else {
-			let newResult = new RuntimeActions();
-
-			this.actions.set(elemenet, newResult);
-
-			return newResult;
+		if (!result) {
+			this.actions.set(elemenet, result = new RuntimeActions());
 		}
+
+		return result;
 	}
 
 	visitElement<TElement extends IElement>(element: TElement, deepHistoryAbove: boolean): void {
