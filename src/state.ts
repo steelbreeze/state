@@ -572,9 +572,9 @@ export class Transition {
 	 * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
 	public else(): this { // NOTE: no need to invalidate the machine as the transition actions have not changed.
-		// TODO: validate that the source is a choice or junction.
-
-		this.guard = Transition.Else;
+		if (this.source instanceof PseudoState && (this.source.kind === PseudoStateKind.Choice || this.source.kind === PseudoStateKind.Junction)) {
+			this.guard = Transition.Else;
+		}
 
 		return this;
 	}
