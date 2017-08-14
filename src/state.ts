@@ -361,11 +361,13 @@ export class State extends Vertex {
 	 * @return Returns the [state]{@link State} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
 	public exit(action: (instance: IInstance, ...message: any[]) => any): this {
-		this.exitBehavior = delegate(this.exitBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => { // TODO: test origional is not noOp
-			return action(instance, ...message);
-		});
+		if (action !== undefined && action !== null) {
+			this.exitBehavior = delegate(this.exitBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => {
+				return action(instance, ...message);
+			});
 
-		this.invalidate();
+			this.invalidate();
+		}
 
 		return this;
 	}
@@ -376,12 +378,13 @@ export class State extends Vertex {
 	 * @return Returns the [state]{@link State} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
 	public entry(action: (instance: IInstance, ...message: any[]) => any): this {
-		this.entryBehavior = delegate(this.entryBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => { // TODO: test origional is not noOp
-			return action(instance, ...message);
-		});
+		if (action !== undefined && action !== null) {
+			this.entryBehavior = delegate(this.entryBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => {
+				return action(instance, ...message);
+			});
 
-		this.invalidate();
-
+			this.invalidate();
+		}
 		return this;
 	}
 
@@ -582,7 +585,9 @@ export class Transition {
 	 * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
 	public when(guard: (instance: IInstance, ...message: any[]) => boolean): this { // NOTE: no need to invalidate the machine as the transition actions have not changed.
-		this.guard = guard;
+		if (guard !== undefined && guard !== null) {
+			this.guard = guard;
+		}
 
 		return this;
 	}
@@ -593,11 +598,14 @@ export class Transition {
 	 * @return Returns the [transition]{@link Transition} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
 	 */
 	public effect(action: (instance: IInstance, ...message: any[]) => any): this {
-		this.effectBehavior = delegate(this.effectBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => {
-			return action(instance, ...message);
-		});
+		if (action !== undefined && action !== null) {
 
-		this.source.invalidate();
+			this.effectBehavior = delegate(this.effectBehavior, (instance: IInstance, deepHistory: boolean, ...message: any[]) => {
+				return action(instance, ...message);
+			});
+
+			this.source.invalidate();
+		}
 
 		return this;
 	}
