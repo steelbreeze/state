@@ -914,7 +914,7 @@ class Runtime extends Visitor {
 			this.getActions(pseudoState).endEnter = delegate(this.getActions(pseudoState).endEnter, (instance: IInstance, deepHistory: boolean, ...message: any[]) => {
 				let currentState: State | undefined;
 
-				if ((PseudoStateKind.isHistory(pseudoState.kind) || deepHistory) && (currentState = instance.getLastKnownState(pseudoState.parent))) { // SECOND-PASS BUG WAS HERE - was not checking for history semantics, just history
+				if ((PseudoStateKind.isHistory(pseudoState.kind) || deepHistory) && (currentState = instance.getLastKnownState(pseudoState.parent))) {
 					this.getActions(pseudoState).leave(instance, false, ...message);
 					this.getActions(currentState).beginEnter(instance, deepHistory || pseudoState.kind === PseudoStateKind.DeepHistory, ...message);
 					this.getActions(currentState).endEnter(instance, deepHistory || pseudoState.kind === PseudoStateKind.DeepHistory, ...message);
