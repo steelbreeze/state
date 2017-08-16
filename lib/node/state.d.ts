@@ -125,6 +125,7 @@ export declare class Region extends NamedElement<State | StateMachine> {
      */
     accept(visitor: Visitor, ...args: any[]): any;
 }
+/** A container of [Regions]{@link Region}; used as a mixin for the [[State]] and [[StateMachine]] classes. */
 export declare class Container {
     /** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
     readonly children: Array<Region>;

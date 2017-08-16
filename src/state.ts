@@ -220,6 +220,7 @@ export class Region extends NamedElement<State | StateMachine> {
 	}
 }
 
+/** A container of [Regions]{@link Region}; used as a mixin for the [[State]] and [[StateMachine]] classes. */
 export class Container {
 	/** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
 	public readonly children: Array<Region>;
