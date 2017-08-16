@@ -220,6 +220,28 @@ export class Region extends NamedElement<State | StateMachine> {
 	}
 }
 
+export class Container {
+	/** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
+	public readonly children: Array<Region>;
+
+	/**
+	 * The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state]{@link State} as its parent.
+	 * @return Returns the default [region]{@link Region} if present or undefined.
+	 */
+	public defaultRegion(): Region | undefined {
+		return this.children.filter(region => region.name === defaultRegionName)[0];
+	}
+
+	/**
+	 * Tests a given [state machine instance]{@link IInstance} to see if this [state]{@link State} is complete. A [state]{@link State} is complete when all its [child]{@link State.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
+	 * @param instance The [state machine instance]{@link IInstance} to test if this [state]{@link State} is complete within.
+	 * @return Returns true if the [region]{@link Region} is complete.
+	 */
+	public isComplete(instance: IInstance): boolean {
+		return this.children.every(region => region.isComplete(instance));
+	}
+}
+
 /** The source or target of a [transition]{@link Transition} within a [state machine model]{@link StateMachine}. A vertex can be either a [[State]] or a [[PseudoState]]. */
 export abstract class Vertex extends NamedElement<Region> {
 	/** The set of possible [transitions]{@link Transition} that this [vertex]{@link Vertex} can be the source of. */
@@ -272,7 +294,7 @@ export class PseudoState extends Vertex {
 }
 
 /** A condition or situation during the life of an object, represented by a [state machine model]{@link StateMachine}, during which it satisfies some condition, performs some activity, or waits for some event. */
-export class State extends Vertex {
+export class State extends Vertex implements Container {
 	/** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
 	public readonly children = new Array<Region>();
 
@@ -295,14 +317,6 @@ export class State extends Vertex {
 	 */
 	public constructor(name: string, parent: Region | State | StateMachine) {
 		super(name, parent);
-	}
-
-	/**
-	 * The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state]{@link State} as its parent.
-	 * @return Returns the default [region]{@link Region} if present or undefined.
-	 */
-	defaultRegion(): Region | undefined {
-		return this.children.filter(region => region.name === defaultRegionName)[0];
 	}
 
 	/**
@@ -347,15 +361,6 @@ export class State extends Vertex {
 	}
 
 	/**
-	 * Tests a given [state machine instance]{@link IInstance} to see if this [state]{@link State} is complete. A [state]{@link State} is complete when all its [child]{@link State.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
-	 * @param instance The [state machine instance]{@link IInstance} to test if this [state]{@link State} is complete within.
-	 * @return Returns true if the [region]{@link Region} is complete.
-	 */
-	public isComplete(instance: IInstance): boolean {
-		return this.children.every(region => region.isComplete(instance));
-	}
-
-	/**
 	 * Sets user-definable behavior to execute every time the [state]{@link State} is exited.
 	 * @param action The behavior to call upon [state]{@link State} exit. Mutiple calls to this method may be made to build complex behavior.
 	 * @return Returns the [state]{@link State} to facilitate fluent-style [state machine model]{@link StateMachine} construction.
@@ -396,17 +401,21 @@ export class State extends Vertex {
 	public accept(visitor: Visitor, ...args: any[]): any {
 		return visitor.visitState(this, ...args);
 	}
+
+	public defaultRegion: () => Region | undefined;
+	public isComplete: (instance: IInstance) => boolean;
 }
+applyMixins(State, Container);
 
 /** A specification of the sequences of [states]{@link State} that an object goes through in response to events during its life, together with its responsive actions. */
-export class StateMachine implements IElement {
+export class StateMachine implements IElement, Container {
 	/**
 	 * The parent element of the state machine; always undefined.
 	 * @hidden
 	 */
 	readonly parent = undefined;
 
-	/** The child [region(s)]{@link Region} if this [state machine]{@link StateMachine}. */
+	/** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
 	public readonly children = new Array<Region>();
 
 	/**
@@ -431,29 +440,12 @@ export class StateMachine implements IElement {
 	}
 
 	/**
-	 * The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state machine]{@link StateMachine} as its parent.
-	 * @return Returns the default [region]{@link Region} if present or undefined.
-	 */
-	defaultRegion(): Region | undefined {
-		return this.children.filter(region => region.name === defaultRegionName)[0];
-	}
-
-	/**
 	 * Tests the [state machine instance]{@link IInstance} to see if it is active. As a [state machine]{@link StateMachine} is the root of the model, it will always be active.
 	 * @param instance The [state machine instance]{@link IInstance} to test.
 	 * @returns Always returns true.
 	 */
 	public isActive(instance: IInstance): boolean {
 		return true;
-	}
-
-	/**
-	 * Tests a given [state machine instance]{@link IInstance} to see if it is complete. A [state machine]{@link StateMachine} is complete when all its [child]{@link StateMachine.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
-	 * @param instance The [state machine instance]{@link IInstance} to test.
-	 * @return Returns true if the [state machine instance]{@link IInstance} is complete.
-	 */
-	public isComplete(instance: IInstance): boolean {
-		return this.children.every(region => region.isComplete(instance));
 	}
 
 	/**
@@ -504,7 +496,12 @@ export class StateMachine implements IElement {
 	public toString(): string {
 		return this.name;
 	}
+
+	public defaultRegion: () => Region | undefined;
+	public isComplete: (instance: IInstance) => boolean;
+
 }
+applyMixins(StateMachine, Container);
 
 /** A relationship within a [state machine model]{@link StateMachine} between two [vertices]{@link Vertex} that will effect a state transition in response to an event when its [guard condition]{@link Transition.when} is satisfied. */
 export class Transition {
@@ -1100,6 +1097,14 @@ class Runtime extends Visitor {
 			else if (transition.target instanceof State && transition.target.isComplete(instance)) {
 				Runtime.evaluate(transition.target, instance, transition.target);
 			}
+		}
+	}
+}
+
+function applyMixins(derivedCtor: any, ...baseCtors: any[]) {
+	for (const baseCtor of baseCtors) {
+		for (const name of Object.getOwnPropertyNames(baseCtor.prototype)) {
+			derivedCtor.prototype[name] = baseCtor.prototype[name];
 		}
 	}
 }
