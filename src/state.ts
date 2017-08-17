@@ -230,7 +230,7 @@ export class Container {
 	 * @return Returns the default [region]{@link Region} if present or undefined.
 	 */
 	public defaultRegion(): Region | undefined {
-		return this.children.filter(region => region.name === defaultRegionName)[0];
+		return this.children.find(region => region.name === defaultRegionName);
 	}
 
 	/**
@@ -751,12 +751,12 @@ export class JSONInstance implements IInstance {
 	}
 
 	private getStateConfiguration(state: State | StateMachine): StateConfiguration {
-		let stateConfiguration = this.root;
+		let stateConfiguration: StateConfiguration | undefined = this.root;
 
 		if (state.parent !== undefined) {
 			const regionConfiguration = this.getRegionConfiguration(state.parent);
 
-			stateConfiguration = regionConfiguration.children.filter(s => s.name === state.name)[0];
+			stateConfiguration = regionConfiguration.children.find(s => s.name === state.name);
 
 			if (stateConfiguration === undefined) {
 				stateConfiguration = new StateConfiguration(state.name);
@@ -771,7 +771,7 @@ export class JSONInstance implements IInstance {
 	private getRegionConfiguration(region: Region): RegionConfiguration {
 		const stateConfiguration = this.getStateConfiguration(region.parent);
 
-		let regionConfiguration = stateConfiguration.children.filter(r => r.name === region.name)[0];
+		let regionConfiguration = stateConfiguration.children.find(r => r.name === region.name);
 
 		if (regionConfiguration === undefined) {
 			regionConfiguration = new RegionConfiguration(region.name);
@@ -795,7 +795,7 @@ export class JSONInstance implements IInstance {
 	getCurrent(region: Region): Vertex | undefined {
 		const regionConfiguration = this.getRegionConfiguration(region);
 
-		return region.children.filter(vertex => vertex.name === regionConfiguration.current)[0];
+		return region.children.find(vertex => vertex.name === regionConfiguration.current);
 	}
 
 	getLastKnownState(region: Region): State | undefined {
@@ -1041,17 +1041,17 @@ class Runtime extends Visitor {
 		let result = false;
 
 		if (message[0] !== state) {
-			state.children.every(region => {
+			for (const region of state.children) {
 				const currentState = instance.getLastKnownState(region);
 
 				if (currentState && Runtime.evaluate(currentState, instance, ...message)) {
 					result = true;
 
-					return state.isActive(instance);
+					if (!state.isActive(instance)) {
+						break;
+					}
 				}
-
-				return true;
-			});
+			}
 		}
 
 		if (state instanceof State) {
