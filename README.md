@@ -31,9 +31,6 @@ The API is broken up into two distinct parts:
 ```typescript
 import * as state from "@steelbreeze/state";
 
-// send log messages, warnings and errors to the console
-state.setLogger(console);
-
 // create the state machine model elements
 const model = new state.StateMachine("model");
 const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
@@ -58,15 +55,6 @@ console.log(instance.toJSON());
 ### Output
 The output of the above code will be:
 ```shell
-initialise model
-initialise instance
-instance enter model.default
-instance enter model.default.initial
-instance leave model.default.initial
-instance enter model.default.stateA
-instance evaluate message: move
-instance leave model.default.stateA
-instance enter model.default.stateB
 {"name":"instance","children":[{"name":"default","children":[],"current":"stateB","lastKnownState":"stateB"}]}
 ```
 
