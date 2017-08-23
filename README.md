@@ -64,7 +64,8 @@ instance enter model.default.stateA
 instance evaluate message: move
 instance leave model.default.stateA
 instance enter model.default.stateB
-{"name":"instance","children":[{"name":"default","children":[],"current":"stateB","lastKnownState":"stateB"}]}```
+{"name":"instance","children":[{"name":"default","children":[],"current":"stateB","lastKnownState":"stateB"}]}
+```
 
 ## License
 MIT License
