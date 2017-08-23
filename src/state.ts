@@ -502,7 +502,7 @@ export class Transition {
 	 * @param kind The kind of the [transition]{@link Transition}; use this to explicitly set [local transition]{@link TransitionKind.Local} semantics as needed.
 	 */
 	public constructor(public readonly source: Vertex, public readonly target?: Vertex, public readonly kind: TransitionKind = TransitionKind.External) {
-		this.guard = source instanceof PseudoState ? (): boolean => true : (instance: IInstance, ...message: any[]): boolean => message[0] === this.source; // TODO: zero index
+		this.guard = source instanceof PseudoState ? (): boolean => true : (instance: IInstance, message: any): boolean => message === this.source;
 		this.source.outgoing.push(this);
 
 		// validate and repair if necessary the user supplied transition kind
