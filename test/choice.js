@@ -1,8 +1,8 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state"),
-	setLogger = require("../lib/node/log").setLogger,
-	setRandom = require("../lib/node/random").setRandom;
+	state = require("../lib/node/state");
+//	setLogger = require("../lib/node/log").setLogger,
+//	setRandom = require("../lib/node/random").setRandom;
 
 //var oldLogger = setLogger(console);
 
@@ -51,7 +51,7 @@ describe("test/choice.js", function () {
 	});
 
 	describe("With an non-random distribution, each path is called equally", function () {
-		var oldRandom = setRandom(randRobin);
+		var oldRandom = state.setRandom(randRobin);
 
 		var instance2 = new state.DictionaryInstance("instance2");
 		instance2.path1 = 0;
@@ -72,7 +72,7 @@ describe("test/choice.js", function () {
 			assert.equal(33, instance2.path3);
 		});
 
-		setRandom(oldRandom);
+		state.setRandom(oldRandom);
 	});
 });
 

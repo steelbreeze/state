@@ -10,8 +10,27 @@
 /** Import other packages */
 import { Tree } from "@steelbreeze/graph";
 import { create as delegate, Delegate } from "@steelbreeze/delegate";
-import { logger } from "./log";
-import { random } from "./random";
+
+/**
+ * Default random number implementation.
+ * @hidden
+ */
+export let random = (max: number) => Math.floor(Math.random() * max);
+
+/**
+ * Sets a custom random number generator for state.js.
+ * 
+ * The default implementation uses [Math.floor(Math.random() * max)]{@linkcode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random}.
+ * @param value The new method to generate random numbers.
+ * @return Returns the previous random number generator in use.
+ */
+export function setRandom(value: (max: number) => number): (max: number) => number {
+	const result = random;
+
+	random = value;
+
+	return result;
+}
 
 /** Default setting for completion transition behavior.
  * @hidden
@@ -412,11 +431,11 @@ export class StateMachine implements IElement, Container {
 				this.initialise();
 			}
 
-			logger.log(`initialise ${instance}`);
+			console.log(`initialise ${instance}`);
 
 			this.onInitialise(instance, false);
 		} else {
-			logger.log(`initialise ${this}`);
+			console.log(`initialise ${this}`);
 
 			this.onInitialise = this.accept(new Runtime(), false);
 		}
@@ -431,7 +450,7 @@ export class StateMachine implements IElement, Container {
 			this.initialise();
 		}
 
-		logger.log(`${instance} evaluate message: ${message}`);
+		console.log(`${instance} evaluate message: ${message}`);
 
 		return Runtime.evaluate(this, instance, ...message);
 	}
@@ -804,8 +823,8 @@ class Runtime extends Visitor {
 	}
 
 	visitElement<TElement extends IElement>(element: TElement, deepHistoryAbove: boolean): void {
-		this.getActions(element).leave = delegate(this.getActions(element).leave, (instance: IInstance) => logger.log(`${instance} leave ${element}`));
-		this.getActions(element).beginEnter = delegate(this.getActions(element).beginEnter, (instance: IInstance) => logger.log(`${instance} enter ${element}`));
+		this.getActions(element).leave = delegate(this.getActions(element).leave, (instance: IInstance) => console.log(`${instance} leave ${element}`));
+		this.getActions(element).beginEnter = delegate(this.getActions(element).beginEnter, (instance: IInstance) => console.log(`${instance} enter ${element}`));
 	}
 
 	visitRegion(region: Region, deepHistoryAbove: boolean): void {
@@ -961,7 +980,7 @@ class Runtime extends Visitor {
 		}
 
 		if (transitions.length > 1) {
-			logger.error(`Multiple outbound transition guards returned true at ${pseudoState} for ${message}`);
+			console.error(`Multiple outbound transition guards returned true at ${pseudoState} for ${message}`);
 		}
 
 		return transitions[0] || this.findElse(pseudoState);
@@ -997,7 +1016,7 @@ class Runtime extends Visitor {
 
 					result = true;
 				} else if (transitions.length > 1) {
-					logger.error(`${state}: multiple outbound transitions evaluated true for message ${message}`);
+					console.error(`${state}: multiple outbound transitions evaluated true for message ${message}`);
 				}
 			}
 		}

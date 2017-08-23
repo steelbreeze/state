@@ -1,6 +1,6 @@
 var assert = require("assert"),
-	state = require("../lib/node/state"),
-	setLogger = require("../lib/node/log").setLogger;
+	state = require("../lib/node/state");
+//	setLogger = require("../lib/node/log").setLogger;
 
 //var oldLogger = setLogger(console);
 

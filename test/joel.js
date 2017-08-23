@@ -1,5 +1,5 @@
-var state = require('../lib/node/state.js'),
-	setLogger = require("../lib/node/log").setLogger;
+var state = require('../lib/node/state.js');
+//	setLogger = require("../lib/node/log").setLogger;
 
 //var oldLogger = setLogger(console);
 

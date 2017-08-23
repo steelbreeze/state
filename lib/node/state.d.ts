@@ -1,4 +1,17 @@
 import { Delegate } from "@steelbreeze/delegate";
+/**
+ * Default random number implementation.
+ * @hidden
+ */
+export declare let random: (max: number) => number;
+/**
+ * Sets a custom random number generator for state.js.
+ *
+ * The default implementation uses [Math.floor(Math.random() * max)]{@linkcode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random}.
+ * @param value The new method to generate random numbers.
+ * @return Returns the previous random number generator in use.
+ */
+export declare function setRandom(value: (max: number) => number): (max: number) => number;
 /** Sets a flag controlling completion transition behavior for internal transitions.
  * @param value True to have internal transitions trigger completion transitions.
  * @return Returns the previous setting in use.
