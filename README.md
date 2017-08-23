@@ -55,8 +55,16 @@ console.log(instance.toJSON());
 ### Output
 The output of the above code will be:
 ```shell
-{"name":"instance","children":[{"name":"default","children":[],"current":"stateB","lastKnownState":"stateB"}]}
-```
+initialise model
+initialise instance
+instance enter model.default
+instance enter model.default.initial
+instance leave model.default.initial
+instance enter model.default.stateA
+instance evaluate message: move
+instance leave model.default.stateA
+instance enter model.default.stateB
+{"name":"instance","children":[{"name":"default","children":[],"current":"stateB","lastKnownState":"stateB"}]}```
 
 ## License
 MIT License
