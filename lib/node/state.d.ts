@@ -65,8 +65,6 @@ export declare enum TransitionKind {
 }
 /** Common properties of all elements that make up a [state machine model]{@link StateMachine}. */
 export interface IElement {
-    /** The parent [element]{@link IElement} of this element. */
-    parent: any;
     /** Invalidates a [state machine model]{@link StateMachine} causing it to require recompilation. */
     invalidate(): void;
 }

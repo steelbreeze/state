@@ -11,7 +11,7 @@
 	},
 	"dependencies": {
 		"@steelbreeze/delegate": "latest",
-		"@steelbreeze/graph": "latest"
+		"@steelbreeze/graph": "^1.0.5"
 	},
 	"scripts": {
 		"build": "tsc -p .",

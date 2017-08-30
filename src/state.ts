@@ -135,9 +135,6 @@ export enum TransitionKind {
 
 /** Common properties of all elements that make up a [state machine model]{@link StateMachine}. */
 export interface IElement {
-	/** The parent [element]{@link IElement} of this element. */
-	parent: any;
-
 	/** Invalidates a [state machine model]{@link StateMachine} causing it to require recompilation. */
 	invalidate(): void;
 }
@@ -510,7 +507,7 @@ export class Transition {
 			this.target.incoming.push(this);
 
 			if (this.kind === TransitionKind.Local) {
-				if (!Tree.isChild<IElement>(this.target, this.source)) {
+				if (!Tree.isChild(this.target, this.source)) {
 					this.kind = TransitionKind.External;
 				}
 			}
@@ -951,8 +948,8 @@ class Runtime extends Visitor {
 	}
 
 	visitExternalTransition(transition: Transition): void {
-		const sourceAncestors = Tree.ancestors<IElement>(transition.source);
-		const targetAncestors = Tree.ancestors<IElement>(transition.target!);
+		const sourceAncestors = Tree.ancestors(transition.source);
+		const targetAncestors = Tree.ancestors(transition.target!);
 		let i = Tree.lowestCommonAncestorIndex(sourceAncestors, targetAncestors);
 
 		if (sourceAncestors[i] instanceof Region) {
