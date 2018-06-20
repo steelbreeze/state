@@ -10,7 +10,9 @@
 /** Import other packages */
 import { Tree } from "@steelbreeze/graph";
 import { create as delegate, Delegate } from "@steelbreeze/delegate";
+import debugs = require("debug");
 
+let debug = debugs('state');
 /**
  * Default random number implementation.
  * @hidden
@@ -215,7 +217,7 @@ export class Region extends NamedElement<State | StateMachine> {
 /** A container of [Regions]{@link Region}; used as a mixin for the [[State]] and [[StateMachine]] classes. */
 export class Container {
 	/** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
-	public readonly children: Array<Region>;
+	public readonly children!: Array<Region>;
 
 	/** The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state]{@link State} as its parent.
 	 * @return Returns the default [region]{@link Region} if present or undefined.
@@ -378,8 +380,8 @@ export class State extends Vertex implements Container {
 		return visitor.visitState(this, ...args);
 	}
 
-	public defaultRegion: () => Region | undefined;
-	public isComplete: (instance: IInstance) => boolean;
+    public defaultRegion!: () => Region | undefined;
+    public isComplete!: (instance: IInstance) => boolean;
 }
 applyMixins(State, Container);
 
@@ -428,11 +430,11 @@ export class StateMachine implements IElement, Container {
 				this.initialise();
 			}
 
-			console.log(`initialise ${instance}`);
+			debug(`initialise ${instance}`);
 
 			this.onInitialise(instance, false);
 		} else {
-			console.log(`initialise ${this}`);
+			debug(`initialise ${this}`);
 
 			this.onInitialise = this.accept(new Runtime(), false);
 		}
@@ -447,7 +449,7 @@ export class StateMachine implements IElement, Container {
 			this.initialise();
 		}
 
-		console.log(`${instance} evaluate message: ${message}`);
+		debug(`${instance} evaluate message: ${message}`);
 
 		return Runtime.evaluate(this, instance, ...message);
 	}
@@ -465,8 +467,8 @@ export class StateMachine implements IElement, Container {
 		return this.name;
 	}
 
-	public defaultRegion: () => Region | undefined;
-	public isComplete: (instance: IInstance) => boolean;
+    public defaultRegion!: () => Region | undefined;
+	public isComplete!: (instance: IInstance) => boolean;
 
 }
 applyMixins(StateMachine, Container);
@@ -684,8 +686,8 @@ class StateConfiguration {
 
 class RegionConfiguration {
 	constructor(public readonly name: String) { }
-	current: String;
-	lastKnownState: String;
+	current!: String;
+	lastKnownState!: String;
 	children = new Array<StateConfiguration>();
 }
 
@@ -820,8 +822,8 @@ class Runtime extends Visitor {
 	}
 
 	visitElement<TElement extends IElement>(element: TElement, deepHistoryAbove: boolean): void {
-		this.getActions(element).leave = delegate(this.getActions(element).leave, (instance: IInstance) => console.log(`${instance} leave ${element}`));
-		this.getActions(element).beginEnter = delegate(this.getActions(element).beginEnter, (instance: IInstance) => console.log(`${instance} enter ${element}`));
+		this.getActions(element).leave = delegate(this.getActions(element).leave, (instance: IInstance) => debug(`${instance} leave ${element}`));
+		this.getActions(element).beginEnter = delegate(this.getActions(element).beginEnter, (instance: IInstance) => debug(`${instance} enter ${element}`));
 	}
 
 	visitRegion(region: Region, deepHistoryAbove: boolean): void {

@@ -11,18 +11,20 @@
 	},
 	"dependencies": {
 		"@steelbreeze/delegate": "latest",
-		"@steelbreeze/graph": "^1.0.5"
+		"@steelbreeze/graph": "^1.0.5",
+		"@types/debug": "0.0.30",
+		"debug": "^3.1.0"
 	},
 	"scripts": {
 		"build": "tsc -p .",
-		"test": "nyc --reporter=lcov mocha",
+		"test": "nyc --reporter=lcov mocha ",
 		"coverage": "CODECLIMATE_REPO_TOKEN=3561ab0fd4d1343b66e838d1644595020a60a7445bb2d24ddb051f6f2a6ad5c2 codeclimate-test-reporter < ./coverage/lcov.info"
 	},
 	"devDependencies": {
-		"typescript": "latest",
-		"nyc": "latest",
+		"codeclimate-test-reporter": "latest",
 		"mocha": "latest",
-		"codeclimate-test-reporter": "latest"
+		"nyc": "latest",
+		"typescript": "latest"
 	},
 	"repository": {
 		"type": "git",
