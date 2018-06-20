@@ -10,7 +10,9 @@
 /** Import other packages */
 import { Tree } from "@steelbreeze/graph";
 import { create as delegate, Delegate } from "@steelbreeze/delegate";
+import debugs = require("debug");
 
+let debug = debugs('state');
 /**
  * Default random number implementation.
  * @hidden
@@ -428,11 +430,11 @@ export class StateMachine implements IElement, Container {
 				this.initialise();
 			}
 
-			console.log(`initialise ${instance}`);
+			debug(`initialise ${instance}`);
 
 			this.onInitialise(instance, false);
 		} else {
-			console.log(`initialise ${this}`);
+			debug(`initialise ${this}`);
 
 			this.onInitialise = this.accept(new Runtime(), false);
 		}
@@ -447,7 +449,7 @@ export class StateMachine implements IElement, Container {
 			this.initialise();
 		}
 
-		console.log(`${instance} evaluate message: ${message}`);
+		debug(`${instance} evaluate message: ${message}`);
 
 		return Runtime.evaluate(this, instance, ...message);
 	}
@@ -820,8 +822,8 @@ class Runtime extends Visitor {
 	}
 
 	visitElement<TElement extends IElement>(element: TElement, deepHistoryAbove: boolean): void {
-		this.getActions(element).leave = delegate(this.getActions(element).leave, (instance: IInstance) => console.log(`${instance} leave ${element}`));
-		this.getActions(element).beginEnter = delegate(this.getActions(element).beginEnter, (instance: IInstance) => console.log(`${instance} enter ${element}`));
+		this.getActions(element).leave = delegate(this.getActions(element).leave, (instance: IInstance) => debug(`${instance} leave ${element}`));
+		this.getActions(element).beginEnter = delegate(this.getActions(element).beginEnter, (instance: IInstance) => debug(`${instance} enter ${element}`));
 	}
 
 	visitRegion(region: Region, deepHistoryAbove: boolean): void {
