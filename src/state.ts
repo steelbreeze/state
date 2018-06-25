@@ -12,6 +12,42 @@ import { Tree } from "@steelbreeze/graph";
 import { create as delegate, Delegate } from "@steelbreeze/delegate";
 
 /**
+ * The interface used for logging and error reporting
+ */
+export interface Logger {
+	/**
+	 * A method used to log informational messages
+	 * @param message The informational message to log.
+	 */
+	log(message: string): any;
+
+	/**
+	 * A method used to log error messages
+	 * @param message The error to log.
+	 */
+	error(message: string): any;
+}
+
+/**
+ * The object used for logging and error reporting; by default using console
+ * @hidden
+ */
+export let logger: Logger = console;
+
+/**
+ * Enables custom logging and error reporting for state.js thereby allowing you to interface with logging / error reporting tools of your own choosing.
+ * @param value The new logging and error reporting object; must have two methods, log and error that both take a string.
+ * @return Returns tthe previous logging and error reporting object in use.
+ */
+export function setLogger(value: Logger): Logger {
+	const result = logger;
+
+	logger = value;
+
+	return result;
+} 
+
+/**
  * Default random number implementation.
  * @hidden
  */
@@ -212,27 +248,6 @@ export class Region extends NamedElement<State | StateMachine> {
 	}
 }
 
-/** A container of [Regions]{@link Region}; used as a mixin for the [[State]] and [[StateMachine]] classes. */
-export class Container {
-	/** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
-	public readonly children: Array<Region>;
-
-	/** The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state]{@link State} as its parent.
-	 * @return Returns the default [region]{@link Region} if present or undefined.
-	 */
-	public defaultRegion(): Region | undefined {
-		return this.children.find(region => region.name === defaultRegionName);
-	}
-
-	/** Tests a given [state machine instance]{@link IInstance} to see if this [state]{@link State} is complete. A [state]{@link State} is complete when all its [child]{@link State.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
-	 * @param instance The [state machine instance]{@link IInstance} to test if this [state]{@link State} is complete within.
-	 * @return Returns true if the [region]{@link Region} is complete.
-	 */
-	public isComplete(instance: IInstance): boolean {
-		return this.children.every(region => region.isComplete(instance));
-	}
-}
-
 /** The source or target of a [transition]{@link Transition} within a [state machine model]{@link StateMachine}. A vertex can be either a [[State]] or a [[PseudoState]]. */
 export abstract class Vertex extends NamedElement<Region> {
 	/** The set of possible [transitions]{@link Transition} that this [vertex]{@link Vertex} can be the source of. */
@@ -281,7 +296,7 @@ export class PseudoState extends Vertex {
 }
 
 /** A condition or situation during the life of an object, represented by a [state machine model]{@link StateMachine}, during which it satisfies some condition, performs some activity, or waits for some event. */
-export class State extends Vertex implements Container {
+export class State extends Vertex {
 	/** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
 	public readonly children = new Array<Region>();
 
@@ -378,13 +393,24 @@ export class State extends Vertex implements Container {
 		return visitor.visitState(this, ...args);
 	}
 
-	public defaultRegion: () => Region | undefined;
-	public isComplete: (instance: IInstance) => boolean;
+	/** The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state]{@link State} as its parent.
+	 * @return Returns the default [region]{@link Region} if present or undefined.
+	 */
+	public defaultRegion(): Region | undefined {
+		return this.children.find(region => region.name === defaultRegionName);
+	}
+
+	/** Tests a given [state machine instance]{@link IInstance} to see if this [state]{@link State} is complete. A [state]{@link State} is complete when all its [child]{@link State.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
+	 * @param instance The [state machine instance]{@link IInstance} to test if this [state]{@link State} is complete within.
+	 * @return Returns true if the [region]{@link Region} is complete.
+	 */
+	public isComplete(instance: IInstance): boolean {
+		return this.children.every(region => region.isComplete(instance));
+	}
 }
-applyMixins(State, Container);
 
 /** A specification of the sequences of [states]{@link State} that an object goes through in response to events during its life, together with its responsive actions. */
-export class StateMachine implements IElement, Container {
+export class StateMachine implements IElement {
 	/** The parent element of the state machine; always undefined.
 	 * @hidden
 	 */
@@ -428,11 +454,11 @@ export class StateMachine implements IElement, Container {
 				this.initialise();
 			}
 
-			console.log(`initialise ${instance}`);
+			logger.log(`initialise ${instance}`);
 
 			this.onInitialise(instance, false);
 		} else {
-			console.log(`initialise ${this}`);
+			logger.log(`initialise ${this}`);
 
 			this.onInitialise = this.accept(new Runtime(), false);
 		}
@@ -447,7 +473,7 @@ export class StateMachine implements IElement, Container {
 			this.initialise();
 		}
 
-		console.log(`${instance} evaluate message: ${message}`);
+		logger.log(`${instance} evaluate message: ${message}`);
 
 		return Runtime.evaluate(this, instance, ...message);
 	}
@@ -465,11 +491,20 @@ export class StateMachine implements IElement, Container {
 		return this.name;
 	}
 
-	public defaultRegion: () => Region | undefined;
-	public isComplete: (instance: IInstance) => boolean;
+	/** The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state]{@link State} as its parent.
+	 * @return Returns the default [region]{@link Region} if present or undefined.
+	 */	public defaultRegion(): Region | undefined {
+		return this.children.find(region => region.name === defaultRegionName);
+	}
 
+	/** Tests a given [state machine instance]{@link IInstance} to see if this [state]{@link State} is complete. A [state]{@link State} is complete when all its [child]{@link State.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
+	 * @param instance The [state machine instance]{@link IInstance} to test if this [state]{@link State} is complete within.
+	 * @return Returns true if the [region]{@link Region} is complete.
+	 */
+	public isComplete(instance: IInstance): boolean {
+		return this.children.every(region => region.isComplete(instance));
+	}
 }
-applyMixins(StateMachine, Container);
 
 /** A relationship within a [state machine model]{@link StateMachine} between two [vertices]{@link Vertex} that will effect a state transition in response to an event when its [guard condition]{@link Transition.when} is satisfied. */
 export class Transition {
@@ -684,8 +719,8 @@ class StateConfiguration {
 
 class RegionConfiguration {
 	constructor(public readonly name: String) { }
-	current: String;
-	lastKnownState: String;
+	current: String | undefined = undefined;
+	lastKnownState: String | undefined = undefined;
 	children = new Array<StateConfiguration>();
 }
 
@@ -819,9 +854,9 @@ class Runtime extends Visitor {
 		return result;
 	}
 
-	visitElement<TElement extends IElement>(element: TElement, deepHistoryAbove: boolean): void {
-		this.getActions(element).leave = delegate(this.getActions(element).leave, (instance: IInstance) => console.log(`${instance} leave ${element}`));
-		this.getActions(element).beginEnter = delegate(this.getActions(element).beginEnter, (instance: IInstance) => console.log(`${instance} enter ${element}`));
+	visitElement<TElement extends IElement>(element: TElement): void {
+		this.getActions(element).leave = delegate(this.getActions(element).leave, (instance: IInstance) => logger.log(`${instance} leave ${element}`));
+		this.getActions(element).beginEnter = delegate(this.getActions(element).beginEnter, (instance: IInstance) => logger.log(`${instance} enter ${element}`));
 	}
 
 	visitRegion(region: Region, deepHistoryAbove: boolean): void {
@@ -977,7 +1012,7 @@ class Runtime extends Visitor {
 		}
 
 		if (transitions.length > 1) {
-			console.error(`Multiple outbound transition guards returned true at ${pseudoState} for ${message}`);
+			logger.error(`Multiple outbound transition guards returned true at ${pseudoState} for ${message}`);
 		}
 
 		return transitions[0] || this.findElse(pseudoState);
@@ -1013,7 +1048,7 @@ class Runtime extends Visitor {
 
 					result = true;
 				} else if (transitions.length > 1) {
-					console.error(`${state}: multiple outbound transitions evaluated true for message ${message}`);
+					logger.error(`${state}: multiple outbound transitions evaluated true for message ${message}`);
 				}
 			}
 		}
@@ -1044,14 +1079,6 @@ class Runtime extends Visitor {
 			else if (transition.target instanceof State && transition.target.isComplete(instance)) {
 				Runtime.evaluate(transition.target, instance, transition.target);
 			}
-		}
-	}
-}
-
-function applyMixins(derivedCtor: any, ...baseCtors: any[]) {
-	for (const baseCtor of baseCtors) {
-		for (const name of Object.getOwnPropertyNames(baseCtor.prototype)) {
-			derivedCtor.prototype[name] = baseCtor.prototype[name];
 		}
 	}
 }

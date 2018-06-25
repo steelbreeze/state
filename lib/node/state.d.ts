@@ -1,4 +1,38 @@
+/** @module state
+ *
+ * A finite state machine library for TypeScript and JavaScript
+ *
+ * @copyright (c) 2014-7 David Mesquita-Morris
+ *
+ * Licensed under the MIT and GPL v3 licences
+ */
 import { Delegate } from "@steelbreeze/delegate";
+/**
+ * The interface used for logging and error reporting
+ */
+export interface Logger {
+    /**
+     * A method used to log informational messages
+     * @param message The informational message to log.
+     */
+    log(message: string): any;
+    /**
+     * A method used to log error messages
+     * @param message The error to log.
+     */
+    error(message: string): any;
+}
+/**
+ * The object used for logging and error reporting; by default using console
+ * @hidden
+ */
+export declare let logger: Logger;
+/**
+ * Enables custom logging and error reporting for state.js thereby allowing you to interface with logging / error reporting tools of your own choosing.
+ * @param value The new logging and error reporting object; must have two methods, log and error that both take a string.
+ * @return Returns tthe previous logging and error reporting object in use.
+ */
+export declare function setLogger(value: Logger): Logger;
 /**
  * Default random number implementation.
  * @hidden
@@ -38,7 +72,7 @@ export declare enum PseudoStateKind {
     /*** Turns the [pseudo state]{@link PseudoState} into a static conditional branch: the guard conditions of the outgoing [transitions]{@link Transition} will be evaluated before the transition into the [pseudo state]{@link PseudoState} is traversed. */
     Junction = 3,
     /** Turns on shallow history semantics for the parent [region]{@link Region}: second and subsiquent entry of the parent [region]{@link Region} will use the last known state from the active state configuration contained withn the [state machine instance]{@link IInstance} as the initial state; this behavior will only apply to the parent [region]{@link Region}. */
-    ShallowHistory = 4,
+    ShallowHistory = 4
 }
 export declare namespace PseudoStateKind {
     /** Tests a [pseudo state kind]{@link PseudoStateKind} to see if it is one of the history kinds.
@@ -61,7 +95,7 @@ export declare enum TransitionKind {
      */
     Internal = 1,
     /** A local [transition]{@link Transition} is one where the target [vertex]{@link Vertex} is a child of the source [vertex]{@link Vertex}; the source [vertex]{@link Vertex} is not exited. */
-    Local = 2,
+    Local = 2
 }
 /** Common properties of all elements that make up a [state machine model]{@link StateMachine}. */
 export interface IElement {
@@ -116,20 +150,6 @@ export declare class Region extends NamedElement<State | StateMachine> {
      */
     accept(visitor: Visitor, ...args: any[]): any;
 }
-/** A container of [Regions]{@link Region}; used as a mixin for the [[State]] and [[StateMachine]] classes. */
-export declare class Container {
-    /** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
-    readonly children: Array<Region>;
-    /** The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state]{@link State} as its parent.
-     * @return Returns the default [region]{@link Region} if present or undefined.
-     */
-    defaultRegion(): Region | undefined;
-    /** Tests a given [state machine instance]{@link IInstance} to see if this [state]{@link State} is complete. A [state]{@link State} is complete when all its [child]{@link State.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
-     * @param instance The [state machine instance]{@link IInstance} to test if this [state]{@link State} is complete within.
-     * @return Returns true if the [region]{@link Region} is complete.
-     */
-    isComplete(instance: IInstance): boolean;
-}
 /** The source or target of a [transition]{@link Transition} within a [state machine model]{@link StateMachine}. A vertex can be either a [[State]] or a [[PseudoState]]. */
 export declare abstract class Vertex extends NamedElement<Region> {
     /** The set of possible [transitions]{@link Transition} that this [vertex]{@link Vertex} can be the source of. */
@@ -163,7 +183,7 @@ export declare class PseudoState extends Vertex {
     accept(visitor: Visitor, ...args: any[]): any;
 }
 /** A condition or situation during the life of an object, represented by a [state machine model]{@link StateMachine}, during which it satisfies some condition, performs some activity, or waits for some event. */
-export declare class State extends Vertex implements Container {
+export declare class State extends Vertex {
     /** The child [region(s)]{@link Region} if this [state]{@link State} is a [composite]{@link State.isComposite} or [orthogonal]{@link State.isOrthogonal} state. */
     readonly children: Region[];
     /** The state's entry behavior as defined by the user.
@@ -215,11 +235,18 @@ export declare class State extends Vertex implements Container {
      * @param args Any optional arguments to pass into the [visitor]{@link Visitor} object.
      */
     accept(visitor: Visitor, ...args: any[]): any;
-    defaultRegion: () => Region | undefined;
-    isComplete: (instance: IInstance) => boolean;
+    /** The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state]{@link State} as its parent.
+     * @return Returns the default [region]{@link Region} if present or undefined.
+     */
+    defaultRegion(): Region | undefined;
+    /** Tests a given [state machine instance]{@link IInstance} to see if this [state]{@link State} is complete. A [state]{@link State} is complete when all its [child]{@link State.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
+     * @param instance The [state machine instance]{@link IInstance} to test if this [state]{@link State} is complete within.
+     * @return Returns true if the [region]{@link Region} is complete.
+     */
+    isComplete(instance: IInstance): boolean;
 }
 /** A specification of the sequences of [states]{@link State} that an object goes through in response to events during its life, together with its responsive actions. */
-export declare class StateMachine implements IElement, Container {
+export declare class StateMachine implements IElement {
     readonly name: string;
     /** The parent element of the state machine; always undefined.
      * @hidden
@@ -260,13 +287,19 @@ export declare class StateMachine implements IElement, Container {
     accept(visitor: Visitor, ...args: any[]): any;
     /** Returns the fully name of the [state machine]{@link StateMachine}. */
     toString(): string;
-    defaultRegion: () => Region | undefined;
-    isComplete: (instance: IInstance) => boolean;
+    /** The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state]{@link State} as its parent.
+     * @return Returns the default [region]{@link Region} if present or undefined.
+     */ defaultRegion(): Region | undefined;
+    /** Tests a given [state machine instance]{@link IInstance} to see if this [state]{@link State} is complete. A [state]{@link State} is complete when all its [child]{@link State.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
+     * @param instance The [state machine instance]{@link IInstance} to test if this [state]{@link State} is complete within.
+     * @return Returns true if the [region]{@link Region} is complete.
+     */
+    isComplete(instance: IInstance): boolean;
 }
 /** A relationship within a [state machine model]{@link StateMachine} between two [vertices]{@link Vertex} that will effect a state transition in response to an event when its [guard condition]{@link Transition.when} is satisfied. */
 export declare class Transition {
     readonly source: Vertex;
-    readonly target: Vertex | undefined;
+    readonly target?: Vertex | undefined;
     readonly kind: TransitionKind;
     /** A guard to represent else transitions.
      * @hidden
@@ -378,8 +411,8 @@ export interface IInstance {
 export declare class JSONInstance implements IInstance {
     private readonly root;
     constructor(name: String);
-    private getStateConfiguration(state);
-    private getRegionConfiguration(region);
+    private getStateConfiguration;
+    private getRegionConfiguration;
     setCurrent(vertex: Vertex): void;
     getCurrent(region: Region): Vertex | undefined;
     getLastKnownState(region: Region): State | undefined;

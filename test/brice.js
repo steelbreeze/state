@@ -1,9 +1,11 @@
 /* global describe, it */
 var assert = require("assert"),
 	state = require("../lib/node/state");
-//	setLogger = require("../lib/node/log").setLogger;
 
-//var oldLogger = setLogger(console);
+var oldLogger = state.setLogger({
+	log: () => {},
+	error: (message) => console.error(`ERROR: ${message}`) 
+});
 
 var model = new state.StateMachine("model");
 var initial1 = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
@@ -19,7 +21,7 @@ initial2.to(state1);
 myComposite1.to(state3).when(function (i, c) { return c === "a"; });
 state1.to(state2).when(function (i, c) { return c === "a"; });
 
-var instance = new state.JSONInstance();
+var instance = new state.JSONInstance("brice");
 model.initialise(instance);
 
 describe("test/brice.js", function () {
@@ -30,4 +32,4 @@ describe("test/brice.js", function () {
 	});
 });
 
-//setLogger(oldLogger);
+state.setLogger(oldLogger);
