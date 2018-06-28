@@ -773,7 +773,7 @@ export class JSONInstance implements IInstance {
 		}
 	}
 
-	getCurrent(region: Region): Vertex | undefined {
+	public getCurrent(region: Region): Vertex | undefined {
 		const regionConfiguration = this.getRegionConfiguration(region);
 
 		return region.children.find(vertex => vertex.name === regionConfiguration.current);
@@ -819,7 +819,7 @@ export class DictionaryInstance implements IInstance {
 		}
 	}
 
-	getCurrent(region: Region): Vertex | undefined {
+	public getCurrent(region: Region): Vertex | undefined {
 		return this.currentVertex.get(region);
 	}
 
