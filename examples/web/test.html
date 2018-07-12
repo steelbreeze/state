@@ -28,14 +28,14 @@
 	<!-- import jQuery -->
 	<script type="text/javascript" src="jquery-1.11.2.min.js"></script>
 
-	<!-- import the state machine runtime; NOTE: the use of the class attribute defines the global object that the state.js API is bound to -->
-	<script type="text/javascript" src="../../lib/web/state.min.js" target="state"></script>
+	<!-- import the state machine runtime -->
+	<script type="text/javascript" src="../../lib/web/state.js"></script>
 
 	<!-- script to wire the core player to the web page -->
 	<script>
 		/* global $, state */
 		$(document).ready(function () {
-			state.setLogger({ log: function (text) { $("#log").prepend(text + "<br/>"); } });
+//			state.setLogger({ log: function (text) { $("#log").prepend(text + "<br/>"); } });
 
 			/* create the state machine model elements */
 			var model = new state.StateMachine("model");
