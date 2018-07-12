@@ -1,9 +1,6 @@
 "use strict";
 exports.__esModule = true;
 var state = require("../../lib/node/state");
-var log = require("../../lib/node/log");
-// send log messages, warnings and errors to the console
-log.setLogger(console);
 // create the state machine model elements
 var model = new state.StateMachine("model");
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);

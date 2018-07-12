@@ -1,8 +1,4 @@
 import * as state from "../../lib/node/state";
-import * as log from "../../lib/node/log";
-
-// send log messages, warnings and errors to the console
-log.setLogger(console);
 
 // create the state machine model elements
 const model = new state.StateMachine("model");

@@ -1,8 +1,4 @@
 var state = require("../../lib/node/state");
-var log = require("../../lib/node/log");
-
-// send log messages, warnings and errors to the console
-log.setLogger(console);
 
 // create the state machine model elements
 var model = new state.StateMachine("model");
