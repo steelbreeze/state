@@ -9,6 +9,6 @@
 		"outDir": "lib/node"
 	},
 	"files": [
-		"src/state.ts"
+		"src/index.ts"
 	]
 }

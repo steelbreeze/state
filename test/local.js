@@ -12,10 +12,7 @@
 
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state");
-//	setLogger = require("../lib/node/log").setLogger;
-
-//var oldLogger = setLogger(console);
+	state = require("../lib/node/index");
 
 // create the state machine model elements
 var model = new state.StateMachine("model");

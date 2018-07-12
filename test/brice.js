@@ -1,6 +1,6 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state");
+	state = require("../lib/node/index");
 
 var oldLogger = state.setLogger({
 	log: () => {},

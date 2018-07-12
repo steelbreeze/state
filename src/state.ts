@@ -2,7 +2,7 @@
  * 
  * A finite state machine library for TypeScript and JavaScript
  * 
- * @copyright (c) 2014-7 David Mesquita-Morris
+ * @copyright (c) 2014-8 David Mesquita-Morris
  * 
  * Licensed under the MIT and GPL v3 licences
  */
@@ -10,6 +10,9 @@
 /** Import other packages */
 import { Tree } from "@steelbreeze/graph";
 import { create as delegate, Delegate } from "@steelbreeze/delegate";
+
+import { PseudoStateKind } from './PseudoStateKind';
+import { TransitionKind } from './TransitionKind';
 
 /**
  * The interface used for logging and error reporting
@@ -45,7 +48,7 @@ export function setLogger(value: Logger): Logger {
 	logger = value;
 
 	return result;
-} 
+}
 
 /**
  * Default random number implementation.
@@ -117,56 +120,6 @@ export function setDefaultRegionName(value: string): string {
 	defaultRegionName = value;
 
 	return result;
-}
-
-/** Enumeration used to define the semantics of [pseudo states]{@link PseudoState}. */
-export enum PseudoStateKind {
-	/*** Turns the [pseudo state]{@link PseudoState} into a dynamic conditional branch: the guard conditions of the outgoing [transitions]{@link Transition} will be evaluated after the transition into the [pseudo state]{@link PseudoState} is traversed. */
-	Choice,// = "Choice",
-
-	/** Turns on deep history semantics for the parent [region]{@link Region}: second and subsiquent entry of the parent [region]{@link Region} will use the last known state from the active state configuration contained withn the [state machine instance]{@link IInstance} as the initial state; this behavior will cascade through all child [regions]{@link Region}. */
-	DeepHistory,// = "DeepHistory",
-
-	/*** Turns the [pseudo state]{@link PseudoState} into an initial [vertex]{@link Vertex}, meaning is is the default point when the parent [region]{@link Region} is entered. */
-	Initial,// = "Initial",
-
-	/*** Turns the [pseudo state]{@link PseudoState} into a static conditional branch: the guard conditions of the outgoing [transitions]{@link Transition} will be evaluated before the transition into the [pseudo state]{@link PseudoState} is traversed. */
-	Junction,// = "Junction",
-
-	/** Turns on shallow history semantics for the parent [region]{@link Region}: second and subsiquent entry of the parent [region]{@link Region} will use the last known state from the active state configuration contained withn the [state machine instance]{@link IInstance} as the initial state; this behavior will only apply to the parent [region]{@link Region}. */
-	ShallowHistory// = "ShallowHistory"
-}
-
-export namespace PseudoStateKind {
-	/** Tests a [pseudo state kind]{@link PseudoStateKind} to see if it is one of the history kinds.
-	 * @param kind The [pseudo state kind]{@link PseudoStateKind} to test.
-	 * @return Returns true if the [pseudo state kind]{@link PseudoStateKind} is [DeepHistory]{@link PseudoStateKind.DeepHistory} or [ShallowHistory]{@link PseudoStateKind.ShallowHistory}
-	 */
-	export function isHistory(kind: PseudoStateKind): boolean {
-		return kind === PseudoStateKind.DeepHistory || kind === PseudoStateKind.ShallowHistory;
-	}
-
-	/** Tests a [pseudo state kind]{@link PseudoStateKind} to see if it is one of the initial kinds.
-	 * @param kind The [pseudo state kind]{@link PseudoStateKind} to test.
-	 * @return Returns true if the [pseudo state kind]{@link PseudoStateKind} is [Initial]{@link PseudoStateKind.Initial}, [DeepHistory]{@link PseudoStateKind.DeepHistory} or [ShallowHistory]{@link PseudoStateKind.ShallowHistory}
-	 */
-	export function isInitial(kind: PseudoStateKind): boolean {
-		return kind === PseudoStateKind.DeepHistory || kind === PseudoStateKind.Initial || kind === PseudoStateKind.ShallowHistory;
-	}
-}
-
-/** Enumeration used to define the semantics of [transitions]{@link Transition}. */
-export enum TransitionKind {
-	/** An external [transition]{@link Transition} is the default transition type; the source [vertex]{@link Vertex} is exited, [transition]{@link Transition} behavior called and target [vertex]{@link Vertex} entered. Where the source and target [vertices]{@link Vertex} are in different parent [regions]{@link Region} the source ancestry is exited up to but not including the least common ancestor; likewise the targe ancestry is enterd. */
-	External,// = "External",
-
-	/** An internal [transition]{@link Transition} executes without exiting or entering the [state]{@link State} in which it is defined.
-	 * @note The target vertex of an internal [transition]{@link Transition} must be undefined.
-	 */
-	Internal,// = "Internal",
-
-	/** A local [transition]{@link Transition} is one where the target [vertex]{@link Vertex} is a child of the source [vertex]{@link Vertex}; the source [vertex]{@link Vertex} is not exited. */
-	Local// = "Local"
 }
 
 /** Common properties of all elements that make up a [state machine model]{@link StateMachine}. */

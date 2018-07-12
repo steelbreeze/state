@@ -1,4 +1,4 @@
-import * as state from "../../lib/node/state";
+import * as state from "@steelbreeze/state";
 
 // create the state machine model elements
 const model = new state.StateMachine("model");

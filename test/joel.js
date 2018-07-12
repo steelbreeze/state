@@ -1,7 +1,4 @@
-var state = require('../lib/node/state.js');
-//	setLogger = require("../lib/node/log").setLogger;
-
-//var oldLogger = setLogger(console);
+var state = require('../lib/node/index.js');
 
 var model = new state.StateMachine('model');
 var initial = new state.PseudoState('initial', model, state.PseudoStateKind.Initial);

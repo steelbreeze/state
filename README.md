@@ -70,7 +70,7 @@ instance enter model.default.stateB
 ## License
 MIT License
 
-Copyright (c) 2017 David Mesquita-Morris
+Copyright (c) 2014-8 David Mesquita-Morris
 
 [npm-image]: https://img.shields.io/npm/v/@steelbreeze/state.svg
 [npm-url]:       https://www.npmjs.com/package/@steelbreeze/state

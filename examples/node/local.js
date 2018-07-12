@@ -1,4 +1,4 @@
-var state = require("../../lib/node/state");
+var state = require("@steelbreeze/state");
 
 // create the state machine model elements
 var model = new state.StateMachine("model");

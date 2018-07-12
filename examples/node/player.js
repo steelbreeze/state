@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var state = require("../../lib/node/state");
+var state = require("@steelbreeze/state");
 // create the state machine model elements
 var model = new state.StateMachine("model");
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);

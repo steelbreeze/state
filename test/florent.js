@@ -1,9 +1,6 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state");
-//	setLogger = require("../lib/node/log").setLogger;
-
-//var oldConsole = setLogger(console);
+	state = require("../lib/node/index");
 
 var model = new state.StateMachine("model");
 var initial = new state.PseudoState("initial", model);

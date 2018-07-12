@@ -1,8 +1,6 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state");
-//	setLogger = require("../lib/node/log").setLogger,
-//	setRandom = require("../lib/node/random").setRandom;
+	state = require("../lib/node/index");
 
 //var oldLogger = setLogger(console);
 

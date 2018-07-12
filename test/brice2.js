@@ -1,9 +1,6 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/state");
-//	setLogger = require("../lib/node/log").setLogger;
-
-//var oldLogger = setLogger(console);
+	state = require("../lib/node/index");
 
 // enable completion events to be raised after internal transtions
 state.setInternalTransitionsTriggerCompletion(true);
