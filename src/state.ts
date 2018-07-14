@@ -1,126 +1,11 @@
-/** @module state
- * 
- * A finite state machine library for TypeScript and JavaScript
- * 
- * @copyright (c) 2014-8 David Mesquita-Morris
- * 
- * Licensed under the MIT and GPL v3 licences
- */
+import { Tree } from '@steelbreeze/graph';
+import { create as delegate, Delegate } from '@steelbreeze/delegate';
 
-/** Import other packages */
-import { Tree } from "@steelbreeze/graph";
-import { create as delegate, Delegate } from "@steelbreeze/delegate";
+import { logger } from './logger';
+import { random } from './random';
 
 import { PseudoStateKind } from './PseudoStateKind';
 import { TransitionKind } from './TransitionKind';
-
-/**
- * The interface used for logging and error reporting
- */
-export interface Logger {
-	/**
-	 * A method used to log informational messages
-	 * @param message The informational message to log.
-	 */
-	log(message: string): any;
-
-	/**
-	 * A method used to log error messages
-	 * @param message The error to log.
-	 */
-	error(message: string): any;
-}
-
-/**
- * The object used for logging and error reporting; by default using console
- * @hidden
- */
-export let logger: Logger = console;
-
-/**
- * Enables custom logging and error reporting for state.js thereby allowing you to interface with logging / error reporting tools of your own choosing.
- * @param value The new logging and error reporting object; must have two methods, log and error that both take a string.
- * @return Returns tthe previous logging and error reporting object in use.
- */
-export function setLogger(value: Logger): Logger {
-	const result = logger;
-
-	logger = value;
-
-	return result;
-}
-
-/**
- * Default random number implementation.
- * @hidden
- */
-export let random = (max: number) => Math.floor(Math.random() * max);
-
-/**
- * Sets a custom random number generator for state.js.
- * 
- * The default implementation uses [Math.floor(Math.random() * max)]{@linkcode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random}.
- * @param value The new method to generate random numbers.
- * @return Returns the previous random number generator in use.
- */
-export function setRandom(value: (max: number) => number): (max: number) => number {
-	const result = random;
-
-	random = value;
-
-	return result;
-}
-
-/** Default setting for completion transition behavior.
- * @hidden
- */
-let internalTransitionsTriggerCompletion: boolean = false;
-
-/** Sets a flag controlling completion transition behavior for internal transitions.
- * @param value True to have internal transitions trigger completion transitions.
- * @return Returns the previous setting in use.
- */
-export function setInternalTransitionsTriggerCompletion(value: boolean): boolean {
-	const result = internalTransitionsTriggerCompletion;
-
-	internalTransitionsTriggerCompletion = value;
-
-	return result;
-}
-
-/** The seperator used when generating fully qualified names.
- * @hidden
- */
-let namespaceSeparator: string = ".";
-
-/** Sets the symbol used as the delimiter in fully qualified element names.
- * @param value The symbol used as the delimiter in fully qualified element names.
- * @return Returns the previous symbol used as the delimiter in fully qualified element names.
- */
-export function setNamespaceSeparator(value: string): string {
-	const result = namespaceSeparator;
-
-	namespaceSeparator = value;
-
-	return result;
-}
-
-/** The seperator used when generating fully qualified names.
- * @hidden
- */
-let defaultRegionName: string = "default";
-
-/** Sets the default name to use when implicitly creating regions.
- * @param value The new default region name.
- * @return Returns the previous default region name.
- */
-export function setDefaultRegionName(value: string): string {
-	const result = defaultRegionName;
-
-	defaultRegionName = value;
-
-	return result;
-}
 
 /** Common properties of all elements that make up a [state machine model]{@link StateMachine}. */
 export interface IElement {
@@ -132,6 +17,9 @@ export interface IElement {
  * @param TParent The type of the element's parent.
  */
 export abstract class NamedElement<TParent extends IElement> implements IElement {
+	/** The string used to seperate elements of a namespace */
+	static separator: string = ".";
+
 	/** Creates a new instance of the [[NamedElement]] class.
 	 * @param name The name of this [element]{@link NamedElement}.
 	 * @param parent The parent [element]{@link IElement} of this [element]{@link NamedElement}.
@@ -155,12 +43,15 @@ export abstract class NamedElement<TParent extends IElement> implements IElement
 
 	/** Returns the fully qualified name of the [element]{@link NamedElement}. */
 	public toString(): string {
-		return this.parent.toString() + namespaceSeparator + this.name;
+		return this.parent.toString() + NamedElement.separator + this.name;
 	}
 }
 
 /** A region is an orthogonal part of either a [composite state]{@link State} or a [state machine]{@link StateMachine}. It is container of [vertices]{@link Vertex} and has no behavior associated with it. */
 export class Region extends NamedElement<State | StateMachine> {
+	/** The default name of regions that are dynamically created. */
+	static defaultName: string = "default";
+
 	/** The child [vertices]{@link Vertex} of this [region]{@link Region}. */
 	public readonly children = new Array<Vertex>();
 
@@ -214,7 +105,7 @@ export abstract class Vertex extends NamedElement<Region> {
 	 * @param parent The parent [element]{@link IElement} of this [vertex]{@link Vertex}. If a [state]{@link State} or [state machine]{@link StateMachine} is specified, its [default region]{@link State.defaultRegion} used as the parent.
 	 */
 	protected constructor(name: string, parent: Region | State | StateMachine) {
-		super(name, parent instanceof Region ? parent : parent.defaultRegion() || new Region(defaultRegionName, parent));
+		super(name, parent instanceof Region ? parent : parent.defaultRegion() || new Region(Region.defaultName, parent));
 
 		this.parent.children.push(this);
 	}
@@ -350,7 +241,7 @@ export class State extends Vertex {
 	 * @return Returns the default [region]{@link Region} if present or undefined.
 	 */
 	public defaultRegion(): Region | undefined {
-		return this.children.find(region => region.name === defaultRegionName);
+		return this.children.find(region => region.name === Region.defaultName);
 	}
 
 	/** Tests a given [state machine instance]{@link IInstance} to see if this [state]{@link State} is complete. A [state]{@link State} is complete when all its [child]{@link State.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
@@ -447,7 +338,7 @@ export class StateMachine implements IElement {
 	/** The default [region]{@link Region} used by state.js when it implicitly creates them. [Regions]{@link Region} are implicitly created if a [vertex]{@link Vertex} specifies the [state]{@link State} as its parent.
 	 * @return Returns the default [region]{@link Region} if present or undefined.
 	 */	public defaultRegion(): Region | undefined {
-		return this.children.find(region => region.name === defaultRegionName);
+		return this.children.find(region => region.name === Region.defaultName);
 	}
 
 	/** Tests a given [state machine instance]{@link IInstance} to see if this [state]{@link State} is complete. A [state]{@link State} is complete when all its [child]{@link State.children} [regions]{@link Region} are [complete]{@link Region.isComplete}.
@@ -461,6 +352,9 @@ export class StateMachine implements IElement {
 
 /** A relationship within a [state machine model]{@link StateMachine} between two [vertices]{@link Vertex} that will effect a state transition in response to an event when its [guard condition]{@link Transition.when} is satisfied. */
 export class Transition {
+	/** Default setting for completion transition behavior. */
+	static internalTransitionsTriggerCompletion: boolean = false;
+
 	/** A guard to represent else transitions.
 	 * @hidden
 	 */
@@ -905,7 +799,7 @@ class Runtime extends Visitor {
 	visitInternalTransition(transition: Transition): void {
 		transition.onTraverse = delegate(transition.effectBehavior);
 
-		if (internalTransitionsTriggerCompletion) {
+		if (Transition.internalTransitionsTriggerCompletion) {
 			transition.onTraverse = delegate(transition.onTraverse, (instance: IInstance, deepHistory: boolean, ...message: any[]) => {
 				if (transition.source instanceof State && transition.source.isComplete(instance)) {
 					Runtime.evaluate(transition.source, instance, transition.source);

@@ -3,7 +3,7 @@ var assert = require("assert"),
 	state = require("../lib/node/index");
 
 // enable completion events to be raised after internal transtions
-state.setInternalTransitionsTriggerCompletion(true);
+state.Transition.internalTransitionsTriggerCompletion = true;
 
 // create the state machine model
 var model = new state.StateMachine("model");

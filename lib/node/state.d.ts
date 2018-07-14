@@ -1,68 +1,6 @@
-/** @module state
- *
- * A finite state machine library for TypeScript and JavaScript
- *
- * @copyright (c) 2014-8 David Mesquita-Morris
- *
- * Licensed under the MIT and GPL v3 licences
- */
-import { Delegate } from "@steelbreeze/delegate";
+import { Delegate } from '@steelbreeze/delegate';
 import { PseudoStateKind } from './PseudoStateKind';
 import { TransitionKind } from './TransitionKind';
-/**
- * The interface used for logging and error reporting
- */
-export interface Logger {
-    /**
-     * A method used to log informational messages
-     * @param message The informational message to log.
-     */
-    log(message: string): any;
-    /**
-     * A method used to log error messages
-     * @param message The error to log.
-     */
-    error(message: string): any;
-}
-/**
- * The object used for logging and error reporting; by default using console
- * @hidden
- */
-export declare let logger: Logger;
-/**
- * Enables custom logging and error reporting for state.js thereby allowing you to interface with logging / error reporting tools of your own choosing.
- * @param value The new logging and error reporting object; must have two methods, log and error that both take a string.
- * @return Returns tthe previous logging and error reporting object in use.
- */
-export declare function setLogger(value: Logger): Logger;
-/**
- * Default random number implementation.
- * @hidden
- */
-export declare let random: (max: number) => number;
-/**
- * Sets a custom random number generator for state.js.
- *
- * The default implementation uses [Math.floor(Math.random() * max)]{@linkcode https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random}.
- * @param value The new method to generate random numbers.
- * @return Returns the previous random number generator in use.
- */
-export declare function setRandom(value: (max: number) => number): (max: number) => number;
-/** Sets a flag controlling completion transition behavior for internal transitions.
- * @param value True to have internal transitions trigger completion transitions.
- * @return Returns the previous setting in use.
- */
-export declare function setInternalTransitionsTriggerCompletion(value: boolean): boolean;
-/** Sets the symbol used as the delimiter in fully qualified element names.
- * @param value The symbol used as the delimiter in fully qualified element names.
- * @return Returns the previous symbol used as the delimiter in fully qualified element names.
- */
-export declare function setNamespaceSeparator(value: string): string;
-/** Sets the default name to use when implicitly creating regions.
- * @param value The new default region name.
- * @return Returns the previous default region name.
- */
-export declare function setDefaultRegionName(value: string): string;
 /** Common properties of all elements that make up a [state machine model]{@link StateMachine}. */
 export interface IElement {
     /** Invalidates a [state machine model]{@link StateMachine} causing it to require recompilation. */
@@ -74,6 +12,8 @@ export interface IElement {
 export declare abstract class NamedElement<TParent extends IElement> implements IElement {
     readonly name: string;
     readonly parent: TParent;
+    /** The string used to seperate elements of a namespace */
+    static separator: string;
     /** Creates a new instance of the [[NamedElement]] class.
      * @param name The name of this [element]{@link NamedElement}.
      * @param parent The parent [element]{@link IElement} of this [element]{@link NamedElement}.
@@ -93,6 +33,8 @@ export declare abstract class NamedElement<TParent extends IElement> implements 
 }
 /** A region is an orthogonal part of either a [composite state]{@link State} or a [state machine]{@link StateMachine}. It is container of [vertices]{@link Vertex} and has no behavior associated with it. */
 export declare class Region extends NamedElement<State | StateMachine> {
+    /** The default name of regions that are dynamically created. */
+    static defaultName: string;
     /** The child [vertices]{@link Vertex} of this [region]{@link Region}. */
     readonly children: Vertex[];
     /** Creates a new instance of the [[Region]] class.
@@ -267,6 +209,8 @@ export declare class Transition {
     readonly source: Vertex;
     readonly target?: Vertex | undefined;
     readonly kind: TransitionKind;
+    /** Default setting for completion transition behavior. */
+    static internalTransitionsTriggerCompletion: boolean;
     /** A guard to represent else transitions.
      * @hidden
      */
