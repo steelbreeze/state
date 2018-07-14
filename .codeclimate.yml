@@ -8,6 +8,7 @@ engines:
       - javascript
       - python
       - php
+      - typescript
   eslint:
     enabled: true
     checks:
@@ -28,5 +29,7 @@ ratings:
   - "**.php"
   - "**.py"
   - "**.rb"
+  - "**.ts"
 exclude_paths:
 - test/
+- lib/
