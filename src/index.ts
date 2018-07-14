@@ -14,5 +14,9 @@ export { Random, setRandom } from './random';
 // Export the core model enumerations and classes
 export { PseudoStateKind } from './PseudoStateKind';
 export { TransitionKind } from './TransitionKind';
+export { Region } from './Region';
+//export { PseudoState } from './PseudoState';
+export { Visitor } from './Visitor';
+
 
 export * from './state';

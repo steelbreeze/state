@@ -1,3 +1,4 @@
+/** Prototype for a random number generator function. Takes a maximum number and returns a value from 0 to max -1. */
 export interface Random {
 	(max: number): number;
 }

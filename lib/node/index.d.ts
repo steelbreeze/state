@@ -10,4 +10,6 @@ export { Logger, setLogger } from './logger';
 export { Random, setRandom } from './random';
 export { PseudoStateKind } from './PseudoStateKind';
 export { TransitionKind } from './TransitionKind';
+export { Region } from './Region';
+export { Visitor } from './Visitor';
 export * from './state';
