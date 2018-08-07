@@ -538,8 +538,8 @@ class Runtime extends Visitor {
 
 		if (deepHistoryAbove || !regionInitial || PseudoStateKind.isHistory(regionInitial.kind)) {
 			this.getActions(region).endEnter = delegate(this.getActions(region).endEnter, (instance: IInstance, deepHistory: boolean, ...message: any[]) => {
-				const actions = this.getActions((deepHistory || PseudoStateKind.isHistory(regionInitial!.kind)) ? instance.getLastKnownState(region) || regionInitial! : regionInitial!);
-				const history = deepHistory || regionInitial!.kind === PseudoStateKind.DeepHistory;
+				const actions = this.getActions((deepHistory || (regionInitial && PseudoStateKind.isHistory(regionInitial!.kind))) ? instance.getLastKnownState(region) || regionInitial! : regionInitial!);
+				const history = deepHistory || (regionInitial && regionInitial!.kind === PseudoStateKind.DeepHistory);
 
 				actions.beginEnter(instance, history, ...message);
 				actions.endEnter(instance, history, ...message);
