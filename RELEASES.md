@@ -5,6 +5,8 @@ The v7 codeabase is therefore a ground-up re-write and started life as a set of 
 
 Certain other enhncements have been made during the development, such as state machine instances having a transactional capability so that, in event of an exception being thrown in user code or the state machine runtime due to a malformed model, the state of the instance will not change.
 
+Finally, the performance of v7 should be far greater than the v6.
+
 ### Breaking changes
 1. The ```StateMachine``` class has been removed; use the ```State``` class in its place.
 2. The ```Transition``` class has been split into three seperate classes, ```ExternalTransition```, ```LocalTransition``` and ```ExternalTransition``` with a common abstract base class ```Transition```; the ```TransitionKind``` enumeration has been removed.
