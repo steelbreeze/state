@@ -6,3 +6,4 @@
 4. Callbacks to user code for guard conditions and behaviour (state entry/exit and transition) are no longer passed the state machine instance, but solely the trigger object. If you need the instance, I suggest you use an object literal for the trigger passed into the evaluate function such as ```{instance: myInstance, event: myEvent}```.
 5. The ```DictionaryInstance``` class has been replaced by the ```Instance``` class.
 6. The ```Instance``` constructor now takes the root element of the state machine model as it's second parameter.
+7. As the ```StateMachine``` class has gone, the call to ```StateMachine.initialise``` is no longer required and state machine instance initialisation is performed in the ```Instance``` constructor; also ```StateMachine.evaluate``` has been replaced with the a stand-alone function ```evaluate```.
