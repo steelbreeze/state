@@ -7,3 +7,5 @@
 5. The ```DictionaryInstance``` class has been replaced by the ```Instance``` class.
 6. The ```Instance``` constructor now takes the root element of the state machine model as it's second parameter.
 7. As the ```StateMachine``` class has gone, the call to ```StateMachine.initialise``` is no longer required and state machine instance initialisation is performed in the ```Instance``` constructor; also ```StateMachine.evaluate``` has been replaced with the a stand-alone function ```evaluate```.
+8. All logging is off by default; to add a logger use the ```log.add``` function. Multiple loggers can be added logging different aspects of the runtime or targeting different loging mechanisms. For example: ```log.add(message => console.info(message), log.Entry | log.Exit);``` would log as per the v6.0.x code.
+ 
