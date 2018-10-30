@@ -39,16 +39,13 @@ const stateB = new state.State("stateB", model);
 
 // create the state machine model transitions
 initial.to(stateA);
-stateA.to(stateB).when((instance, message) => message === "move");
+stateA.to(stateB).when(message => message === "move");
 
 // create a state machine instance
-let instance = new state.JSONInstance("instance");
-
-// initialise the model and instance
-model.initialise(instance);
+let instance = new state.Instance("instance", model);
 
 // send the machine instance a message for evaluation, this will trigger the transition from stateA to stateB
-model.evaluate(instance, "move");
+state.evaluate(instance, "move");
 
 console.log(instance.toJSON());
 ```
