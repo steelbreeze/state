@@ -25,7 +25,7 @@ export function initialise(instance: IInstance): void {
  * @public
  */
 export function evaluate(instance: IInstance, trigger: any): boolean {
-	log.info(() => `${instance} evaluate trigger: ${trigger}`, log.Evaluate)
+	log.info(() => `${instance} evaluate ${typeof trigger} trigger: ${trigger}`, log.Evaluate)
 
 	instance.beginTran();
 
@@ -176,7 +176,7 @@ model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHisto
 model.PseudoState.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
 	if (this.kind !== model.PseudoStateKind.Junction) {
-		log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
+//		log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
 
 		const transition = this.getTransition(trigger);
 
@@ -258,7 +258,7 @@ model.State.prototype.completion = function (instance: IInstance, deepHistory: b
 		}
 	}
 
-	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
+//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
 
 	// find and execute transition
 	const transition = this.getTransition(trigger);
