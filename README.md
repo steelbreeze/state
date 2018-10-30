@@ -31,16 +31,19 @@ The API is broken up into two distinct parts:
 ```typescript
 import * as state from "@steelbreeze/state";
 
-// create the state machine model
-const model = new state.StateMachine("model");
+state.log.add(message => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
+
+// create the state machine model elements
+const model = new state.State("model");
 const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
 const stateA = new state.State("stateA", model);
 const stateB = new state.State("stateB", model);
 
+// create the state machine model transitions
 initial.to(stateA);
-stateA.to(stateB).when(message => message === "move");
+stateA.to(stateB).when(trigger => trigger === "move");
 
-// create an instance of the state machine model
+// create a state machine instance
 let instance = new state.Instance("instance", model);
 
 // send the machine instance a message for evaluation, this will trigger the transition from stateA to stateB
@@ -49,15 +52,14 @@ state.evaluate(instance, "move");
 ### Output
 The output of the above code will be:
 ```shell
-initialise model
-initialise instance
-instance enter model.default
-instance enter model.default.initial
-instance leave model.default.initial
-instance enter model.default.stateA
-instance evaluate message: move
-instance leave model.default.stateA
-instance enter model.default.stateB
+instance enter model
+instance enter model.model
+instance enter model.model.initial
+instance leave model.model.initial
+instance enter model.model.stateA
+instance evaluate trigger: move
+instance leave model.model.stateA
+instance enter model.model.stateB
 ```
 
 ## License
