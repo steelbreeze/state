@@ -57,7 +57,7 @@ instance enter model.model
 instance enter model.model.initial
 instance leave model.model.initial
 instance enter model.model.stateA
-instance evaluate trigger: move
+instance evaluate trigger: move: string
 instance leave model.model.stateA
 instance enter model.model.stateB
 ```
