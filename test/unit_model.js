@@ -1,20 +1,16 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-var model = new state.StateMachine("unit_model");
+var model = new state.State("unit_model");
 var initial = new state.PseudoState("initial", model);
-var stateA = new state.State("stateA", model).exit(function () { console.log("Exit A"); });
+var stateA = new state.State("stateA", model).exit(trigger => console.info("Exit A"));
 var stateB = new state.State("stateB", model);
 
 initial.to(stateA);
-stateA.to(stateB).when(function (message) { return message === "move" });
+stateA.to(stateB).when(trigger => trigger === "move");
 
-var visitor = new state.Visitor();
+//var instance = new state.Instance("unit_instance", model);
 
-var instance = new state.DictionaryInstance("unit_instance");
+//model.evaluate(instance, "move");
 
-model.initialise(instance);
-
-model.evaluate(instance, "move");
-
-//setLogger(oldLogger);
+// TODO: add some tests

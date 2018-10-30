@@ -2,7 +2,7 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-var model = new state.StateMachine("model");
+var model = new state.State("model");
 
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
 var ortho = new state.State("ortho", model);
@@ -21,31 +21,19 @@ var s2 = new state.State("s2", r2);
 var f1 = new state.State("f1", r1);
 var f2 = new state.State("f2", r2);
 
-initial.to(ortho);
+initial.external(ortho);
 
-i1.to(s1);
-i2.to(s2);
+i1.external(s1);
+i2.external(s2);
 
-ortho.to(final); // This should happen once all regions in ortho are complete?
+ortho.external(final); // This should happen once all regions in ortho are complete?
 
-s1.to(f1).when(function (i, c) {
-	return c === "complete1";
-});
+s1.external(f1).when(trigger => trigger === "complete1");
+s2.external(f2).when(trigger => trigger === "complete2");
+ortho.external(simple).when(trigger => trigger === "jump");
+simple.external(ortho).when(trigger => trigger === "back");
 
-s2.to(f2).when(function (i, c) {
-	return c === "complete2";
-});
-
-ortho.to(simple).when(function (i, c) {
-	return c === "jump";
-});
-
-simple.to(ortho).when(function (i, c) {
-	return c === "back";
-});
-
-var instance = new state.DictionaryInstance("instance");
-model.initialise(instance);
+var instance = new state.Instance("muximise", model);
 
 describe("test/muximise.js", function () {
 	describe("State type tests", function () {
@@ -71,12 +59,10 @@ describe("test/muximise.js", function () {
 	describe("Orthogonal state completion", function () {
 		// ensure that completion transitions for orthogonal states are triggered after completion of all child regions
 		it("Completion transition fires once all regions of an orthogonal state are complete", function () {
-			model.evaluate(instance, "complete1");
-			model.evaluate(instance, "complete2");
+			state.evaluate(instance, "complete1");
+			state.evaluate(instance, "complete2");
 
-			assert.equal(true, model.isComplete(instance));
+			assert.equal(final, instance.getLastKnownState(model.getDefaultRegion()));
 		});
 	});
 });
-
-//setLogger(oldLogger);

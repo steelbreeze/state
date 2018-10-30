@@ -15,10 +15,10 @@ var assert = require("assert"),
 	state = require("../lib/node/index");
 
 // create the state machine model elements
-var model = new state.StateMachine("model");
+var model = new state.State("model");
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
 var stateA = new state.State("stateA", model);
-var stateB = new state.State("stateB", model).exit(function (instance) { instance.stateBExitCount++; });
+var stateB = new state.State("stateB", model);//.exit(function (instance) { instance.stateBExitCount++; });
 var regionB = new state.Region("regiobB", stateB);
 
 var bInitial = new state.PseudoState("bInitial", regionB);
@@ -26,30 +26,24 @@ var bStateI = new state.State("bStateI", regionB);
 var bStateII = new state.State("bStateII", regionB);
 
 // create the state machine model transitions
-initial.to(stateA);
-stateA.to(stateB).when(function (instance, message) { return message === "move"; });
+initial.external(stateA);
+stateA.external(stateB).when(trigger => trigger === "move");
 
-bInitial.to(bStateI);
+bInitial.external(bStateI);
 
-var local = stateB.to(bStateII, state.TransitionKind.Local).when(function (instance, message) { return message === "local"; });
-var exter = stateB.to(bStateII, state.TransitionKind.External).when(function (instance, message) { return message === "external"; });
+var local = stateB.local(bStateII).when(trigger => trigger === "local");
+var exter = stateB.external(bStateII).when(trigger => trigger === "external");
 
 // create a state machine instance
-var instance = new state.JSONInstance("instance");
-instance.stateBExitCount = 0;
-
-// initialise the model and instance
-model.initialise(instance);
+var instance = new state.Instance("instance", model);
 
 // send the machine instance a message for evaluation, this will trigger the transition from stateA to stateB
-model.evaluate(instance, "move");
-model.evaluate(instance, "local");
-model.evaluate(instance, "external");
+state.evaluate(instance, "move");
+state.evaluate(instance, "local");
+state.evaluate(instance, "external");
 
 describe("Local transition tests", function () {
 	it("External transition fired OK", function () {
-		assert.equal(bStateII, instance.getCurrent(regionB));
+		assert.equal(bStateII, instance.getLastKnownState(regionB));
 	});
 });
-
-//setLogger(oldLogger);

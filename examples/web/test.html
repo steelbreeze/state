@@ -34,11 +34,11 @@
 	<!-- script to wire the core player to the web page -->
 	<script>
 		/* global $, state */
-		$(document).ready(function () {
-			state.setLogger({ log: function (text) { $("#log").prepend(text + "<br/>"); } });
+		$(document).ready(trigger => {
+			state.log.add(message => $("#log").prepend(message + "<br/>"), state.log.Entry | state.log.Exit);
 
 			/* create the state machine model elements */
-			var model = new state.StateMachine("model");
+			var model = new state.State("model");
 			var initial = new state.PseudoState("initial", model);
 			var operational = new state.State("operational", model);
 			var flipped = new state.State("flipped", model);
@@ -50,36 +50,33 @@
 			var paused = new state.State("paused", active);
 
 			/* create the state machine model transitions */
-			initial.to(operational);
-			deepHistory.to(stopped);
-			stopped.to(running).when(function (i, s) { return s === "play"; });
-			active.to(stopped).when(function (i, s) { return s === "stop"; });
-			running.to(paused).when(function (i, s) { return s === "pause"; });
-			paused.to(running).when(function (i, s) { return s === "play"; });
-			paused.to(running).when(function (i, s) { return s === "pause"; });
-			operational.to(flipped).when(function (i, s) { return s === "flip"; });
-			flipped.to(operational).when(function (i, s) { return s === "flip"; });
-			operational.to(finalState).when(function (i, s) { return s === "off"; });
+			initial.external(operational);
+			deepHistory.external(stopped);
+			stopped.external(running).when(trigger => trigger === "play");
+			active.external(stopped).when(trigger => trigger === "stop");
+			running.external(paused).when(trigger => trigger === "pause");
+			paused.external(running).when(trigger => trigger === "play");
+			paused.external(running).when(trigger => trigger === "pause");
+			operational.external(flipped).when(trigger => trigger === "flip");
+			flipped.external(operational).when(trigger => trigger === "flip");
+			operational.external(finalState).when(trigger => trigger === "off");
 
 			/* add core behavior to appropriate states and transitions in the player machine*/
-			active.entry(function () { $("#head").text("Head: engaged"); }).exit(function () { $("#head").text("Head: disengaged"); });
-			running.entry(function () { $("#motor").text("Motor: running"); }).exit(function () { $("#motor").text("Motor: stopped"); });
+			active.entry(trigger => $("#head").text("Head: engaged")).exit(triggrt => $("#head").text("Head: disengaged"));
+			running.entry(triggrt => $("#motor").text("Motor: running")).exit(trigger => $("#motor").text("Motor: stopped"));
 
 			/* add a little more behavior to states to adjust the graphic*/
-			stopped.entry(function () { $("#imgStopped").show(); }).exit(function () { $("#imgStopped").hide(); });
-			running.entry(function () { $("#imgRunning").show(); }).exit(function () { $("#imgRunning").hide(); });
-			paused.entry(function () { $("#imgPaused").show(); }).exit(function () { $("#imgPaused").hide(); });
-			finalState.entry(function () { $("#imgFinal").show(); }).exit(function () { $("#imgFinal").hide(); });
-			flipped.entry(function () { $("#imgFlipped").show(); }).exit(function () { $("#imgFlipped").hide(); });
+			stopped.entry(trigger => $("#imgStopped").show()).exit(trigger => $("#imgStopped").hide());
+			running.entry(trigger => $("#imgRunning").show()).exit(trigger => $("#imgRunning").hide());
+			paused.entry(trigger => $("#imgPaused").show()).exit(trigger => $("#imgPaused").hide());
+			finalState.entry(trigger => $("#imgFinal").show()).exit(trigger => $("#imgFinal").hide());
+			flipped.entry(trigger => $("#imgFlipped").show()).exit(trigger => $("#imgFlipped").hide());
 
 			/* create the state machine instance object */
-			var instance = new state.DictionaryInstance("player");
-
-			/* initialise the state machine model and instance */
-			model.initialise(instance);
+			var instance = new state.Instance("player", model);
 
 			/* pass button values to the state machine when clicked */
-			$("button").click(function (button) { model.evaluate(instance, this.id); });
+			$("button").click(function (button) { state.evaluate(instance, this.id); });
 		});
 	</script>
 </body>

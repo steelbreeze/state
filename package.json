@@ -1,6 +1,6 @@
 {
 	"name": "@steelbreeze/state",
-	"version": "6.1.0",
+	"version": "7.0.0",
 	"description": "Finite state machine for TypeScript and JavaScript",
 	"main": "lib/node/index.js",
 	"typings": "lib/node/index.d.ts",
@@ -10,8 +10,6 @@
 		"test": "test"
 	},
 	"dependencies": {
-		"@steelbreeze/delegate": "latest",
-		"@steelbreeze/graph": "latest"
 	},
 	"scripts": {
 		"build": "tsc -p .",

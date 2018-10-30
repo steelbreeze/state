@@ -2,7 +2,7 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-var model = new state.StateMachine("model");
+var model = new state.State("model");
 var region = new state.Region("region", model);
 var initial = new state.PseudoState("initial", region, state.PseudoStateKind.Initial);
 var state1 = new state.State("state1", region);
@@ -26,26 +26,25 @@ var regionBb = new state.Region("regionBb", state4);
 var initialBb = new state.PseudoState("initialBb", regionBb, state.PseudoStateKind.Initial);
 var state7 = new state.State("state7", regionBb);
 
-initial.to(state1);
-initialA.to(state3);
-initialB.to(state4);
-initialBa.to(state6);
-initialBb.to(state7);
+initial.external(state1);
+initialA.external(state3);
+initialB.external(state4);
+initialBa.external(state6);
+initialBb.external(state7);
 
-state3.to(state2).when(function (i, c) { return c === "event2"; });
-state3.to(state8).when(function (i, c) { return c === "event1"; });
-state7.to(state5).when(function (i, c) { return c === "event2"; });
-state7.to(state5).when(function (i, c) { return c === "event1"; });
+state3.external(state2).when(trigger => trigger === "event2");
+state3.external(state8).when(trigger => trigger === "event1");
+state7.external(state5).when(trigger => trigger === "event2");
+state7.external(state5).when(trigger => trigger === "event1");
 
-var instance = new state.JSONInstance("p3pp3r");
-model.initialise(instance);
+var instance = new state.Instance("p3pp3r", model);
 
 describe("test/p3pp3r.js", function () {
 	it("All regions of orthogonal state must be exited during the external transition", function () {
-		model.evaluate(instance, "event2");
+		state.evaluate(instance, "event2");
 
-		assert.equal(state2, instance.getCurrent(region));
-		assert.equal(state4, instance.getCurrent(regionB));
+		assert.equal(state2, instance.getLastKnownState(region));
+		assert.equal(state4, instance.getLastKnownState(regionB));
 	});
 });
 

@@ -2,41 +2,41 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-var model = new state.StateMachine("model");
-var region  = new state.Region("region", model);
+//state.log.add(m => console.info(m));
+
+var entryCount = 0;
+var exitCount = 0;
+var transitionCount = 0;
+
+var model = new state.State("model");
+var region = new state.Region("region", model);
 var initial = new state.PseudoState("initial", region, state.PseudoStateKind.Initial);
-var target = new state.State("state", region).entry(function (instance) { instance.entryCount++; }).exit(function (instance) { instance.exitCount++; });
+var target = new state.State("state", region).entry(trigger => entryCount++).exit(trigger => exitCount++);
 
-initial.to(target);
+initial.external(target);
 
-target.to().when(function (instance, message) { return message === "internal"; }).effect(function (instance) { instance.transitionCount++; });
-target.to(target).when(function (instance, message) { return message === "external"; }).effect(function (instance) { instance.transitionCount++; });
+target.internal().when(trigger => trigger === "internal").effect(trigger => transitionCount++);
+target.external(target).when(trigger => trigger === "external").effect(trigger => transitionCount++);
 
-var instance = new state.JSONInstance("instance");
-instance.entryCount = 0;
-instance.exitCount = 0;
-instance.transitionCount = 0;
-
-model.initialise(instance);
+var instance = new state.Instance("internal", model);
 
 describe("test/internal.js", function () {
 	it("Internal transitions do not trigger a state transition", function () {
-		model.evaluate(instance, "internal");
+		state.evaluate(instance, "internal");
 
-		assert.equal(target, instance.getCurrent(region));
-		assert.equal(1, instance.entryCount);
-		assert.equal(0, instance.exitCount);
-		assert.equal(1, instance.transitionCount);
+		assert.equal(target, instance.getLastKnownState(region));
+		assert.equal(1, entryCount);
+		assert.equal(0, exitCount);
+		assert.equal(1, transitionCount);
 	});
 
 	it("External transitions do trigger a state transition", function () {
-		model.evaluate(instance, "external");
 
-		assert.equal(target, instance.getCurrent(region));
-		assert.equal(2, instance.entryCount);
-		assert.equal(1, instance.exitCount);
-		assert.equal(2, instance.transitionCount);
+		state.evaluate(instance, "external");
+
+		assert.equal(target, instance.getLastKnownState(region));
+		assert.equal(2, entryCount);
+		assert.equal(1, exitCount);
+		assert.equal(2, transitionCount);
 	});
 });
-
-//setLogger(oldLogger);

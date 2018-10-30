@@ -2,36 +2,34 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-var instance = new state.JSONInstance("callbacks_instance");
-instance.calls = 0;
-instance.logs = 0;
-
 //var oldLogger = setLogger({ log: function (message) { instance.logs++; } });
 
-var model = new state.StateMachine("callbacks_model");
-var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
-var stateA = new state.State("stateA", model).exit(function (instance, message) { instance.calls += 1; });
-var stateB = new state.State("stateB", model).entry(function (instance, message) { instance.calls += 2; });
+let calls = 0;
 
-initial.to(stateA);
-stateA.to(stateB).when(function (instance, message) { return message === "move"; }).effect(function (instance, message) { instance.calls += 4; });
+const model = new state.State("callbacks_model");
+const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
+const stateA = new state.State("stateA", model).exit(trigger => calls += 1);
+const stateB = new state.State("stateB", model).entry(trigger => calls += 2);
 
-model.initialise(instance);
+initial.external(stateA);
+stateA.external(stateB).when(trigger => trigger === "move").effect(trigger => calls += 4);
 
-model.evaluate(instance, "move");
+var instance = new state.Instance("callbacks", model);
+
+state.evaluate(instance, "move");
 
 describe("test/callbacks.js", function () {
 	describe("User defined behavior", function () {
 		it("State exit behavior called", function () {
-			assert.equal(1, 1 & instance.calls);
+			assert.equal(1, 1 & calls);
 		});
 
 		it("State entry behavior called", function () {
-			assert.equal(2, 2 & instance.calls);
+			assert.equal(2, 2 & calls);
 		});
 
 		it("State transition behavior called", function () {
-			assert.equal(4, 4 & instance.calls);
+			assert.equal(4, 4 & calls);
 		});
 	});
 });

@@ -1,22 +1,14 @@
-/** @module state
- * 
- * A finite state machine library for TypeScript and JavaScript
- * 
- * @copyright (c) 2014-8 David Mesquita-Morris
- * 
- * Licensed under the MIT and GPL v3 licences
+/**
+ * Core state machine model classes.
  */
+export { State, Region, PseudoState, PseudoStateKind, ExternalTransition, InternalTransition, LocalTransition } from './model';
 
-// Export the public interfaces and functions from the helpers
-export { Logger, setLogger } from './logger';
-export { Random, setRandom } from './random';
+/**
+ * State machine instance interfaces and classes.
+ */
+export { IInstance, Instance, evaluate } from './runtime';
 
-// Export the core model enumerations and classes
-export { PseudoStateKind } from './PseudoStateKind';
-export { TransitionKind } from './TransitionKind';
-export { Region } from './Region';
-//export { PseudoState } from './PseudoState';
-export { Visitor } from './Visitor';
-
-
-export * from './state';
+/**
+ * API to integrate other logging tools or techniques.
+ */
+export { log, random } from './util';

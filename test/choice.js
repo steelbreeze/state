@@ -2,10 +2,8 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-//var oldLogger = setLogger(console);
-
 // this test overrides the default implementation of the random selector for choices as we're not looking to test the randomness of hte numbers, but the application of them to choose different transtiions therefore we need to turn the non-deterministic into something deterministic
-var nextRand = 0;
+let nextRand = 0;
 
 function randRobin(max) {
 	var result = nextRand;
@@ -17,61 +15,50 @@ function randRobin(max) {
 	return result;
 }
 
-var model = new state.StateMachine("model");
-var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
-var stateA = new state.State("stateA", model);
-var choice = new state.PseudoState("choice", model, state.PseudoStateKind.Choice);
+const model = new state.State("model");
+const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
+const stateA = new state.State("stateA", model);
+const choice = new state.PseudoState("choice", model, state.PseudoStateKind.Choice);
 
-initial.to(stateA);
+initial.external(stateA);
 
-stateA.to(choice).when(function (instance, message) { return message === "choose"; });
+stateA.external(choice).when(trigger => trigger && trigger.event === "choose");
 
-choice.to(stateA).effect(function (instance, message) { instance.path1++; });
-choice.to(stateA).effect(function (instance, message) { instance.path2++; });
-choice.to(stateA).effect(function (instance, message) { instance.path3++; });
+choice.external(stateA).effect(trigger => trigger.data.path1++);
+choice.external(stateA).effect(trigger => trigger.data.path2++);
+choice.external(stateA).effect(trigger => trigger.data.path3++);
 
 describe("test/choice.js", function () {
+
 	describe("With an random distribution, we process all messages (and test the true random nature)", function () {
-		var instance1 = new state.DictionaryInstance("instance1");
-		instance1.path1 = 0;
-		instance1.path2 = 0;
-		instance1.path3 = 0;
+		let instance1 = new state.Instance("instance1", model);
+		let trigger1 = { event: "choose", data: { path1: 0, path2: 0, path3: 0 } };
 
-		model.initialise(instance1);
-
-		for (var i = 0; i < 99; i++) {
-			model.evaluate(instance1, "choose");
+		for (let i = 0; i < 99; i++) {
+			state.evaluate(instance1, trigger1);
 		}
 
 		it("choice pseudo state transitions all selected randomly", function () {
-			assert.equal(99, instance1.path1 + instance1.path2 + instance1.path3);
+			assert.equal(99, trigger1.data.path1 + trigger1.data.path2 + trigger1.data.path3);
 		});
 	});
 
 	describe("With an non-random distribution, each path is called equally", function () {
-		var oldRandom = state.setRandom(randRobin);
+		const oldRandom = state.random.set(randRobin);
 
-		var instance2 = new state.DictionaryInstance("instance2");
-		instance2.path1 = 0;
-		instance2.path2 = 0;
-		instance2.path3 = 0;
-
-		model.initialise(instance2);
+		let instance2 = new state.Instance("instance2", model);
+		let trigger2 = { event: "choose", data: { path1: 0, path2: 0, path3: 0 } };
 
 		for (var i = 0; i < 99; i++) {
-			model.evaluate(instance2, "choose");
+			state.evaluate(instance2, trigger2);
 		}
 
-		model.evaluate(instance2, "end");
-
 		it("choice pseudo state transition selection alignmed to random function used", function () {
-			assert.equal(33, instance2.path1);
-			assert.equal(33, instance2.path2);
-			assert.equal(33, instance2.path3);
+			assert.equal(33, trigger2.data.path1);
+			assert.equal(33, trigger2.data.path2);
+			assert.equal(33, trigger2.data.path3);
 		});
 
-		state.setRandom(oldRandom);
+		state.random.set(oldRandom);
 	});
 });
-
-//setLogger(oldLogger);

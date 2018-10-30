@@ -2,35 +2,35 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-var model = new state.StateMachine("model");
+const model = new state.State("model");
 
-var initial = new state.PseudoState("initial", model);
+const initial = new state.PseudoState("initial", model);
 
-var choice = new state.PseudoState("choice", model, state.PseudoStateKind.Choice);
-var junction = new state.PseudoState("junction", model, state.PseudoStateKind.Junction);
+const choice = new state.PseudoState("choice", model, state.PseudoStateKind.Choice);
+const junction = new state.PseudoState("junction", model, state.PseudoStateKind.Junction);
 
-var finalState = new state.State("final", model);
+const finalState = new state.State("final", model);
 
-initial.to(choice);
-choice.to(junction).when(function (instance, message) { return !instance.hello }).effect(function (instance, message) { instance.hello = "hello"; });
-choice.to(finalState).else();
-junction.to(choice).when(function (instance, message) { return !instance.world }).effect(function (instance, message) { instance.world = "world"; });
+var data = {};
 
-var instance = new state.DictionaryInstance("instance");
+initial.external(choice);
+choice.external(junction).when(trigger => !data.hello).effect(trigger => data.hello = "hello");
+choice.else(finalState);
+junction.external(choice).when(trigger => !data.world).effect(trigger => data.world = "world");
 
-model.initialise(instance);
+var instance = new state.Instance("instance", model);
 
 describe("test/else.js", function () {
 	it("Test should result in a completed state", function () {
-		assert.equal(true, model.isComplete(instance));
+		assert.equal(finalState, instance.getLastKnownState(model.getDefaultRegion()));
 	});
 
 	it("Else from choice transition fired appropriately", function () {
-		assert.equal("hello", instance.hello);
+		assert.equal("hello", data.hello);
 	});
 
 	it("Else from junction transition fired appropriately", function () {
-		assert.equal("world", instance.world);
+		assert.equal("world", data.world);
 	});
 });
 

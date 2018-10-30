@@ -1,33 +1,33 @@
 "use strict";
 exports.__esModule = true;
-var state = require("@steelbreeze/state");
+//import * as state from "@steelbreeze/state";
+var state = require("../../lib/node");
+state.log.add(function (message) { return console.info(message); }, state.log.Entry | state.log.Exit);
 // create the state machine model elements
-var model = new state.StateMachine("model");
+var model = new state.State("model");
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
 var operational = new state.State("operational", model);
 var flipped = new state.State("flipped", model);
 var finalState = new state.State("final", model);
 var deepHistory = new state.PseudoState("history", operational, state.PseudoStateKind.DeepHistory);
 var stopped = new state.State("stopped", operational);
-var active = new state.State("active", operational).entry(function () { return console.log("Engage head"); }).exit(function () { return console.log("Disengage head"); });
-var running = new state.State("running", active).entry(function () { return console.log("Start motor"); }).exit(function () { return console.log("Stop motor"); });
+var active = new state.State("active", operational).entry(function (trigger) { return console.log("- Engage head due to " + trigger); }).exit(function (trigger) { return console.log("- Disengage head due to " + trigger); });
+var running = new state.State("running", active).entry(function (trigger) { return console.log("- Start motor due to " + trigger); }).exit(function (trigger) { return console.log("- Stop motor due to " + trigger); });
 var paused = new state.State("paused", active);
 // create the state machine model transitions
 initial.to(operational);
 deepHistory.to(stopped);
-stopped.to(running).when(function (i, s) { return s === "play"; });
-active.to(stopped).when(function (i, s) { return s === "stop"; });
-running.to(paused).when(function (i, s) { return s === "pause"; });
-paused.to(running).when(function (i, s) { return s === "play"; });
-operational.to(flipped).when(function (i, s) { return s === "flip"; });
-flipped.to(operational).when(function (i, s) { return s === "flip"; });
-operational.to(finalState).when(function (i, s) { return s === "off"; });
+stopped.to(running).when(function (trigger) { return trigger === "play"; });
+active.to(stopped).when(function (trigger) { return trigger === "stop"; });
+running.to(paused).when(function (trigger) { return trigger === "pause"; });
+paused.to(running).when(function (trigger) { return trigger === "play"; });
+operational.to(flipped).when(function (trigger) { return trigger === "flip"; });
+flipped.to(operational).when(function (trigger) { return trigger === "flip"; });
+operational.to(finalState).when(function (trigger) { return trigger === "off"; });
 // create a new state machine instance (this stores the active state configuration, allowing many instances to work with a single model)
-var instance = new state.JSONInstance("player");
-// initialse the state machine instance (also initialises the model if not already initialised explicitly or via another instance)
-model.initialise(instance);
+var instance = new state.Instance("player", model);
 // send messages to the state machine to cause state transitions
-model.evaluate(instance, "play");
-model.evaluate(instance, "pause");
-model.evaluate(instance, "stop");
-console.log(instance.toJSON());
+state.evaluate(instance, "play");
+state.evaluate(instance, "pause");
+state.evaluate(instance, "flip");
+state.evaluate(instance, "flip");

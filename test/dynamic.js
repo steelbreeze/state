@@ -2,34 +2,29 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-var model = new state.StateMachine("model");
-var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
-var stateA = new state.State("stateA", model).exit(function (instance, message) { instance.calls += 1; });
+const model = new state.State("model");
+const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
+const stateA = new state.State("stateA", model);
+const stateB = new state.State("stateB", model);
 
-initial.to(stateA);
+initial.external(stateA);
 
-var instance = new state.JSONInstance("instance");
-
-
-model.initialise(instance);
+let instance = new state.Instance("instance", model);
 
 // TODO: fix up unit tests
 describe("test/callbacks.js", function () {
 	//	describe("With half the model defined:", function () {
 	it("Model will not respond to events", function () {
-		assert.equal(false, model.evaluate(instance, "move"));
+		assert.equal(false, state.evaluate(instance, "move"));
 	});
-	//	});
 
-	var stateB = new state.State("stateB", model).entry(function (instance, message) { instance.calls += 2; });
+	describe("With the full model defined:", function () {
+		it("Model will respond to events", function () {
+			stateA.external(stateB).when(trigger => trigger === "move");
 
-	stateA.to(stateB).when(function (instance, message) { return message === "move"; }).effect(function (instance, message) { instance.calls += 4; });
-
-	//	describe("With the full model defined:", function () {
-	//		it("Model will respond to events", function () {
-	assert.equal(true, model.evaluate(instance, "move"));
-	//		});
-	//	});
+			assert.equal(true, state.evaluate(instance, "move"));
+		});
+	});
 });
 
 //setLogger(oldLogger);

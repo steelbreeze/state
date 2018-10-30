@@ -1,18 +1,16 @@
 var state = require('../lib/node/index.js');
 
-var model = new state.StateMachine('model');
+var model = new state.State('model');
 var initial = new state.PseudoState('initial', model, state.PseudoStateKind.Initial);
 var a = new state.State('a', model);
 var b = new state.State('b', model);
 var aa = new state.State('aa', a);
 var aChoice = new state.PseudoState('aChoice', a, state.PseudoStateKind.Choice);
 
-initial.to(aa);
-aa.to(aChoice);
-aChoice.to(b);
+initial.external(aa);
+aa.external(aChoice);
+aChoice.external(b);
 
-var instance = new state.DictionaryInstance('instance');
+var instance = new state.Instance('instance', model);
 
-model.initialise(instance);
-
-//setLogger(oldLogger);
+// TODO: add test criteria

@@ -2,7 +2,7 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-var model = new state.StateMachine("model");
+var model = new state.State("model");
 var initial = new state.PseudoState("initial", model);
 var on = new state.State("on", model);
 var onRegion = new state.Region("onRegion", on);
@@ -15,35 +15,33 @@ var moveItem = new state.State("moveItem", onRegion);
 var showMoveItemPattern = new state.State("showMoveItemPattern", onRegion);
 var hideMoveItemPattern = new state.State("hideMoveItemPattern", onRegion);
 
-initial.to(idle);
-on.to(off).when(function (i, s) { return s === "Disable" });
-off.to(history).when(function (i, s) { return s === "Enable" });
-on.to(clean).when(function (i, s) { return s === "DestroyInput" });
-off.to(clean).when(function (i, s) { return s === "DestroyInput" });
-clean.to(final);
-idle.to(moveItem).when(function (i, s) { return s === "TransformInput" });
-moveItem.to(idle).when(function (i, s) { return s === "ReleaseInput" });
-idle.to(showMoveItemPattern).when(function (i, s) { return s === "ReleaseInput" });
-showMoveItemPattern.to(hideMoveItemPattern).when(function (i, s) { return s === "ReleaseInput" });
-hideMoveItemPattern.to(idle);
+initial.external(idle);
+on.external(off).when(trigger => trigger === "Disable");
+off.external(history).when(trigger => trigger === "Enable");
+on.external(clean).when(trigger => trigger === "DestroyInput");
+off.external(clean).when(trigger => trigger === "DestroyInput");
+clean.external(final);
+idle.external(moveItem).when(trigger => trigger=== "TransformInput" );
+moveItem.external(idle).when(trigger => trigger === "ReleaseInput" );
+idle.external(showMoveItemPattern).when(trigger => trigger === "ReleaseInput" );
+showMoveItemPattern.external(hideMoveItemPattern).when(trigger => trigger === "ReleaseInput");
+hideMoveItemPattern.external(idle);
 
-var instance = new state.JSONInstance("florent");
-
-model.initialise(instance);
+var instance = new state.Instance("florent", model);
 
 describe("test/florent.js", function () {
 	it("History semantics should set the regions active state configuration to the last known state", function () {
-		model.evaluate(instance, "ReleaseInput");
-		model.evaluate(instance, "Disable");
-		model.evaluate(instance, "Enable");
+		state.evaluate(instance, "ReleaseInput");
+		state.evaluate(instance, "Disable");
+		state.evaluate(instance, "Enable");
 
-		assert.equal(showMoveItemPattern, instance.getCurrent(onRegion));
+		assert.equal(showMoveItemPattern, instance.getLastKnownState(onRegion));
 
-		model.evaluate(instance, "ReleaseInput");
-		model.evaluate(instance, "Disable");
-		model.evaluate(instance, "Enable");
+		state.evaluate(instance, "ReleaseInput");
+		state.evaluate(instance, "Disable");
+		state.evaluate(instance, "Enable");
 
-		assert.equal(idle, instance.getCurrent(onRegion));
+		assert.equal(idle, instance.getLastKnownState(onRegion));
 	});
 });
 

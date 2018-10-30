@@ -3,7 +3,7 @@ exports.__esModule = true;
 var state = require("../lib/node/index");
 
 // States
-const model = new state.StateMachine("model");
+const model = new state.State("model");
 const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
 const identify = new state.State("identify", model);
 const exception_1 = new state.State("exception_1", model);
@@ -21,27 +21,27 @@ const A_fail = new state.State("A_fail", A);
 
 // Transitions
 initial.to(identify);
-identify.to(exception_1).when((instance, message) => message === "Continue");
+identify.to(exception_1).when(trigger => trigger === "Continue");
 
-exception_1.to(identify).when((instance, message) => message === "Yes");
-exception_1.to(A).when((instance, message) => message === "No");
-exception_1.to(model_fail).when((instance, message) => message === "Unsure");
+exception_1.to(identify).when(trigger => trigger === "Yes");
+exception_1.to(A).when(trigger => trigger === "No");
+exception_1.to(model_fail).when(trigger => trigger === "Unsure");
 
 A_initial.to(A_1);
 
-A_1.to(A_2).when((instance, message) => message === "Yes");
-A_1.to(A_fail).when((instance, message) => /No|Unsure/.test(message));
+A_1.to(A_2).when(trigger => trigger === "Yes");
+A_1.to(A_fail).when(trigger => /No|Unsure/.test(trigger));
 
-A_2.to(A_pass).when((instance, message) => message === "Yes");
-A_2.to(A_3).when((instance, message) => message === "No");
-A_2.to(A_fail).when((instance, message) => message === "Unsure");
+A_2.to(A_pass).when(trigger => trigger === "Yes");
+A_2.to(A_3).when(trigger => trigger === "No");
+A_2.to(A_fail).when(trigger => trigger === "Unsure");
 
-A_3.to(A_pass).when((instance, message) => message === "Yes");
-A_3.to(A_4).when((instance, message) => message === "No");
-A_3.to(A_fail).when((instance, message) => message === "Unsure");
+A_3.to(A_pass).when(trigger => trigger === "Yes");
+A_3.to(A_4).when(trigger => trigger === "No");
+A_3.to(A_fail).when(trigger => trigger === "Unsure");
 
-A_4.to(A_pass).when((instance, message) => message === "Yes");
-A_4.to(A_fail).when((instance, message) => /No|Unsure/.test(message));
+A_4.to(A_pass).when(trigger => trigger === "Yes");
+A_4.to(A_fail).when(trigger => /No|Unsure/.test(trigger));
 
 A_pass.to(model_pass);
 A_fail.to(model_fail);
@@ -49,13 +49,14 @@ A_fail.to(model_fail);
 model_pass.to(identify);
 model_fail.to(identify);
 
-var instance = new state.JSONInstance("instance");
-model.initialise(instance);
+var instance = new state.Instance("second-pass", model);
 
 // Transitions
-model.evaluate(instance, "Continue");
-model.evaluate(instance, "No", "first time");
-model.evaluate(instance, "Yes");
-model.evaluate(instance, "Yes");
-model.evaluate(instance, "Continue");
-model.evaluate(instance, "No", "second time");
+state.evaluate(instance, "Continue");
+state.evaluate(instance, "No", "first time");
+state.evaluate(instance, "Yes");
+state.evaluate(instance, "Yes");
+state.evaluate(instance, "Continue");
+state.evaluate(instance, "No", "second time");
+
+// TODO: add some test criteria

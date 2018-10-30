@@ -2,7 +2,7 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-var model = new state.StateMachine("compTest");
+var model = new state.State("compTest");
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
 
 var activity1 = new state.State("activity1", model);
@@ -19,16 +19,15 @@ subInitial.to(subEnd);
 initial.to(activity1);
 activity1.to(activity2);
 activity2.to(junction1);
-junction1.to(junction2).else();
-junction2.to(activity3).else();
+junction1.else(junction2);
+junction2.else(activity3);
 activity3.to(end);
 
-var instance = new state.DictionaryInstance("instance");
-model.initialise(instance);
+var instance = new state.Instance("transitions", model);
 
 describe("test/transitions.js", function () {
 	it("Completion transitions should be triggered by state entry", function () {
-		assert.equal(true, model.isComplete(instance));
+		assert.equal(end, instance.getLastKnownState(model.getDefaultRegion()));
 	});
 });
 

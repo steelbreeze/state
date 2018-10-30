@@ -1,6 +1,9 @@
-import * as state from "@steelbreeze/state";
+//import * as state from "@steelbreeze/state";
+import * as state from "../../lib/node";
 
-const model = new state.StateMachine("model");
+state.log.add(message => console.info(message), state.log.Entry | state.log.Exit);
+
+const model = new state.State("model");
 
 const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
 const on = new state.State("on", model);
@@ -14,20 +17,18 @@ const showMoveItemPattern = new state.State("showMoveItemPattern", on);
 const hideMoveItemPattern = new state.State("hideMoveItemPattern", on);
 
 initial.to(idle);
-on.to(off).when((i, s) => s === "Disable");
-off.to(history).when((i, s) => s === "Enable");
-on.to(clean).when((i, s) => s === "DestroyInput");
-off.to(clean).when((i, s) => s === "DestroyInput");
+on.to(off).when(trigger => trigger === "Disable");
+off.to(history).when(trigger => trigger === "Enable");
+on.to(clean).when(trigger => trigger === "DestroyInput");
+off.to(clean).when(trigger => trigger === "DestroyInput");
 clean.to(final);
-idle.to(moveItem).when((i, s) => s === "TransformInput");
-moveItem.to(idle).when((i, s) => s === "ReleaseInput");
-idle.to(showMoveItemPattern).when((i, s) => s === "ReleaseInput");
-showMoveItemPattern.to(hideMoveItemPattern).when((i, s) => s === "ReleaseInput");
+idle.to(moveItem).when(trigger => trigger === "TransformInput");
+moveItem.to(idle).when(trigger => trigger === "ReleaseInput");
+idle.to(showMoveItemPattern).when(trigger => trigger === "ReleaseInput");
+showMoveItemPattern.to(hideMoveItemPattern).when(trigger => trigger === "ReleaseInput");
 hideMoveItemPattern.to(idle);
 
-let instance = new state.DictionaryInstance("florent");
+let instance = new state.Instance("florent", model);
 
-model.initialise(instance);
-
-model.evaluate(instance, "Disable");
-model.evaluate(instance, "Enable");
+state.evaluate(instance, "Disable");
+state.evaluate(instance, "Enable");
