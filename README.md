@@ -11,7 +11,7 @@ Executable finite state machine for TypeScript and JavaScript.
 
 > **Notes:**
 >
->v7.0.0 is in the works and contains significant breaking changes but offers very considerable performance improvements. As a major release it contains breaking changes, see the [release notes](RELEASES.md) for more information.
+>v7.0.0 is in the works and contains significant breaking changes but offers vry considerable performance improvements. As a major release it contains breaking changes, see the [release notes](RELEASES.md) for more information.
 >
 >@steelbreeze/state the new home for [state.js](https://github.com/steelbreeze/state.js) and the versioning starts here from v6.0.0.
 
