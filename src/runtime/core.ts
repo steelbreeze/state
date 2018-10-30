@@ -37,35 +37,25 @@ export function evaluate(instance: IInstance, trigger: any): boolean {
 }
 
 /**
- * Find and execute a transition
- * @param vertex The source of a transition
+ * Execute a transition
+ * @param transition The transition to traverse
  * @param instance The state machine instance to evaluate the trigger against.
  * @param deepHistory True if deep history semantics are in play.
  * @param trigger The trigger used to evaluate.
  * @returns Returns true if a transition was found and traversed.
  * @internal
  */
-function traverse(vertex: model.State | model.PseudoState, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
-	// search for a transition to traverse
-	let transition = vertex.getTransition(trigger);
+function traverse(transition: model.Transition, instance: IInstance, deepHistory: boolean, trigger: any ):void {
+	const transitions: Array<model.Transition> = [transition];
 
-	if (transition) {
-		const transitions: Array<model.Transition> = [transition];
-
-		// gather all transitions to be taversed either side of static conditional branches (junctions)
-		while (transition.target instanceof model.PseudoState && transition.target.kind === model.PseudoStateKind.Junction) {
-			transitions.unshift(transition = transition.target.getTransition(trigger));
-		}
-
-		// traverse all transitions
-		for (let i = transitions.length; i--;) {
-			transitions[i].execute(instance, deepHistory, trigger);
-		}
-
-		return true;
+	// gather all transitions to be taversed either side of static conditional branches (junctions)
+	while (transition.target instanceof model.PseudoState && transition.target.kind === model.PseudoStateKind.Junction) {
+		transitions.unshift(transition = transition.target.getTransition(trigger));
 	}
-
-	return false;
+	// traverse all transitions
+	for (let i = transitions.length; i--;) {
+		transitions[i].execute(instance, deepHistory, trigger);
+	}
 }
 
 /**
@@ -188,7 +178,11 @@ model.PseudoState.prototype.enterTail = function (instance: IInstance, deepHisto
 	if (this.kind !== model.PseudoStateKind.Junction) {
 		log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
 
-		traverse(this, instance, deepHistory, trigger);
+		const transition = this.getTransition(trigger);
+
+		if(transition) {
+			traverse(transition, instance, deepHistory, trigger);
+		}
 	}
 }
 
@@ -241,7 +235,13 @@ model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boo
 	
 	// if no state transition occured in a child state look for transitions from this state
 	else {
-		result = traverse(this, instance, deepHistory, trigger);
+		const transition = this.getTransition(trigger);
+
+		if(transition) {
+			traverse(transition, instance, deepHistory, trigger);
+
+			result = true;
+		}
 	}
 
 	return result;
@@ -261,7 +261,11 @@ model.State.prototype.completion = function (instance: IInstance, deepHistory: b
 	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
 
 	// find and execute transition
-	traverse(this, instance, deepHistory, trigger);
+	const transition = this.getTransition(trigger);
+
+	if(transition) {
+		traverse(transition, instance, deepHistory, trigger);
+	}
 }
 
 /** 
