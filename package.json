@@ -5,22 +5,22 @@
 	"main": "lib/node/index.js",
 	"typings": "lib/node/index.d.ts",
 	"directories": {
-		"example": "examples",
 		"lib": "lib",
 		"test": "test"
 	},
-	"dependencies": {
-	},
+	"dependencies": {},
 	"scripts": {
 		"build": "tsc -p .",
 		"test": "nyc --reporter=lcov mocha",
+		"package": "webpack",
 		"coverage": "CODECLIMATE_REPO_TOKEN=3561ab0fd4d1343b66e838d1644595020a60a7445bb2d24ddb051f6f2a6ad5c2 codeclimate-test-reporter < ./coverage/lcov.info"
 	},
 	"devDependencies": {
-		"typescript": "latest",
-		"nyc": "latest",
+		"codeclimate-test-reporter": "latest",
 		"mocha": "latest",
-		"codeclimate-test-reporter": "latest"
+		"nyc": "latest",
+		"typescript": "latest",
+		"webpack-cli": "^3.1.2"
 	},
 	"repository": {
 		"type": "git",
@@ -41,5 +41,5 @@
 	"bugs": {
 		"url": "https://github.com/steelbreeze/state/issues"
 	},
-	"homepage": "https://github.com/steelbreeze/state#readme"
+	"homepage": "https://steelbreeze.net/state"
 }
