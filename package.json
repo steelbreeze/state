@@ -19,8 +19,7 @@
 		"codeclimate-test-reporter": "latest",
 		"mocha": "latest",
 		"nyc": "latest",
-		"typescript": "latest",
-		"webpack-cli": "^3.1.2"
+		"typescript": "latest"
 	},
 	"repository": {
 		"type": "git",
