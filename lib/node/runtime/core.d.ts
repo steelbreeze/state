@@ -30,7 +30,6 @@ declare module '../model/Region' {
 declare module '../model/PseudoState' {
     interface PseudoState {
         getTransition(trigger: any): model.Transition;
-        getChoiceTransition(trigger: any): model.Transition | undefined;
         enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
         enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
         leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
@@ -41,9 +40,7 @@ declare module '../model/PseudoState' {
  */
 declare module '../model/State' {
     interface State {
-        evaluate(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
         getTransition(trigger: any): model.Transition | undefined;
-        completion(instance: IInstance, deepHistory: boolean, trigger: any): void;
         enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
         enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
         leave(instance: IInstance, deepHistory: boolean, trigger: any): void;

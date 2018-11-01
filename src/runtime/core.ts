@@ -29,9 +29,43 @@ export function evaluate(instance: IInstance, trigger: any): boolean {
 
 	instance.beginTran();
 
-	const result = instance.root.evaluate(instance, false, trigger);
+	const result = stateEvaluate(instance.root, instance, false, trigger);
 
 	instance.commitTran();
+
+	return result;
+}
+
+/**
+ * Passes a trigger event to a state for evaluation
+ */
+function stateEvaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+	let result: boolean = false;
+
+	// first, delegate to child states for evaluation
+	for (let i = state.children.length; i--;) {
+		if (stateEvaluate(instance.getState(state.children[i]), instance, deepHistory, trigger)) {
+			result = true;
+
+			// if a transition in a child state causes us to exit this state, break out now 
+			if (state.parent && instance.getState(state.parent) !== state) {
+				return result;
+			}
+		}
+	}
+
+	if (result) {
+		// test for completion transitions if a state transition occurred in the child state
+		completion(state, instance, deepHistory, state);
+	} else { // otherwise, look for transitions from this state
+		const transition = getVertexTransition(state, trigger);
+
+		if (transition) {
+			traverse(transition, instance, deepHistory, trigger);
+
+			result = true;
+		}
+	}
 
 	return result;
 }
@@ -115,7 +149,6 @@ model.Region.prototype.leave = function (instance: IInstance, deepHistory: boole
 declare module '../model/PseudoState' {
 	interface PseudoState {
 		getTransition(trigger: any): model.Transition;
-		getChoiceTransition(trigger: any): model.Transition | undefined;
 
 		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
@@ -123,11 +156,9 @@ declare module '../model/PseudoState' {
 	}
 }
 
-/** 
- * Find a transition from the pseudo state for a given trigger event
- */
+/** Find a transition from the pseudo state for a given trigger event */
 model.PseudoState.prototype.getTransition = function (trigger: any): model.Transition {
-	const result = (this.kind === model.PseudoStateKind.Choice ? this.getChoiceTransition(trigger) : model.State.prototype.getTransition.call(this, trigger)) || this.elseTransition;
+	const result = (this.kind === model.PseudoStateKind.Choice ? getChoiceTransition: getVertexTransition)(this, trigger) || this.elseTransition;
 
 	if (!result) {
 		throw new Error(`Unable to find transition at ${this} for ${trigger}`);
@@ -136,12 +167,13 @@ model.PseudoState.prototype.getTransition = function (trigger: any): model.Trans
 	return result;
 }
 
-model.PseudoState.prototype.getChoiceTransition = function (trigger: any): model.Transition | undefined {
+/** Find a transition from a choice pseudo state */
+function getChoiceTransition  (pseudoState: model.PseudoState, trigger: any): model.Transition | undefined {
 	let transitions: Array<model.Transition> = [];
 
-	for (let i = this.outgoing.length; i--;) {
-		if (this.outgoing[i].guard(trigger)) {
-			transitions.push(this.outgoing[i]);
+	for (let i = pseudoState.outgoing.length; i--;) {
+		if (pseudoState.outgoing[i].guard(trigger)) {
+			transitions.push(pseudoState.outgoing[i]);
 		}
 	}
 
@@ -186,11 +218,7 @@ model.PseudoState.prototype.leave = function (instance: IInstance, deepHistory: 
  */
 declare module '../model/State' {
 	interface State {
-		evaluate(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
-
 		getTransition(trigger: any): model.Transition | undefined;
-
-		completion(instance: IInstance, deepHistory: boolean, trigger: any): void;
 
 		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
@@ -199,46 +227,12 @@ declare module '../model/State' {
 }
 
 /**
- * Passes a trigger event to a state for evaluation
- */
-model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boolean, trigger: any): boolean {
-	let result: boolean = false;
-
-	// first, delegate to child states for evaluation
-	for (let i = this.children.length; i--;) {
-		if (instance.getState(this.children[i]).evaluate(instance, deepHistory, trigger)) {
-			result = true;
-
-			// if a transition in a child state causes us to exit this state, break out now 
-			if (this.parent && instance.getState(this.parent) !== this) {
-				return result;
-			}
-		}
-	}
-
-	if (result) {
-		// test for completion transitions if a state transition occurred in the child state
-		this.completion(instance, deepHistory, this);
-	} else { // otherwise, look for transitions from this state
-		const transition = this.getTransition(trigger);
-
-		if (transition) {
-			traverse(transition, instance, deepHistory, trigger);
-
-			result = true;
-		}
-	}
-
-	return result;
-}
-
-/**
  * Checks for and executes completion transitions
  */
-model.State.prototype.completion = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+function completion(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// check to see if the state is complete; fail fast if its not
-	for (let i = this.children.length; i--;) {
-		if (instance.getState(this.children[i]).outgoing.length !== 0) {
+	for (let i = state.children.length; i--;) {
+		if (instance.getState(state.children[i]).outgoing.length !== 0) {
 			return;
 		}
 	}
@@ -246,7 +240,7 @@ model.State.prototype.completion = function (instance: IInstance, deepHistory: b
 	//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
 
 	// find and execute transition
-	const transition = this.getTransition(trigger);
+	const transition = getVertexTransition(state, trigger);
 
 	if (transition) {
 		traverse(transition, instance, deepHistory, trigger);
@@ -257,16 +251,20 @@ model.State.prototype.completion = function (instance: IInstance, deepHistory: b
  * Find a single transition from the state for a given trigger event
  */
 model.State.prototype.getTransition = function (trigger: any): model.Transition | undefined {
+	return getVertexTransition(this, trigger);
+}
+
+function getVertexTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
 	let result: model.Transition | undefined;
 
 	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
-	for (let i = this.outgoing.length; i--;) {
-		if (this.outgoing[i].guard(trigger)) {
+	for (let i = vertex.outgoing.length; i--;) {
+		if (vertex.outgoing[i].guard(trigger)) {
 			if (result) { // NOTE: only one transition is valid, more than one is considered a model error
-				throw new Error(`Multiple transitions found at ${this} for ${trigger}`);
+				throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
 			}
 
-			result = this.outgoing[i];
+			result = vertex.outgoing[i];
 		}
 	}
 
@@ -299,7 +297,7 @@ model.State.prototype.enterTail = function (instance: IInstance, deepHistory: bo
 	}
 
 	// test for completion transitions
-	this.completion(instance, deepHistory, this);
+	completion(this, instance, deepHistory, this);
 }
 
 /***
@@ -360,5 +358,5 @@ model.InternalTransition.prototype.execute = function (instance: IInstance, deep
 	}
 
 	// test for completion transitions as there will be state entry/exit performed where the test is usually performed
-	this.source.completion(instance, deepHistory, this.target);
+	completion(this.source, instance, deepHistory, this.target);
 }
