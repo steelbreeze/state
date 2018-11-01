@@ -199,6 +199,7 @@ model.PseudoState.prototype.leave = function (instance: IInstance, deepHistory: 
 declare module '../model/State' {
 	interface State {
 		evaluate(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
+		delegate(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
 
 		getTransition(trigger: any): model.Transition | undefined;
 
@@ -210,10 +211,7 @@ declare module '../model/State' {
 	}
 }
 
-/**
- * Passes a trigger event to a state for evaluation
- */
-model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+model.State.prototype.delegate = function (instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	let result: boolean = false;
 
 	// delegate to child states to facilitate depth-first evaluation
@@ -228,13 +226,30 @@ model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boo
 		}
 	}
 
-	// test for completion transition if the event caused a state transition in a child state
-	if (result) {
-		this.completion(instance, deepHistory, this);
+	return result;
+}
+
+/**
+ * Passes a trigger event to a state for evaluation
+ */
+model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+	let result: boolean = this.delegate(instance, deepHistory, trigger);
+/*
+	// delegate to child states to facilitate depth-first evaluation
+	for (let i = this.children.length; i--;) {
+		if (instance.getState(this.children[i]).evaluate(instance, deepHistory, trigger)) {
+			result = true;
+
+			// if a transition in a child state causes us to exit this state, break out now
+			if (this.parent && instance.getState(this.parent) !== this) {
+				return result;
+			}
+		}
 	}
-	
-	// if no state transition occured in a child state look for transitions from this state
-	else {
+*/
+
+	// if no child state took the trigger event, test here
+	if (result === false) {
 		const transition = this.getTransition(trigger);
 
 		if(transition) {
@@ -242,8 +257,13 @@ model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boo
 
 			result = true;
 		}
+	} else {
+		// before we look for completion transitions, we must test that this state is still active
+		if(this.parent === undefined || instance.getState(this.parent) === this) {
+			this.completion(instance, deepHistory, this);
+		}
 	}
-
+	
 	return result;
 }
 
