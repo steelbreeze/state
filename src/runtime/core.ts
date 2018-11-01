@@ -45,7 +45,7 @@ export function evaluate(instance: IInstance, trigger: any): boolean {
  * @returns Returns true if a transition was found and traversed.
  * @internal
  */
-function traverse(transition: model.Transition, instance: IInstance, deepHistory: boolean, trigger: any ):void {
+function traverse(transition: model.Transition, instance: IInstance, deepHistory: boolean, trigger: any): void {
 	const transitions: Array<model.Transition> = [transition];
 
 	// gather all transitions to be taversed either side of static conditional branches (junctions)
@@ -176,11 +176,11 @@ model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHisto
 model.PseudoState.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
 	if (this.kind !== model.PseudoStateKind.Junction) {
-//		log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
+		//		log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
 
 		const transition = this.getTransition(trigger);
 
-		if(transition) {
+		if (transition) {
 			traverse(transition, instance, deepHistory, trigger);
 		}
 	}
@@ -199,7 +199,6 @@ model.PseudoState.prototype.leave = function (instance: IInstance, deepHistory: 
 declare module '../model/State' {
 	interface State {
 		evaluate(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
-		delegate(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
 
 		getTransition(trigger: any): model.Transition | undefined;
 
@@ -211,31 +210,13 @@ declare module '../model/State' {
 	}
 }
 
-model.State.prototype.delegate = function (instance: IInstance, deepHistory: boolean, trigger: any): boolean {
-	let result: boolean = false;
-
-	// delegate to child states to facilitate depth-first evaluation
-	for (let i = this.children.length; i--;) {
-		if (instance.getState(this.children[i]).evaluate(instance, deepHistory, trigger)) {
-			result = true;
-
-			// if a transition in a child state causes us to exit this state, break out now
-			if (this.parent && instance.getState(this.parent) !== this) {
-				return result;
-			}
-		}
-	}
-
-	return result;
-}
-
 /**
  * Passes a trigger event to a state for evaluation
  */
 model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boolean, trigger: any): boolean {
-	let result: boolean = this.delegate(instance, deepHistory, trigger);
-/*
-	// delegate to child states to facilitate depth-first evaluation
+	let result: boolean = false;
+
+	// first, delegate to children for evaluation
 	for (let i = this.children.length; i--;) {
 		if (instance.getState(this.children[i]).evaluate(instance, deepHistory, trigger)) {
 			result = true;
@@ -246,24 +227,21 @@ model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boo
 			}
 		}
 	}
-*/
 
-	// if no child state took the trigger event, test here
-	if (result === false) {
+	if (result) {
+		// test for completion transitions 
+		this.completion(instance, deepHistory, this);
+	} else {
+		// look for transitions from this state
 		const transition = this.getTransition(trigger);
 
-		if(transition) {
+		if (transition) {
 			traverse(transition, instance, deepHistory, trigger);
 
 			result = true;
 		}
-	} else {
-		// before we look for completion transitions, we must test that this state is still active
-		if(this.parent === undefined || instance.getState(this.parent) === this) {
-			this.completion(instance, deepHistory, this);
-		}
 	}
-	
+
 	return result;
 }
 
@@ -278,12 +256,12 @@ model.State.prototype.completion = function (instance: IInstance, deepHistory: b
 		}
 	}
 
-//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
+	//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
 
 	// find and execute transition
 	const transition = this.getTransition(trigger);
 
-	if(transition) {
+	if (transition) {
 		traverse(transition, instance, deepHistory, trigger);
 	}
 }

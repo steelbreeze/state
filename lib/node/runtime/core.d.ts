@@ -41,7 +41,6 @@ declare module '../model/PseudoState' {
 declare module '../model/State' {
     interface State {
         evaluate(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
-        delegate(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
         getTransition(trigger: any): model.Transition | undefined;
         completion(instance: IInstance, deepHistory: boolean, trigger: any): void;
         enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
