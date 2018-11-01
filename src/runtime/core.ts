@@ -41,7 +41,7 @@ export function evaluate(instance: IInstance, trigger: any): boolean {
  */
 function stateEvaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	// first, delegate to child states for evaluation
-	let result = delegate(state, instance, deepHistory, trigger);
+	let result = delegateEvaluate(state, instance, deepHistory, trigger);
 
 	// if a child state caused a transition, we can test for completion transitions, but only if we are still active
 	if (result) {
@@ -49,21 +49,29 @@ function stateEvaluate(state: model.State, instance: IInstance, deepHistory: boo
 			completion(state, instance, deepHistory, state);
 		}
 	} else { // otherwise, look for transitions from this state
-		const transition = getVertexTransition(state, trigger);
-
-		if (transition) {
-			traverse(transition, instance, deepHistory, trigger);
-
-			result = true;
-		}
+		result = findAndTraverse(state, instance, deepHistory, trigger);
 	}
 
 	return result;
 }
 
-function delegate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+function findAndTraverse(vertex: model.State | model.PseudoState, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+	let result = false;
+
+	const transition = vertex.getTransition(trigger);
+
+	if (transition) {
+		traverse(transition, instance, deepHistory, trigger);
+
+		result = true;
+	}
+
+	return result;
+}
+
+function delegateEvaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	let result: boolean = false;
-	let isActive = true;
+	let isActive: boolean = true;
 
 	// first, delegate to child states for evaluation
 	for (let i = state.children.length; isActive && i--;) {
@@ -205,11 +213,13 @@ model.PseudoState.prototype.enterTail = function (instance: IInstance, deepHisto
 	if (this.kind !== model.PseudoStateKind.Junction) {
 		//log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
 
-		const transition = this.getTransition(trigger);
+//		const transition = this.getTransition(trigger);
+//
+//		if (transition) {
+//			traverse(transition, instance, deepHistory, trigger);
+//		}
 
-		if (transition) {
-			traverse(transition, instance, deepHistory, trigger);
-		}
+		findAndTraverse(this, instance, deepHistory, trigger);
 	}
 }
 
@@ -247,11 +257,12 @@ function completion(state: model.State, instance: IInstance, deepHistory: boolea
 	//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
 
 	// find and execute transition
-	const transition = getVertexTransition(state, trigger);
-
-	if (transition) {
-		traverse(transition, instance, deepHistory, trigger);
-	}
+	findAndTraverse(state, instance, deepHistory, trigger);
+//	const transition = getVertexTransition(state, trigger);
+//
+//	if (transition) {
+//		traverse(transition, instance, deepHistory, trigger);
+//	}
 }
 
 /** 
