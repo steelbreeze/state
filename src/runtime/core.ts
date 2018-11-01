@@ -56,17 +56,19 @@ function stateEvaluate(state: model.State, instance: IInstance, deepHistory: boo
 }
 
 function findAndTraverse(vertex: model.State | model.PseudoState, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
-	let result = false;
+//	let result = false;
 
 	const transition = vertex.getTransition(trigger);
 
 	if (transition) {
 		traverse(transition, instance, deepHistory, trigger);
 
-		result = true;
+//		result = true;
+		return true;
 	}
 
-	return result;
+	return false;
+//	return result;
 }
 
 function delegateEvaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
@@ -265,10 +267,6 @@ function getVertexTransition(vertex: model.State | model.PseudoState, trigger: a
 	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
 	for (let i = vertex.outgoing.length; !error && i--;) {
 		if (vertex.outgoing[i].guard(trigger)) {
-//			if (result) { // NOTE: only one transition is valid, more than one is considered a model error
-//				throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
-//
-//			}
 			error = result !== undefined;
 			result = vertex.outgoing[i];
 		}
