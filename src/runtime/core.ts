@@ -40,6 +40,28 @@ export function evaluate(instance: IInstance, trigger: any): boolean {
  * Passes a trigger event to a state for evaluation
  */
 function stateEvaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+	// first, delegate to child states for evaluation
+	let result = delegate(state, instance, deepHistory, trigger);
+
+	// if a child state caused a transition, we can test for completion transitions, but only if we are still active
+	if (result) {
+		if (state.parent && instance.getState(state.parent) === state) {
+			completion(state, instance, deepHistory, state);
+		}
+	} else { // otherwise, look for transitions from this state
+		const transition = getVertexTransition(state, trigger);
+
+		if (transition) {
+			traverse(transition, instance, deepHistory, trigger);
+
+			result = true;
+		}
+	}
+
+	return result;
+}
+
+function delegate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	let result: boolean = false;
 
 	// first, delegate to child states for evaluation
@@ -51,19 +73,6 @@ function stateEvaluate(state: model.State, instance: IInstance, deepHistory: boo
 			if (state.parent && instance.getState(state.parent) !== state) {
 				return result;
 			}
-		}
-	}
-
-	if (result) {
-		// test for completion transitions if a state transition occurred in the child state
-		completion(state, instance, deepHistory, state);
-	} else { // otherwise, look for transitions from this state
-		const transition = getVertexTransition(state, trigger);
-
-		if (transition) {
-			traverse(transition, instance, deepHistory, trigger);
-
-			result = true;
 		}
 	}
 
@@ -158,7 +167,7 @@ declare module '../model/PseudoState' {
 
 /** Find a transition from the pseudo state for a given trigger event */
 model.PseudoState.prototype.getTransition = function (trigger: any): model.Transition {
-	const result = (this.kind === model.PseudoStateKind.Choice ? getChoiceTransition: getVertexTransition)(this, trigger) || this.elseTransition;
+	const result = (this.kind === model.PseudoStateKind.Choice ? getChoiceTransition : getVertexTransition)(this, trigger) || this.elseTransition;
 
 	if (!result) {
 		throw new Error(`Unable to find transition at ${this} for ${trigger}`);
@@ -168,7 +177,7 @@ model.PseudoState.prototype.getTransition = function (trigger: any): model.Trans
 }
 
 /** Find a transition from a choice pseudo state */
-function getChoiceTransition  (pseudoState: model.PseudoState, trigger: any): model.Transition | undefined {
+function getChoiceTransition(pseudoState: model.PseudoState, trigger: any): model.Transition | undefined {
 	let transitions: Array<model.Transition> = [];
 
 	for (let i = pseudoState.outgoing.length; i--;) {
