@@ -45,7 +45,7 @@ export function evaluate(instance: IInstance, trigger: any): boolean {
  * @returns Returns true if a transition was found and traversed.
  * @internal
  */
-function traverse(transition: model.Transition, instance: IInstance, deepHistory: boolean, trigger: any): void {
+function traverse(transition: model.Transition, instance: IInstance, deepHistory: boolean, trigger: any ):void {
 	const transitions: Array<model.Transition> = [transition];
 
 	// gather all transitions to be taversed either side of static conditional branches (junctions)
@@ -176,11 +176,11 @@ model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHisto
 model.PseudoState.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
 	if (this.kind !== model.PseudoStateKind.Junction) {
-		//		log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
+//		log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
 
 		const transition = this.getTransition(trigger);
 
-		if (transition) {
+		if(transition) {
 			traverse(transition, instance, deepHistory, trigger);
 		}
 	}
@@ -215,33 +215,32 @@ declare module '../model/State' {
  */
 model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	let result: boolean = false;
-	let isActive = true;
 
 	// delegate to child states to facilitate depth-first evaluation
-	for (let i = this.children.length; i-- && isActive;) {
+	for (let i = this.children.length; i--;) {
 		if (instance.getState(this.children[i]).evaluate(instance, deepHistory, trigger)) {
 			result = true;
 
-			// check to see if the state transition caused us to transition out of this state
-			isActive = this.parent === undefined || instance.getState(this.parent) === this;
+			// if a transition in a child state causes us to exit this state, break out now
+			if (this.parent && instance.getState(this.parent) !== this) {
+				return result;
+			}
 		}
 	}
 
-	if (isActive) {
-		// test for completion transition if the event caused a state transition in a child state
-		if (result) {
-			this.completion(instance, deepHistory, this);
-		}
+	// test for completion transition if the event caused a state transition in a child state
+	if (result) {
+		this.completion(instance, deepHistory, this);
+	}
+	
+	// if no state transition occured in a child state look for transitions from this state
+	else {
+		const transition = this.getTransition(trigger);
 
-		// if no state transition occured in a child state look for transitions from this state
-		else {
-			const transition = this.getTransition(trigger);
+		if(transition) {
+			traverse(transition, instance, deepHistory, trigger);
 
-			if (transition) {
-				traverse(transition, instance, deepHistory, trigger);
-
-				result = true;
-			}
+			result = true;
 		}
 	}
 
@@ -259,12 +258,12 @@ model.State.prototype.completion = function (instance: IInstance, deepHistory: b
 		}
 	}
 
-	//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
+//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
 
 	// find and execute transition
 	const transition = this.getTransition(trigger);
 
-	if (transition) {
+	if(transition) {
 		traverse(transition, instance, deepHistory, trigger);
 	}
 }
