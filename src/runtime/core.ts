@@ -85,10 +85,8 @@ model.Region.prototype.enterTail = function (instance: IInstance, deepHistory: b
 	// determine if history semantics are in play and the region has previously been entered then select the starting vertex accordingly
 	if ((deepHistory || (this.starting && this.starting.kind & model.History)) && (starting = instance.getState(this))) {
 		deepHistory = deepHistory || (this.starting!.kind === model.PseudoStateKind.DeepHistory);
-	}
-
-	// if no history semantics are in place, use the initial, deep history or shallow pseudo state as the starting vertex
-	else {
+	} else {
+		// if no history semantics are in place, use the initial, deep history or shallow pseudo state as the starting vertex
 		starting = this.starting;
 	}
 
@@ -117,6 +115,7 @@ model.Region.prototype.leave = function (instance: IInstance, deepHistory: boole
 declare module '../model/PseudoState' {
 	interface PseudoState {
 		getTransition(trigger: any): model.Transition;
+		getChoiceTransition(trigger: any): model.Transition | undefined;
 
 		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
@@ -128,29 +127,25 @@ declare module '../model/PseudoState' {
  * Find a transition from the pseudo state for a given trigger event
  */
 model.PseudoState.prototype.getTransition = function (trigger: any): model.Transition {
-	let result: model.Transition | undefined;
-
-	// find a single transition for all pseudo states except choice pseudo states
-	if (this.kind !== model.PseudoStateKind.Choice) {
-		result = model.State.prototype.getTransition.call(this, trigger) || this.elseTransition;
-	} else {
-		// choice pseudo states may have multiple outbound transitions evaluate true in which case a random one is selected
-		const transitions: Array<model.Transition> = [];
-
-		for (let i = this.outgoing.length; i--;) {
-			if (this.outgoing[i].guard(trigger)) {
-				transitions.push(this.outgoing[i]);
-			}
-		}
-
-		result = transitions[random.get(transitions.length)] || this.elseTransition;
-	}
+	const result = (this.kind === model.PseudoStateKind.Choice ? this.getChoiceTransition(trigger) : model.State.prototype.getTransition.call(this, trigger)) || this.elseTransition;
 
 	if (!result) {
 		throw new Error(`Unable to find transition at ${this} for ${trigger}`);
 	}
 
 	return result;
+}
+
+model.PseudoState.prototype.getChoiceTransition = function (trigger: any): model.Transition | undefined {
+	let transitions: Array<model.Transition> = [];
+
+	for (let i = this.outgoing.length; i--;) {
+		if (this.outgoing[i].guard(trigger)) {
+			transitions.push(this.outgoing[i]);
+		}
+	}
+
+	return transitions[random.get(transitions.length)];
 }
 
 /**
@@ -169,7 +164,7 @@ model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHisto
 model.PseudoState.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
 	if (this.kind !== model.PseudoStateKind.Junction) {
-		//		log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
+		//log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
 
 		const transition = this.getTransition(trigger);
 
