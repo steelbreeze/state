@@ -129,14 +129,13 @@ model.Region.prototype.enterHead = function (instance: IInstance, deepHistory: b
  * Complete region entry
  */
 model.Region.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
-	let starting: model.State | model.PseudoState | undefined;
+	let current: model.State | undefined;
+	let starting: model.State | model.PseudoState | undefined = this.starting;
 
 	// determine if history semantics are in play and the region has previously been entered then select the starting vertex accordingly
-	if ((deepHistory || (this.starting && this.starting.kind & model.History)) && (starting = instance.getState(this))) {
+	if ((deepHistory || (starting && starting.kind & model.History)) && (current = instance.getState(this))) {
+		starting = current;
 		deepHistory = deepHistory || (this.starting!.kind === model.PseudoStateKind.DeepHistory);
-	} else {
-		// if no history semantics are in place, use the initial, deep history or shallow pseudo state as the starting vertex
-		starting = this.starting;
 	}
 
 	if (!starting) {
@@ -211,14 +210,6 @@ model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHisto
 model.PseudoState.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
 	if (this.kind !== model.PseudoStateKind.Junction) {
-		//log.info(() => `${instance} testing completion transitions from ${this}`, log.Evaluate);
-
-//		const transition = this.getTransition(trigger);
-//
-//		if (transition) {
-//			traverse(transition, instance, deepHistory, trigger);
-//		}
-
 		findAndTraverse(this, instance, deepHistory, trigger);
 	}
 }
@@ -258,11 +249,6 @@ function completion(state: model.State, instance: IInstance, deepHistory: boolea
 
 	// find and execute transition
 	findAndTraverse(state, instance, deepHistory, trigger);
-//	const transition = getVertexTransition(state, trigger);
-//
-//	if (transition) {
-//		traverse(transition, instance, deepHistory, trigger);
-//	}
 }
 
 /** 
