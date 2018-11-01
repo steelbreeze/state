@@ -260,16 +260,22 @@ model.State.prototype.getTransition = function (trigger: any): model.Transition 
 
 function getVertexTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
 	let result: model.Transition | undefined;
+	let error = false;
 
 	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
-	for (let i = vertex.outgoing.length; i--;) {
+	for (let i = vertex.outgoing.length; !error && i--;) {
 		if (vertex.outgoing[i].guard(trigger)) {
-			if (result) { // NOTE: only one transition is valid, more than one is considered a model error
-				throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
-			}
-
+//			if (result) { // NOTE: only one transition is valid, more than one is considered a model error
+//				throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
+//
+//			}
+			error = result !== undefined;
 			result = vertex.outgoing[i];
 		}
+	}
+
+	if(error) {
+		throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
 	}
 
 	return result;
