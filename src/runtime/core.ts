@@ -92,13 +92,13 @@ model.Region.prototype.enterTail = function (instance: IInstance, deepHistory: b
 		starting = this.starting;
 	}
 
-	// cascade the entry operation to the approriate child vertex
-	if (starting) {
-		starting.enterHead(instance, deepHistory, trigger);
-		starting.enterTail(instance, deepHistory, trigger);
-	} else {
+	if (!starting) {
 		throw new Error(`${instance} no initial pseudo state found at ${this}`);
 	}
+
+	// cascade the entry operation to the approriate child vertex
+	starting.enterHead(instance, deepHistory, trigger);
+	starting.enterTail(instance, deepHistory, trigger);
 }
 
 /**
@@ -132,11 +132,9 @@ model.PseudoState.prototype.getTransition = function (trigger: any): model.Trans
 
 	// find a single transition for all pseudo states except choice pseudo states
 	if (this.kind !== model.PseudoStateKind.Choice) {
-		result = model.State.prototype.getTransition.call(this, trigger);
-	}
-
-	// choice pseudo states may have multiple outbound transitions evaluate true in which case a random one is selected
-	else {
+		result = model.State.prototype.getTransition.call(this, trigger) || this.elseTransition;
+	} else {
+		// choice pseudo states may have multiple outbound transitions evaluate true in which case a random one is selected
 		const transitions: Array<model.Transition> = [];
 
 		for (let i = this.outgoing.length; i--;) {
@@ -145,19 +143,14 @@ model.PseudoState.prototype.getTransition = function (trigger: any): model.Trans
 			}
 		}
 
-		result = transitions[random.get(transitions.length)];
+		result = transitions[random.get(transitions.length)] || this.elseTransition;
 	}
 
-	// if no transition is found look for an else transition (only defined for junction and choice pseudo states)
 	if (!result) {
-		result = this.elseTransition;
+		throw new Error(`Unable to find transition at ${this} for ${trigger}`);
 	}
 
-	if (result) {
-		return result;
-	}
-
-	throw new Error(`Unable to find transition at ${this} for ${trigger}`);
+	return result;
 }
 
 /**
@@ -216,12 +209,12 @@ declare module '../model/State' {
 model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	let result: boolean = false;
 
-	// first, delegate to children for evaluation
+	// first, delegate to child states for evaluation
 	for (let i = this.children.length; i--;) {
 		if (instance.getState(this.children[i]).evaluate(instance, deepHistory, trigger)) {
 			result = true;
 
-			// if a transition in a child state causes us to exit this state, break out now
+			// if a transition in a child state causes us to exit this state, break out now 
 			if (this.parent && instance.getState(this.parent) !== this) {
 				return result;
 			}
@@ -229,10 +222,9 @@ model.State.prototype.evaluate = function (instance: IInstance, deepHistory: boo
 	}
 
 	if (result) {
-		// test for completion transitions 
+		// test for completion transitions if a state transition occurred in the child state
 		this.completion(instance, deepHistory, this);
-	} else {
-		// look for transitions from this state
+	} else { // otherwise, look for transitions from this state
 		const transition = this.getTransition(trigger);
 
 		if (transition) {
@@ -267,14 +259,15 @@ model.State.prototype.completion = function (instance: IInstance, deepHistory: b
 }
 
 /** 
- * Find a transition from the state for a given trigger event
+ * Find a single transition from the state for a given trigger event
  */
 model.State.prototype.getTransition = function (trigger: any): model.Transition | undefined {
 	let result: model.Transition | undefined;
 
+	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
 	for (let i = this.outgoing.length; i--;) {
 		if (this.outgoing[i].guard(trigger)) {
-			if (result) {
+			if (result) { // NOTE: only one transition is valid, more than one is considered a model error
 				throw new Error(`Multiple transitions found at ${this} for ${trigger}`);
 			}
 
