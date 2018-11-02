@@ -55,22 +55,6 @@ function stateEvaluate(state: model.State, instance: IInstance, deepHistory: boo
 	return result;
 }
 
-function findAndTraverse(vertex: model.State | model.PseudoState, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
-//	let result = false;
-
-	const transition = vertex.getTransition(trigger);
-
-	if (transition) {
-		traverse(transition, instance, deepHistory, trigger);
-
-//		result = true;
-		return true;
-	}
-
-	return false;
-//	return result;
-}
-
 function delegateEvaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	let result: boolean = false;
 	let isActive: boolean = true;
@@ -82,6 +66,50 @@ function delegateEvaluate(state: model.State, instance: IInstance, deepHistory: 
 			isActive = state.parent === undefined || instance.getState(state.parent) === state;
 			result = true;
 		}
+	}
+
+	return result;
+}
+
+function findAndTraverse(vertex: model.State | model.PseudoState, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+	const transition = vertex.getTransition(trigger);
+
+	if (transition) {
+		traverse(transition, instance, deepHistory, trigger);
+
+		return true;
+	}
+
+	return false;
+}
+
+/** Find a transition from a choice pseudo state */
+function getChoiceTransition(pseudoState: model.PseudoState, trigger: any): model.Transition | undefined {
+	let transitions: Array<model.Transition> = [];
+
+	for (let i = pseudoState.outgoing.length; i--;) {
+		if (pseudoState.outgoing[i].guard(trigger)) {
+			transitions.push(pseudoState.outgoing[i]);
+		}
+	}
+
+	return transitions[random.get(transitions.length)];
+}
+
+function getVertexTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
+	let result: model.Transition | undefined;
+	let error = false;
+
+	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
+	for (let i = vertex.outgoing.length; !error && i--;) {
+		if (vertex.outgoing[i].guard(trigger)) {
+			error = result !== undefined;
+			result = vertex.outgoing[i];
+		}
+	}
+
+	if(error) {
+		throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
 	}
 
 	return result;
@@ -107,6 +135,23 @@ function traverse(transition: model.Transition, instance: IInstance, deepHistory
 	for (let i = transitions.length; i--;) {
 		transitions[i].execute(instance, deepHistory, trigger);
 	}
+}
+
+/**
+ * Checks for and executes completion transitions
+ */
+function completion(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): void {
+	// check to see if the state is complete; fail fast if its not
+	for (let i = state.children.length; i--;) {
+		if (instance.getState(state.children[i]).outgoing.length !== 0) {
+			return;
+		}
+	}
+
+	//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
+
+	// find and execute transition
+	findAndTraverse(state, instance, deepHistory, trigger);
 }
 
 /**
@@ -183,19 +228,6 @@ model.PseudoState.prototype.getTransition = function (trigger: any): model.Trans
 	return result;
 }
 
-/** Find a transition from a choice pseudo state */
-function getChoiceTransition(pseudoState: model.PseudoState, trigger: any): model.Transition | undefined {
-	let transitions: Array<model.Transition> = [];
-
-	for (let i = pseudoState.outgoing.length; i--;) {
-		if (pseudoState.outgoing[i].guard(trigger)) {
-			transitions.push(pseudoState.outgoing[i]);
-		}
-	}
-
-	return transitions[random.get(transitions.length)];
-}
-
 /**
  * Initiate pseudo state entry
  */
@@ -236,22 +268,6 @@ declare module '../model/State' {
 	}
 }
 
-/**
- * Checks for and executes completion transitions
- */
-function completion(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): void {
-	// check to see if the state is complete; fail fast if its not
-	for (let i = state.children.length; i--;) {
-		if (instance.getState(state.children[i]).outgoing.length !== 0) {
-			return;
-		}
-	}
-
-	//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
-
-	// find and execute transition
-	findAndTraverse(state, instance, deepHistory, trigger);
-}
 
 /** 
  * Find a single transition from the state for a given trigger event
@@ -260,24 +276,6 @@ model.State.prototype.getTransition = function (trigger: any): model.Transition 
 	return getVertexTransition(this, trigger);
 }
 
-function getVertexTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
-	let result: model.Transition | undefined;
-	let error = false;
-
-	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
-	for (let i = vertex.outgoing.length; !error && i--;) {
-		if (vertex.outgoing[i].guard(trigger)) {
-			error = result !== undefined;
-			result = vertex.outgoing[i];
-		}
-	}
-
-	if(error) {
-		throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
-	}
-
-	return result;
-}
 
 /**
  * Initiate state entry

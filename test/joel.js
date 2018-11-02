@@ -12,16 +12,20 @@ var aa = new state.State('aa', a);
 var aChoice = new state.PseudoState('aChoice', a, state.PseudoStateKind.Choice);
 
 initial.external(aa);
-aa.external(aChoice);
+aa.internal().when(trigger => trigger === "stay");
+aa.external(aChoice).when(trigger => trigger === "move");
 aChoice.external(b);
 
 var instance = new state.Instance('instance', model);
+
+state.evaluate(instance, "stay");
+state.evaluate(instance, "move");
 
 state.log.remove(logger);
 
 describe("test/joel.js", function () {
 	it("When a regions leaves via a pseddo state, than pseudo state is left and not the last known state", function () {
 
-		assert.equal("instance leave model.model.a.a.aChoice", log[23]);
+		assert.equal("instance leave model.model.a.a.aChoice", log[27]);
 	});
 });
