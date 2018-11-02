@@ -1,6 +1,6 @@
 import * as model from '../model';
 import { log } from '../util';
-import { IInstance, stateEvaluate } from '../runtime';
+import { IInstance, evaluate } from '../runtime';
 
 export class Instance implements IInstance {
 	private cleanState: Record<string, model.State> = {};                      // NOTE: this is the persistent representation of state machine state
@@ -14,7 +14,7 @@ export class Instance implements IInstance {
 	public evaluate(trigger: any): boolean {
 		log.info(() => `${this} evaluate ${typeof trigger} trigger: ${trigger}`, log.Evaluate)
 	
-		return this.transaction(() => stateEvaluate(this.root, this, false, trigger));
+		return this.transaction(() => evaluate(this.root, this, false, trigger));
 	}
 	
 	public transaction<TReturn>(operation: () => TReturn): TReturn {

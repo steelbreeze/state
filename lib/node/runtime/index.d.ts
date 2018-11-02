@@ -6,4 +6,4 @@ export { IInstance } from './IInstance';
  * The default implementation of a state machine instance using associative arrays as the storage mechanism.
  */
 export { Instance } from './Instance';
-export { stateEvaluate } from './core';
+export { evaluate } from './core';
