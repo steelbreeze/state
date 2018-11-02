@@ -1,21 +1,6 @@
-import { log, random } from '../util';
 import * as model from '../model';
+import { log, random } from '../util';
 import { IInstance } from '../runtime';
-
-/**
- * Initialises a state machine instance to its starting state.
- * @param instance The state machine instance.
- * @public
- */
-export function initialise(instance: IInstance): void {
-	instance.beginTran();
-
-	// initialise the state machine by entering the root element
-	instance.root.enterHead(instance, false, undefined);
-	instance.root.enterTail(instance, false, undefined);
-
-	instance.commitTran();
-}
 
 /**
  * Passes a trigger event into a state machine for evaluation.
@@ -24,22 +9,17 @@ export function initialise(instance: IInstance): void {
  * @returns Returns true if the trigger caused a state transition.
  * @public
  */
+/*
 export function evaluate(instance: IInstance, trigger: any): boolean {
 	log.info(() => `${instance} evaluate ${typeof trigger} trigger: ${trigger}`, log.Evaluate)
 
-	instance.beginTran();
-
-	const result = stateEvaluate(instance.root, instance, false, trigger);
-
-	instance.commitTran();
-
-	return result;
+	return instance.transaction(() => stateEvaluate(instance.root, instance, false, trigger));
 }
-
+*/
 /**
  * Passes a trigger event to a state for evaluation
  */
-function stateEvaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+export function stateEvaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	// first, delegate to child states for evaluation
 	let result = delegateEvaluate(state, instance, deepHistory, trigger);
 
@@ -157,10 +137,16 @@ function completion(state: model.State, instance: IInstance, deepHistory: boolea
  */
 declare module '../model/Region' {
 	interface Region {
+		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}
+}
+
+model.Region.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	this.enterHead(instance, deepHistory, trigger);
+	this.enterTail(instance, deepHistory, trigger);
 }
 
 /**
@@ -188,8 +174,7 @@ model.Region.prototype.enterTail = function (instance: IInstance, deepHistory: b
 	}
 
 	// cascade the entry operation to the approriate child vertex
-	starting.enterHead(instance, deepHistory, trigger);
-	starting.enterTail(instance, deepHistory, trigger);
+	starting.enter(instance, deepHistory, trigger);
 }
 
 /**
@@ -209,6 +194,7 @@ declare module '../model/PseudoState' {
 	interface PseudoState {
 		getTransition(trigger: any): model.Transition;
 
+		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
@@ -224,6 +210,11 @@ model.PseudoState.prototype.getTransition = function (trigger: any): model.Trans
 	}
 
 	return result;
+}
+
+model.PseudoState.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	this.enterHead(instance, deepHistory, trigger);
+	this.enterTail(instance, deepHistory, trigger);
 }
 
 /**
@@ -260,6 +251,7 @@ declare module '../model/State' {
 	interface State {
 		getTransition(trigger: any): model.Transition | undefined;
 
+		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
@@ -274,6 +266,10 @@ model.State.prototype.getTransition = function (trigger: any): model.Transition 
 	return getVertexTransition(this, trigger);
 }
 
+model.State.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	this.enterHead(instance, deepHistory, trigger);
+	this.enterTail(instance, deepHistory, trigger);
+}
 
 /**
  * Initiate state entry
@@ -296,8 +292,7 @@ model.State.prototype.enterHead = function (instance: IInstance, deepHistory: bo
 model.State.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// cascade the enter operation to child regions
 	for (let i = this.children.length; i--;) {
-		this.children[i].enterHead(instance, deepHistory, trigger);
-		this.children[i].enterTail(instance, deepHistory, trigger);
+		this.children[i].enter(instance, deepHistory, trigger);
 	}
 
 	// test for completion transitions

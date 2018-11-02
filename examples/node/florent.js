@@ -26,5 +26,5 @@ idle.to(showMoveItemPattern).when(function (trigger) { return trigger === "Relea
 showMoveItemPattern.to(hideMoveItemPattern).when(function (trigger) { return trigger === "ReleaseInput"; });
 hideMoveItemPattern.to(idle);
 var instance = new state.Instance("florent", model);
-state.evaluate(instance, "Disable");
-state.evaluate(instance, "Enable");
+instance.evaluate("Disable");
+instance.evaluate("Enable");

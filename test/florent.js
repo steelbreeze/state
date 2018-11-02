@@ -31,15 +31,15 @@ var instance = new state.Instance("florent", model);
 
 describe("test/florent.js", function () {
 	it("History semantics should set the regions active state configuration to the last known state", function () {
-		state.evaluate(instance, "ReleaseInput");
-		state.evaluate(instance, "Disable");
-		state.evaluate(instance, "Enable");
+		instance.evaluate("ReleaseInput");
+		instance.evaluate("Disable");
+		instance.evaluate("Enable");
 
 		assert.equal(showMoveItemPattern, instance.getLastKnownState(onRegion));
 
-		state.evaluate(instance, "ReleaseInput");
-		state.evaluate(instance, "Disable");
-		state.evaluate(instance, "Enable");
+		instance.evaluate("ReleaseInput");
+		instance.evaluate("Disable");
+		instance.evaluate("Enable");
 
 		assert.equal(idle, instance.getLastKnownState(onRegion));
 	});

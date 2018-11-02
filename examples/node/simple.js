@@ -14,4 +14,4 @@ stateA.to(stateB).when(function (trigger) { return trigger === "move"; });
 // create an instance of the state machine model
 var instance = new state.Instance("instance", model);
 // send the machine instance a message for evaluation
-state.evaluate(instance, "move");
+instance.evaluate("move");

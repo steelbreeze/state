@@ -35,7 +35,7 @@ describe("test/choice.js", function () {
 		let trigger1 = { event: "choose", data: { path1: 0, path2: 0, path3: 0 } };
 
 		for (let i = 0; i < 99; i++) {
-			state.evaluate(instance1, trigger1);
+			instance1.evaluate(trigger1);
 		}
 
 		it("choice pseudo state transitions all selected randomly", function () {
@@ -50,7 +50,7 @@ describe("test/choice.js", function () {
 		let trigger2 = { event: "choose", data: { path1: 0, path2: 0, path3: 0 } };
 
 		for (var i = 0; i < 99; i++) {
-			state.evaluate(instance2, trigger2);
+			instance2.evaluate(trigger2);
 		}
 
 		it("choice pseudo state transition selection alignmed to random function used", function () {

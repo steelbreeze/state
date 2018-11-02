@@ -20,4 +20,4 @@ stateA.local(stateAB).when(trigger => trigger === "move");
 var instance = new state.Instance("instance", model);
 
 // send the machine instance a message for evaluation, this will trigger the transition from stateA to stateB
-state.evaluate(instance, "move");
+instance.evaluate("move");

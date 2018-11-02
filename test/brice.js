@@ -20,7 +20,7 @@ var instance = new state.Instance("brice", model);
 
 describe("test/brice.js", function () {
 	it("Transitions should be selected depth-first", function () {
-		state.evaluate(instance, "a");
+		instance.evaluate("a");
 
 		assert.equal(state2, instance.getLastKnownState(region1));
 	});

@@ -59,8 +59,8 @@ describe("test/muximise.js", function () {
 	describe("Orthogonal state completion", function () {
 		// ensure that completion transitions for orthogonal states are triggered after completion of all child regions
 		it("Completion transition fires once all regions of an orthogonal state are complete", function () {
-			state.evaluate(instance, "complete1");
-			state.evaluate(instance, "complete2");
+			instance.evaluate("complete1");
+			instance.evaluate("complete2");
 
 			assert.equal(final, instance.getLastKnownState(model.getDefaultRegion()));
 		});

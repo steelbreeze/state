@@ -21,10 +21,10 @@ s2.external(end).when(trigger => trigger === "end");
 
 var instance = new state.Instance("history", model);
 
-state.evaluate(instance, "move");
-state.evaluate(instance, "go deep");
-state.evaluate(instance, "go shallow");
-state.evaluate(instance, "end");
+instance.evaluate("move");
+instance.evaluate("go deep");
+instance.evaluate("go shallow");
+instance.evaluate("end");
 
 describe("test/history.js", function () {
 	it("Test should result in a completed state", function () {

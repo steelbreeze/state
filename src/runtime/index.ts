@@ -8,4 +8,4 @@ export { IInstance } from './IInstance';
  */
 export { Instance } from './Instance';
 
-export { initialise, evaluate } from './core';
+export { stateEvaluate } from './core';

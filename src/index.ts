@@ -6,7 +6,7 @@ export { State, Region, PseudoState, PseudoStateKind, ExternalTransition, Intern
 /**
  * State machine instance interfaces and classes.
  */
-export { IInstance, Instance, evaluate } from './runtime';
+export { IInstance, Instance } from './runtime';
 
 /**
  * API to integrate other logging tools or techniques.

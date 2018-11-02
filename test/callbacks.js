@@ -16,7 +16,7 @@ stateA.external(stateB).when(trigger => trigger === "move").effect(trigger => ca
 
 var instance = new state.Instance("callbacks", model);
 
-state.evaluate(instance, "move");
+instance.evaluate("move");
 
 describe("test/callbacks.js", function () {
 	describe("User defined behavior", function () {

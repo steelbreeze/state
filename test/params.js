@@ -17,7 +17,7 @@ first.external(second).when(trigger => trigger && trigger.second === "closer").e
 
 var instance = new state.Instance("params", model);
 
-state.evaluate(instance, {first: "move", second: "closer"});
+instance.evaluate({first: "move", second: "closer"});
 
 describe("test/params.js", function () {
 	it("Multiple parameters available to exit behavior", function () {

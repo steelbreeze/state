@@ -30,7 +30,7 @@ operational.to(finalState).when(trigger => trigger === "off");
 let instance = new state.Instance("player", model);
 
 // send messages to the state machine to cause state transitions
-state.evaluate(instance, "play");
-state.evaluate(instance, "pause");
-state.evaluate(instance, "flip");
-state.evaluate(instance, "flip");
+instance.evaluate("play");
+instance.evaluate("pause");
+instance.evaluate("flip");
+instance.evaluate("flip");

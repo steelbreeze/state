@@ -22,7 +22,7 @@ var instance = new state.Instance("internal", model);
 
 describe("test/internal.js", function () {
 	it("Internal transitions do not trigger a state transition", function () {
-		state.evaluate(instance, "internal");
+		instance.evaluate("internal");
 
 		assert.equal(target, instance.getLastKnownState(region));
 		assert.equal(1, entryCount);
@@ -32,7 +32,7 @@ describe("test/internal.js", function () {
 
 	it("External transitions do trigger a state transition", function () {
 
-		state.evaluate(instance, "external");
+		instance.evaluate("external");
 
 		assert.equal(target, instance.getLastKnownState(region));
 		assert.equal(2, entryCount);

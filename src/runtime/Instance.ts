@@ -1,5 +1,6 @@
 import * as model from '../model';
-import { IInstance, initialise } from '../runtime';
+import { log } from '../util';
+import { IInstance, stateEvaluate } from '../runtime';
 
 export class Instance implements IInstance {
 	private cleanState: Record<string, model.State> = {};                      // NOTE: this is the persistent representation of state machine state
@@ -7,18 +8,30 @@ export class Instance implements IInstance {
 	private dirtyVertex: Record<string, model.State | model.PseudoState> = {}; //       this is transient within the transaction context and is discarded
 
 	public constructor(private readonly name: string, public readonly root: model.State) {
-		initialise(this);
+		this.transaction(() => this.root.enter(this, false, undefined));
 	}
 
-	public beginTran(): void {
+	public evaluate(trigger: any): boolean {
+		log.info(() => `${this} evaluate ${typeof trigger} trigger: ${trigger}`, log.Evaluate)
+	
+		return this.transaction(() => stateEvaluate(this.root, this, false, trigger));
+	}
+	
+	public transaction<TReturn>(operation: () => TReturn): TReturn {
+		// clear the transaction cache
 		this.dirtyState = {};
 		this.dirtyVertex = {};
-	}
 
-	public commitTran(): void {
+		// perform the operation
+		const result = operation();
+
+		// commit the transaction cache to the clean state
 		for (let k = Object.keys(this.dirtyState), i = k.length; i--;) {
 			this.cleanState[k[i]] = this.dirtyState[k[i]];
 		}
+
+		// return the result to the caller
+		return result;
 	}
 
 	public setVertex(vertex: model.State | model.PseudoState): void {

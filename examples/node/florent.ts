@@ -30,5 +30,5 @@ hideMoveItemPattern.to(idle);
 
 let instance = new state.Instance("florent", model);
 
-state.evaluate(instance, "Disable");
-state.evaluate(instance, "Enable");
+instance.evaluate("Disable");
+instance.evaluate("Enable");

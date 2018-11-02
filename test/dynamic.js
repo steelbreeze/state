@@ -15,14 +15,14 @@ let instance = new state.Instance("instance", model);
 describe("test/callbacks.js", function () {
 	//	describe("With half the model defined:", function () {
 	it("Model will not respond to events", function () {
-		assert.equal(false, state.evaluate(instance, "move"));
+		assert.equal(false, instance.evaluate("move"));
 	});
 
 	describe("With the full model defined:", function () {
 		it("Model will respond to events", function () {
 			stateA.external(stateB).when(trigger => trigger === "move");
 
-			assert.equal(true, state.evaluate(instance, "move"));
+			assert.equal(true, instance.evaluate("move"));
 		});
 	});
 });

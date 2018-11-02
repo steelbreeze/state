@@ -27,7 +27,7 @@ operational.to(finalState).when(function (trigger) { return trigger === "off"; }
 // create a new state machine instance (this stores the active state configuration, allowing many instances to work with a single model)
 var instance = new state.Instance("player", model);
 // send messages to the state machine to cause state transitions
-state.evaluate(instance, "play");
-state.evaluate(instance, "pause");
-state.evaluate(instance, "flip");
-state.evaluate(instance, "flip");
+instance.evaluate("play");
+instance.evaluate("pause");
+instance.evaluate("flip");
+instance.evaluate("flip");

@@ -38,9 +38,9 @@ var exter = stateB.external(bStateII).when(trigger => trigger === "external");
 var instance = new state.Instance("instance", model);
 
 // send the machine instance a message for evaluation, this will trigger the transition from stateA to stateB
-state.evaluate(instance, "move");
-state.evaluate(instance, "local");
-state.evaluate(instance, "external");
+instance.evaluate("move");
+instance.evaluate("local");
+instance.evaluate("external");
 
 describe("Local transition tests", function () {
 	it("External transition fired OK", function () {

@@ -41,7 +41,7 @@ var instance = new state.Instance("p3pp3r", model);
 
 describe("test/p3pp3r.js", function () {
 	it("All regions of orthogonal state must be exited during the external transition", function () {
-		state.evaluate(instance, "event2");
+		instance.evaluate("event2");
 
 		assert.equal(state2, instance.getLastKnownState(region));
 		assert.equal(state4, instance.getLastKnownState(regionB));

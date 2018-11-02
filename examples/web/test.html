@@ -76,7 +76,7 @@
 			var instance = new state.Instance("player", model);
 
 			/* pass button values to the state machine when clicked */
-			$("button").click(function (button) { state.evaluate(instance, this.id); });
+			$("button").click(function (button) { instance.evaluate(this.id); });
 		});
 	</script>
 </body>

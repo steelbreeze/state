@@ -18,8 +18,8 @@ aChoice.external(b);
 
 var instance = new state.Instance('instance', model);
 
-state.evaluate(instance, "stay");
-state.evaluate(instance, "move");
+instance.evaluate("stay");
+instance.evaluate("move");
 
 state.log.remove(logger);
 

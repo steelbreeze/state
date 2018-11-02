@@ -7,8 +7,8 @@ export declare class Instance implements IInstance {
     private dirtyState;
     private dirtyVertex;
     constructor(name: string, root: model.State);
-    beginTran(): void;
-    commitTran(): void;
+    evaluate(trigger: any): boolean;
+    transaction<TReturn>(operation: () => TReturn): TReturn;
     setVertex(vertex: model.State | model.PseudoState): void;
     setState(state: model.State): void;
     /**

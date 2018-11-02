@@ -52,11 +52,11 @@ model_fail.to(identify);
 var instance = new state.Instance("second-pass", model);
 
 // Transitions
-state.evaluate(instance, "Continue");
-state.evaluate(instance, "No", "first time");
-state.evaluate(instance, "Yes");
-state.evaluate(instance, "Yes");
-state.evaluate(instance, "Continue");
-state.evaluate(instance, "No", "second time");
+instance.evaluate("Continue");
+instance.evaluate("No", "first time");
+instance.evaluate("Yes");
+instance.evaluate("Yes");
+instance.evaluate("Continue");
+instance.evaluate("No", "second time");
 
 // TODO: add some test criteria
