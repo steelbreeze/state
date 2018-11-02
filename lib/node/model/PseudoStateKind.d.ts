@@ -35,15 +35,3 @@ export declare enum PseudoStateKind {
      */
     Choice = 16
 }
-/**
- * Branch pseudo states are either junction or choice pseudo states.
- */
-export declare const Branch: PseudoStateKind;
-/**
- * History pseudo states are either deep history or shallow history pseudo states.
- */
-export declare const History: PseudoStateKind;
-/**
- * Starting pseudo states are either initial, deep history or shallow history pseudo states.
- */
-export declare const Starting: PseudoStateKind;

@@ -39,18 +39,3 @@ export enum PseudoStateKind {
 	 */
 	Choice = 16
 }
-
-/**
- * Branch pseudo states are either junction or choice pseudo states.
- */
-export const Branch: PseudoStateKind = PseudoStateKind.Junction | PseudoStateKind.Choice;
-
-/**
- * History pseudo states are either deep history or shallow history pseudo states.
- */
-export const History: PseudoStateKind = PseudoStateKind.DeepHistory | PseudoStateKind.ShallowHistory;
-
-/**
- * Starting pseudo states are either initial, deep history or shallow history pseudo states.
- */
-export const Starting: PseudoStateKind = PseudoStateKind.Initial | PseudoStateKind.DeepHistory | PseudoStateKind.ShallowHistory;

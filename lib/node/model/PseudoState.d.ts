@@ -16,6 +16,7 @@ export declare class PseudoState {
      * @public
      */
     readonly qualifiedName: string;
+    readonly isHistory: boolean;
     /**
      * The outgoing transitions available from this vertex.
      */

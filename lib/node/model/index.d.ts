@@ -1,7 +1,7 @@
 /**
  * Enumerations
  */
-export { PseudoStateKind, Branch, Starting, History } from './PseudoStateKind';
+export { PseudoStateKind } from './PseudoStateKind';
 /**
  * Classes used to build the state machine model.
  */
