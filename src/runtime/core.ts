@@ -98,18 +98,16 @@ function getChoiceTransition(pseudoState: model.PseudoState, trigger: any): mode
 
 function getVertexTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
 	let result: model.Transition | undefined;
-	let error = false;
 
 	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
-	for (let i = vertex.outgoing.length; !error && i--;) {
+	for (let i = vertex.outgoing.length; i--;) {
 		if (vertex.outgoing[i].guard(trigger)) {
-			error = result !== undefined;
+			if(result !== undefined) {
+				throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
+			}
+
 			result = vertex.outgoing[i];
 		}
-	}
-
-	if(error) {
-		throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
 	}
 
 	return result;
