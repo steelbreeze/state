@@ -16,5 +16,5 @@ export declare namespace log {
     function add(callback: (message: string) => void, category?: number): number;
     function remove(ref: number): void;
     function info(producer: () => string, category: number): void;
-    function assert(condition: boolean, onFalse: () => string): void;
+    function assert(condition: any, onFalse: () => string): void;
 }

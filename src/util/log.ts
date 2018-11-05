@@ -41,7 +41,7 @@ export namespace log {
 		}
 	}
 
-	export function assert(condition: boolean, onFalse: () => string): void {
+	export function assert(condition: any, onFalse: () => string): void {
 		if (!condition) {
 			throw new Error(onFalse());
 		}

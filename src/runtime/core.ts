@@ -25,7 +25,7 @@ function delegate(state: model.State, instance: IInstance, deepHistory: boolean,
 			result = true;
 
 			// if a transition in a child state causes us to exit this state, break out now 
-			if (state.parent && instance.getState(state.parent) !== state ) {
+			if (state.parent && instance.getState(state.parent) !== state) {
 				break;
 			}
 		}
@@ -54,11 +54,7 @@ function getTransition(vertex: model.State | model.PseudoState, trigger: any): m
 	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
 	for (let i = vertex.outgoing.length; i--;) {
 		if (vertex.outgoing[i].guard(trigger)) {
-//			if (result !== undefined) {
-//				throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
-//			}
-			log.assert(!result, ()=>`Multiple transitions found at ${vertex} for ${trigger}`);
-
+			log.assert(!result, () => `Multiple transitions found at ${vertex} for ${trigger}`);
 			result = vertex.outgoing[i];
 		}
 	}
@@ -140,12 +136,10 @@ model.Region.prototype.enterTail = function (instance: IInstance, deepHistory: b
 		deepHistory = deepHistory || (this.starting!.kind === model.PseudoStateKind.DeepHistory);
 	}
 
-	if (!starting) {
-		throw new Error(`${instance} no initial pseudo state found at ${this}`);
-	}
+	log.assert(starting, () => `${instance} no initial pseudo state found at ${this}`);
 
 	// cascade the entry operation to the approriate child vertex
-	starting.enter(instance, deepHistory, trigger);
+	starting!.enter(instance, deepHistory, trigger);
 }
 
 // Leave a region
@@ -172,11 +166,9 @@ declare module '../model/PseudoState' {
 model.PseudoState.prototype.getTransition = function (trigger: any): model.Transition {
 	const result = (this.kind === model.PseudoStateKind.Choice ? getChoiceTransition : getTransition)(this, trigger) || this.elseTransition;
 
-	if (!result) {
-		throw new Error(`Unable to find transition at ${this} for ${trigger}`);
-	}
+	log.assert(result, () => `Unable to find transition at ${this} for ${trigger}`);
 
-	return result;
+	return result!;
 }
 
 // Enter a pseudo state
