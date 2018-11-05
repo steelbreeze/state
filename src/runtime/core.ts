@@ -18,14 +18,16 @@ export function evaluate(state: model.State, instance: IInstance, deepHistory: b
 // Delegate a trigger to children for evaluation
 function delegate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	let result: boolean = false;
-	let isActive: boolean = true;
 
 	// first, delegate to child states for evaluation
-	for (let i = state.children.length; isActive && i--;) {
+	for (let i = state.children.length; i--;) {
 		if (evaluate(instance.getState(state.children[i]), instance, deepHistory, trigger)) {
-			// if a transition in a child state causes us to exit this state, break out now 
-			isActive = state.parent === undefined || instance.getState(state.parent) === state;
 			result = true;
+
+			// if a transition in a child state causes us to exit this state, break out now 
+			if (state.parent && instance.getState(state.parent) !== state ) {
+				return result;
+			}
 		}
 	}
 

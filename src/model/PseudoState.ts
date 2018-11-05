@@ -40,8 +40,7 @@ export class PseudoState {
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 		this.qualifiedName = `${this.parent}.${this.name}`;
 
-		this.parent.children.unshift(this);
-
+		// if this is a starting state (initial, deep or shallow history), record it against the parent region
 		if (this.kind === PseudoStateKind.Initial || this.isHistory()) {
 			if (this.parent.starting) {
 				throw new Error(`Only one initial pseudo state is allowed in region ${this.parent}`);
@@ -49,6 +48,8 @@ export class PseudoState {
 
 			this.parent.starting = this;
 		}
+
+		this.parent.children.unshift(this);
 
 		log.info(() => `Created ${this}`, log.Create);
 	}
@@ -58,7 +59,8 @@ export class PseudoState {
 	 * @returns Returns true if the pseudo state is of the deep or shallow history kind
 	 */
 	isHistory(): boolean {
-		return (this.kind & (PseudoStateKind.DeepHistory | PseudoStateKind.ShallowHistory)) === this.kind;
+		return this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
+
 	}
 
 	/**
