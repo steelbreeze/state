@@ -48,15 +48,16 @@ function testTraverse(vertex: model.State | model.PseudoState, instance: IInstan
 }
 
 // Find a transition from any state or pseudo state
-function getVertexTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
+function getTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
 	let result: model.Transition | undefined;
 
 	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
 	for (let i = vertex.outgoing.length; i--;) {
 		if (vertex.outgoing[i].guard(trigger)) {
-			if (result !== undefined) {
-				throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
-			}
+//			if (result !== undefined) {
+//				throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
+//			}
+			log.assert(!result, ()=>`Multiple transitions found at ${vertex} for ${trigger}`);
 
 			result = vertex.outgoing[i];
 		}
@@ -169,7 +170,7 @@ declare module '../model/PseudoState' {
 
 // Find a transition from the pseudo state for a given trigger event
 model.PseudoState.prototype.getTransition = function (trigger: any): model.Transition {
-	const result = (this.kind === model.PseudoStateKind.Choice ? getChoiceTransition : getVertexTransition)(this, trigger) || this.elseTransition;
+	const result = (this.kind === model.PseudoStateKind.Choice ? getChoiceTransition : getTransition)(this, trigger) || this.elseTransition;
 
 	if (!result) {
 		throw new Error(`Unable to find transition at ${this} for ${trigger}`);
@@ -219,7 +220,7 @@ declare module '../model/State' {
 
 // Find a single transition from the state for a given trigger event
 model.State.prototype.getTransition = function (trigger: any): model.Transition | undefined {
-	return getVertexTransition(this, trigger);
+	return getTransition(this, trigger);
 }
 
 // Enter a state

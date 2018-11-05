@@ -40,4 +40,10 @@ export namespace log {
 			}
 		}
 	}
+
+	export function assert(condition: boolean, onFalse: () => string): void {
+		if (!condition) {
+			throw new Error(onFalse());
+		}
+	}
 }
