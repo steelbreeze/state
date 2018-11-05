@@ -26,7 +26,7 @@ function delegate(state: model.State, instance: IInstance, deepHistory: boolean,
 
 			// if a transition in a child state causes us to exit this state, break out now 
 			if (state.parent && instance.getState(state.parent) !== state ) {
-				return result;
+				break;
 			}
 		}
 	}
