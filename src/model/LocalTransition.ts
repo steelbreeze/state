@@ -41,7 +41,7 @@ export class LocalTransition<TTrigger> extends Transition<TTrigger> {
 
 		// determine where to enter and exit from in the ancestry
 		const from = targetAncestors.indexOf(source) + 2; // NOTE: in local transitions the source vertex is not exited, but the active child substate is
-		const to = targetAncestors.length - (target instanceof PseudoState && target.isHistory ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
+		const to = targetAncestors.length - (target instanceof PseudoState && target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
 
 		// initialise the base class with source, target and elements to exit and enter
 		this.toLeave = targetAncestors[from];

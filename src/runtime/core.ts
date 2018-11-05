@@ -132,7 +132,7 @@ model.Region.prototype.enterTail = function (instance: IInstance, deepHistory: b
 	let starting: model.State | model.PseudoState | undefined = this.starting;
 
 	// determine if history semantics are in play and the region has previously been entered then select the starting vertex accordingly
-	if ((deepHistory || (starting && starting.isHistory)) && (current = instance.getState(this))) {
+	if ((deepHistory || (starting && starting.isHistory())) && (current = instance.getState(this))) {
 		starting = current;
 		deepHistory = deepHistory || (this.starting!.kind === model.PseudoStateKind.DeepHistory);
 	}

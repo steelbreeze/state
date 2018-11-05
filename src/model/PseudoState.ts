@@ -18,8 +18,6 @@ export class PseudoState {
 	 */
 	public readonly qualifiedName: string;
 
-	public readonly isHistory: boolean;
-
 	/**
 	 * The outgoing transitions available from this vertex.
 	 */
@@ -41,11 +39,10 @@ export class PseudoState {
 	public constructor(public readonly name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 		this.qualifiedName = `${this.parent}.${this.name}`;
-		this.isHistory = this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
 
 		this.parent.children.unshift(this);
 
-		if (this.kind === PseudoStateKind.Initial || this.isHistory) {
+		if (this.kind === PseudoStateKind.Initial || this.isHistory()) {
 			if (this.parent.starting) {
 				throw new Error(`Only one initial pseudo state is allowed in region ${this.parent}`);
 			}
@@ -54,6 +51,14 @@ export class PseudoState {
 		}
 
 		log.info(() => `Created ${this}`, log.Create);
+	}
+
+	/**
+	 * Tests a pseudo state to see if is is a history pseudo state
+	 * @returns Returns true if the pseudo state is of the deep or shallow history kind
+	 */
+	isHistory(): boolean {
+		return (this.kind & (PseudoStateKind.DeepHistory | PseudoStateKind.ShallowHistory)) === this.kind;
 	}
 
 	/**

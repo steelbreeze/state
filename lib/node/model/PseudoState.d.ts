@@ -16,7 +16,6 @@ export declare class PseudoState {
      * @public
      */
     readonly qualifiedName: string;
-    readonly isHistory: boolean;
     /**
      * The outgoing transitions available from this vertex.
      */
@@ -29,6 +28,11 @@ export declare class PseudoState {
      * @public
      */
     constructor(name: string, parent: State | Region, kind?: PseudoStateKind);
+    /**
+     * Tests a pseudo state to see if is is a history pseudo state
+     * @returns Returns true if the pseudo state is of the deep or shallow history kind
+     */
+    isHistory(): boolean;
     /**
      * Creates a new external transition.
      * @param target The target vertex of the external transition.
