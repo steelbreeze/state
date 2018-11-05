@@ -4,22 +4,18 @@ import { IInstance } from '../runtime';
 
 // Passes a trigger event to a state for evaluation
 export function evaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
-	// first, delegate to child states for evaluation
-	let result = delegate(state, instance, deepHistory, trigger);
+	// delegate to child states for evaluation, if not found, look for a transition from this state
+	const result = delegate(state, instance, deepHistory, trigger) || testTraverse(state, instance, deepHistory, trigger);
 
-	// if a child state caused a transition, we can test for completion transitions, but only if we are still active
-	if (result) {
-		if (state.parent && instance.getState(state.parent) === state) {
-			completion(state, instance, deepHistory, state);
-		}
-	} else { // otherwise, look for transitions from this state
-		result = findAndTraverse(state, instance, deepHistory, trigger);
+	// check completion transitions if the trigger caused as state transition and this state is still active
+	if (result && state.parent && instance.getState(state.parent) === state) {
+		completion(state, instance, deepHistory, state);
 	}
 
 	return result;
 }
 
-// Delegate evaluation of a trigger to child state structure
+// Delegate a trigger to children for evaluation
 function delegate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	let result: boolean = false;
 	let isActive: boolean = true;
@@ -36,8 +32,8 @@ function delegate(state: model.State, instance: IInstance, deepHistory: boolean,
 	return result;
 }
 
-// search for a transition and traverse it if found
-function findAndTraverse(vertex: model.State | model.PseudoState, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+// Test a trigger at a vertex to evaluation and traversal
+function testTraverse(vertex: model.State | model.PseudoState, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	const transition = vertex.getTransition(trigger);
 
 	if (transition) {
@@ -47,6 +43,24 @@ function findAndTraverse(vertex: model.State | model.PseudoState, instance: IIns
 	}
 
 	return false;
+}
+
+// Find a transition from any state or pseudo state
+function getVertexTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
+	let result: model.Transition | undefined;
+
+	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
+	for (let i = vertex.outgoing.length; i--;) {
+		if (vertex.outgoing[i].guard(trigger)) {
+			if (result !== undefined) {
+				throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
+			}
+
+			result = vertex.outgoing[i];
+		}
+	}
+
+	return result;
 }
 
 // Find a transition from a choice pseudo state
@@ -60,24 +74,6 @@ function getChoiceTransition(pseudoState: model.PseudoState, trigger: any): mode
 	}
 
 	return transitions[random.get(transitions.length)];
-}
-
-// Find a transition from any state or pseudo state
-function getVertexTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
-	let result: model.Transition | undefined;
-
-	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
-	for (let i = vertex.outgoing.length; i--;) {
-		if (vertex.outgoing[i].guard(trigger)) {
-			if(result !== undefined) {
-				throw new Error(`Multiple transitions found at ${vertex} for ${trigger}`);
-			}
-
-			result = vertex.outgoing[i];
-		}
-	}
-
-	return result;
 }
 
 // traverse a transition
@@ -106,7 +102,7 @@ function completion(state: model.State, instance: IInstance, deepHistory: boolea
 	//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
 
 	// find and execute transition
-	findAndTraverse(state, instance, deepHistory, trigger);
+	testTraverse(state, instance, deepHistory, trigger);
 }
 
 // Runtime extension methods to the region class.
@@ -198,7 +194,7 @@ model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHisto
 model.PseudoState.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
 	if (this.kind !== model.PseudoStateKind.Junction) {
-		findAndTraverse(this, instance, deepHistory, trigger);
+		testTraverse(this, instance, deepHistory, trigger);
 	}
 }
 
