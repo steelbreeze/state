@@ -15,6 +15,6 @@ Finally, the performance of v7 should be far greater than the v6.
 5. The ```DictionaryInstance``` and ```JSONInstance``` classes have been replaced by the ```Instance``` class. If you need other types of instance classes, you can implement the ```IInstance``` class and make a custom one.
 6. To query the last known state of a region, use the ```Instance.getLastKnownState``` method.
 7. The ```Instance``` constructor now takes the root element of the state machine model as it's second parameter.
-8. As the ```StateMachine``` class has gone, the call to ```StateMachine.initialise``` is no longer required and state machine instance initialisation is performed in the ```Instance``` constructor; also ```StateMachine.evaluate``` has been replaced with the a stand-alone function ```evaluate```.
+8. As the ```StateMachine``` class has gone, the call to ```StateMachine.initialise``` is no longer required and state machine instance initialisation is performed in the ```Instance``` constructor; also ```StateMachine.evaluate``` has been replaced with ```IInstance.evaluate```.
 9. All logging is off by default; to add a logger use the ```log.add``` function. Multiple loggers can be added logging different aspects of the runtime or targeting different loging mechanisms. For example: ```log.add(message => console.info(message), log.Entry | log.Exit);``` would log as per the v6.0.x code.
 10. Overriding the default random number generation is now done by a call to ```random.set``` in place of the old ```setRandom```
