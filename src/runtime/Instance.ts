@@ -11,17 +11,36 @@ export class Instance implements IInstance {
 	private dirtyState: Record<string, model.State> = {};                      //       this is the state machine state with the transaction context and will update lastKnownState on commit
 	private dirtyVertex: Record<string, model.State | model.PseudoState> = {}; //       this is transient within the transaction context and is discarded
 
+	/**
+	 * Creates an instance of the Instance class.
+	 * @param name The name of the state machine instance.
+	 * @param root The root element of the state machine model that this an instance of.
+	 */
 	public constructor(private readonly name: string, public readonly root: model.State) {
+		// TODO: add a third param for JSON initialisation
 		this.transaction(() => this.root.enter(this, false, undefined));
 	}
 
+	// TODO: add a toJSON method
+
+	/**
+	 * Passes a trigger event to the state machine instance for evaluation.
+	 * @param trigger The trigger event to evaluate.
+	 * @returns Returns true if the trigger event caused a state transition.
+	 */
 	public evaluate(trigger: any): boolean {
 		log.info(() => `${this} evaluate ${typeof trigger} trigger: ${trigger}`, log.Evaluate)
 	
 		return this.transaction(() => evaluate(this.root, this, false, trigger));
 	}
 	
-	public transaction<TReturn>(operation: () => TReturn): TReturn {
+	/**
+	 * Performs an operation within a transactional context.
+	 * @param TReturn The type of the return parameter of the transactional operation.
+	 * @param operation The operation to perform within the transactional context.
+	 * @returns Returns the return value from the transactional context.
+	 */
+	transaction<TReturn>(operation: () => TReturn): TReturn {
 		// clear the transaction cache
 		this.dirtyState = {};
 		this.dirtyVertex = {};
@@ -38,12 +57,22 @@ export class Instance implements IInstance {
 		return result;
 	}
 
+	/**
+	 * Updates the transactional state of a region with the last entered vertex.
+	 * @param vertex The vertex set as its parents last entered vertex.
+	 * @remarks This should only be called by the state machine runtime.
+	 */
 	public setVertex(vertex: model.State | model.PseudoState): void {
 		if (vertex.parent) {
 			this.dirtyVertex[vertex.parent.qualifiedName] = vertex;
 		}
 	}
 
+	/**
+	 * Updates the transactional state of a region with the last entered state.
+	 * @param state The state set as its parents last entered state.
+	 * @remarks This should only be called by the state machine runtime, and implementors note, you also need to update the last entered vertex within this call.
+	 */
 	public setState(state: model.State): void {
 		if (state.parent) {
 			this.dirtyVertex[state.parent.qualifiedName] = state;
@@ -60,6 +89,11 @@ export class Instance implements IInstance {
 		return this.dirtyState[region.qualifiedName] || this.cleanState[region.qualifiedName];
 	}
 
+	/**
+	 * Returns the last entered vertex to the state machine runtime.
+	 * @param region The region to get the last entered vertex of.
+	 * @returns Returns the last entered vertex for the given region.
+	 */
 	public getVertex(region: model.Region): model.State | model.PseudoState {
 		return this.dirtyVertex[region.qualifiedName] || this.cleanState[region.qualifiedName];
 	}
@@ -73,6 +107,10 @@ export class Instance implements IInstance {
 		return this.cleanState[region.qualifiedName];
 	}
 
+	/**
+	 * Returns the name of the state machine instance.
+	 * @returns The name of the state machine instance.
+	 */
 	public toString(): string {
 		return this.name;
 	}
