@@ -59,6 +59,9 @@ export declare class Instance implements IInstance {
      * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
      */
     getLastKnownState(region: model.Region): model.State | undefined;
+    toJSON(): any;
+    stateToJSON(state: model.State): any;
+    regionToJSON(region: model.Region): any;
     /**
      * Returns the name of the state machine instance.
      * @returns The name of the state machine instance.

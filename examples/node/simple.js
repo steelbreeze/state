@@ -15,3 +15,5 @@ stateA.to(stateB).when(function (trigger) { return trigger === "move"; });
 var instance = new state.Instance("instance", model);
 // send the machine instance a message for evaluation
 instance.evaluate("move");
+//console.info(  instance.toJSON());
+console.info(JSON.stringify(instance.toJSON()));

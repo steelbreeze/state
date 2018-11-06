@@ -21,8 +21,6 @@ export class Instance implements IInstance {
 		this.transaction(() => this.root.enter(this, false, undefined));
 	}
 
-	// TODO: add a toJSON method
-
 	/**
 	 * Passes a trigger event to the state machine instance for evaluation.
 	 * @param trigger The trigger event to evaluate.
@@ -30,10 +28,10 @@ export class Instance implements IInstance {
 	 */
 	public evaluate(trigger: any): boolean {
 		log.info(() => `${this} evaluate ${typeof trigger} trigger: ${trigger}`, log.Evaluate)
-	
+
 		return this.transaction(() => evaluate(this.root, this, false, trigger));
 	}
-	
+
 	/**
 	 * Performs an operation within a transactional context.
 	 * @param TReturn The type of the return parameter of the transactional operation.
@@ -105,6 +103,20 @@ export class Instance implements IInstance {
 	 */
 	public getLastKnownState(region: model.Region): model.State | undefined {
 		return this.cleanState[region.qualifiedName];
+	}
+
+	public toJSON(): any {
+		return this.stateToJSON(this.root);
+	}
+
+	stateToJSON(state: model.State): any {
+		return { name: state.name, children: state.children.map(region => this.regionToJSON(region)) };
+	}
+
+	regionToJSON(region: model.Region): any {
+		let lastKnownState = this.getLastKnownState(region);
+		let states = region.children.filter((value): value is model.State => value instanceof model.State).reverse();
+		return { name: region.name, children: states.map(state => this.stateToJSON(state)), lastKnownState: lastKnownState ? lastKnownState.name : undefined };
 	}
 
 	/**
