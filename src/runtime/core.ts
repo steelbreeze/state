@@ -1,5 +1,5 @@
 import * as model from '../model';
-import { log, random } from '../util';
+import { assert, log, random } from '../util';
 import { IInstance } from '../runtime';
 
 /**
@@ -60,7 +60,7 @@ function getTransition(vertex: model.State | model.PseudoState, trigger: any): m
 	// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
 	for (let i = vertex.outgoing.length; i--;) {
 		if (vertex.outgoing[i].guard(trigger)) {
-			log.assert(!result, () => `Multiple transitions found at ${vertex} for ${trigger}`);
+			assert.undefined(result, () => `Multiple transitions found at ${vertex} for ${trigger}`);
 
 			result = vertex.outgoing[i];
 		}
@@ -146,7 +146,7 @@ model.Region.prototype.enterTail = function (instance: IInstance, deepHistory: b
 		deepHistory = deepHistory || (this.starting!.kind === model.PseudoStateKind.DeepHistory);
 	}
 
-	log.assert(starting, () => `${instance} no initial pseudo state found at ${this}`);
+	assert.defined(starting, () => `${instance} no initial pseudo state found at ${this}`);
 
 	// cascade the entry operation to the approriate child vertex
 	starting!.enter(instance, deepHistory, trigger);
@@ -179,7 +179,7 @@ declare module '../model/PseudoState' {
 model.PseudoState.prototype.getTransition = function (trigger: any): model.Transition {
 	const result = (this.kind === model.PseudoStateKind.Choice ? getChoiceTransition : getTransition)(this, trigger) || this.elseTransition;
 
-	log.assert(result, () => `Unable to find transition at ${this} for ${trigger}`);
+	assert.defined(result, () => `Unable to find transition at ${this} for ${trigger}`);
 
 	return result!;
 }

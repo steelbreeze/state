@@ -1,4 +1,4 @@
-import { log } from '../util';
+import { assert, log } from '../util';
 import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
 import { State } from './State';
@@ -42,7 +42,7 @@ export class PseudoState {
 
 		// if this is a starting state (initial, deep or shallow history), record it against the parent region
 		if (this.kind === PseudoStateKind.Initial || this.isHistory()) {
-			log.assert(!this.parent.starting, () => `Only one initial pseudo state is allowed in region ${this.parent}`);
+			assert.undefined(this.parent.starting, () => `Only one initial pseudo state is allowed in region ${this.parent}`);
 
 			this.parent.starting = this;
 		}
@@ -90,7 +90,7 @@ export class PseudoState {
 	 */
 	public else<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger> {
 
-		log.assert(!this.elseTransition, () => `Only 1 else transition allowed at ${this}.`);
+		assert.undefined(this.elseTransition, () => `Only 1 else transition allowed at ${this}.`);
 
 		return this.elseTransition = new ExternalTransition<TTrigger>(this, target).when(() => false);
 	}

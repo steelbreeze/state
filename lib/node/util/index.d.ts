@@ -1,3 +1,4 @@
+export { assert } from './assert';
 export { log } from './log';
-export { tree } from './tree';
 export { random } from './random';
+export { tree } from './tree';
