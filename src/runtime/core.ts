@@ -2,10 +2,16 @@ import * as model from '../model';
 import { log, random } from '../util';
 import { IInstance } from '../runtime';
 
-// Passes a trigger event to a state for evaluation
+/**
+ * Passes a trigger event to a state machine instance for evaluation
+ * @param state The state to evaluate the trigger event against.
+ * @param instance The state machine instance to evaluate the trigger against.
+ * @param deepHistory True if deep history semantics are invoked.
+ * @param trigger The trigger event
+ * @returns Returns true if the trigger caused a state transition.
+ */
 export function evaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
-	// delegate to child states for evaluation, if not found, look for a transition from this state
-	const result = delegate(state, instance, deepHistory, trigger) || testTraverse(state, instance, deepHistory, trigger);
+	const result = delegate(state, instance, deepHistory, trigger) || accept(state, instance, deepHistory, trigger);
 
 	// check completion transitions if the trigger caused as state transition and this state is still active
 	if (result && state.parent && instance.getState(state.parent) === state) {
@@ -15,11 +21,11 @@ export function evaluate(state: model.State, instance: IInstance, deepHistory: b
 	return result;
 }
 
-// Delegate a trigger to children for evaluation
+/** Delegate a trigger to children for evaluation */
 function delegate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	let result: boolean = false;
 
-	// first, delegate to child states for evaluation
+	// delegate to the current state of child regions for evaluation
 	for (let i = state.children.length; i--;) {
 		if (evaluate(instance.getState(state.children[i]), instance, deepHistory, trigger)) {
 			result = true;
@@ -34,8 +40,8 @@ function delegate(state: model.State, instance: IInstance, deepHistory: boolean,
 	return result;
 }
 
-// Test a trigger at a vertex to evaluation and traversal
-function testTraverse(vertex: model.State | model.PseudoState, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+/** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
+function accept(vertex: model.State | model.PseudoState, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	const transition = vertex.getTransition(trigger);
 
 	if (transition) {
@@ -47,14 +53,15 @@ function testTraverse(vertex: model.State | model.PseudoState, instance: IInstan
 	return false;
 }
 
-// Find a transition from any state or pseudo state
+/** Find a transition from any state or pseudo state */
 function getTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
 	let result: model.Transition | undefined;
 
-	// iterate through all outgoing transitions of this state looking for one whose guard evaluates true
+	// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
 	for (let i = vertex.outgoing.length; i--;) {
 		if (vertex.outgoing[i].guard(trigger)) {
 			log.assert(!result, () => `Multiple transitions found at ${vertex} for ${trigger}`);
+
 			result = vertex.outgoing[i];
 		}
 	}
@@ -62,20 +69,22 @@ function getTransition(vertex: model.State | model.PseudoState, trigger: any): m
 	return result;
 }
 
-// Find a transition from a choice pseudo state
+/** Find a transition from a choice pseudo state */
 function getChoiceTransition(pseudoState: model.PseudoState, trigger: any): model.Transition | undefined {
 	let transitions: Array<model.Transition> = [];
 
+	// iterate through all outgoing transitions of this state looking any whose guard evaluates true
 	for (let i = pseudoState.outgoing.length; i--;) {
 		if (pseudoState.outgoing[i].guard(trigger)) {
 			transitions.push(pseudoState.outgoing[i]);
 		}
 	}
 
+	// select a random transition from those that evaluated true
 	return transitions[random.get(transitions.length)];
 }
 
-// traverse a transition
+/** Traverse a transition */
 function traverse(transition: model.Transition, instance: IInstance, deepHistory: boolean, trigger: any): void {
 	const transitions: Array<model.Transition> = [transition];
 
@@ -89,7 +98,7 @@ function traverse(transition: model.Transition, instance: IInstance, deepHistory
 	}
 }
 
-// Checks for and executes completion transitions
+/** Checks for and executes completion transitions */
 function completion(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// check to see if the state is complete; fail fast if its not
 	for (let i = state.children.length; i--;) {
@@ -98,13 +107,14 @@ function completion(state: model.State, instance: IInstance, deepHistory: boolea
 		}
 	}
 
-	//	log.info(() => `${instance} testing completion transitions at ${this}`, log.Evaluate);
-
-	// find and execute transition
-	testTraverse(state, instance, deepHistory, trigger);
+	// look for transitions
+	accept(state, instance, deepHistory, trigger);
 }
 
-// Runtime extension methods to the region class.
+/**
+ * Runtime extension methods to the region class.
+ * @internal
+ */ 
 declare module '../model/Region' {
 	interface Region {
 		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
@@ -114,18 +124,18 @@ declare module '../model/Region' {
 	}
 }
 
-// Enter a region
+/** Enter a region */
 model.Region.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	this.enterHead(instance, deepHistory, trigger);
 	this.enterTail(instance, deepHistory, trigger);
 }
 
-// Initiate region entry
+/** Initiate region entry */
 model.Region.prototype.enterHead = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	log.info(() => `${instance} enter ${this}`, log.Entry);
 }
 
-// Complete region entry
+/** Complete region entry */
 model.Region.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	let current: model.State | undefined;
 	let starting: model.State | model.PseudoState | undefined = this.starting;
@@ -142,7 +152,7 @@ model.Region.prototype.enterTail = function (instance: IInstance, deepHistory: b
 	starting!.enter(instance, deepHistory, trigger);
 }
 
-// Leave a region
+/** Leave a region */
 model.Region.prototype.leave = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// cascade the leave operation to the currently active child vertex
 	instance.getVertex(this).leave(instance, deepHistory, trigger);
@@ -150,7 +160,10 @@ model.Region.prototype.leave = function (instance: IInstance, deepHistory: boole
 	log.info(() => `${instance} leave ${this}`, log.Exit);
 }
 
-// Runtime extensions to the pseudo state class
+/**
+ * Runtime extension methods to the pseudo state class.
+ * @internal
+ */ 
 declare module '../model/PseudoState' {
 	interface PseudoState {
 		getTransition(trigger: any): model.Transition;
@@ -162,7 +175,7 @@ declare module '../model/PseudoState' {
 	}
 }
 
-// Find a transition from the pseudo state for a given trigger event
+/** Find a transition from the pseudo state for a given trigger event */
 model.PseudoState.prototype.getTransition = function (trigger: any): model.Transition {
 	const result = (this.kind === model.PseudoStateKind.Choice ? getChoiceTransition : getTransition)(this, trigger) || this.elseTransition;
 
@@ -171,13 +184,13 @@ model.PseudoState.prototype.getTransition = function (trigger: any): model.Trans
 	return result!;
 }
 
-// Enter a pseudo state
+/** Enter a pseudo state */
 model.PseudoState.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	this.enterHead(instance, deepHistory, trigger);
 	this.enterTail(instance, deepHistory, trigger);
 }
 
-// Initiate pseudo state entry
+/** Initiate pseudo state entry */
 model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	log.info(() => `${instance} enter ${this}`, log.Entry);
 
@@ -185,20 +198,23 @@ model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHisto
 	instance.setVertex(this);
 }
 
-// Complete pseudo state entry
+/** Complete pseudo state entry */
 model.PseudoState.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
 	if (this.kind !== model.PseudoStateKind.Junction) {
-		testTraverse(this, instance, deepHistory, trigger);
+		accept(this, instance, deepHistory, trigger);
 	}
 }
 
-// Leave a pseudo state
+/** Leave a pseudo state */
 model.PseudoState.prototype.leave = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	log.info(() => `${instance} leave ${this}`, log.Exit);
 }
 
-// Runtime extension methods to the state class.
+/**
+ * Runtime extension methods to the state class.
+ * @internal
+ */ 
 declare module '../model/State' {
 	interface State {
 		getTransition(trigger: any): model.Transition | undefined;
@@ -210,18 +226,18 @@ declare module '../model/State' {
 	}
 }
 
-// Find a single transition from the state for a given trigger event
+/** Find a single transition from the state for a given trigger event */
 model.State.prototype.getTransition = function (trigger: any): model.Transition | undefined {
 	return getTransition(this, trigger);
 }
 
-// Enter a state
+/** Enter a state */
 model.State.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	this.enterHead(instance, deepHistory, trigger);
 	this.enterTail(instance, deepHistory, trigger);
 }
 
-// Initiate state entry
+/** Initiate state entry */
 model.State.prototype.enterHead = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	log.info(() => `${instance} enter ${this}`, log.Entry);
 
@@ -234,7 +250,7 @@ model.State.prototype.enterHead = function (instance: IInstance, deepHistory: bo
 	}
 }
 
-// Complete state entry
+/** Complete state entry */
 model.State.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// cascade the enter operation to child regions
 	for (let i = this.children.length; i--;) {
@@ -245,7 +261,7 @@ model.State.prototype.enterTail = function (instance: IInstance, deepHistory: bo
 	completion(this, instance, deepHistory, this);
 }
 
-// Leave a state
+/** Leave a state */
 model.State.prototype.leave = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// cascade the leave operation to all child regions
 	for (var i = this.children.length; i--;) {
@@ -260,14 +276,17 @@ model.State.prototype.leave = function (instance: IInstance, deepHistory: boolea
 	}
 }
 
-// Runtime extension methods to the transition base class.
+/**
+ * Runtime extension methods to the transition class.
+ * @internal
+ */ 
 declare module '../model/Transition' {
 	interface Transition<TTrigger> {
 		execute(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}
 }
 
-// Traversed an external or local transition
+/** Traverse an external or local transition */
 model.ExternalTransition.prototype.execute = model.LocalTransition.prototype.execute = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	log.info(() => `Executing transition from ${this.source} to ${this.target}`, log.Transition);
 
@@ -288,7 +307,7 @@ model.ExternalTransition.prototype.execute = model.LocalTransition.prototype.exe
 	this.toEnter[0].enterTail(instance, deepHistory, trigger);
 }
 
-// Traverses an internal transition; calls only the transition behaviour and does not cause a state transition.
+/** Traverse an internal transition; calls only the transition behaviour and does not cause a state transition */
 model.InternalTransition.prototype.execute = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	log.info(() => `Executing transition at ${this.target}`, log.Transition);
 

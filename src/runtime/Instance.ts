@@ -2,6 +2,10 @@ import * as model from '../model';
 import { log } from '../util';
 import { IInstance, evaluate } from '../runtime';
 
+/**
+ * Represents the active state configuration of a state machine instance.
+ * @remarks This is the default implementation of the IInstance class and reads/writes to the active state configuration in a transactional manner at both initilisation and each call to evaluate.
+ */
 export class Instance implements IInstance {
 	private cleanState: Record<string, model.State> = {};                      // NOTE: this is the persistent representation of state machine state
 	private dirtyState: Record<string, model.State> = {};                      //       this is the state machine state with the transaction context and will update lastKnownState on commit

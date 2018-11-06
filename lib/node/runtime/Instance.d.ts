@@ -1,5 +1,9 @@
 import * as model from '../model';
 import { IInstance } from '../runtime';
+/**
+ * Represents the active state configuration of a state machine instance.
+ * @remarks This is the default implementation of the IInstance class and reads/writes to the active state configuration in a transactional manner at both initilisation and each call to evaluate.
+ */
 export declare class Instance implements IInstance {
     private readonly name;
     readonly root: model.State;
