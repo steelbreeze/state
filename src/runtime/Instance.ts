@@ -116,6 +116,7 @@ export class Instance implements IInstance {
 	regionToJSON(region: model.Region): any {
 		let lastKnownState = this.getLastKnownState(region);
 		let states = region.children.filter((value): value is model.State => value instanceof model.State).reverse();
+		
 		return { name: region.name, children: states.map(state => this.stateToJSON(state)), lastKnownState: lastKnownState ? lastKnownState.name : undefined };
 	}
 
