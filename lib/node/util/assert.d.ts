@@ -11,4 +11,10 @@ export declare namespace assert {
      * @param onUndefined A callback to create a message that will be the content of the exception thrown if the object is defined.
      */
     function undefined(item: object | undefined, onDefined: () => string): void;
+    /**
+     * Assert that an object is undefined
+     * @param item The object to test
+     * @param onUndefined A callback to create a message that will be the content of the exception thrown if the object is defined.
+     */
+    function empty(array: Array<any>, onFull: () => string): void;
 }

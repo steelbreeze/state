@@ -1,4 +1,4 @@
-import { log } from '../util';
+import { assert, log } from '../util';
 import { Region } from './Region';
 import { Transition } from './Transition';
 import { ExternalTransition } from './ExternalTransition';
@@ -58,6 +58,7 @@ export class State {
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 
 		if (this.parent) {
+			assert.empty(this.parent.children.filter(vertex => vertex.name === name), () => `State names must be unique within their parent region`);
 			this.qualifiedName = `${this.parent}.${name}`;
 			this.parent.children.unshift(this);
 		} else {

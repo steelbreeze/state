@@ -1,5 +1,5 @@
 import * as model from '../model';
-import { log } from '../util';
+import { assert, log } from '../util';
 import { IInstance, evaluate } from '../runtime';
 
 /**
@@ -16,9 +16,36 @@ export class Instance implements IInstance {
 	 * @param name The name of the state machine instance.
 	 * @param root The root element of the state machine model that this an instance of.
 	 */
-	public constructor(private readonly name: string, public readonly root: model.State) {
-		// TODO: add a third param for JSON initialisation
-		this.transaction(() => this.root.enter(this, false, undefined));
+	public constructor(private readonly name: string, public readonly root: model.State, json: any = undefined) {
+		if (json) {
+			this.transaction(() => this.stateFromJSON(this.root, json));
+		} else {
+			this.transaction(() => this.root.enter(this, false, undefined));
+		}
+	}
+
+	stateFromJSON(state: model.State, json: any): void {
+		for (const jsonRegion of json.children) {
+			for (const region of state.children) {
+				if (region.name === jsonRegion.name) {
+					this.regionFromJSON(region, jsonRegion);
+				}
+			}
+		}
+	}
+
+	regionFromJSON(region: model.Region, json: any): void {
+		for (const jsonState of json.children) {
+			for (const state of region.children) {
+				if (state.name === jsonState.name) {
+					this.stateFromJSON(state as model.State, jsonState);
+				}
+
+				if(state.name === json.lastKnownState) {
+					this.setState(state as model.State);
+				}
+			}
+		}
 	}
 
 	/**
@@ -116,7 +143,7 @@ export class Instance implements IInstance {
 	regionToJSON(region: model.Region): any {
 		let lastKnownState = this.getLastKnownState(region);
 		let states = region.children.filter((value): value is model.State => value instanceof model.State).reverse();
-		
+
 		return { name: region.name, children: states.map(state => this.stateToJSON(state)), lastKnownState: lastKnownState ? lastKnownState.name : undefined };
 	}
 

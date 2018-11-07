@@ -15,7 +15,9 @@ export declare class Instance implements IInstance {
      * @param name The name of the state machine instance.
      * @param root The root element of the state machine model that this an instance of.
      */
-    constructor(name: string, root: model.State);
+    constructor(name: string, root: model.State, json?: any);
+    stateFromJSON(state: model.State, json: any): void;
+    regionFromJSON(region: model.Region, json: any): void;
     /**
      * Passes a trigger event to the state machine instance for evaluation.
      * @param trigger The trigger event to evaluate.
