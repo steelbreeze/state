@@ -46,6 +46,9 @@ let instance = new state.Instance("instance", model);
 
 // send the machine instance a message for evaluation
 instance.evaluate("move");
+
+// show the active state configuration as a JSON string
+console.info(JSON.stringify(instance.toJSON()));
 ```
 ### JavaScript
 ```javascript
@@ -68,6 +71,9 @@ var instance = new state.Instance("instance", model);
 
 // send the machine instance a message for evaluation
 instance.evaluate("move");
+
+// show the active state configuration as a JSON string
+console.info(JSON.stringify(instance.toJSON()));
 ```
 ### Output
 The output of the above code will be:
@@ -80,6 +86,7 @@ instance enter model.model.stateA
 instance evaluate string trigger: move
 instance leave model.model.stateA
 instance enter model.model.stateB
+{"name":"model","children":[{"name":"model","children":[{"name":"stateA","children":[]},{"name":"stateB","children":[]}],"lastKnownState":"stateB"}]}
 ```
 
 ## License
