@@ -1,5 +1,5 @@
 import * as model from '../model';
-import { IInstance } from '../runtime';
+import { IInstance, IState } from '../runtime';
 /**
  * Represents the active state configuration of a state machine instance.
  * @remarks This is the default implementation of the IInstance class and reads/writes to the active state configuration in a transactional manner at both initilisation and each call to evaluate.
@@ -11,9 +11,9 @@ export declare class Instance implements IInstance {
      * Creates an instance of the Instance class.
      * @param name The name of the state machine instance.
      * @param root The root element of the state machine model that this an instance of.
-     * @param json Optional JSON object used to initialise the active state configuration. The json object must have been produced by a prior call to Instance.toJSON from an instance using the same model.
+     * @param activeStateConfiguration Optional JSON object used to initialise the active state configuration. The json object must have been produced by a prior call to Instance.toJSON from an instance using the same model.
      */
-    constructor(name: string, root: model.State, json?: any);
+    constructor(name: string, root: model.State, activeStateConfiguration?: IState | undefined);
     /**
      * Passes a trigger event to the state machine instance for evaluation.
      * @param trigger The trigger event to evaluate.
@@ -62,7 +62,7 @@ export declare class Instance implements IInstance {
      * @param Optional starting state; defaults to the root element within the state machine model.
      * @returns Returns the JSON representation of the active state configuration. This contains just the hierarchy of states and regions with the last known state of each region.
      */
-    toJSON(state?: model.State): any;
+    toJSON(state?: model.State): IState;
     /**
      * Returns the name of the state machine instance.
      * @returns The name of the state machine instance.

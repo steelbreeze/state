@@ -17,3 +17,5 @@ var instance = new state.Instance("instance", model);
 
 // send the machine instance a message for evaluation
 instance.evaluate("move");
+
+console.info(JSON.stringify(instance.toJSON()));

@@ -1,6 +1,6 @@
 import * as model from '../model';
 import { assert, log } from '../util';
-import { IInstance, evaluate } from '../runtime';
+import { IInstance, IRegion, IState, evaluate } from '../runtime';
 
 /**
  * Represents the active state configuration of a state machine instance.
@@ -29,11 +29,11 @@ export class Instance implements IInstance {
 	 * Creates an instance of the Instance class.
 	 * @param name The name of the state machine instance.
 	 * @param root The root element of the state machine model that this an instance of.
-	 * @param json Optional JSON object used to initialise the active state configuration. The json object must have been produced by a prior call to Instance.toJSON from an instance using the same model.
+	 * @param activeStateConfiguration Optional JSON object used to initialise the active state configuration. The json object must have been produced by a prior call to Instance.toJSON from an instance using the same model.
 	 */
-	public constructor(public readonly name: string, public readonly root: model.State, json: any = undefined) {
-		if (json) {
-			this.transaction(() => this.stateFromJSON(this.root, json));
+	public constructor(public readonly name: string, public readonly root: model.State, activeStateConfiguration: IState | undefined = undefined) {
+		if (activeStateConfiguration) {
+			this.transaction(() => this.stateFromJSON(this.root, activeStateConfiguration));
 		} else {
 			this.transaction(() => this.root.enter(this, false, undefined));
 		}
@@ -128,7 +128,7 @@ export class Instance implements IInstance {
 	 * @param Optional starting state; defaults to the root element within the state machine model.
 	 * @returns Returns the JSON representation of the active state configuration. This contains just the hierarchy of states and regions with the last known state of each region.
 	 */
-	toJSON(state: model.State = this.root): any {
+	toJSON(state: model.State = this.root): IState {
 		return { name: state.name, children: state.children.map(region => this.regionToJSON(region)).reverse() };
 	}
 
@@ -138,7 +138,7 @@ export class Instance implements IInstance {
 	 * @returns Returns the JSON representation of the active state configuration of the region.
 	 * @internal
 	 */
-	regionToJSON(region: model.Region): any {
+	regionToJSON(region: model.Region): IRegion {
 		let lastKnownState = this.getLastKnownState(region);
 
 		return { name: region.name, children: region.children.filter((vertex): vertex is model.State => vertex instanceof model.State).reverse().map(state => this.toJSON(state)), lastKnownState: lastKnownState ? lastKnownState.name : undefined };
@@ -150,7 +150,7 @@ export class Instance implements IInstance {
 	 * @param jsonState The json object holding a serialized version of the active state configuration.
 	 * @internal
 	 */
-	stateFromJSON(state: model.State, jsonState: any): void {
+	stateFromJSON(state: model.State, jsonState: IState): void {
 		for (const jsonRegion of jsonState.children) { // NOTE: not all regions in the model may have an entry in the JSON
 			const region = state.children.filter(region => region.name === jsonRegion.name)[0];
 
@@ -166,7 +166,7 @@ export class Instance implements IInstance {
 	 * @param jsonRegion The json object holding a serialized version of the active state configuration.
 	 * @internal
 	 */
-	regionFromJSON(region: model.Region, jsonRegion: any): void {
+	regionFromJSON(region: model.Region, jsonRegion: IRegion): void {
 		for (const jsonState of jsonRegion.children) {
 			const state = region.children.filter((vertex): vertex is model.State => vertex instanceof model.State && vertex.name === jsonState.name)[0];
 
