@@ -1,6 +1,7 @@
 //var state = require("@steelbreeze/state");
 var state = require("../../lib/node");
 
+// log state entry, exit and trigger event evaluation
 state.log.add(message => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
 
 // create the state machine model
@@ -18,4 +19,5 @@ var instance = new state.Instance("instance", model);
 // send the machine instance a message for evaluation
 instance.evaluate("move");
 
+// show the active state configuration as a JSON string
 console.info(JSON.stringify(instance.toJSON()));

@@ -19,4 +19,5 @@ let instance = new state.Instance("instance", model);
 // send the machine instance a message for evaluation
 instance.evaluate("move");
 
+// show the active state configuration as a JSON string
 console.info(JSON.stringify(instance.toJSON()));
