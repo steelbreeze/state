@@ -32,6 +32,8 @@ export class Instance implements IInstance {
 	 * @param activeStateConfiguration Optional JSON object used to initialise the active state configuration. The json object must have been produced by a prior call to Instance.toJSON from an instance using the same model.
 	 */
 	public constructor(public readonly name: string, public readonly root: model.State, activeStateConfiguration: IState | undefined = undefined) {
+		assert.ok(!root.parent, () => `The state provided as the root for an instance cannot have a parent`);
+
 		if (activeStateConfiguration) {
 			this.transaction(() => this.stateFromJSON(this.root, activeStateConfiguration));
 		} else {
