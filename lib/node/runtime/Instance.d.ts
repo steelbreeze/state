@@ -5,19 +5,15 @@ import { IInstance } from '../runtime';
  * @remarks This is the default implementation of the IInstance class and reads/writes to the active state configuration in a transactional manner at both initilisation and each call to evaluate.
  */
 export declare class Instance implements IInstance {
-    private readonly name;
+    readonly name: string;
     readonly root: model.State;
-    private cleanState;
-    private dirtyState;
-    private dirtyVertex;
     /**
      * Creates an instance of the Instance class.
      * @param name The name of the state machine instance.
      * @param root The root element of the state machine model that this an instance of.
+     * @param json Optional JSON object used to initialise the active state configuration. The json object must have been produced by a prior call to Instance.toJSON from an instance using the same model.
      */
     constructor(name: string, root: model.State, json?: any);
-    stateFromJSON(state: model.State, json: any): void;
-    regionFromJSON(region: model.Region, json: any): void;
     /**
      * Passes a trigger event to the state machine instance for evaluation.
      * @param trigger The trigger event to evaluate.
@@ -61,9 +57,12 @@ export declare class Instance implements IInstance {
      * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
      */
     getLastKnownState(region: model.Region): model.State | undefined;
-    toJSON(): any;
-    stateToJSON(state: model.State): any;
-    regionToJSON(region: model.Region): any;
+    /**
+     * Serialize the active state configuration of the state machine instance to JSON.
+     * @param Optional starting state; defaults to the root element within the state machine model.
+     * @returns Returns the JSON representation of the active state configuration. This contains just the hierarchy of states and regions with the last known state of each region.
+     */
+    toJSON(state?: model.State): any;
     /**
      * Returns the name of the state machine instance.
      * @returns The name of the state machine instance.
