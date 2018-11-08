@@ -88,7 +88,7 @@ instance leave model.model.stateA
 instance enter model.model.stateB
 {"name":"model","children":[{"name":"model","children":[{"name":"stateA","children":[]},{"name":"stateB","children":[]}],"lastKnownState":"stateB"}]}
 ```
-
+> Note that in the example above, a *default region* is inserted as a child of ```model``` and parent of ```initial```, ```stateA``` and ```stateB```; the name of default regions copy their parent state hence seeing ```model.model``` in the output above. 
 ## License
 MIT License
 
