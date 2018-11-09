@@ -70,6 +70,10 @@ export class Instance implements IInstance {
 		for (let k = Object.keys(this.dirtyState), i = k.length; i--;) {
 			this.cleanState[k[i]] = this.dirtyState[k[i]];
 		}
+		
+		// clear the transaction cache
+		this.dirtyState = {};
+		this.dirtyVertex = {};
 
 		// return the result to the caller
 		return result;
