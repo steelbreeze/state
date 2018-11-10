@@ -330,14 +330,14 @@
 		/* create the state machine model transitions */
 		initial.external(operational);
 		deepHistory.external(stopped);
-		stopped.external(running).when(trigger => trigger === "play");
-		active.external(stopped).when(trigger => trigger === "stop");
-		running.external(paused).when(trigger => trigger === "pause");
-		paused.external(running).when(trigger => trigger === "play");
-		paused.external(running).when(trigger => trigger === "pause");
-		operational.external(flipped).when(trigger => trigger === "flip");
-		flipped.external(operational).when(trigger => trigger === "flip");
-		operational.external(finalState).when(trigger => trigger === "stop");
+		stopped.external(running).when(t => t === "play");
+		active.external(stopped).when(t => t === "stop");
+		running.external(paused).when(t => t === "pause");
+		paused.external(running).when(t => t === "play");
+		paused.external(running).when(t => t === "pause");
+		operational.external(flipped).when(t => t === "flip");
+		flipped.external(operational).when(t => t === "flip");
+		operational.external(finalState).when(t => t === "stop");
 
 
 		// colour the states on entry/exit
@@ -362,7 +362,7 @@
 <p>The example above shows a working state machine, modelling a cassette player.</p>
 	<p>In addition to basic state transitions, this example shows a few more advanced features: first, deep history is specified in
 		the operational state, meaning when returning from the flipped state, the machine will revert to the state it was in
-		prior to entering the flipped state; next, there are two transitions that respond to the stop trigger event, this
+		prior to entering the flipped state; next, there are two transitions that respond to the stop t event, this
 		shows depth-first evaluation; last, the transition from stopped to running crosses the region boundary within the
 		active state such that there is no need for an initial state.</p>
 	<p>The active state configuration changes colour on state entry/exit with transparency to show the nesting of the
