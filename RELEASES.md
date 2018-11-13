@@ -1,4 +1,4 @@
-## v7.0.0
+## v7.0
 The v7 codebase has been many months in the making, it started with a growing dissatisfaction with the v6 code and the lack of seperation between the core model elements and the runtime. There was also a growing complexity given the pre-evaluation of transitions such that it was becomnig increasingly difficult to debug. I had also started trying to split the code into a file per class, but this was proving difficult to do.
 
 The v7 codeabase is therefore a ground-up re-write and started life as a set of packages (util, model, runtime) with controlled, one-way dependencies between them and classes in seperate files.
