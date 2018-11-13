@@ -8,7 +8,7 @@ Certain other enhncements have been made during the development, such as state m
 Finally, the performance of v7 should be far greater than the v6.
 
 ### Breaking changes
-1. The ```StateMachine``` and ```FinalState``` classes has been removed; use the ```State``` class in its place.
+1. The ```StateMachine``` and ```FinalState``` classes have been removed; use the ```State``` class in its place.
 2. The ```Transition``` class has been split into three seperate classes, ```ExternalTransition```, ```LocalTransition``` and ```ExternalTransition``` with a common abstract base class ```Transition```; the ```TransitionKind``` enumeration has been removed.
 3. The ```Vertex.to``` and ```Transition.else``` helper methods used to create transitions has been removed and replaced by ```State.external```, ```State.local```, ```State.internal```, ```PseduoState.external``` and ```PseudoState.else``` helper methods. This allows better control of what transitions are valid from a given vertex. Two deprecated helpers are present, ```State.to``` and ```PseudoState.to``` which are synonyms for ```State.external``` or ```State.internal``` if no target state is provides and ```PseudoState.external```; these are for backwards compatitibility reasons.
 4. Callbacks to user code for guard conditions and behaviour (state entry/exit and transition) are no longer passed the state machine instance, but solely the trigger object. If you need the instance, I suggest you use an object literal for the trigger passed into the evaluate function such as ```{instance: myInstance, event: myEvent}```; be sure to test for undefined triggers when using object literals in callbacks.
