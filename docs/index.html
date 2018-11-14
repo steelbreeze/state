@@ -7,7 +7,7 @@
 	<link rel="stylesheet" type="text/css" href="https://steelbreeze.net/style/steelbreeze.css">
 	<style type="text/css">
 		@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,600');
-
+/*
 		button {
 			cursor: pointer;
 			font-size: 100%;
@@ -25,6 +25,38 @@
 
 			margin-top: 0.25em;
 		}
+*/
+
+.ripple {
+  background-position: center;
+  transition: background 0.8s;
+}
+.ripple:hover {
+  background: rgba(245, 124, 0, 0.65) radial-gradient(circle, transparent 1%, rgba(245, 124, 0, 0.65) 1%) center/15000%;
+}
+.ripple:active {
+  background-color: rgba(245, 124, 0, 0.5);
+  background-size: 100%;
+  transition: background 0s;
+}
+
+/* Button style */
+button {
+  border: none;
+  border-radius: 2px;
+  padding: 0.5em 1em;
+  font-size: 16px;
+  text-transform: uppercase;
+  cursor: pointer;
+  color: white;
+  background-color: rgba(245, 124, 0, 0.87);
+
+/*  background-color: #2196f3;*/
+  box-shadow: 0 0 4px #999;
+  outline: none;
+}
+
+
 
 		button + button {
 			margin-left: 0.5em;
@@ -369,10 +401,10 @@
 					<h2>Events</h2>
 					<p>Use the buttons below to send triggering events into the machine for evaluation; these triggering events become
 						the t in the transition guard conditions.</p>
-					<button onclick="instance.evaluate('play');">play</button>
-					<button onclick="instance.evaluate('pause');">pause</button>
-					<button onclick="instance.evaluate('stop');">stop</button>
-					<button onclick="instance.evaluate('flip');">flip</button>
+					<button class="ripple" onclick="instance.evaluate('play');">play</button>
+					<button class="ripple" onclick="instance.evaluate('pause');">pause</button>
+					<button class="ripple" onclick="instance.evaluate('stop');">stop</button>
+					<button class="ripple" onclick="instance.evaluate('flip');">flip</button>
 				</article>
 				<article>
 					<h2>Notes</h2>
