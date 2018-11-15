@@ -67,7 +67,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>The pseudo state kind enumeration determines the behaviour and use of the pseudo state class.</p>
+						<p>The PseudoStateKind enumeration determines the behaviour of PseudoState instances.</p>
 					</div>
 				</div>
 			</section>
@@ -96,14 +96,14 @@
 					<div class="tsd-signature tsd-kind-icon">Choice<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;16</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/208fc54/src/model/PseudoStateKind.ts#L40">model/PseudoStateKind.ts:40</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b88ef24/src/model/PseudoStateKind.ts#L40">model/PseudoStateKind.ts:40</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A junction is a dynamic conditional branch, allowing transitions to different target states based upon the trigger.
-								As a dynamic conditional branch, the outbound transition guard conditions are tested after the transition into the junction had been traversed.
-							If multiple outbound transitions evaluate true, a random one is selected.</p>
+							<p>A Choice PseudoState is a dynamic conditional branch, allowing transitions to different target States or PseudoStates based upon the trigger event.
+								As a dynamic conditional branch, the outbound transition guard conditions are tested after the transition into the junction had been traversed and incoming transition behaviour called.
+							If the guard conditions of multiple outbound transitions evaluate true, a random one is selected.</p>
 						</div>
 					</div>
 				</section>
@@ -113,14 +113,14 @@
 					<div class="tsd-signature tsd-kind-icon">Deep<wbr>History<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;4</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/208fc54/src/model/PseudoStateKind.ts#L25">model/PseudoStateKind.ts:25</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b88ef24/src/model/PseudoStateKind.ts#L25">model/PseudoStateKind.ts:25</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A deep history pseudo state is the starting vertex when entering its parent region for the first time;
-								on re-entry to the parent region the last known state of the region will be entered.
-							This re-entry behaviour cascades to all child state.</p>
+							<p>A DeepHistory PseudoState is the starting PseudoState when entering its parent Region for the first time.
+								On re-entry to the parent Region, the last known State of the Region will be used as the stating State.
+							This re-entry behaviour cascades to all child Regions.</p>
 						</div>
 					</div>
 				</section>
@@ -130,12 +130,12 @@
 					<div class="tsd-signature tsd-kind-icon">Initial<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;1</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/208fc54/src/model/PseudoStateKind.ts#L10">model/PseudoStateKind.ts:10</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b88ef24/src/model/PseudoStateKind.ts#L10">model/PseudoStateKind.ts:10</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>An initial pseudo state is the starting vertex when entering its parent region.</p>
+							<p>An Initial PseudoState is the starting PseudoState when entering its parent Region.</p>
 						</div>
 					</div>
 				</section>
@@ -145,13 +145,13 @@
 					<div class="tsd-signature tsd-kind-icon">Junction<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;8</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/208fc54/src/model/PseudoStateKind.ts#L32">model/PseudoStateKind.ts:32</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b88ef24/src/model/PseudoStateKind.ts#L32">model/PseudoStateKind.ts:32</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A junction is a static conditional branch, allowing transitions to different target states based upon the trigger.
-							As a static conditional branch, the outbound transition guard conditions are tested before the transition into the junction had been traversed.</p>
+							<p>A Junction PseudoState is a static conditional branch, allowing transitions to different target States or PseudoStates based upon the trigger event.
+							As a static conditional branch, the outbound transition guard conditions are evaluated before the transition into the junction had been traversed and any incoming transition behaviour called.</p>
 						</div>
 					</div>
 				</section>
@@ -161,13 +161,13 @@
 					<div class="tsd-signature tsd-kind-icon">Shallow<wbr>History<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol"> =&nbsp;2</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/208fc54/src/model/PseudoStateKind.ts#L17">model/PseudoStateKind.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b88ef24/src/model/PseudoStateKind.ts#L17">model/PseudoStateKind.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A shallow history pseudo state is the starting vertex when entering its parent region for the first time;
-							on re-entry to the parent region the last known state of the region will be entered.</p>
+							<p>A ShallowHistory PseudoState is the starting PseudoState when entering its parent Region for the first time.
+							On re-entry to the parent Region, the last known State of the Region will be used as the starting State.</p>
 						</div>
 					</div>
 				</section>

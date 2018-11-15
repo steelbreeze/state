@@ -80,7 +80,7 @@ export declare class State {
      * @param target The target vertex of the external transition.
      * @returns If target is specified, returns an external transition otherwide an internal transition.
      * @public
-     * @deprecated
+     * @deprecated Please use the [[external]] or [[internal]] methods instead.
      */
     to<TTrigger>(target: State | PseudoState | undefined): Transition<TTrigger>;
     /**
