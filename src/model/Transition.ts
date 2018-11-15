@@ -1,9 +1,9 @@
-//import { Vertex } from './Vertex';
 import { State } from './State';
 import { PseudoState } from './PseudoState';
 
 /**
  * Common base class for the three types of transition.
+ * @param TTrigger The type of the trigger event that may cause this transition to be traversed.
  * @abstract
  * @public
  */

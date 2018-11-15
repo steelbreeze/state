@@ -68,6 +68,7 @@ export declare class State {
     exit(action: (trigger: any) => void): this;
     /**
      * Creates a new external transition.
+     * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
      * @param target The target vertex of the external transition.
      * @returns The external transition.
      * @public
@@ -75,6 +76,7 @@ export declare class State {
     external<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger>;
     /**
      * Creates a new external transition.
+     * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
      * @param target The target vertex of the external transition.
      * @returns If target is specified, returns an external transition otherwide an internal transition.
      * @public
@@ -83,12 +85,14 @@ export declare class State {
     to<TTrigger>(target: State | PseudoState | undefined): Transition<TTrigger>;
     /**
      * Creates a new internal transition.
+     * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
      * @returns Returns the internal transition.
      * @public
      */
     internal<TTrigger>(): InternalTransition<TTrigger>;
     /**
      * Creates a new local transition.
+     * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
      * @param target The target vertex of the local transition.
      * @returns Returns the local transition.
      * @public

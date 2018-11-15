@@ -3,6 +3,7 @@ import { Transition } from './Transition';
 import { PseudoState } from './PseudoState';
 /**
  * A local transition is one where the target vertex is a child of source composite state; the source composite state is not exited when traversed.
+ * @param TTrigger The type of the trigger event that may cause this transition to be traversed.
  * @public
  */
 export declare class LocalTransition<TTrigger> extends Transition<TTrigger> {

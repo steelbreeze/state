@@ -1,5 +1,4 @@
 import { log, tree } from '../util';
-import { /*History,*/ PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
 import { State } from './State';
 import { PseudoState } from './PseudoState';
@@ -7,6 +6,7 @@ import { Transition } from './Transition';
 
 /**
  * An external transition is the default transition type within a state machine, enabling transitions between any pair of vertices.
+ * @param TTrigger The type of the trigger event that may cause this transition to be traversed.
  * @public
  */
 export class ExternalTransition<TTrigger = any> extends Transition<TTrigger> {

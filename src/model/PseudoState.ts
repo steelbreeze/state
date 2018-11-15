@@ -63,6 +63,7 @@ export class PseudoState {
 
 	/**
 	 * Creates a new external transition.
+	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
 	 * @param target The target vertex of the external transition.
 	 * @returns The external transition.
 	 * @public
@@ -73,6 +74,7 @@ export class PseudoState {
 
 	/**
 	 * Creates a new external transition.
+	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
 	 * @param target The target vertex of the external transition.
 	 * @returns The external transition.
 	 * @public
@@ -84,12 +86,12 @@ export class PseudoState {
 
 	/**
 	 * Creates a new else transition for branch (junction and choice) pseudo states; else transitions are selected if no other transitions guard conditions evaluate true.
+	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
 	 * @param target The target of the transition.
 	 * @returns Returns the new else transition.
 	 * @public
 	 */
 	public else<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger> {
-
 		assert.ok(!this.elseTransition, () => `Only 1 else transition allowed at ${this}.`);
 
 		return this.elseTransition = new ExternalTransition<TTrigger>(this, target).when(() => false);

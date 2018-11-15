@@ -2,6 +2,7 @@ import { Transition } from './Transition';
 import { State } from './State';
 /**
  * An internal transition does not effect a state change when it is traversed, it only has transition behaviour.
+ * @param TTrigger The type of the trigger event that may cause this transition to be traversed.
  * @public
  */
 export declare class InternalTransition<TTrigger> extends Transition<TTrigger> {
