@@ -1,5 +1,6 @@
 /**
  * Tree functions.
+ * @hidden
  */
 export namespace tree {
 	/**

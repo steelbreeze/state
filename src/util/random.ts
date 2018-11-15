@@ -1,3 +1,6 @@
+/**
+ * Controls the method used by @steelbreeze/state to create random numbers.
+ */
 export namespace random {
 	/**
 	 * Returns a random number between 0 and max - 1

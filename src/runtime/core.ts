@@ -9,7 +9,7 @@ import { IInstance } from '../runtime';
  * @param deepHistory True if deep history semantics are invoked.
  * @param trigger The trigger event
  * @returns Returns true if the trigger caused a state transition.
- * @internal
+ * @hidden
  */
 export function evaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	const result = delegate(state, instance, deepHistory, trigger) || accept(state, instance, deepHistory, trigger);

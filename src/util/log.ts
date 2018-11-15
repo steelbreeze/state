@@ -1,3 +1,6 @@
+/**
+ * Logging API used by @steelbreeze/state. Enables other logging solutions to be integrated.
+ */
 export namespace log {
 	export const Create: number = 1;
 	export const Entry: number = 2;
