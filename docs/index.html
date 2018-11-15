@@ -7,58 +7,41 @@
 	<link rel="stylesheet" type="text/css" href="https://steelbreeze.net/style/steelbreeze.css">
 	<style type="text/css">
 		@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,300i,600');
-/*
-		button {
-			cursor: pointer;
-			font-size: 100%;
-			padding: 0.5em 1em;
 
-			border-width: 0;
-			outline: none;
-			border-radius: 2px;
-			box-shadow: 0 1px 4px rgba(0, 0, 0, .6);
-
-			background-color: rgba(245, 124, 0, 0.87);
-			color: #ecf0f1;
-
-			transition: background-color .3s;
-
-			margin-top: 0.25em;
+		.ripple {
+			background-position: center;
+			transition: background 0.8s;
 		}
-*/
 
-.ripple {
-  background-position: center;
-  transition: background 0.8s;
-}
-.ripple:hover {
-  background: rgba(245, 124, 0, 0.65) radial-gradient(circle, transparent 1%, rgba(245, 124, 0, 0.65) 1%) center/15000%;
-}
-.ripple:active {
-  background-color: rgba(245, 124, 0, 0.5);
-  background-size: 100%;
-  transition: background 0s;
-}
+		.ripple:hover {
+			background: rgba(245, 124, 0, 0.65) radial-gradient(circle, transparent 1%, rgba(245, 124, 0, 0.65) 1%) center/15000%;
+		}
 
-/* Button style */
-button {
-  border: none;
-  border-radius: 2px;
-  padding: 0.5em 1em;
-  font-size: 16px;
-  text-transform: uppercase;
-  cursor: pointer;
-  color: white;
-  background-color: rgba(245, 124, 0, 0.87);
+		.ripple:active {
+			background-color: rgba(245, 124, 0, 0.5);
+			background-size: 100%;
+			transition: background 0s;
+		}
 
-/*  background-color: #2196f3;*/
-  box-shadow: 0 0 4px #999;
-  outline: none;
-}
+		/* Button style */
+		button {
+			border: none;
+			border-radius: 2px;
+			padding: 0.5em 1em;
+			font-size: 16px;
+			text-transform: uppercase;
+			cursor: pointer;
+			color: white;
+			background-color: rgba(245, 124, 0, 0.87);
+
+			/*  background-color: #2196f3;*/
+			box-shadow: 0 0 4px #999;
+			outline: none;
+		}
 
 
 
-		button + button {
+		button+button {
 			margin-left: 0.5em;
 		}
 
@@ -120,7 +103,8 @@ button {
 	<main>
 		<section>
 			<h1>Example state machine</h1>
-			<p>The example below shows a working state machine, modelling a cassette player, with the current state highlighted (as this is a hierarchical machine, you will see the nesting of current state).</p>
+			<p>The example below shows a working state machine, modelling a cassette player, with the current state highlighted
+				(as this is a hierarchical machine, you will see the nesting of current state).</p>
 			<article>
 				<h2>Model</h2>
 				<p>The model is implemented in JavaScript as a script in the page, see the page source for details.</p>
@@ -234,9 +218,9 @@ button {
 							<path d="M0 313.81 L340.16 313.81" class="st3" />
 							<text x="14.17" y="338.86" class="st2" v:langID="2057">
 								<v:paragraph />
-								<v:tabList />Entry / startMotor
+								<v:tabList />Entry / engageHead
 								<v:newlineChar />
-								<tspan x="14.17" dy="1.2em" class="st4">Exit </tspan>/ stopMotor
+								<tspan x="14.17" dy="1.2em" class="st4">Exit </tspan>/ disengageHead
 							</text>
 						</g>
 						<g id="shape9-42" v:mID="9" v:groupContext="shape" transform="translate(56.6929,-100.213)">
@@ -360,43 +344,6 @@ button {
 						</g>
 					</g>
 				</svg>
-				<script src="lib/state.js"></script>
-				<script>
-					state.log.add(message => console.info(message), state.log.Entry | state.log.Exit);
-
-					// create the state machine model elements/
-					var model = new state.State("model");
-					var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
-					var operational = new state.State("operational", model);
-					var flipped = new state.State("flipped", model);
-					var finalState = new state.State("final", model);
-					var deepHistory = new state.PseudoState("history", operational, state.PseudoStateKind.DeepHistory);
-					var stopped = new state.State("stopped", operational);
-					var active = new state.State("active", operational);
-					var running = new state.State("running", active);
-					var paused = new state.State("paused", active);
-
-					/* create the state machine model transitions */
-					initial.external(operational);
-					deepHistory.external(stopped);
-					stopped.external(running).when(t => t === "play");
-					active.external(stopped).when(t => t === "stop");
-					running.external(paused).when(t => t === "pause");
-					paused.external(running).when(t => t === "play");
-					paused.external(running).when(t => t === "pause");
-					operational.external(flipped).when(t => t === "flip");
-					flipped.external(operational).when(t => t === "flip");
-					operational.external(finalState).when(t => t === "stop");
-
-
-					// colour the states on entry/exit
-					for (const s of [operational, stopped, active, running, paused, flipped, finalState]) {
-						s.entry(() => document.getElementById(s.name).classList.add("active"));
-						s.exit(() => document.getElementById(s.name).classList.remove("active"));
-					}
-
-					let instance = new state.Instance("instance", model);
-				</script>
 				<article>
 					<h2>Events</h2>
 					<p>Use the buttons below to send triggering events into the machine for evaluation; these triggering events become
@@ -405,6 +352,12 @@ button {
 					<button class="ripple" onclick="instance.evaluate('pause');">pause</button>
 					<button class="ripple" onclick="instance.evaluate('stop');">stop</button>
 					<button class="ripple" onclick="instance.evaluate('flip');">flip</button>
+				</article>
+				<article>
+					<h2>Outputs</h2>
+					<p>Below are the outputs of the state machine, in this example controlling the cassette players head and motor</p>
+					<p>Head: <span id="head">disengaged</span></p>
+					<p>Motor: <span id="motor">stopped</span></p>
 				</article>
 				<article>
 					<h2>Notes</h2>
@@ -420,6 +373,59 @@ button {
 				</article>
 		</section>
 	</main>
+
+	<script src="lib/state.js"></script>
+	<script>
+		let head = document.getElementById("head");
+		let motor = document.getElementById("motor");
+
+		// define the operations that the state machine will call as outputs
+		function startMotor() { motor.innerText = "running"; }
+		function stopMotor() { motor.innerText = "stopped"; }
+		function engageHead() { head.innerText = "engaged"; }
+		function disengageHead() { head.innerText = "disengaged"; }
+
+
+		// log to the browser console
+		state.log.add(message => console.info(message), state.log.Entry | state.log.Exit);
+
+		// create the state machine model elements/
+		var model = new state.State("model");
+		var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
+		var operational = new state.State("operational", model);
+		var flipped = new state.State("flipped", model);
+		var finalState = new state.State("final", model);
+		var deepHistory = new state.PseudoState("history", operational, state.PseudoStateKind.DeepHistory);
+		var stopped = new state.State("stopped", operational);
+		var active = new state.State("active", operational);
+		var running = new state.State("running", active);
+		var paused = new state.State("paused", active);
+
+		/* create the state machine model transitions */
+		initial.external(operational);
+		deepHistory.external(stopped);
+		stopped.external(running).when(t => t === "play");
+		active.external(stopped).when(t => t === "stop");
+		running.external(paused).when(t => t === "pause");
+		paused.external(running).when(t => t === "play");
+		paused.external(running).when(t => t === "pause");
+		operational.external(flipped).when(t => t === "flip");
+		flipped.external(operational).when(t => t === "flip");
+		operational.external(finalState).when(t => t === "stop");
+
+		// define the state entry/exit behaviour
+		active.entry(engageHead).exit(disengageHead);
+		running.entry(startMotor).exit(stopMotor);
+
+		// colour the states on entry/exit
+		for (const s of [operational, stopped, active, running, paused, flipped, finalState]) {
+			s.entry(() => document.getElementById(s.name).classList.add("active"));
+			s.exit(() => document.getElementById(s.name).classList.remove("active"));
+		}
+
+		let instance = new state.Instance("instance", model);
+	</script>
+
 </body>
 
 </html>
