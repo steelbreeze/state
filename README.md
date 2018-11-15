@@ -22,8 +22,9 @@ npm i @steelbreeze/state
 
 ## Usage
 The API is broken up into two distinct parts:
-1. A set of classes that represent a state machine model (State, PseudoState, Region, etc.);
-2. An interface, and default implementation of that interface, to represent an instance of a state machine model. This embodies the *active state configuration* of a state machine instance, and enables multiple instances of the same state machine model.
+1. A set of classes that represent a state machine model ([State](https://steelbreeze.net/state/api/v7/classes/state.html), [PseudoState](https://steelbreeze.net/state/api/v7/classes/pseudostate.html), [Region](https://steelbreeze.net/state/api/v7/classes/region.html), etc.);
+2. An interface ([IInstance](https://steelbreeze.net/state/api/v7/interfaces/iinstance.html)), and default implementation of that interface ([Instance](https://steelbreeze.net/state/api/v7/classes/instance.html)), to represent an instance of a state machine model. This embodies the *active state configuration* of a state machine instance, and enables multiple instances of the same state machine model.
+
 The full API reference can be found [here](https://steelbreeze.net/state/api/v7).
 
 ### TypeScript
