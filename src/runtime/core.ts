@@ -152,10 +152,10 @@ model.Region.prototype.enterHead = function (instance: IInstance, deepHistory: b
 /** Complete region entry */
 model.Region.prototype.enterTail = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	let current: model.State | undefined;
-	let starting: model.State | model.PseudoState | undefined = this.starting;
+	let starting: model.Vertex | undefined = this.starting;
 
 	// determine if history semantics are in play and the region has previously been entered then select the starting vertex accordingly
-	if ((deepHistory || (starting && starting.isHistory())) && (current = instance.getState(this))) {
+	if ((deepHistory || (this.starting && this.starting.isHistory())) && (current = instance.getState(this))) {
 		starting = current;
 		deepHistory = deepHistory || (this.starting!.kind === model.PseudoStateKind.DeepHistory);
 	}
