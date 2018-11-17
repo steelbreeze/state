@@ -1,12 +1,14 @@
 import { log } from '../util';
+import { NamedElement } from './NamedElement';
 import { State } from './State';
 import { PseudoState } from './PseudoState';
+import { Vertex } from './Vertex';
 
 /**
  * A region is a container of vertices (states and pseudo states) in a state machine model.
  * @public
  */
-export class Region {// implements Element<State> {
+export class Region implements NamedElement<State> {
 	/**
 	 * The fully qualified name of the region including its parent's qualified name.
 	 * @public
@@ -17,7 +19,7 @@ export class Region {// implements Element<State> {
 	 * The child vertices belonging to this region.
 	 * @internal
 	 */
-	children: Array<State | PseudoState> = [];
+	children: Array<Vertex> = [];
 
 	/**
 	 * The initial starting pseudo state of this region; saves the costly process of searching for it at runtime.

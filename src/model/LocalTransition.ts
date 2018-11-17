@@ -1,8 +1,10 @@
 import { log, tree } from '../util';
-import { State } from './State';
+import { NamedElement } from './NamedElement';
 import { Region } from './Region';
 import { Transition } from './Transition';
+import { State } from './State';
 import { PseudoState } from './PseudoState';
+import { Vertex } from './Vertex';
 
 /**
  * A local transition is one where the target vertex is a child of source composite state; the source composite state is not exited when traversed.
@@ -14,13 +16,13 @@ export class LocalTransition<TTrigger> extends Transition<TTrigger> {
 	 * The element to exit when traversing this transition; the exit operation will cascade though all current active child substate.
 	 * @internal
 	 */
-	readonly toLeave: Region | State | PseudoState;
+	readonly toLeave: NamedElement;
 
 	/**
 	 * The elements to enter when traversing this transition; the entry operation on the last will cascade to any child substate.
 	 * @internal
 	 */
-	readonly toEnter: Array<Region | State | PseudoState>;
+	readonly toEnter: Array<NamedElement>;
 
 	/**
 	 * Creates a new instance of the LocalTransition class.
@@ -33,11 +35,11 @@ export class LocalTransition<TTrigger> extends Transition<TTrigger> {
 	 * enter all elements from the state below the source to the target.
 	 * @public
 	 */
-	public constructor(public readonly source: State, target: State | PseudoState) {
+	public constructor(public readonly source: State, target: Vertex) {
 		super(source, target);
 
 		// determine the target ancestry
-		const targetAncestors = tree.ancestors<Region | State | PseudoState>(target, element => element.parent); // NOTE: as the target is a child of the source it will be in the same ancestry
+		const targetAncestors = tree.ancestors<NamedElement>(target, element => element.parent); // NOTE: as the target is a child of the source it will be in the same ancestry
 
 		// determine where to enter and exit from in the ancestry
 		const from = targetAncestors.indexOf(source) + 2; // NOTE: in local transitions the source vertex is not exited, but the active child substate is

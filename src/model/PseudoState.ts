@@ -1,4 +1,5 @@
 import { assert, log } from '../util';
+import { Vertex } from './Vertex';
 import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
 import { State } from './State';
@@ -9,7 +10,7 @@ import { ExternalTransition } from './ExternalTransition';
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
  * @public
  */
-export class PseudoState {
+export class PseudoState implements Vertex {
 	public readonly parent: Region;
 
 	/**

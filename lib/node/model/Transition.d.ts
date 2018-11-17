@@ -1,5 +1,4 @@
-import { State } from './State';
-import { PseudoState } from './PseudoState';
+import { Vertex } from './Vertex';
 /**
  * Common base class for the three types of transition.
  * @param TTrigger The type of the trigger event that may cause this transition to be traversed.
@@ -7,14 +6,14 @@ import { PseudoState } from './PseudoState';
  * @public
  */
 export declare abstract class Transition<TTrigger = any> {
-    readonly target: State | PseudoState;
+    readonly target: Vertex;
     /**
      * Creates a new instance of the TransitionBase class.
      * @param source The source vertex of the transition.
      * @param target The target vertex of the transition.
      * @protected
      */
-    protected constructor(source: State | PseudoState, target: State | PseudoState);
+    protected constructor(source: Vertex, target: Vertex);
     /**
      * Adds behaviour to the transition to be called every time the transition is traversed.
      * @param action The behaviour to call on transition traversal.

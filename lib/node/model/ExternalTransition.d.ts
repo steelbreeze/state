@@ -1,5 +1,4 @@
-import { State } from './State';
-import { PseudoState } from './PseudoState';
+import { Vertex } from './Vertex';
 import { Transition } from './Transition';
 /**
  * An external transition is the default transition type within a state machine, enabling transitions between any pair of vertices.
@@ -7,7 +6,7 @@ import { Transition } from './Transition';
  * @public
  */
 export declare class ExternalTransition<TTrigger = any> extends Transition<TTrigger> {
-    readonly source: State | PseudoState;
+    readonly source: Vertex;
     /**
      * Creates a new instance of the ExternalTransition class.
      * @param TTrigger The type of the trigger that will cause this transition to be traversed.
@@ -19,5 +18,5 @@ export declare class ExternalTransition<TTrigger = any> extends Transition<TTrig
      * enter all elements from the element below the common ancestor of the source and target to the target.
      * @public
      */
-    constructor(source: State | PseudoState, target: State | PseudoState);
+    constructor(source: Vertex, target: Vertex);
 }

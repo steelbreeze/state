@@ -113,6 +113,19 @@ function completion(state: model.State, instance: IInstance, deepHistory: boolea
 }
 
 /**
+ * Runtime extension methods to the NamedElement interface.
+ * @internal
+ */ 
+declare module '../model/NamedElement' {
+	interface NamedElement<TParent> {
+		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
+	}
+}
+
+/**
  * Runtime extension methods to the region class.
  * @internal
  */ 
@@ -125,8 +138,8 @@ declare module '../model/Region' {
 	}
 }
 
-/** Enter a region */
-model.Region.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+/** Enter a region, state or pseudo state */
+model.Region.prototype.enter = model.State.prototype.enter = model.PseudoState.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	this.enterHead(instance, deepHistory, trigger);
 	this.enterTail(instance, deepHistory, trigger);
 }
@@ -185,12 +198,6 @@ model.PseudoState.prototype.getTransition = function (trigger: any): model.Trans
 	return result!;
 }
 
-/** Enter a pseudo state */
-model.PseudoState.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
-	this.enterHead(instance, deepHistory, trigger);
-	this.enterTail(instance, deepHistory, trigger);
-}
-
 /** Initiate pseudo state entry */
 model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	log.info(() => `${instance} enter ${this}`, log.Entry);
@@ -230,12 +237,6 @@ declare module '../model/State' {
 /** Find a single transition from the state for a given trigger event */
 model.State.prototype.getTransition = function (trigger: any): model.Transition | undefined {
 	return getTransition(this, trigger);
-}
-
-/** Enter a state */
-model.State.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
-	this.enterHead(instance, deepHistory, trigger);
-	this.enterTail(instance, deepHistory, trigger);
 }
 
 /** Initiate state entry */

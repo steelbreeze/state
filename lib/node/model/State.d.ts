@@ -1,3 +1,4 @@
+import { Vertex } from './Vertex';
 import { Region } from './Region';
 import { Transition } from './Transition';
 import { ExternalTransition } from './ExternalTransition';
@@ -8,7 +9,7 @@ import { PseudoState } from './PseudoState';
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
  */
-export declare class State {
+export declare class State implements Vertex {
     readonly name: string;
     readonly parent: Region | undefined;
     /**

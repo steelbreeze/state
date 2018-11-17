@@ -1,6 +1,6 @@
 import { log, tree } from '../util';
-import { Region } from './Region';
-import { State } from './State';
+import { NamedElement } from './NamedElement';
+import { Vertex } from './Vertex';
 import { PseudoState } from './PseudoState';
 import { Transition } from './Transition';
 
@@ -14,13 +14,13 @@ export class ExternalTransition<TTrigger = any> extends Transition<TTrigger> {
 	 * The element to exit when traversing this transition; the exit operation will cascade though all current active child substate.
 	 * @internal
 	 */
-	readonly toLeave: Region | State | PseudoState;
+	readonly toLeave: NamedElement;
 
 	/**
 	 * The elements to enter when traversing this transition; the entry operation on the last will cascade to any child substate.
 	 * @internal
 	 */
-	readonly toEnter: Array<Region | State | PseudoState>;
+	readonly toEnter: Array<NamedElement>;
 
 	/**
 	 * Creates a new instance of the ExternalTransition class.
@@ -33,12 +33,12 @@ export class ExternalTransition<TTrigger = any> extends Transition<TTrigger> {
 	 * enter all elements from the element below the common ancestor of the source and target to the target.
 	 * @public
 	 */
-	public constructor(public readonly source: State | PseudoState, target: State | PseudoState) {
+	public constructor(public readonly source: Vertex, target: Vertex) {
 		super(source, target);
 
 		// determine the source and target vertex ancestries
-		const sourceAncestors = tree.ancestors<Region | State | PseudoState>(source, element => element.parent);
-		const targetAncestors = tree.ancestors<Region | State | PseudoState>(target, element => element.parent);
+		const sourceAncestors = tree.ancestors<NamedElement>(source, element => element.parent);
+		const targetAncestors = tree.ancestors<NamedElement>(target, element => element.parent);
 
 		// determine where to enter and exit from in the ancestries
 		const from = tree.lca(sourceAncestors, targetAncestors) + 1; // NOTE: we enter/exit from the elements below the common ancestor

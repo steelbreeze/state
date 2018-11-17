@@ -1,9 +1,10 @@
+import { NamedElement } from './NamedElement';
 import { State } from './State';
 /**
  * A region is a container of vertices (states and pseudo states) in a state machine model.
  * @public
  */
-export declare class Region {
+export declare class Region implements NamedElement<State> {
     readonly name: string;
     readonly parent: State;
     /**

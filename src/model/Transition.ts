@@ -1,5 +1,4 @@
-import { State } from './State';
-import { PseudoState } from './PseudoState';
+import { Vertex } from './Vertex';
 
 /**
  * Common base class for the three types of transition.
@@ -26,7 +25,7 @@ export abstract class Transition<TTrigger = any> {
 	 * @param target The target vertex of the transition.
 	 * @protected
 	 */
-	protected constructor(source: State | PseudoState, public readonly target: State | PseudoState) {
+	protected constructor(source: Vertex, public readonly target: Vertex) {
 		source.outgoing.unshift(this);
 	}
 
