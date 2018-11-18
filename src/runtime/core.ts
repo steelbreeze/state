@@ -42,7 +42,7 @@ function delegate(state: model.State, instance: IInstance, deepHistory: boolean,
 }
 
 /** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
-function accept(vertex: model.State | model.PseudoState, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+function accept(vertex: model.Vertex, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
 	const transition = vertex.getTransition(trigger);
 
 	if (transition) {
@@ -55,7 +55,7 @@ function accept(vertex: model.State | model.PseudoState, instance: IInstance, de
 }
 
 /** Find a transition from any state or pseudo state */
-function getTransition(vertex: model.State | model.PseudoState, trigger: any): model.Transition | undefined {
+function getTransition(vertex: model.Vertex, trigger: any): model.Transition | undefined {
 	let result: model.Transition | undefined;
 
 	// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
@@ -91,7 +91,7 @@ function traverse(transition: model.Transition, instance: IInstance, deepHistory
 
 	// gather all transitions to be taversed either side of static conditional branches (junctions)
 	while (transition.target instanceof model.PseudoState && transition.target.kind === model.PseudoStateKind.Junction) {
-		transitions.unshift(transition = transition.target.getTransition(trigger));
+		transitions.unshift(transition = transition.target.getTransition(trigger)!);
 	}
 	// traverse all transitions
 	for (let i = transitions.length; i--;) {
@@ -175,12 +175,22 @@ model.Region.prototype.leave = function (instance: IInstance, deepHistory: boole
 }
 
 /**
+ * Runtime extension methods to the vertex interface.
+ * @internal
+ */ 
+declare module '../model/Vertex' {
+	interface Vertex {
+		getTransition(trigger: any): model.Transition | undefined;
+	}
+}
+
+/**
  * Runtime extension methods to the pseudo state class.
  * @internal
  */ 
 declare module '../model/PseudoState' {
 	interface PseudoState {
-		getTransition(trigger: any): model.Transition;
+		getTransition(trigger: any): model.Transition | undefined;
 
 		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
@@ -190,7 +200,7 @@ declare module '../model/PseudoState' {
 }
 
 /** Find a transition from the pseudo state for a given trigger event */
-model.PseudoState.prototype.getTransition = function (trigger: any): model.Transition {
+model.PseudoState.prototype.getTransition = function (trigger: any): model.Transition | undefined {
 	const result = (this.kind === model.PseudoStateKind.Choice ? getChoiceTransition : getTransition)(this, trigger) || this.elseTransition;
 
 	assert.ok(result, () => `Unable to find transition at ${this} for ${trigger}`);
