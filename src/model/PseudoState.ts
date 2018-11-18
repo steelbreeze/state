@@ -69,7 +69,7 @@ export class PseudoState implements Vertex {
 	 * @returns The external transition.
 	 * @public
 	 */
-	public external<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger> {
+	public external<TTrigger>(target: Vertex): ExternalTransition<TTrigger> {
 		return new ExternalTransition<TTrigger>(this, target);
 	}
 
@@ -81,7 +81,7 @@ export class PseudoState implements Vertex {
 	 * @public
 	 * @deprecated Please use the [[external]] method instead.
 	 */
-	public to<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger> {
+	public to<TTrigger>(target: Vertex): ExternalTransition<TTrigger> {
 		return this.external(target);
 	}
 
@@ -92,7 +92,7 @@ export class PseudoState implements Vertex {
 	 * @returns Returns the new else transition.
 	 * @public
 	 */
-	public else<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger> {
+	public else<TTrigger>(target: Vertex): ExternalTransition<TTrigger> {
 		assert.ok(!this.elseTransition, () => `Only 1 else transition allowed at ${this}.`);
 
 		return this.elseTransition = new ExternalTransition<TTrigger>(this, target).when(() => false);

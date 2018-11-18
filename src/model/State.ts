@@ -138,7 +138,7 @@ export class State implements Vertex {
 	 * @returns The external transition.
 	 * @public
 	 */
-	public external<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger> {
+	public external<TTrigger>(target: Vertex): ExternalTransition<TTrigger> {
 		return new ExternalTransition<TTrigger>(this, target);
 	}
 
@@ -150,7 +150,7 @@ export class State implements Vertex {
 	 * @public
 	 * @deprecated Please use the [[external]] or [[internal]] methods instead.
 	 */
-	public to<TTrigger>(target: State | PseudoState | undefined): Transition<TTrigger> {
+	public to<TTrigger>(target: Vertex | undefined): Transition<TTrigger> {
 		return target ? this.external(target) : this.internal();
 	}
 
@@ -171,7 +171,7 @@ export class State implements Vertex {
 	 * @returns Returns the local transition.
 	 * @public
 	 */
-	public local<TTrigger>(target: State | PseudoState): LocalTransition<TTrigger> {
+	public local<TTrigger>(target: Vertex): LocalTransition<TTrigger> {
 		return new LocalTransition<TTrigger>(this, target);
 	}
 

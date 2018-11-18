@@ -41,7 +41,7 @@ export declare class PseudoState implements Vertex {
      * @returns The external transition.
      * @public
      */
-    external<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger>;
+    external<TTrigger>(target: Vertex): ExternalTransition<TTrigger>;
     /**
      * Creates a new external transition.
      * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
@@ -50,7 +50,7 @@ export declare class PseudoState implements Vertex {
      * @public
      * @deprecated Please use the [[external]] method instead.
      */
-    to<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger>;
+    to<TTrigger>(target: Vertex): ExternalTransition<TTrigger>;
     /**
      * Creates a new else transition for branch (junction and choice) pseudo states; else transitions are selected if no other transitions guard conditions evaluate true.
      * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
@@ -58,7 +58,7 @@ export declare class PseudoState implements Vertex {
      * @returns Returns the new else transition.
      * @public
      */
-    else<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger>;
+    else<TTrigger>(target: Vertex): ExternalTransition<TTrigger>;
     /**
      * Returns the fully qualified name of the pseudo state.
      * @public

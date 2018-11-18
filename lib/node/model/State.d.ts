@@ -4,7 +4,6 @@ import { Transition } from './Transition';
 import { ExternalTransition } from './ExternalTransition';
 import { LocalTransition } from './LocalTransition';
 import { InternalTransition } from './InternalTransition';
-import { PseudoState } from './PseudoState';
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
@@ -74,7 +73,7 @@ export declare class State implements Vertex {
      * @returns The external transition.
      * @public
      */
-    external<TTrigger>(target: State | PseudoState): ExternalTransition<TTrigger>;
+    external<TTrigger>(target: Vertex): ExternalTransition<TTrigger>;
     /**
      * Creates a new external transition.
      * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
@@ -83,7 +82,7 @@ export declare class State implements Vertex {
      * @public
      * @deprecated Please use the [[external]] or [[internal]] methods instead.
      */
-    to<TTrigger>(target: State | PseudoState | undefined): Transition<TTrigger>;
+    to<TTrigger>(target: Vertex | undefined): Transition<TTrigger>;
     /**
      * Creates a new internal transition.
      * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
@@ -98,7 +97,7 @@ export declare class State implements Vertex {
      * @returns Returns the local transition.
      * @public
      */
-    local<TTrigger>(target: State | PseudoState): LocalTransition<TTrigger>;
+    local<TTrigger>(target: Vertex): LocalTransition<TTrigger>;
     /**
      * Returns the fully qualified name of the state.
      * @public
