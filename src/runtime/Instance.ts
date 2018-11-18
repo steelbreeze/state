@@ -23,7 +23,7 @@ export class Instance implements IInstance {
 	 * The last entered vertex of each region in the state machine instance that has been entered during a transaction.
 	 * @internal
 	 */
-	private dirtyVertex: Record<string, model.State | model.PseudoState> = {};
+	private dirtyVertex: Record<string, model.Vertex> = {};
 
 	/**
 	 * Creates an instance of the Instance class.
@@ -59,24 +59,24 @@ export class Instance implements IInstance {
 	 * @returns Returns the return value from the transactional context.
 	 */
 	transaction<TReturn>(operation: () => TReturn): TReturn {
-		// clear the transaction cache
-		this.dirtyState = {};
-		this.dirtyVertex = {};
+		try {
+			// perform the operation
+			const result = operation();
 
-		// perform the operation
-		const result = operation();
+			// commit the transaction cache to the clean state
+			for (let k = Object.keys(this.dirtyState), i = k.length; i--;) {
+				this.cleanState[k[i]] = this.dirtyState[k[i]];
+			}
 
-		// commit the transaction cache to the clean state
-		for (let k = Object.keys(this.dirtyState), i = k.length; i--;) {
-			this.cleanState[k[i]] = this.dirtyState[k[i]];
+			// return the result to the caller
+			return result;
 		}
-		
-		// clear the transaction cache
-		this.dirtyState = {};
-		this.dirtyVertex = {};
 
-		// return the result to the caller
-		return result;
+		// clear the transaction cache
+		finally {
+			this.dirtyState = {};
+			this.dirtyVertex = {};
+		}
 	}
 
 	/**
@@ -84,7 +84,7 @@ export class Instance implements IInstance {
 	 * @param vertex The vertex set as its parents last entered vertex.
 	 * @remarks This should only be called by the state machine runtime.
 	 */
-	public setVertex(vertex: model.State | model.PseudoState): void {
+	public setVertex(vertex: model.Vertex): void {
 		if (vertex.parent) {
 			this.dirtyVertex[vertex.parent.qualifiedName] = vertex;
 		}
@@ -116,7 +116,7 @@ export class Instance implements IInstance {
 	 * @param region The region to get the last entered vertex of.
 	 * @returns Returns the last entered vertex for the given region.
 	 */
-	public getVertex(region: model.Region): model.State | model.PseudoState {
+	public getVertex(region: model.Region): model.Vertex {
 		return this.dirtyVertex[region.qualifiedName] || this.cleanState[region.qualifiedName];
 	}
 

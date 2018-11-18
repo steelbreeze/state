@@ -32,7 +32,7 @@ export declare class Instance implements IInstance {
      * @param vertex The vertex set as its parents last entered vertex.
      * @remarks This should only be called by the state machine runtime.
      */
-    setVertex(vertex: model.State | model.PseudoState): void;
+    setVertex(vertex: model.Vertex): void;
     /**
      * Updates the transactional state of a region with the last entered state.
      * @param state The state set as its parents last entered state.
@@ -50,7 +50,7 @@ export declare class Instance implements IInstance {
      * @param region The region to get the last entered vertex of.
      * @returns Returns the last entered vertex for the given region.
      */
-    getVertex(region: model.Region): model.State | model.PseudoState;
+    getVertex(region: model.Region): model.Vertex;
     /**
      * Returns the last known state of a given region. This is the call for application programmers to use as it returns the clean transactional state more efficently.
      * @param region The region to get the last known state of.
