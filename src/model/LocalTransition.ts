@@ -1,6 +1,5 @@
 import { log, tree } from '../util';
 import { NamedElement } from './NamedElement';
-import { Region } from './Region';
 import { Transition } from './Transition';
 import { State } from './State';
 import { PseudoState } from './PseudoState';

@@ -5,8 +5,6 @@ import { Transition } from './Transition';
 import { ExternalTransition } from './ExternalTransition';
 import { LocalTransition } from './LocalTransition';
 import { InternalTransition } from './InternalTransition';
-import { PseudoState } from './PseudoState';
-import { NamedElement } from './NamedElement';
 
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
