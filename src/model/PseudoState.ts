@@ -95,7 +95,7 @@ export class PseudoState implements Vertex {
 	public else<TTrigger>(target: Vertex): ExternalTransition<TTrigger> {
 		assert.ok(!this.elseTransition, () => `Only 1 else transition allowed at ${this}.`);
 
-		return this.elseTransition = new ExternalTransition<TTrigger>(this, target).when(() => false);
+		return this.elseTransition = new ExternalTransition<TTrigger>(this, target).guard(() => false);
 	}
 
 	/**

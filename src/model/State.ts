@@ -5,6 +5,7 @@ import { Transition } from './Transition';
 import { ExternalTransition } from './ExternalTransition';
 import { LocalTransition } from './LocalTransition';
 import { InternalTransition } from './InternalTransition';
+//import { Trigger } from './Trigger';
 
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
@@ -46,6 +47,8 @@ export class State implements Vertex {
 	 * @internal
 	 */
 	onLeave: Array<(trigger: any) => void> = [];
+
+	deferrableTrigger: Array<new (...args: any[]) => any> = [];
 
 	/**
 	 * Creates a new instance of the State class.
@@ -171,6 +174,12 @@ export class State implements Vertex {
 	 */
 	public local<TTrigger>(target: Vertex): LocalTransition<TTrigger> {
 		return new LocalTransition<TTrigger>(this, target);
+	}
+
+	public defer<TTrigger>(trigger: new (...args: any[]) => TTrigger): State {
+		this.deferrableTrigger.unshift(trigger);
+
+		return this;
 	}
 
 	/**

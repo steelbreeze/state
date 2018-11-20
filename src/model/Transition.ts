@@ -7,11 +7,13 @@ import { Vertex } from './Vertex';
  * @public
  */
 export abstract class Transition<TTrigger = any> {
+	private typeTest: (event: TTrigger) => boolean = () => true;
+
 	/**
 	 * The guard condition that determines if the transition should be traversed given a trigger.
 	 * @internal
 	 */
-	guard: (trigger: TTrigger) => boolean = (trigger: TTrigger): boolean => true;
+	private guardTest: (event: TTrigger) => boolean = () => true;
 
 	/**
 	 * The behavior to call when the transition is traversed.
@@ -29,6 +31,24 @@ export abstract class Transition<TTrigger = any> {
 		source.outgoing.unshift(this);
 	}
 
+	public on(trigger: new (...args: any[]) => TTrigger): this {
+		this.typeTest = (event: TTrigger) => event.constructor === trigger;
+
+		return this;
+	}
+
+	/**
+	 * Adds a guard condition to the transition that determines if the transition should be traversed.
+	 * @param predicate A callback predicate that takes the trigger as a parameter and returns a boolean.
+     * @returns Returns the transition.
+	 * @public
+	 */
+	public guard(predicate: (event: TTrigger) => boolean): this {
+		this.guardTest = predicate;
+
+		return this;
+	}
+
     /**
      * Adds behaviour to the transition to be called every time the transition is traversed.
      * @param action The behaviour to call on transition traversal.
@@ -43,13 +63,22 @@ export abstract class Transition<TTrigger = any> {
 
 	/**
 	 * Adds a guard condition to the transition that determines if the transition should be traversed given a trigger.
-	 * @param guard A callback predicate that takes the trigger as a parameter and returns a boolean.
+	 * @param predicate A callback predicate that takes the trigger as a parameter and returns a boolean.
      * @returns Returns the transition.
 	 * @public
+	 * @deprecated
 	 */
-	public when(guard: (trigger: TTrigger) => boolean): this {
-		this.guard = guard;
+	public when(predicate: (event: TTrigger) => boolean): this {
+		return this.guard(predicate);
+	}
 
-		return this;
+	/**
+	 * Evaluates a trigger event against the transitions type test and guard condition to see if it should be traversed.
+	 * @param event The triggering event.
+	 * @return Returns true if the type test and guard conditions both pass.
+	 * @internal
+	 */
+	evaluate(event: TTrigger): boolean {
+		return this.typeTest(event) && this.guardTest(event);
 	}
 }

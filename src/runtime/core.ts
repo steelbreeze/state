@@ -19,6 +19,17 @@ export function evaluate(state: model.State, instance: IInstance, deepHistory: b
 		completion(state, instance, deepHistory, state);
 	}
 
+	// if not processed, check to see if we should defer the event for later processing
+	if (!result) {
+		for (let i = state.deferrableTrigger.length; i--;) {
+			if (trigger.constructor === state.deferrableTrigger[i] && instance.eventPool.indexOf(trigger) === -1) {
+				log.info(() => `${instance} defer ${trigger}`, log.Evaluate)
+
+				instance.eventPool.push(trigger);
+			}
+		}
+	}
+
 	return result;
 }
 
@@ -60,7 +71,7 @@ function getTransition(vertex: model.Vertex, trigger: any): model.Transition | u
 
 	// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
 	for (let i = vertex.outgoing.length; i--;) {
-		if (vertex.outgoing[i].guard(trigger)) {
+		if (vertex.outgoing[i].evaluate(trigger)) {
 			assert.ok(!result, () => `Multiple transitions found at ${vertex} for ${trigger}`);
 
 			result = vertex.outgoing[i];
@@ -76,7 +87,7 @@ function getChoiceTransition(pseudoState: model.PseudoState, trigger: any): mode
 
 	// iterate through all outgoing transitions of this state looking any whose guard evaluates true
 	for (let i = pseudoState.outgoing.length; i--;) {
-		if (pseudoState.outgoing[i].guard(trigger)) {
+		if (pseudoState.outgoing[i].evaluate(trigger)) {
 			transitions.push(pseudoState.outgoing[i]);
 		}
 	}
@@ -115,7 +126,7 @@ function completion(state: model.State, instance: IInstance, deepHistory: boolea
 /**
  * Runtime extension methods to the NamedElement interface.
  * @internal
- */ 
+ */
 declare module '../model/NamedElement' {
 	interface NamedElement<TParent> {
 		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
@@ -128,7 +139,7 @@ declare module '../model/NamedElement' {
 /**
  * Runtime extension methods to the region class.
  * @internal
- */ 
+ */
 declare module '../model/Region' {
 	interface Region {
 		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
@@ -177,7 +188,7 @@ model.Region.prototype.leave = function (instance: IInstance, deepHistory: boole
 /**
  * Runtime extension methods to the vertex interface.
  * @internal
- */ 
+ */
 declare module '../model/Vertex' {
 	interface Vertex {
 		getTransition(trigger: any): model.Transition | undefined;
@@ -187,7 +198,7 @@ declare module '../model/Vertex' {
 /**
  * Runtime extension methods to the pseudo state class.
  * @internal
- */ 
+ */
 declare module '../model/PseudoState' {
 	interface PseudoState {
 		getTransition(trigger: any): model.Transition | undefined;
@@ -232,7 +243,7 @@ model.PseudoState.prototype.leave = function (instance: IInstance, deepHistory: 
 /**
  * Runtime extension methods to the state class.
  * @internal
- */ 
+ */
 declare module '../model/State' {
 	interface State {
 		getTransition(trigger: any): model.Transition | undefined;
@@ -291,7 +302,7 @@ model.State.prototype.leave = function (instance: IInstance, deepHistory: boolea
 /**
  * Runtime extension methods to the transition class.
  * @internal
- */ 
+ */
 declare module '../model/Transition' {
 	interface Transition<TTrigger> {
 		execute(instance: IInstance, deepHistory: boolean, trigger: any): void;

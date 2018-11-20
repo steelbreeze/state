@@ -26,6 +26,11 @@ export class Instance implements IInstance {
 	private dirtyVertex: Record<string, model.Vertex> = {};
 
 	/**
+	 * A list of deferred events awaiting processing
+	 */
+	public eventPool: Array<any> = [];
+
+	/**
 	 * Creates an instance of the Instance class.
 	 * @param name The name of the state machine instance.
 	 * @param root The root element of the state machine model that this an instance of.
@@ -47,9 +52,29 @@ export class Instance implements IInstance {
 	 * @returns Returns true if the trigger event caused a state transition.
 	 */
 	public evaluate(trigger: any): boolean {
-		log.info(() => `${this} evaluate ${typeof trigger} trigger: ${trigger}`, log.Evaluate)
+		log.info(() => `${this} evaluate ${trigger}`, log.Evaluate)
 
-		return this.transaction(() => evaluate(this.root, this, false, trigger));
+		// TODO: make the event pool and deferred items part of the transactional state
+
+		const deferred = this.eventPool.slice();
+
+		this.eventPool = [];
+
+		const result = this.transaction(() => evaluate(this.root, this, false, trigger));
+
+		if(result) {
+			for(let i = 0; i < deferred.length; i++) {
+				log.info(() => `${this} evaluate ${deferred[i]}`, log.Evaluate)
+
+				this.transaction(() => evaluate(this.root, this, false, deferred[i]));
+			} 
+		} else {
+			for(let i = deferred.length; i--;) {
+				this.eventPool.unshift(deferred[i]);
+			} 
+		}
+
+		return result;
 	}
 
 	/**

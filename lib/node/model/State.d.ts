@@ -20,6 +20,7 @@ export declare class State implements Vertex {
      * The outgoing transitions available from this vertex.
      */
     outgoing: Array<Transition>;
+    deferrableTrigger: Array<new (...args: any[]) => any>;
     /**
      * Creates a new instance of the State class.
      * @param name The name of the state.
@@ -98,6 +99,7 @@ export declare class State implements Vertex {
      * @public
      */
     local<TTrigger>(target: Vertex): LocalTransition<TTrigger>;
+    defer<TTrigger>(trigger: new (...args: any[]) => TTrigger): State;
     /**
      * Returns the fully qualified name of the state.
      * @public

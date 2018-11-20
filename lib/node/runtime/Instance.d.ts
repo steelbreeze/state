@@ -8,6 +8,10 @@ export declare class Instance implements IInstance {
     readonly name: string;
     readonly root: model.State;
     /**
+     * A list of deferred events awaiting processing
+     */
+    eventPool: Array<any>;
+    /**
      * Creates an instance of the Instance class.
      * @param name The name of the state machine instance.
      * @param root The root element of the state machine model that this an instance of.

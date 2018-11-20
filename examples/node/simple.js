@@ -10,9 +10,10 @@ var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Init
 var stateA = new state.State("stateA", model);
 var stateB = new state.State("stateB", model);
 initial.to(stateA);
-stateA.to(stateB).when(function (trigger) { return trigger === "move"; });
+stateA.to(stateB).on(String).guard(function (trigger) { return trigger === "move"; });
 // create an instance of the state machine model
 var instance = new state.Instance("instance", model);
 // send the machine instance a message for evaluation
 instance.evaluate("move");
+// show the active state configuration as a JSON string
 console.info(JSON.stringify(instance.toJSON()));
