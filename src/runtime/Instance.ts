@@ -54,21 +54,35 @@ export class Instance implements IInstance {
 	public evaluate(trigger: any): boolean {
 		log.info(() => `${this} evaluate ${trigger}`, log.Evaluate)
 
-		const result = this.transaction(() => evaluate(this.root, this, false, trigger));
-
-		if (result) {
-			// TODO: make the event pool and deferred items part of the transactional state
+		// TODO: make the event pool and deferred items part of the transactional state
+		return this.transaction(() => {
 			const deferred = this.eventPool.slice();
 			this.eventPool = [];
 
+			// evaluate the trigger event passed
+			const result = evaluate(this.root, this, false, trigger);
+
+			// evaluate any previously deferred trigger events
 			for (let i = 0; i < deferred.length; i++) {
-				log.info(() => `${this} evaluate ${deferred[i]}`, log.Evaluate)
+				if (result) {
+					log.info(() => `${this} evaluate ${deferred[i]}`, log.Evaluate);
 
-				this.transaction(() => evaluate(this.root, this, false, deferred[i]));
+					evaluate(this.root, this, false, deferred[i]);
+				} else {
+					this.eventPool.unshift(deferred[i]);
+				}
 			}
-		}
 
-		return result;
+			return result;
+		});
+	}
+
+	defer(trigger: any): void {
+		if (this.eventPool.indexOf(trigger) === -1) {
+			log.info(() => `${this} defer ${trigger}`, log.Evaluate);
+
+			this.eventPool.push(trigger);
+		}
 	}
 
 	/**

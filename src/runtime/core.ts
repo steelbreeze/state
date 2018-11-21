@@ -22,10 +22,8 @@ export function evaluate(state: model.State, instance: IInstance, deepHistory: b
 	// if not processed, check to see if we should defer the event for later processing
 	if (!result) {
 		for (let i = state.deferrableTrigger.length; i--;) {
-			if (trigger.constructor === state.deferrableTrigger[i] && instance.eventPool.indexOf(trigger) === -1) {
-				log.info(() => `${instance} defer ${trigger}`, log.Evaluate)
-
-				instance.eventPool.push(trigger);
+			if (trigger.constructor === state.deferrableTrigger[i]) {
+				instance.defer(trigger);
 			}
 		}
 	}

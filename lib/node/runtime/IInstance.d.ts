@@ -7,13 +7,13 @@ export interface IInstance {
      * The root element of a state machine model.
      */
     readonly root: model.State;
-    eventPool: Array<any>;
     /**
      * Passes an event trigger to a state machine instance for evaluation, which may result in state transitions occurring.
      * @param trigger The event to pass in as a trigger.
      * @returns Returns true if the trigger caused a state change.
      */
     evaluate(trigger: any): boolean;
+    defer(trigger: any): void;
     /**
      * Updates the transactional state of a region with the last entered vertex.
      * @param vertex The vertex set as its parents last entered vertex.
