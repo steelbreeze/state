@@ -31,8 +31,14 @@ export abstract class Transition<TTrigger = any> {
 		source.outgoing.unshift(this);
 	}
 
-	public on(trigger: new (...args: any[]) => TTrigger): this {
-		this.typeTest = (event: TTrigger) => event.constructor === trigger;
+	/**
+	 * Performs a runtime type check on the type of the event passed in addition to any guard condition.
+	 * @param type The class of trigger
+	 * @Returns Returns the transitions.
+	 * @public
+	 */
+	public on(type: new (...args: any[]) => TTrigger): this {
+		this.typeTest = (event: TTrigger) => event.constructor === type;
 
 		return this;
 	}

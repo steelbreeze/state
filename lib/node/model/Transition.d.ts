@@ -15,7 +15,13 @@ export declare abstract class Transition<TTrigger = any> {
      * @protected
      */
     protected constructor(source: Vertex, target: Vertex);
-    on(trigger: new (...args: any[]) => TTrigger): this;
+    /**
+     * Performs a runtime type check on the type of the event passed in addition to any guard condition.
+     * @param type The class of trigger
+     * @Returns Returns the transitions.
+     * @public
+     */
+    on(type: new (...args: any[]) => TTrigger): this;
     /**
      * Adds a guard condition to the transition that determines if the transition should be traversed.
      * @param predicate A callback predicate that takes the trigger as a parameter and returns a boolean.

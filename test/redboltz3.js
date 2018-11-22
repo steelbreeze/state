@@ -51,7 +51,7 @@ instance.evaluate(new e1());
 instance.evaluate(new e2());
 instance.evaluate(new e3());
 instance.evaluate(new e4());
-describe('test/redboltz2', function () {
+describe('test/redboltz3', function () {
     it('Deferred events are evaluated after completion transitions', function () {
         assert.equal(s4, instance.getLastKnownState(region));
     });
