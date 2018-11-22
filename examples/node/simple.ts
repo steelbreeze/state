@@ -11,7 +11,7 @@ const stateA = new state.State("stateA", model);
 const stateB = new state.State("stateB", model);
 
 initial.to(stateA);
-stateA.to<String>(stateB).on(String).guard(trigger => trigger === "move");
+stateA.to<string>(stateB).when(trigger => trigger === "move");
 
 // create an instance of the state machine model
 let instance = new state.Instance("instance", model);
