@@ -43,8 +43,21 @@ export abstract class Transition<TTrigger = any> {
      * @returns Returns the transition.
 	 * @public
 	 */
-	public guard(predicate: (event: TTrigger) => boolean): this {
+	public if(predicate: (event: TTrigger) => boolean): this {
 		this.guardTest = predicate;
+
+		return this;
+	}
+
+    /**
+     * Adds behaviour to the transition to be called every time the transition is traversed.
+     * @param action The behaviour to call on transition traversal.
+     * @returns Returns the transition.
+	 * @public
+	 * @deprecated Use the do method instead.
+     */
+	public do(action: (trigger: TTrigger) => void): this {
+		this.actions.unshift(action); // NOTE: we use unshift as the runtime iterates in reverse
 
 		return this;
 	}
@@ -56,9 +69,7 @@ export abstract class Transition<TTrigger = any> {
 	 * @public
      */
 	public effect(action: (trigger: TTrigger) => void): this {
-		this.actions.unshift(action); // NOTE: we use unshift as the runtime iterates in reverse
-
-		return this;
+		return this.do(action);
 	}
 
 	/**
@@ -69,7 +80,7 @@ export abstract class Transition<TTrigger = any> {
 	 * @deprecated
 	 */
 	public when(predicate: (event: TTrigger) => boolean): this {
-		return this.guard(predicate);
+		return this.if(predicate);
 	}
 
 	/**

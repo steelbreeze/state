@@ -48,7 +48,6 @@ export declare class PseudoState implements Vertex {
      * @param target The target vertex of the external transition.
      * @returns The external transition.
      * @public
-     * @deprecated Please use the [[external]] method instead.
      */
     to<TTrigger>(target: Vertex): ExternalTransition<TTrigger>;
     /**

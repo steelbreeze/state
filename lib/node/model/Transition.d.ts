@@ -22,7 +22,15 @@ export declare abstract class Transition<TTrigger = any> {
      * @returns Returns the transition.
      * @public
      */
-    guard(predicate: (event: TTrigger) => boolean): this;
+    if(predicate: (event: TTrigger) => boolean): this;
+    /**
+     * Adds behaviour to the transition to be called every time the transition is traversed.
+     * @param action The behaviour to call on transition traversal.
+     * @returns Returns the transition.
+     * @public
+     * @deprecated Use the do method instead.
+     */
+    do(action: (trigger: TTrigger) => void): this;
     /**
      * Adds behaviour to the transition to be called every time the transition is traversed.
      * @param action The behaviour to call on transition traversal.
