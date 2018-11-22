@@ -1,6 +1,8 @@
 "use strict";
 exports.__esModule = true;
 var state = require("../lib/node");
+var assert = require("assert");
+require("mocha");
 state.log.add(function (message) { return console.info(message); }, state.log.Entry | state.log.Exit | state.log.Evaluate);
 var e1 = /** @class */ (function () {
     function e1() {
@@ -49,3 +51,8 @@ instance.evaluate(new e1());
 instance.evaluate(new e2());
 instance.evaluate(new e3());
 instance.evaluate(new e4());
+describe('test/redboltz2', function () {
+    it('Deferred events are evaluated after completion transitions', function () {
+        assert.equal(s4, instance.getLastKnownState(region));
+    });
+});

@@ -15,27 +15,22 @@ const state2 = new state.State("state2", region);
 const state3 = new state.State("state3", region);
 const state4 = new state.State("state4", region);
 const state5 = new state.State("state5", region);
-const state6 = new state.State("state6", region);
 
 state1.defer(Event1);
-state2.defer(Event1);
 
 initial.to(state1);
 state1.to(state2).on(Event2);
-state2.to(state3).on(Event2);
+state2.to(state3);
+state2.to(state5).on(Event1);
 state3.to(state4).on(Event1);
-state4.to(state5).on(Event1);
-state5.to(state6).on(Event1);
 
-let instance = new state.Instance("redboltz1", model);
+let instance = new state.Instance("redboltz2", model);
 
-instance.evaluate(new Event1("event1a"));
-instance.evaluate(new Event1("event1b"));
-instance.evaluate(new Event2("event2a"));
-instance.evaluate(new Event2("event2b"));
+instance.evaluate(new Event1("event1"));
+instance.evaluate(new Event2("event2"));
 
-describe('test/redboltz1', () => {
-	it('States can defer events for subsiquent evaluation', () => {
-		assert.equal(state5, instance.getLastKnownState(region));
+describe('test/redboltz2', () => {
+	it('Deferred events are evaluated after completion transitions', () => {
+		assert.equal(state4, instance.getLastKnownState(region));
 	});
 });

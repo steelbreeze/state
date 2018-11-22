@@ -1,4 +1,6 @@
 import * as state from '../lib/node';
+import * as assert from 'assert';
+import 'mocha';
 
 state.log.add((message: string) => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
 
@@ -36,3 +38,9 @@ instance.evaluate(new e1());
 instance.evaluate(new e2());
 instance.evaluate(new e3());
 instance.evaluate(new e4());
+
+describe('test/redboltz2', () => {
+	it('Deferred events are evaluated after completion transitions', () => {
+		assert.equal(s4, instance.getLastKnownState(region));
+	});
+});

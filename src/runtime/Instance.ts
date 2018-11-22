@@ -63,16 +63,18 @@ export class Instance implements IInstance {
 			const result = evaluate(this.root, this, false, trigger);
 
 			// evaluate any previously deferred trigger events
-			for (let i = 0; i < deferred.length; i++) {
-				if (result) {
+			if (result) {
+				for (let i = 0; i < deferred.length; i++) {
 					log.info(() => `${this} evaluate ${deferred[i]}`, log.Evaluate);
 
 					evaluate(this.root, this, false, deferred[i]);
-				} else {
+				}
+			} else {
+				for (let i = 0; i < deferred.length; i++) {
 					this.eventPool.unshift(deferred[i]);
 				}
+//				this.eventPool = deferred.concat(this.eventPool);
 			}
-
 			return result;
 		});
 	}
