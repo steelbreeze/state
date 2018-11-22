@@ -73,7 +73,6 @@ export class Instance implements IInstance {
 				for (let i = 0; i < deferred.length; i++) {
 					this.eventPool.unshift(deferred[i]);
 				}
-//				this.eventPool = deferred.concat(this.eventPool);
 			}
 			return result;
 		});
