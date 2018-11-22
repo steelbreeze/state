@@ -56,7 +56,7 @@ export class Instance implements IInstance {
 
 		// TODO: make the event pool and deferred items part of the transactional state
 		return this.transaction(() => {
-			const deferred = this.eventPool.slice();
+			const deferred = this.eventPool;
 			this.eventPool = [];
 
 			// evaluate the trigger event passed
