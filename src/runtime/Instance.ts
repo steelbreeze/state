@@ -28,7 +28,8 @@ export class Instance implements IInstance {
 	/**
 	 * A list of deferred events awaiting processing
 	 */
-	public eventPool: Array<any> = [];
+	public cleanEventPool: Array<any> = [];
+	public dirtyEventPool: Array<any> = [];
 
 	/**
 	 * Creates an instance of the Instance class.
@@ -56,8 +57,8 @@ export class Instance implements IInstance {
 
 		// TODO: make the event pool and deferred items part of the transactional state
 		return this.transaction(() => {
-			const deferred = this.eventPool;
-			this.eventPool = [];
+			const deferred = this.dirtyEventPool;
+			this.dirtyEventPool = [];
 
 			// evaluate the trigger event passed
 			const result = evaluate(this.root, this, false, trigger);
@@ -71,7 +72,7 @@ export class Instance implements IInstance {
 				}
 			} else {
 				for (let i = 0; i < deferred.length; i++) {
-					this.eventPool.unshift(deferred[i]);
+					this.dirtyEventPool.unshift(deferred[i]);
 				}
 			}
 			return result;
@@ -79,10 +80,10 @@ export class Instance implements IInstance {
 	}
 
 	defer(trigger: any): void {
-		if (this.eventPool.indexOf(trigger) === -1) {
+		if (this.dirtyEventPool.indexOf(trigger) === -1) {
 			log.info(() => `${this} defer ${trigger}`, log.Evaluate);
 
-			this.eventPool.push(trigger);
+			this.dirtyEventPool.push(trigger);
 		}
 	}
 
@@ -94,6 +95,9 @@ export class Instance implements IInstance {
 	 */
 	transaction<TReturn>(operation: () => TReturn): TReturn {
 		try {
+			// take a working copy of the event pool
+			this.dirtyEventPool = this.cleanEventPool.slice();
+
 			// perform the operation
 			const result = operation();
 
@@ -101,6 +105,9 @@ export class Instance implements IInstance {
 			for (let k = Object.keys(this.dirtyState), i = k.length; i--;) {
 				this.cleanState[k[i]] = this.dirtyState[k[i]];
 			}
+
+			// the working copy of the event pool can become the main copy
+			this.cleanEventPool = this.dirtyEventPool;
 
 			// return the result to the caller
 			return result;
@@ -110,6 +117,7 @@ export class Instance implements IInstance {
 		finally {
 			this.dirtyState = {};
 			this.dirtyVertex = {};
+			this.dirtyEventPool = [];
 		}
 	}
 

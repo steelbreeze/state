@@ -3,7 +3,7 @@ exports.__esModule = true;
 var state = require("../lib/node");
 var assert = require("assert");
 require("mocha");
-//state.log.add((message: string) => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
+state.log.add(function (message) { return console.info(message); }, state.log.Entry | state.log.Exit | state.log.Evaluate);
 var e1 = /** @class */ (function () {
     function e1() {
     }

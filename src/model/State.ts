@@ -5,7 +5,6 @@ import { Transition } from './Transition';
 import { ExternalTransition } from './ExternalTransition';
 import { LocalTransition } from './LocalTransition';
 import { InternalTransition } from './InternalTransition';
-//import { Trigger } from './Trigger';
 
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.

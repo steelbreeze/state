@@ -1,3 +1,13 @@
+## v7.1
+v7.1 is fully backwardly compatible with v7.0, but as it contains two significant new features, it warrants a minor version increment.
+### New features
+1. A new method, ```Transition.on``` has been added allowing for a runtime typecheck of the event type before testing any guard conditions. Note, this can test only for class types not primitive types.
+2. Event deferral is now supported. A new method ```State.defer``` defines which event types the State will defer. Events are deferred until a subsiquent event causes a change to the active state configuration at which point the deferred events will be reevaluates. See these posts for more information on event deferral: http://redboltz.wikidot.com/deferred-events and https://stackoverflow.com/questions/53390674/correct-order-of-deferred-events-in-state-machine-of-uml-2-x.
+### Other changes
+1. ```Transition.if``` has been added as pseudonym of ```Transition.when``` and ```Transition.do``` has been added as pseudonym of ```Transition.effect```. This now gives the full form of defining a transition as ```source.to<Type>(target).on(Type).if(guard).do(action)``` with most parts being optional.
+
+Subsiquent releases will investigate not having to specify Event twice.
+
 ## v7.0
 The v7 codebase has been many months in the making, it started with a growing dissatisfaction with the v6 code and the lack of seperation between the core model elements and the runtime. There was also a growing complexity given the pre-evaluation of transitions such that it was becomnig increasingly difficult to debug. I had also started trying to split the code into a file per class, but this was proving difficult to do.
 
