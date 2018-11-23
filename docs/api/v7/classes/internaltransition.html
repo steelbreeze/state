@@ -118,9 +118,12 @@
 						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="internaltransition.html#do" class="tsd-kind-icon">do</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="internaltransition.html#effect" class="tsd-kind-icon">effect</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="internaltransition.html#evaluate" class="tsd-kind-icon">evaluate</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="internaltransition.html#execute" class="tsd-kind-icon">execute</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="internaltransition.html#guard" class="tsd-kind-icon">guard</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="internaltransition.html#if" class="tsd-kind-icon">if</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="internaltransition.html#on" class="tsd-kind-icon">on</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="internaltransition.html#when" class="tsd-kind-icon">when</a></li>
 							</ul>
 						</section>
@@ -140,7 +143,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="transition.html">Transition</a>.<a href="transition.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/InternalTransition.ts#L10">model/InternalTransition.ts:10</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/InternalTransition.ts#L10">model/InternalTransition.ts:10</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -174,7 +177,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="transition.html">Transition</a>.<a href="transition.html#actions">actions</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/Transition.ts#L20">model/Transition.ts:20</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/Transition.ts#L22">model/Transition.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -193,7 +196,7 @@
 					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">State</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/InternalTransition.ts#L19">model/InternalTransition.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/InternalTransition.ts#L19">model/InternalTransition.ts:19</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -204,7 +207,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="transition.html">Transition</a>.<a href="transition.html#target">target</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/Transition.ts#L28">model/Transition.ts:28</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/Transition.ts#L30">model/Transition.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -217,6 +220,62 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="do" class="tsd-anchor"></a>
+					<h3>do</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">do<span class="tsd-signature-symbol">(</span>action<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="transition.html">Transition</a>.<a href="transition.html#do">do</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/Transition.ts#L65">model/Transition.ts:65</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Adds behaviour to the transition to be called every time the transition is traversed.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd><p>Use the do method instead.</p>
+									</dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>action: <span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The behaviour to call on transition traversal.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TTrigger</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>trigger: <span class="tsd-signature-type">TTrigger</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<p>Returns the transition.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="effect" class="tsd-anchor"></a>
 					<h3>effect</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
@@ -227,7 +286,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="transition.html">Transition</a>.<a href="transition.html#effect">effect</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/Transition.ts#L38">model/Transition.ts:38</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/Transition.ts#L77">model/Transition.ts:77</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -268,6 +327,43 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="evaluate" class="tsd-anchor"></a>
+					<h3>evaluate</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">evaluate<span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TTrigger</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="transition.html">Transition</a>.<a href="transition.html#evaluate">evaluate</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/Transition.ts#L98">model/Transition.ts:98</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Evaluates a trigger event against the transitions type test and guard condition to see if it should be traversed.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>event: <span class="tsd-signature-type">TTrigger</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The triggering event.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<p>Returns true if the type test and guard conditions both pass.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="execute" class="tsd-anchor"></a>
 					<h3>execute</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
@@ -278,7 +374,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from Transition.execute</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/runtime/core.ts#L297">runtime/core.ts:297</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/runtime/core.ts#L306">runtime/core.ts:306</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -298,31 +394,88 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="guard" class="tsd-anchor"></a>
-					<h3>guard</h3>
+					<a name="if" class="tsd-anchor"></a>
+					<h3>if</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">guard<span class="tsd-signature-symbol">(</span>trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TTrigger</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+						<li class="tsd-signature tsd-kind-icon">if<span class="tsd-signature-symbol">(</span>predicate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="transition.html">Transition</a>.<a href="transition.html#guard">guard</a></p>
+								<p>Inherited from <a href="transition.html">Transition</a>.<a href="transition.html#if">if</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/Transition.ts#L14">model/Transition.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/Transition.ts#L52">model/Transition.ts:52</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>The guard condition that determines if the transition should be traversed given a trigger.</p>
+									<p>Adds a guard condition to the transition that determines if the transition should be traversed.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>trigger: <span class="tsd-signature-type">TTrigger</span></h5>
+									<h5>predicate: <span class="tsd-signature-type">function</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A callback predicate that takes the trigger as a parameter and returns a boolean.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-siganture">
+											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TTrigger</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>event: <span class="tsd-signature-type">TTrigger</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<p>Returns the transition.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="on" class="tsd-anchor"></a>
+					<h3>on</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">on<span class="tsd-signature-symbol">(</span>type<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<p>Inherited from <a href="transition.html">Transition</a>.<a href="transition.html#on">on</a></p>
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/Transition.ts#L40">model/Transition.ts:40</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Performs a runtime type check on the type of the event passed in addition to any guard condition.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>type: <span class="tsd-signature-type">object</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The class of trigger</p>
+									</div>
+									<ul class="tsd-parameters">
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
+							<p>Returns the transitions.</p>
 						</li>
 					</ul>
 				</section>
@@ -330,39 +483,43 @@
 					<a name="when" class="tsd-anchor"></a>
 					<h3>when</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">when<span class="tsd-signature-symbol">(</span>guard<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">when<span class="tsd-signature-symbol">(</span>predicate<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="transition.html">Transition</a>.<a href="transition.html#when">when</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/Transition.ts#L50">model/Transition.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/Transition.ts#L88">model/Transition.ts:88</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Adds a guard condition to the transition that determines if the transition should be traversed given a trigger.</p>
 								</div>
+								<dl class="tsd-comment-tags">
+									<dt>deprecated</dt>
+									<dd></dd>
+								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>guard: <span class="tsd-signature-type">function</span></h5>
+									<h5>predicate: <span class="tsd-signature-type">function</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>A callback predicate that takes the trigger as a parameter and returns a boolean.</p>
 									</div>
 									<ul class="tsd-parameters">
 										<li class="tsd-parameter-siganture">
 											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TTrigger</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>event<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TTrigger</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
 											</ul>
 											<ul class="tsd-descriptions">
 												<li class="tsd-description">
 													<h4 class="tsd-parameters-title">Parameters</h4>
 													<ul class="tsd-parameters">
 														<li>
-															<h5>trigger: <span class="tsd-signature-type">TTrigger</span></h5>
+															<h5>event: <span class="tsd-signature-type">TTrigger</span></h5>
 														</li>
 													</ul>
 													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
@@ -416,13 +573,22 @@
 								<a href="internaltransition.html#target" class="tsd-kind-icon">target</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="internaltransition.html#do" class="tsd-kind-icon">do</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="internaltransition.html#effect" class="tsd-kind-icon">effect</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="internaltransition.html#evaluate" class="tsd-kind-icon">evaluate</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="internaltransition.html#execute" class="tsd-kind-icon">execute</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="internaltransition.html#guard" class="tsd-kind-icon">guard</a>
+								<a href="internaltransition.html#if" class="tsd-kind-icon">if</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="internaltransition.html#on" class="tsd-kind-icon">on</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="internaltransition.html#when" class="tsd-kind-icon">when</a>

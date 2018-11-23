@@ -100,6 +100,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="state.html#children" class="tsd-kind-icon">children</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="state.html#defaultregion" class="tsd-kind-icon">default<wbr>Region</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="state.html#deferrabletrigger" class="tsd-kind-icon">deferrable<wbr>Trigger</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="state.html#name" class="tsd-kind-icon">name</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="state.html#onenter" class="tsd-kind-icon">on<wbr>Enter</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="state.html#onleave" class="tsd-kind-icon">on<wbr>Leave</a></li>
@@ -111,6 +112,7 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-external"><a href="state.html#defer" class="tsd-kind-icon">defer</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="state.html#entry" class="tsd-kind-icon">entry</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="state.html#exit" class="tsd-kind-icon">exit</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-external"><a href="state.html#external" class="tsd-kind-icon">external</a></li>
@@ -139,7 +141,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L48">model/State.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L50">model/State.ts:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -180,7 +182,7 @@
 					<div class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Region</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L30">model/State.ts:30</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L30">model/State.ts:30</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -199,7 +201,7 @@
 					<div class="tsd-signature tsd-kind-icon">default<wbr>Region<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Region</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L36">model/State.ts:36</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L36">model/State.ts:36</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -213,12 +215,22 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
+					<a name="deferrabletrigger" class="tsd-anchor"></a>
+					<h3>deferrable<wbr>Trigger</h3>
+					<div class="tsd-signature tsd-kind-icon">deferrable<wbr>Trigger<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L50">model/State.ts:50</a></li>
+						</ul>
+					</aside>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="name" class="tsd-anchor"></a>
 					<h3>name</h3>
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L57">model/State.ts:57</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L59">model/State.ts:59</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -233,7 +245,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Enter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L42">model/State.ts:42</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L42">model/State.ts:42</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -252,7 +264,7 @@
 					<div class="tsd-signature tsd-kind-icon">on<wbr>Leave<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L48">model/State.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L48">model/State.ts:48</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -271,7 +283,7 @@
 					<div class="tsd-signature tsd-kind-icon">outgoing<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">Transition</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L24">model/State.ts:24</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L24">model/State.ts:24</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -286,7 +298,7 @@
 					<div class="tsd-signature tsd-kind-icon">parent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Region</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L14">model/State.ts:14</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L14">model/State.ts:14</a></li>
 						</ul>
 					</aside>
 				</section>
@@ -296,7 +308,7 @@
 					<div class="tsd-signature tsd-kind-icon">qualified<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L19">model/State.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L19">model/State.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -308,6 +320,37 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-external">
+					<a name="defer" class="tsd-anchor"></a>
+					<h3>defer</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">defer&lt;TTrigger&gt;<span class="tsd-signature-symbol">(</span>trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">State</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L177">model/State.ts:177</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>TTrigger</h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>trigger: <span class="tsd-signature-type">object</span></h5>
+									<ul class="tsd-parameters">
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">State</span></h4>
+						</li>
+					</ul>
+				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="entry" class="tsd-anchor"></a>
 					<h3>entry</h3>
@@ -318,7 +361,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L114">model/State.ts:114</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L116">model/State.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -368,7 +411,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L126">model/State.ts:126</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L128">model/State.ts:128</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -418,7 +461,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L139">model/State.ts:139</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L141">model/State.ts:141</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -459,7 +502,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L77">model/State.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L79">model/State.ts:79</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -482,7 +525,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L161">model/State.ts:161</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L162">model/State.ts:162</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -514,7 +557,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L95">model/State.ts:95</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L97">model/State.ts:97</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -537,7 +580,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L104">model/State.ts:104</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L106">model/State.ts:106</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -560,7 +603,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L86">model/State.ts:86</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L88">model/State.ts:88</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -583,7 +626,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L172">model/State.ts:172</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L173">model/State.ts:173</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -624,18 +667,13 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L151">model/State.ts:151</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L152">model/State.ts:152</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates a new external transition.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>deprecated</dt>
-									<dd><p>Please use the <a href="state.html#external">external</a> or <a href="state.html#internal">internal</a> methods instead.</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
@@ -670,7 +708,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/68e9709/src/model/State.ts#L180">model/State.ts:180</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/bf781df/src/model/State.ts#L187">model/State.ts:187</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -730,6 +768,9 @@
 								<a href="state.html#defaultregion" class="tsd-kind-icon">default<wbr>Region</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="state.html#deferrabletrigger" class="tsd-kind-icon">deferrable<wbr>Trigger</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="state.html#name" class="tsd-kind-icon">name</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
@@ -746,6 +787,9 @@
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="state.html#qualifiedname" class="tsd-kind-icon">qualified<wbr>Name</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-external">
+								<a href="state.html#defer" class="tsd-kind-icon">defer</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="state.html#entry" class="tsd-kind-icon">entry</a>
