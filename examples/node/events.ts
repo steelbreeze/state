@@ -34,7 +34,7 @@ const waitingA = new State("waitingA", regionA);
 const completeA = new State("completeA", regionA).entry(() => console.info("Received event A"));
 
 initialA.to(waitingA);
-waitingA.to<Event>(completeA).on(Event).if(event => event.is("A"));
+waitingA.on(Event).if(event => event.is("A")).to(completeA);
 
 // create a child region which becomes complete once it has received event B.
 const regionB = new Region("regionB", waiting);
@@ -43,7 +43,7 @@ const waitingB = new State("waitingB", regionB);
 const completeB = new State("completeB", regionB).entry(() => console.info("Received event B"));
 
 initialB.to(waitingB);
-waitingB.to<Event>(completeB).on(Event).if(event => event.is("B"));
+waitingB.on(Event).to(completeB).if(event => event.is("B"));
 
 // create an instance of the state machine
 const instance = new Instance("instance", model);

@@ -401,16 +401,16 @@
 		var paused = new state.State("paused", active);
 
 		/* create the state machine model transitions */
-		initial.external(operational);
-		deepHistory.external(stopped);
-		stopped.external(running).when(t => t === "play");
-		active.external(stopped).when(t => t === "stop");
-		running.external(paused).when(t => t === "pause");
-		paused.external(running).when(t => t === "play");
-		paused.external(running).when(t => t === "pause");
-		operational.external(flipped).when(t => t === "flip");
-		flipped.external(operational).when(t => t === "flip");
-		operational.external(finalState).when(t => t === "stop");
+		initial.to(operational);
+		deepHistory.to(stopped);
+		stopped.to(running).if(t => t === "play");
+		active.to(stopped).if(t => t === "stop");
+		running.to(paused).if(t => t === "pause");
+		paused.to(running).if(t => t === "play");
+		paused.to(running).if(t => t === "pause");
+		operational.to(flipped).if(t => t === "flip");
+		flipped.to(operational).if(t => t === "flip");
+		operational.to(finalState).if(t => t === "stop");
 
 		// define the state entry/exit behaviour
 		active.entry(engageHead).exit(disengageHead);

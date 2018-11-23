@@ -1,19 +1,28 @@
+import { log, tree } from '../util';
+import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
+import { PseudoState } from './PseudoState';
 
 /**
- * Common base class for the three types of transition.
- * @param TTrigger The type of the trigger event that may cause this transition to be traversed.
- * @abstract
- * @public
+ * A transition between vertices.
+ * @param TTrigger The type of triggering event that causes this transition to be traversed.
  */
-export abstract class Transition<TTrigger = any> {
-	private typeTest: (event: TTrigger) => boolean = () => true;
+export class Transition<TTrigger = any> {
+	public target: Vertex | undefined;
+	private typeTest: (trigger: TTrigger) => boolean = () => true;
+	private guard: (trigger: TTrigger) => boolean = () => true;
 
 	/**
-	 * The guard condition that determines if the transition should be traversed given a trigger.
+	 * The element to exit when traversing this transition; the exit operation will cascade though all current active child substate.
 	 * @internal
 	 */
-	private guardTest: (event: TTrigger) => boolean = () => true;
+	toLeave: NamedElement | undefined;
+
+	/**
+	 * The elements to enter when traversing this transition; the entry operation on the last will cascade to any child substate.
+	 * @internal
+	 */
+	toEnter: Array<NamedElement> | undefined;
 
 	/**
 	 * The behavior to call when the transition is traversed.
@@ -22,35 +31,79 @@ export abstract class Transition<TTrigger = any> {
 	actions: Array<(trigger: TTrigger) => void> = [];
 
 	/**
-	 * Creates a new instance of the TransitionBase class.
-	 * @param source The source vertex of the transition.
-	 * @param target The target vertex of the transition.
-	 * @protected
+	 * Creates an instance of the Transition class.
+	 * @param source The source [[Vertex]] of the transition.
+	 * @param type The type of triggering event that causes this transition to be traversed.
+	 * @param guard An optional guard condition to further restrict the transition traversal.
+	 * @param target The optional target of this transition. If not specified, the transition is an internal transition.
+	 * @param local A flag denoting that the transition is a local transition.
+	 * @param action An optional action to perform when traversing the transition.
 	 */
-	protected constructor(source: Vertex, public readonly target: Vertex) {
+	public constructor(public readonly source: Vertex, type: (new (...args: any[]) => TTrigger) | undefined, guard: ((trigger: TTrigger) => boolean) | undefined, target: Vertex | undefined, local: boolean, action: ((trigger: TTrigger) => any) | undefined) {
+		log.info(() => `Created transition from ${source}`, log.Create);
+
+		if (type) this.on(type);
+		if (guard) this.if(guard);
+		if (target) this.to(target);
+		if (local) this.local();
+		if (action) this.do(action);
+
 		source.outgoing.unshift(this);
 	}
 
-	/**
-	 * Performs a runtime type check on the type of the event passed in addition to any guard condition.
-	 * @param type The class of trigger
-	 * @Returns Returns the transitions.
-	 * @public
-	 */
 	public on(type: new (...args: any[]) => TTrigger): this {
-		this.typeTest = (event: TTrigger) => event.constructor === type;
+		this.typeTest = (trigger: TTrigger) => trigger.constructor === type;
 
 		return this;
 	}
 
-	/**
-	 * Adds a guard condition to the transition that determines if the transition should be traversed.
-	 * @param predicate A callback predicate that takes the trigger as a parameter and returns a boolean.
-     * @returns Returns the transition.
-	 * @public
-	 */
-	public if(predicate: (event: TTrigger) => boolean): this {
-		this.guardTest = predicate;
+	public if(guard: (trigger: TTrigger) => boolean): this {
+		this.guard = guard;
+
+		return this;
+	}
+
+	public when(guard: (trigger: TTrigger) => boolean): this {
+		return this.if(guard);
+	}
+
+	public to(target: Vertex): this {
+		this.target = target;
+
+		// determine the source and target vertex ancestries
+		const sourceAncestors = tree.ancestors<NamedElement>(this.source, element => element.parent);
+		const targetAncestors = tree.ancestors<NamedElement>(target, element => element.parent);
+
+		// determine where to enter and exit from in the ancestries
+		const from = tree.lca(sourceAncestors, targetAncestors) + 1; // NOTE: we enter/exit from the elements below the common ancestor
+		const to = targetAncestors.length - (target instanceof PseudoState && target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
+
+		// initialise the base class with source, target and elements to exit and enter		
+		this.toLeave = sourceAncestors[from];
+		this.toEnter = targetAncestors.slice(from, to).reverse(); // NOTE: reversed as we use a reverse-for at runtime for performance
+
+		return this;
+	}
+
+	public local(): this {
+		if (this.target) {
+			// determine the target ancestry
+			const targetAncestors = tree.ancestors<NamedElement>(this.target, element => element.parent); // NOTE: as the target is a child of the source it will be in the same ancestry
+
+			// determine where to enter and exit from in the ancestry
+			const from = targetAncestors.indexOf(this.source) + 2; // NOTE: in local transitions the source vertex is not exited, but the active child substate is
+			const to = targetAncestors.length - (this.target instanceof PseudoState && this.target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
+
+			// initialise the base class with source, target and elements to exit and enter
+			this.toLeave = targetAncestors[from];
+			this.toEnter = targetAncestors.slice(from, to).reverse(); // NOTE: reversed as we use a reverse-for at runtime for performance
+		}
+
+		return this;
+	}
+
+	public do(action: (trigger: TTrigger) => any): this {
+		this.actions.unshift(action);
 
 		return this;
 	}
@@ -60,42 +113,13 @@ export abstract class Transition<TTrigger = any> {
      * @param action The behaviour to call on transition traversal.
      * @returns Returns the transition.
 	 * @public
-	 * @deprecated Use the do method instead.
-     */
-	public do(action: (trigger: TTrigger) => void): this {
-		this.actions.unshift(action); // NOTE: we use unshift as the runtime iterates in reverse
-
-		return this;
-	}
-
-    /**
-     * Adds behaviour to the transition to be called every time the transition is traversed.
-     * @param action The behaviour to call on transition traversal.
-     * @returns Returns the transition.
-	 * @public
+	 * @deprecated Use Transition.do instead.
      */
 	public effect(action: (trigger: TTrigger) => void): this {
 		return this.do(action);
 	}
 
-	/**
-	 * Adds a guard condition to the transition that determines if the transition should be traversed given a trigger.
-	 * @param predicate A callback predicate that takes the trigger as a parameter and returns a boolean.
-     * @returns Returns the transition.
-	 * @public
-	 * @deprecated
-	 */
-	public when(predicate: (event: TTrigger) => boolean): this {
-		return this.if(predicate);
-	}
-
-	/**
-	 * Evaluates a trigger event against the transitions type test and guard condition to see if it should be traversed.
-	 * @param event The triggering event.
-	 * @return Returns true if the type test and guard conditions both pass.
-	 * @internal
-	 */
-	evaluate(event: TTrigger): boolean {
-		return this.typeTest(event) && this.guardTest(event);
+	evaluate(trigger: TTrigger): boolean {
+		return this.typeTest(trigger) && this.guard(trigger);
 	}
 }

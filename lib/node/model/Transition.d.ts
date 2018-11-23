@@ -1,55 +1,36 @@
 import { Vertex } from './Vertex';
 /**
- * Common base class for the three types of transition.
- * @param TTrigger The type of the trigger event that may cause this transition to be traversed.
- * @abstract
- * @public
+ * A transition between vertices.
+ * @param TTrigger The type of triggering event that causes this transition to be traversed.
  */
-export declare abstract class Transition<TTrigger = any> {
-    readonly target: Vertex;
+export declare class Transition<TTrigger = any> {
+    readonly source: Vertex;
+    target: Vertex | undefined;
     private typeTest;
+    private guard;
     /**
-     * Creates a new instance of the TransitionBase class.
-     * @param source The source vertex of the transition.
-     * @param target The target vertex of the transition.
-     * @protected
+     * Creates an instance of the Transition class.
+     * @param source The source [[Vertex]] of the transition.
+     * @param type The type of triggering event that causes this transition to be traversed.
+     * @param guard An optional guard condition to further restrict the transition traversal.
+     * @param target The optional target of this transition. If not specified, the transition is an internal transition.
+     * @param local A flag denoting that the transition is a local transition.
+     * @param action An optional action to perform when traversing the transition.
      */
-    protected constructor(source: Vertex, target: Vertex);
-    /**
-     * Performs a runtime type check on the type of the event passed in addition to any guard condition.
-     * @param type The class of trigger
-     * @Returns Returns the transitions.
-     * @public
-     */
+    constructor(source: Vertex, type: (new (...args: any[]) => TTrigger) | undefined, guard: ((trigger: TTrigger) => boolean) | undefined, target: Vertex | undefined, local: boolean, action: ((trigger: TTrigger) => any) | undefined);
     on(type: new (...args: any[]) => TTrigger): this;
-    /**
-     * Adds a guard condition to the transition that determines if the transition should be traversed.
-     * @param predicate A callback predicate that takes the trigger as a parameter and returns a boolean.
-     * @returns Returns the transition.
-     * @public
-     */
-    if(predicate: (event: TTrigger) => boolean): this;
+    if(guard: (trigger: TTrigger) => boolean): this;
+    when(guard: (trigger: TTrigger) => boolean): this;
+    to(target: Vertex): this;
+    local(): this;
+    do(action: (trigger: TTrigger) => any): this;
     /**
      * Adds behaviour to the transition to be called every time the transition is traversed.
      * @param action The behaviour to call on transition traversal.
      * @returns Returns the transition.
      * @public
-     * @deprecated Use the do method instead.
-     */
-    do(action: (trigger: TTrigger) => void): this;
-    /**
-     * Adds behaviour to the transition to be called every time the transition is traversed.
-     * @param action The behaviour to call on transition traversal.
-     * @returns Returns the transition.
-     * @public
+     * @deprecated Use Transition.do instead.
      */
     effect(action: (trigger: TTrigger) => void): this;
-    /**
-     * Adds a guard condition to the transition that determines if the transition should be traversed given a trigger.
-     * @param predicate A callback predicate that takes the trigger as a parameter and returns a boolean.
-     * @returns Returns the transition.
-     * @public
-     * @deprecated
-     */
-    when(predicate: (event: TTrigger) => boolean): this;
+    evaluate(trigger: TTrigger): boolean;
 }

@@ -19,10 +19,10 @@ const state5 = new state.State("state5", region);
 state1.defer(Event1);
 
 initial.to(state1);
-state1.to(state2).on(Event2);
+state1.on(Event2).to(state2);
 state2.to(state3);
-state2.to(state5).on(Event1);
-state3.to(state4).on(Event1);
+state2.on(Event1).to(state5);
+state3.on(Event1).to(state4);
 
 let instance = new state.Instance("redboltz2", model);
 

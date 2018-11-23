@@ -2,9 +2,6 @@ import { assert, log } from '../util';
 import { Vertex } from './Vertex';
 import { Region } from './Region';
 import { Transition } from './Transition';
-import { ExternalTransition } from './ExternalTransition';
-import { LocalTransition } from './LocalTransition';
-import { InternalTransition } from './InternalTransition';
 
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
@@ -131,6 +128,10 @@ export class State implements Vertex {
 		return this;
 	}
 
+	public on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger> {
+		return new Transition(this, type, undefined, undefined, false, undefined);
+	}
+
 	/**
 	 * Creates a new external transition.
 	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
@@ -138,8 +139,8 @@ export class State implements Vertex {
 	 * @returns The external transition.
 	 * @public
 	 */
-	public external<TTrigger>(target: Vertex): ExternalTransition<TTrigger> {
-		return new ExternalTransition<TTrigger>(this, target);
+	public external<TTrigger>(target: Vertex): Transition<TTrigger> {
+		return new Transition<TTrigger>(this, undefined, undefined, target, false, undefined);
 	}
 
 	/**
@@ -159,8 +160,8 @@ export class State implements Vertex {
 	 * @returns Returns the internal transition.
 	 * @public
 	 */
-	public internal<TTrigger>(): InternalTransition<TTrigger> {
-		return new InternalTransition<TTrigger>(this);
+	public internal<TTrigger>(): Transition<TTrigger> {
+		return new Transition<TTrigger>(this, undefined, undefined, undefined, false, undefined);
 	}
 
 	/**
@@ -170,8 +171,8 @@ export class State implements Vertex {
 	 * @returns Returns the local transition.
 	 * @public
 	 */
-	public local<TTrigger>(target: Vertex): LocalTransition<TTrigger> {
-		return new LocalTransition<TTrigger>(this, target);
+	public local<TTrigger>(target: Vertex): Transition<TTrigger> {
+		return new Transition<TTrigger>(this, undefined, undefined, target, true, undefined);
 	}
 
 	public defer<TTrigger>(trigger: new (...args: any[]) => TTrigger): State {

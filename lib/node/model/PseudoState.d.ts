@@ -3,7 +3,6 @@ import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
 import { State } from './State';
 import { Transition } from './Transition';
-import { ExternalTransition } from './ExternalTransition';
 /**
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
  * @public
@@ -34,30 +33,10 @@ export declare class PseudoState implements Vertex {
      * @returns Returns true if the pseudo state is of the deep or shallow history kind
      */
     isHistory(): boolean;
-    /**
-     * Creates a new external transition.
-     * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-     * @param target The target vertex of the external transition.
-     * @returns The external transition.
-     * @public
-     */
-    external<TTrigger>(target: Vertex): ExternalTransition<TTrigger>;
-    /**
-     * Creates a new external transition.
-     * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-     * @param target The target vertex of the external transition.
-     * @returns The external transition.
-     * @public
-     */
-    to<TTrigger>(target: Vertex): ExternalTransition<TTrigger>;
-    /**
-     * Creates a new else transition for branch (junction and choice) pseudo states; else transitions are selected if no other transitions guard conditions evaluate true.
-     * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-     * @param target The target of the transition.
-     * @returns Returns the new else transition.
-     * @public
-     */
-    else<TTrigger>(target: Vertex): ExternalTransition<TTrigger>;
+    on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger>;
+    to<TTrigger>(target: Vertex): Transition<TTrigger>;
+    external<TTrigger>(target: Vertex): Transition<TTrigger>;
+    else<TTrigger>(target: Vertex): Transition<TTrigger>;
     /**
      * Returns the fully qualified name of the pseudo state.
      * @public

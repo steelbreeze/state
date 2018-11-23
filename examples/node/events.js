@@ -31,14 +31,14 @@ var initialA = new node_1.PseudoState("initialA", regionA, node_1.PseudoStateKin
 var waitingA = new node_1.State("waitingA", regionA);
 var completeA = new node_1.State("completeA", regionA).entry(function () { return console.info("Received event A"); });
 initialA.to(waitingA);
-waitingA.to(completeA).on(Event)["if"](function (event) { return event.is("A"); });
+waitingA.on(Event)["if"](function (event) { return event.is("A"); }).to(completeA);
 // create a child region which becomes complete once it has received event B.
 var regionB = new node_1.Region("regionB", waiting);
 var initialB = new node_1.PseudoState("initialB", regionB, node_1.PseudoStateKind.Initial);
 var waitingB = new node_1.State("waitingB", regionB);
 var completeB = new node_1.State("completeB", regionB).entry(function () { return console.info("Received event B"); });
 initialB.to(waitingB);
-waitingB.to(completeB).on(Event)["if"](function (event) { return event.is("B"); });
+waitingB.on(Event).to(completeB)["if"](function (event) { return event.is("B"); });
 // create an instance of the state machine
 var instance = new node_1.Instance("instance", model);
 // evaluate events

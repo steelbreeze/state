@@ -26,10 +26,10 @@ s2.defer(e1);
 s2.defer(e3);
 
 initial.to(s1);
-s1.to(s2).on(e4);
-s2.to(s3).on(e2);
-s3.to(s4).on(e1);
-s3.to(s5).on(e3);
+s1.on(e4).to(s2);
+s2.on(e2).to(s3);
+s3.on(e1).to(s4);
+s3.on(e3).to(s5);
 
 let instance = new state.Instance("redboltz3", model);
 

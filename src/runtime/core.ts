@@ -308,35 +308,31 @@ declare module '../model/Transition' {
 }
 
 /** Traverse an external or local transition */
-model.ExternalTransition.prototype.execute = model.LocalTransition.prototype.execute = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+model.Transition.prototype.execute = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	log.info(() => `Executing transition from ${this.source} to ${this.target}`, log.Transition);
 
 	// leave elements below the common ancestor
-	this.toLeave.leave(instance, deepHistory, trigger);
-
+	if (this.toLeave) {
+		this.toLeave.leave(instance, deepHistory, trigger);
+	}
+	
 	// perform the transition behaviour
 	for (var i = this.actions.length; i--;) {
 		this.actions[i](trigger);
 	}
 
 	// enter elements below the common ancestor to the target
-	for (i = this.toEnter.length; i--;) {
-		this.toEnter[i].enterHead(instance, deepHistory, trigger);
+	if (this.toEnter) {
+		for (i = this.toEnter.length; i--;) {
+			this.toEnter[i].enterHead(instance, deepHistory, trigger);
+		}
+
+		// cascade the entry action to any child elements of the target
+		this.toEnter[0].enterTail(instance, deepHistory, trigger);
 	}
 
-	// cascade the entry action to any child elements of the target
-	this.toEnter[0].enterTail(instance, deepHistory, trigger);
-}
-
-/** Traverse an internal transition; calls only the transition behaviour and does not cause a state transition */
-model.InternalTransition.prototype.execute = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
-	log.info(() => `Executing transition at ${this.target}`, log.Transition);
-
-	// perform the transition behaviour 
-	for (let i = this.actions.length; i--;) {
-		this.actions[i](trigger);
+	// test for completion transitions for internal transitions as there will be state entry/exit performed where the test is usually performed
+	if (!this.target) {
+		completion(this.source as model.State, instance, deepHistory, this.target); // TODO: remove as model.State
 	}
-
-	// test for completion transitions as there will be state entry/exit performed where the test is usually performed
-	completion(this.source, instance, deepHistory, this.target);
 }

@@ -18,13 +18,13 @@ const paused = new state.State("paused", active);
 // create the state machine model transitions
 initial.to(operational);
 deepHistory.to(stopped);
-stopped.to(running).when(trigger => trigger === "play");
-active.to(stopped).when(trigger => trigger === "stop");
-running.to(paused).when(trigger => trigger === "pause");
-paused.to(running).when(trigger => trigger === "play");
-operational.to(flipped).when(trigger => trigger === "flip");
-flipped.to(operational).when(trigger => trigger === "flip");
-operational.to(finalState).when(trigger => trigger === "off");
+stopped.to<String>(running).when(trigger => trigger === "play");
+active.to<String>(stopped).when(trigger => trigger === "stop");
+running.to<String>(paused).when(trigger => trigger === "pause");
+paused.to<String>(running).when(trigger => trigger === "play");
+operational.to<String>(flipped).when(trigger => trigger === "flip");
+flipped.to<String>(operational).when(trigger => trigger === "flip");
+operational.to<String>(finalState).when(trigger => trigger === "off");
 
 // create a new state machine instance (this stores the active state configuration, allowing many instances to work with a single model)
 let instance = new state.Instance("player", model);

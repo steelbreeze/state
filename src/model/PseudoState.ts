@@ -4,7 +4,6 @@ import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
 import { State } from './State';
 import { Transition } from './Transition';
-import { ExternalTransition } from './ExternalTransition';
 
 /**
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
@@ -28,7 +27,7 @@ export class PseudoState implements Vertex {
 	 * The else transition that may be used by branch pseudo states; saves the costly process of searching for it at runtime.
 	 * @internal 
 	 */
-	elseTransition: ExternalTransition | undefined;
+	elseTransition: Transition | undefined;
 
 	/**
 	 * Creates a new instance of the PseudoState class.
@@ -62,39 +61,22 @@ export class PseudoState implements Vertex {
 
 	}
 
-	/**
-	 * Creates a new external transition.
-	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-	 * @param target The target vertex of the external transition.
-	 * @returns The external transition.
-	 * @public
-	 */
-	public external<TTrigger>(target: Vertex): ExternalTransition<TTrigger> {
-		return new ExternalTransition<TTrigger>(this, target);
+	public on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger> {
+		return new Transition(this, type, undefined, undefined, false, undefined);
 	}
 
-	/**
-	 * Creates a new external transition.
-	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-	 * @param target The target vertex of the external transition.
-	 * @returns The external transition.
-	 * @public
-	 */
-	public to<TTrigger>(target: Vertex): ExternalTransition<TTrigger> {
-		return this.external(target);
+	public to<TTrigger>(target: Vertex): Transition<TTrigger> {
+		return new Transition(this, undefined, undefined, target, false, undefined);
 	}
 
-	/**
-	 * Creates a new else transition for branch (junction and choice) pseudo states; else transitions are selected if no other transitions guard conditions evaluate true.
-	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-	 * @param target The target of the transition.
-	 * @returns Returns the new else transition.
-	 * @public
-	 */
-	public else<TTrigger>(target: Vertex): ExternalTransition<TTrigger> {
+	public external<TTrigger>(target: Vertex): Transition<TTrigger> {
+		return this.to(target);
+	}
+
+	public else<TTrigger>(target: Vertex): Transition<TTrigger> {
 		assert.ok(!this.elseTransition, () => `Only 1 else transition allowed at ${this}.`);
 
-		return this.elseTransition = new ExternalTransition<TTrigger>(this, target).if(() => false);
+		return this.elseTransition = new Transition<TTrigger>(this, undefined, () => false, target, false, undefined);
 	}
 
 	/**

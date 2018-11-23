@@ -1,3 +1,10 @@
+## v7.2
+v7.2 addresses the issue of having to specify the trigger event type twice. This release is a breaking change if you explicity created instances of the ```ExternalTransition```, ```LocalTransition``` and ```InternalTransition``` classes, all of which have been removed; the ```Transaction``` class now caters for all types of transition. The fluent-style API as used in all the examples and tests is backward compatible.
+
+The recommended way to create transitions is in the form:
+```typescript
+source.on(Event).if(guard).to(target).do(action);
+```
 ## v7.1
 v7.1 is fully backwardly compatible with v7.0, but as it contains two significant new features, it warrants a minor version increment.
 ### New features

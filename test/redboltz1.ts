@@ -21,11 +21,11 @@ state1.defer(Event1);
 state2.defer(Event1);
 
 initial.to(state1);
-state1.to(state2).on(Event2);
-state2.to(state3).on(Event2);
-state3.to(state4).on(Event1);
-state4.to(state5).on(Event1);
-state5.to(state6).on(Event1);
+state1.on(Event2).to(state2);
+state2.on(Event2).to(state3);
+state3.on(Event1).to(state4);
+state4.on(Event1).to(state5);
+state5.on(Event1).to(state6);
 
 let instance = new state.Instance("redboltz1", model);
 

@@ -1,9 +1,6 @@
 import { Vertex } from './Vertex';
 import { Region } from './Region';
 import { Transition } from './Transition';
-import { ExternalTransition } from './ExternalTransition';
-import { LocalTransition } from './LocalTransition';
-import { InternalTransition } from './InternalTransition';
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
@@ -67,6 +64,7 @@ export declare class State implements Vertex {
      * @public
      */
     exit(action: (trigger: any) => void): this;
+    on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger>;
     /**
      * Creates a new external transition.
      * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
@@ -74,7 +72,7 @@ export declare class State implements Vertex {
      * @returns The external transition.
      * @public
      */
-    external<TTrigger>(target: Vertex): ExternalTransition<TTrigger>;
+    external<TTrigger>(target: Vertex): Transition<TTrigger>;
     /**
      * Creates a new external transition.
      * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
@@ -89,7 +87,7 @@ export declare class State implements Vertex {
      * @returns Returns the internal transition.
      * @public
      */
-    internal<TTrigger>(): InternalTransition<TTrigger>;
+    internal<TTrigger>(): Transition<TTrigger>;
     /**
      * Creates a new local transition.
      * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
@@ -97,7 +95,7 @@ export declare class State implements Vertex {
      * @returns Returns the local transition.
      * @public
      */
-    local<TTrigger>(target: Vertex): LocalTransition<TTrigger>;
+    local<TTrigger>(target: Vertex): Transition<TTrigger>;
     defer<TTrigger>(trigger: new (...args: any[]) => TTrigger): State;
     /**
      * Returns the fully qualified name of the state.

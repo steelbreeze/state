@@ -12,9 +12,9 @@ var stateAA = new state.State("stateAA", stateA);
 var stateAB = new state.State("stateAB", stateA);
 
 // create the state machine model transitions
-initial.external(stateA);
-initialA.external(stateAA);
-stateA.local(stateAB).when(trigger => trigger === "move");
+initial.to(stateA);
+initialA.to(stateAA);
+stateA.to(stateAB).local().when(trigger => trigger === "move");
 
 // create a state machine instance
 var instance = new state.Instance("instance", model);
