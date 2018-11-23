@@ -4,10 +4,10 @@ import 'mocha';
 
 //state.log.add((message: string) => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
 
-class e1 { public  toString(): string { return "e1"; } }
-class e2 { public  toString(): string { return "e2"; } }
-class e3 { public  toString(): string { return "e3"; } }
-class e4 { public  toString(): string { return "e4"; } }
+class e1 { public toString(): string { return "e1"; } }
+class e2 { public toString(): string { return "e2"; } }
+class e3 { public toString(): string { return "e3"; } }
+class e4 { public toString(): string { return "e4"; } }
 
 const model = new state.State("model");
 const region = new state.Region("region", model);
