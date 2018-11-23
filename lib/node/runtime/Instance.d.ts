@@ -10,8 +10,11 @@ export declare class Instance implements IInstance {
     /**
      * A list of deferred events awaiting processing
      */
-    cleanEventPool: Array<any>;
-    dirtyEventPool: Array<any>;
+    private cleanEventPool;
+    /**
+     * The working copy of deferred events during a transaction
+     */
+    private dirtyEventPool;
     /**
      * Creates an instance of the Instance class.
      * @param name The name of the state machine instance.

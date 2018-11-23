@@ -28,8 +28,12 @@ export class Instance implements IInstance {
 	/**
 	 * A list of deferred events awaiting processing
 	 */
-	public cleanEventPool: Array<any> = [];
-	public dirtyEventPool: Array<any> = [];
+	private cleanEventPool: Array<any> = [];
+
+	/** 
+	 * The working copy of deferred events during a transaction 
+	 */
+	private dirtyEventPool: Array<any> = [];
 
 	/**
 	 * Creates an instance of the Instance class.

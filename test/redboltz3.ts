@@ -2,7 +2,7 @@ import * as state from '../lib/node';
 import * as assert from 'assert';
 import 'mocha';
 
-state.log.add((message: string) => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
+//state.log.add((message: string) => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
 
 class e1 { public  toString(): string { return "e1"; } }
 class e2 { public  toString(): string { return "e2"; } }
@@ -24,7 +24,6 @@ s1.defer(e3);
 
 s2.defer(e1);
 s2.defer(e3);
-
 
 initial.to(s1);
 s1.to(s2).on(e4);
