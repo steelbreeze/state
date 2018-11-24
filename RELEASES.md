@@ -5,6 +5,7 @@ The recommended way to create transitions is in the form:
 ```typescript
 source.on(Event).if(guard).to(target).do(action);
 ```
+By starting transition creation with the ```on``` method, the transition will be typed, meaning that the callbacks specified in will use that event type. E.g. the format of the guard condition will be ```(event: Event) => boolean``` and the action will be ```(event: Event) => any```.
 ## v7.1
 v7.1 is fully backwardly compatible with v7.0, but as it contains two significant new features, it warrants a minor version increment.
 ### New features
