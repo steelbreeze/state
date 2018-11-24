@@ -64,6 +64,13 @@ export declare class State implements Vertex {
      * @public
      */
     exit(action: (trigger: any) => void): this;
+    /**
+     * Creates a new transition with a type test.
+     * @remarks Once creates with the [[State.on]] method, the transition can be enhanced using the fluent API calls of [[Transition.if]], [[Transition.to]]/[[Transition.local]] and [[Transition.do]].
+     * @param type The type of event that this transition will look for.
+     * @returns Returns the newly created transition.
+     * @public
+     */
     on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger>;
     /**
      * Creates a new external transition.
@@ -96,7 +103,13 @@ export declare class State implements Vertex {
      * @public
      */
     local<TTrigger>(target: Vertex): Transition<TTrigger>;
-    defer<TTrigger>(trigger: new (...args: any[]) => TTrigger): State;
+    /**
+     * Marks a particular type of event for deferral if it is not processed by the state. Deferred events are placed in the event pool for subsiquent evaluation.
+     * @param type The type of event that this state will defer.
+     * @returns Returns the state.
+     * @public
+     */
+    defer<TTrigger>(type: new (...args: any[]) => TTrigger): State;
     /**
      * Returns the fully qualified name of the state.
      * @public

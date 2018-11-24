@@ -58,25 +58,52 @@ export class PseudoState implements Vertex {
 	 */
 	isHistory(): boolean {
 		return this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
-
 	}
 
+	/**
+	 * Creates a new transition with a type test.
+	 * @remarks Once creates with the [[Vertex.on]] method, the transition can be enhanced using the fluent API calls of [[Transition.if]], [[Transition.to]]/[[Transition.local]] and [[Transition.do]].
+	 * @param type The type of event that this transition will look for.
+	 * @returns Returns the newly created transition.
+	 * @public
+	 */
 	public on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger> {
-		return new Transition(this, type, undefined, undefined, false, undefined);
+		return new Transition<TTrigger>(this).on(type);
 	}
 
+	/**
+	 * Creates a new transition with a target vertex.
+	 * @remarks Once creates with the [[Vertex.tn]] method, the transition can be enhanced using the fluent API calls of [[Transition.on]] [[Transition.if]], [[Transition.local]] and [[Transition.do]]. If an event test is needed, create the transition with the [[on]] method.
+	 * @param to The target vertex of the transition.
+	 * @returns Returns the newly created transition.
+	 * @public
+	 */
 	public to<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition(this, undefined, undefined, target, false, undefined);
+		return new Transition<TTrigger>(this).to(target);
 	}
 
+	/**
+	 * A pseudonym for [[PseudoState.to]] provided for backwards compatability.
+	 * @param to The target vertex of the transition.
+	 * @returns Returns the newly created transition.
+	 * @public
+	 * @deprecated Use [[PseudoState.to]]. This method will be removed in the v8.0 release.
+	 */
 	public external<TTrigger>(target: Vertex): Transition<TTrigger> {
 		return this.to(target);
 	}
 
+	/**
+	 * Creates an else transition from Junction or Choice pseudo states.
+	 * @param to The target vertex of the transition.
+	 * @returns Returns the newly created transition.
+	 * @public
+	 */
 	public else<TTrigger>(target: Vertex): Transition<TTrigger> {
-		assert.ok(!this.elseTransition, () => `Only 1 else transition allowed at ${this}.`);
+		// TODO: assert that the source is Junction of Choice pseudo state
+		assert.ok(!this.elseTransition, () => `Only 1 else transition allowed at ${this}`);
 
-		return this.elseTransition = new Transition<TTrigger>(this, undefined, () => false, target, false, undefined);
+		return this.elseTransition = new Transition<TTrigger>(this).if(() => false).to(target);
 	}
 
 	/**

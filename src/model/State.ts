@@ -128,8 +128,15 @@ export class State implements Vertex {
 		return this;
 	}
 
+	/**
+	 * Creates a new transition with a type test.
+	 * @remarks Once creates with the [[State.on]] method, the transition can be enhanced using the fluent API calls of [[Transition.if]], [[Transition.to]]/[[Transition.local]] and [[Transition.do]].
+	 * @param type The type of event that this transition will look for.
+	 * @returns Returns the newly created transition.
+	 * @public
+	 */
 	public on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger> {
-		return new Transition(this, type, undefined, undefined, false, undefined);
+		return new Transition<TTrigger>(this).on(type);
 	}
 
 	/**
@@ -140,7 +147,7 @@ export class State implements Vertex {
 	 * @public
 	 */
 	public external<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, undefined, undefined, target, false, undefined);
+		return new Transition<TTrigger>(this).to(target);
 	}
 
 	/**
@@ -161,7 +168,7 @@ export class State implements Vertex {
 	 * @public
 	 */
 	public internal<TTrigger>(): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, undefined, undefined, undefined, false, undefined);
+		return new Transition<TTrigger>(this);
 	}
 
 	/**
@@ -172,11 +179,17 @@ export class State implements Vertex {
 	 * @public
 	 */
 	public local<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, undefined, undefined, target, true, undefined);
+		return new Transition<TTrigger>(this).local(target);
 	}
 
-	public defer<TTrigger>(trigger: new (...args: any[]) => TTrigger): State {
-		this.deferrableTrigger.unshift(trigger);
+	/**
+	 * Marks a particular type of event for deferral if it is not processed by the state. Deferred events are placed in the event pool for subsiquent evaluation.
+	 * @param type The type of event that this state will defer.
+	 * @returns Returns the state.
+	 * @public
+	 */
+	public defer<TTrigger>(type: new (...args: any[]) => TTrigger): State {
+		this.deferrableTrigger.unshift(type);
 
 		return this;
 	}

@@ -4,7 +4,7 @@ import { Vertex } from './Vertex';
 import { PseudoState } from './PseudoState';
 
 /**
- * A transition between vertices.
+ * A transition between vertices that defines a valid change in state in response to an event.
  * @param TTrigger The type of triggering event that causes this transition to be traversed.
  */
 export class Transition<TTrigger = any> {
@@ -34,39 +34,55 @@ export class Transition<TTrigger = any> {
 	 * Creates an instance of the Transition class.
 	 * @param source The source [[Vertex]] of the transition.
 	 * @param type The type of triggering event that causes this transition to be traversed.
-	 * @param guard An optional guard condition to further restrict the transition traversal.
-	 * @param target The optional target of this transition. If not specified, the transition is an internal transition.
-	 * @param local A flag denoting that the transition is a local transition.
-	 * @param action An optional action to perform when traversing the transition.
+	 * @public
 	 */
-	public constructor(public readonly source: Vertex, type: (new (...args: any[]) => TTrigger) | undefined, guard: ((trigger: TTrigger) => boolean) | undefined, target: Vertex | undefined, local: boolean, action: ((trigger: TTrigger) => any) | undefined) {
-		log.info(() => `Created transition from ${source}`, log.Create);
-
-		if (type) this.on(type);
-		if (guard) this.if(guard);
-		if (target) this.to(target);
-		if (local) this.local();
-		if (action) this.do(action);
-
+	public constructor(public readonly source: Vertex) {
 		source.outgoing.unshift(this);
+
+		log.info(() => `Created transition from ${source}`, log.Create);
 	}
 
+	/**
+	 * Adds a predicate to the transition to ensure events must be of a certain event type for the transition to be traversed.
+	 * @param type The type of event to test for.
+	 * @return Returns the transition.
+	 * @public
+	 */
 	public on(type: new (...args: any[]) => TTrigger): this {
 		this.typeTest = (trigger: TTrigger) => trigger.constructor === type;
 
 		return this;
 	}
 
+	/**
+	 * Adds a guard condition to the transition enabling event details to determine if the transition should be traversed.
+	 * @param type A boolean predicate taking the trigger event as a parameter.
+	 * @return Returns the transition.
+	 * @public
+	 */
 	public if(guard: (trigger: TTrigger) => boolean): this {
 		this.guard = guard;
 
 		return this;
 	}
 
+	/**
+	 * A pseudonym of [[Transition.if]].
+	 * @param type A boolean predicate taking the trigger event as a parameter.
+	 * @return Returns the transition.
+	 * @public
+	 * @deprecated Use Transition.if in its place. This method will be removed in the v8.0 release.
+	 */
 	public when(guard: (trigger: TTrigger) => boolean): this {
 		return this.if(guard);
 	}
 
+	/**
+	 * Specifies the target vertex, thereby making the transition an external transition.
+	 * @param target The target vertex of the transition
+	 * @return Returns the transition.
+	 * @public
+	 */
 	public to(target: Vertex): this {
 		this.target = target;
 
@@ -85,8 +101,16 @@ export class Transition<TTrigger = any> {
 		return this;
 	}
 
-	public local(): this {
-		if (this.target) {
+	/**
+	 * Specifies the target vertex which is a child of the source and specify it as a local transition.
+	 * @param target The target vertex of the transition
+	 * @return Returns the transition.
+	 * @public
+	 */
+	public local(target: Vertex | undefined = undefined): this {
+		if (this.target = (this.target || target)) {
+			// TODO: test that the target is a child of the parent
+
 			// determine the target ancestry
 			const targetAncestors = tree.ancestors<NamedElement>(this.target, element => element.parent); // NOTE: as the target is a child of the source it will be in the same ancestry
 
@@ -102,6 +126,14 @@ export class Transition<TTrigger = any> {
 		return this;
 	}
 
+    /**
+     * Adds behaviour to the transition to be called every time the transition is traversed.
+	 * @remarks You may make multiple calls to this method to add more behaviour.
+     * @param action The behaviour to call on transition traversal.
+     * @returns Returns the transition.
+	 * @public
+	 * @deprecated Use Transition.do instead. This method will be removed in the v8.0 release.
+     */
 	public do(action: (trigger: TTrigger) => any): this {
 		this.actions.unshift(action);
 
@@ -113,12 +145,18 @@ export class Transition<TTrigger = any> {
      * @param action The behaviour to call on transition traversal.
      * @returns Returns the transition.
 	 * @public
-	 * @deprecated Use Transition.do instead.
+	 * @deprecated Use Transition.do instead. This method will be removed in the v8.0 release.
      */
 	public effect(action: (trigger: TTrigger) => void): this {
 		return this.do(action);
 	}
 
+	/**
+	 * Tests an event against the type test and guard condition to see if the event might cause this transition to be traversed.
+	 * @param trigger The triggering event.
+	 * @returns Returns true if the trigger passes the type test and guard condition.
+	 * @internal
+	 */
 	evaluate(trigger: TTrigger): boolean {
 		return this.typeTest(trigger) && this.guard(trigger);
 	}
