@@ -81,12 +81,10 @@ export class Instance implements IInstance {
 	 */
 	playDefered(deferred: number): boolean {
 		for (let i = 0; i < deferred; i++) {
-			if (this.dirtyEventPool[i]) {
-				if (evaluate(this.root, this, false, this.dirtyEventPool[i])) {
-					delete this.dirtyEventPool[i];
+			if (this.dirtyEventPool[i] && evaluate(this.root, this, false, this.dirtyEventPool[i])) {
+				delete this.dirtyEventPool[i];
 
-					return true;
-				}
+				return true;
 			}
 		}
 
