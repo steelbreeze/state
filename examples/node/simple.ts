@@ -12,7 +12,7 @@ const stateB = new state.State("stateB", model);
 
 // create the state machine model transitions
 initial.to(stateA);
-stateA.on(String).if(event => event === "move").to(stateB);
+stateA.on(String).when(event => event === "move").to(stateB);
 
 // create an instance of the state machine model
 let instance = new state.Instance("instance", model);

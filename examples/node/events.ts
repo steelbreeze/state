@@ -43,7 +43,7 @@ const waitingB = new State("waitingB", regionB);
 const completeB = new State("completeB", regionB).entry(() => console.info("Received event B"));
 
 initialB.to(waitingB);
-waitingB.on(Event).to(completeB).if(event => event.is("B"));
+waitingB.on(Event).to(completeB).when(event => event.is("B"));
 
 // create an instance of the state machine
 const instance = new Instance("instance", model);

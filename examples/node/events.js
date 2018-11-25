@@ -38,7 +38,7 @@ var initialB = new node_1.PseudoState("initialB", regionB, node_1.PseudoStateKin
 var waitingB = new node_1.State("waitingB", regionB);
 var completeB = new node_1.State("completeB", regionB).entry(function () { return console.info("Received event B"); });
 initialB.to(waitingB);
-waitingB.on(Event).to(completeB)["if"](function (event) { return event.is("B"); });
+waitingB.on(Event).to(completeB).when(function (event) { return event.is("B"); });
 // create an instance of the state machine
 var instance = new node_1.Instance("instance", model);
 // evaluate events

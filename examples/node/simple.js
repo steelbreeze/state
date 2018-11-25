@@ -11,7 +11,7 @@ var stateA = new state.State("stateA", model);
 var stateB = new state.State("stateB", model);
 // create the state machine model transitions
 initial.to(stateA);
-stateA.on(String)["if"](function (event) { return event === "move"; }).to(stateB);
+stateA.on(String).when(function (event) { return event === "move"; }).to(stateB);
 // create an instance of the state machine model
 var instance = new state.Instance("instance", model);
 // send the machine instance a message for evaluation

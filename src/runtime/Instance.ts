@@ -112,8 +112,8 @@ export class Instance implements IInstance {
 				this.cleanState[k[i]] = this.dirtyState[k[i]];
 			}
 
-			// the working copy of the event pool can become the main copy
-			this.cleanEventPool = this.dirtyEventPool;
+			// the working copy of the event pool can become the main copy (remove any blanks)
+			this.cleanEventPool = this.dirtyEventPool.filter(event => event);
 
 			// return the result to the caller
 			return result;

@@ -60,21 +60,21 @@ export class Transition<TTrigger = any> {
 	 * @return Returns the transition.
 	 * @public
 	 */
-	public if(guard: (trigger: TTrigger) => boolean): this {
+	public when(guard: (trigger: TTrigger) => boolean): this {
 		this.guard = guard;
 
 		return this;
 	}
 
 	/**
-	 * A pseudonym of [[Transition.if]].
+	 * A pseudonym of [[Transition.when]].
 	 * @param type A boolean predicate taking the trigger event as a parameter.
 	 * @return Returns the transition.
 	 * @public
-	 * @deprecated Use Transition.if in its place. This method will be removed in the v8.0 release.
+	 * @deprecated Use Transition.when in its place. This method will be removed in the v8.0 release.
 	 */
-	public when(guard: (trigger: TTrigger) => boolean): this {
-		return this.if(guard);
+	public if(guard: (trigger: TTrigger) => boolean): this {
+		return this.when(guard);
 	}
 
 	/**
