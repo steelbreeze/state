@@ -22,7 +22,7 @@ export class Transition<TTrigger = any> {
 	 * The elements to enter when traversing this transition; the entry operation on the last will cascade to any child substate.
 	 * @internal
 	 */
-	toEnter: Array<NamedElement> | undefined;
+	toEnter: Array<NamedElement> = [];
 
 	/**
 	 * The behavior to call when the transition is traversed.
