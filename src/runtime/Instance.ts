@@ -59,26 +59,38 @@ export class Instance implements IInstance {
 	public evaluate(trigger: any): boolean {
 		log.info(() => `${this} evaluate ${trigger}`, log.Evaluate)
 
-		// TODO: simplify the event pool logic
 		return this.transaction(() => {
-			const deferred = this.dirtyEventPool;
-			this.dirtyEventPool = [];
-
 			// evaluate the trigger event passed
 			const result = evaluate(this.root, this, false, trigger);
 
 			// evaluate any previously deferred trigger events
 			if (result) {
-				for (let i = 0; i < deferred.length; i++) {
-					log.info(() => `${this} evaluate ${deferred[i]}`, log.Evaluate);
-
-					evaluate(this.root, this, false, deferred[i]);
-				}
-			} else {
-				this.dirtyEventPool = deferred.reverse().concat(this.dirtyEventPool);
+				// evaluate from the top of the deferred list down, as soon as one evaluates true, start from the top again
+				while (this.playDefered(this.dirtyEventPool.length)) { }
 			}
+
 			return result;
 		});
+	}
+
+	/**
+	 * Evaluate items from the deferred until one causes a transition.
+	 * @param deferred The limit in the deferred items queue to test.
+	 * @returns Returns true if an item caused a state transition.
+	 * @internal
+	 */
+	playDefered(deferred: number): boolean {
+		for (let i = 0; i < deferred; i++) {
+			if (this.dirtyEventPool[i]) {
+				if (evaluate(this.root, this, false, this.dirtyEventPool[i])) {
+					delete this.dirtyEventPool[i];
+
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	/**
