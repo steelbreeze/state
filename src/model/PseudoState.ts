@@ -100,7 +100,7 @@ export class PseudoState implements Vertex {
 	 * @public
 	 */
 	public else<TTrigger>(target: Vertex): Transition<TTrigger> {
-		// TODO: assert that the source is Junction of Choice pseudo state
+		assert.ok(this.kind === PseudoStateKind.Choice || this.kind === PseudoStateKind.Junction, () => `Else transitions are only valid at Choice and Junction pseudo states`);
 		assert.ok(!this.elseTransition, () => `Only 1 else transition allowed at ${this}`);
 
 		return this.elseTransition = new Transition<TTrigger>(this).if(() => false).to(target);
