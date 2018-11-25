@@ -17,7 +17,6 @@ export declare class State implements Vertex {
      * The outgoing transitions available from this vertex.
      */
     outgoing: Array<Transition>;
-    deferrableTrigger: Array<new (...args: any[]) => any>;
     /**
      * Creates a new instance of the State class.
      * @param name The name of the state.

@@ -44,6 +44,10 @@ export class State implements Vertex {
 	 */
 	onLeave: Array<(trigger: any) => void> = [];
 
+	/**
+	 * The list of types that this state can defer to the event pool.
+	 * @internal
+	 */
 	deferrableTrigger: Array<new (...args: any[]) => any> = [];
 
 	/**
