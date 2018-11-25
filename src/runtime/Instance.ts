@@ -59,7 +59,7 @@ export class Instance implements IInstance {
 	public evaluate(trigger: any): boolean {
 		log.info(() => `${this} evaluate ${trigger}`, log.Evaluate)
 
-		// TODO: make the event pool and deferred items part of the transactional state
+		// TODO: simplify the event pool logic
 		return this.transaction(() => {
 			const deferred = this.dirtyEventPool;
 			this.dirtyEventPool = [];
@@ -75,14 +75,16 @@ export class Instance implements IInstance {
 					evaluate(this.root, this, false, deferred[i]);
 				}
 			} else {
-				for (let i = 0; i < deferred.length; i++) {
-					this.dirtyEventPool.unshift(deferred[i]);
-				}
+				this.dirtyEventPool = deferred.reverse().concat(this.dirtyEventPool);
 			}
 			return result;
 		});
 	}
 
+	/**
+	 * Adds a trigger event to the event pool for later evaluation (once the state machine has changed state).
+	 * @param trigger The trigger event to defer.
+	 */
 	defer(trigger: any): void {
 		if (this.dirtyEventPool.indexOf(trigger) === -1) {
 			log.info(() => `${this} defer ${trigger}`, log.Evaluate);

@@ -28,6 +28,10 @@ export declare class Instance implements IInstance {
      * @returns Returns true if the trigger event caused a state transition.
      */
     evaluate(trigger: any): boolean;
+    /**
+     * Adds a trigger event to the event pool for later evaluation (once the state machine has changed state).
+     * @param trigger The trigger event to defer.
+     */
     defer(trigger: any): void;
     /**
      * Performs an operation within a transactional context.

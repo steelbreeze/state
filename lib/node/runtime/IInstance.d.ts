@@ -13,6 +13,10 @@ export interface IInstance {
      * @returns Returns true if the trigger caused a state change.
      */
     evaluate(trigger: any): boolean;
+    /**
+     * Adds a trigger event to the event pool for later evaluation (once the state machine has changed state).
+     * @param trigger The trigger event to defer.
+     */
     defer(trigger: any): void;
     /**
      * Updates the transactional state of a region with the last entered vertex.

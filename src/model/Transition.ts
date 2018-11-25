@@ -1,4 +1,4 @@
-import { log, tree } from '../util';
+import { assert, log, tree } from '../util';
 import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { PseudoState } from './PseudoState';
@@ -109,10 +109,11 @@ export class Transition<TTrigger = any> {
 	 */
 	public local(target: Vertex | undefined = undefined): this {
 		if (this.target = (this.target || target)) {
-			// TODO: test that the target is a child of the parent
-
 			// determine the target ancestry
 			const targetAncestors = tree.ancestors<NamedElement>(this.target, element => element.parent); // NOTE: as the target is a child of the source it will be in the same ancestry
+
+			// test that the target is a child of the source
+			assert.ok(targetAncestors.indexOf(this.source) !== -1, () => `Source vertex (${this.source}) must an ancestor of the target vertex (${this.target})`);
 
 			// determine where to enter and exit from in the ancestry
 			const from = targetAncestors.indexOf(this.source) + 2; // NOTE: in local transitions the source vertex is not exited, but the active child substate is
