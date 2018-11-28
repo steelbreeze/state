@@ -2,7 +2,7 @@ import * as state from '../lib/node';
 import * as assert from 'assert';
 import 'mocha';
 
-//state.log.add((message: string) => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
+state.log.add((message: string) => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
 
 class e1 { public toString(): string { return "e1"; } }
 class e2 { public toString(): string { return "e2"; } }
@@ -37,6 +37,7 @@ instance.evaluate(new e1());
 instance.evaluate(new e2());
 instance.evaluate(new e3());
 instance.evaluate(new e4());
+
 
 describe('test/redboltz3', () => {
 	it('Deferred events are evaluated after completion transitions', () => {

@@ -6,7 +6,7 @@ import { IInstance } from '../runtime';
  * @param instance The state machine instance to evaluate the trigger against.
  * @param deepHistory True if deep history semantics are invoked.
  * @param trigger The trigger event
- * @returns Returns true if the trigger caused a state transition.
+ * @returns Returns true if the trigger was consumed by the state.
  * @hidden
  */
 export declare function evaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean;

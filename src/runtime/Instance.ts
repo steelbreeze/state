@@ -26,14 +26,9 @@ export class Instance implements IInstance {
 	private dirtyVertex: Record<string, model.Vertex> = {};
 
 	/**
-	 * A list of deferred events awaiting processing
+	 * Outstanding events marked for deferral.
 	 */
-	private cleanEventPool: Array<any> = [];
-
-	/** 
-	 * The working copy of deferred events during a transaction 
-	 */
-	private dirtyEventPool: Array<any> = [];
+	private deferredEventPool: Array<any> = [];
 
 	/**
 	 * Creates an instance of the Instance class.
@@ -54,31 +49,20 @@ export class Instance implements IInstance {
 	/**
 	 * Passes a trigger event to the state machine instance for evaluation.
 	 * @param trigger The trigger event to evaluate.
-	 * @returns Returns true if the trigger event caused a state transition.
+	 * @returns Returns true if the trigger event was consumed by the state machine (caused a transition or was deferred).
 	 */
 	public evaluate(trigger: any): boolean {
 		log.info(() => `${this} evaluate ${trigger}`, log.Evaluate)
 
-		// TODO: make the event pool and deferred items part of the transactional state
 		return this.transaction(() => {
-			const deferred = this.dirtyEventPool;
-			this.dirtyEventPool = [];
-
 			// evaluate the trigger event passed
 			const result = evaluate(this.root, this, false, trigger);
 
-			// evaluate any previously deferred trigger events
-			if (result) {
-				for (let i = 0; i < deferred.length; i++) {
-					log.info(() => `${this} evaluate ${deferred[i]}`, log.Evaluate);
-
-					evaluate(this.root, this, false, deferred[i]);
-				}
-			} else {
-				for (let i = 0; i < deferred.length; i++) {
-					this.dirtyEventPool.unshift(deferred[i]);
-				}
+			// check for and evaluate any deferred events
+			if (this.deferredEventPool.length > 0) {
+				this.processDeferredEvents();
 			}
+
 			return result;
 		});
 	}
@@ -87,12 +71,44 @@ export class Instance implements IInstance {
 	 * Adds a trigger event to the event pool for later evaluation (once the state machine has changed state).
 	 * @param trigger The trigger event to defer.
 	 */
-	defer(trigger: any): void {
-		if (this.dirtyEventPool.indexOf(trigger) === -1) {
-			log.info(() => `${this} defer ${trigger}`, log.Evaluate);
+	defer(state: model.State, trigger: any): void {
+		log.info(() => `${this} deferred ${trigger} while in ${state}`, log.Evaluate);
 
-			this.dirtyEventPool.push(trigger);
+		this.deferredEventPool.push(trigger);
+	}
+
+	/** Check for and send deferred events for evaluation */
+	processDeferredEvents(): void {
+		// build the list of deferred event types based on the active state configuration
+		const deferrable = this.activeStateConfigurationDeferrableTriggers(this.root);
+
+		// process the outstanding event pool
+		for (let i = 0; i < this.deferredEventPool.length; i++) {
+			const trigger = this.deferredEventPool[i];
+
+			// if the event still exists in the pool and its not still deferred, take it and send to the machine for evaluation
+			if (trigger && deferrable.indexOf(trigger.constructor) === -1) {
+				delete this.deferredEventPool[i]; // NOTE: the transaction clean-up repacks the event pool
+
+				log.info(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
+
+				// send for evaluation; if the event was 'consumed' it will not be deferred given the test above and we start deferred event processing again
+				if (evaluate(this.root, this, false, trigger)) {
+					this.processDeferredEvents();
+				}
+			}
 		}
+	}
+
+	/** Build a list of all the deferrable events at a particular state (including its children) */
+	activeStateConfigurationDeferrableTriggers(state: model.State): Array<new (...args: any[]) => any> {
+		let result = state.deferrableTrigger.slice();
+
+		for (let i = state.children.length; i--;) {
+			result = result.concat(this.activeStateConfigurationDeferrableTriggers(this.getState(state.children[i])));
+		}
+
+		return result;
 	}
 
 	/**
@@ -103,9 +119,6 @@ export class Instance implements IInstance {
 	 */
 	transaction<TReturn>(operation: () => TReturn): TReturn {
 		try {
-			// take a working copy of the event pool
-			this.dirtyEventPool = this.cleanEventPool.slice();
-
 			// perform the operation
 			const result = operation();
 
@@ -114,18 +127,17 @@ export class Instance implements IInstance {
 				this.cleanState[k[i]] = this.dirtyState[k[i]];
 			}
 
-			// the working copy of the event pool can become the main copy (remove any blanks)
-			this.cleanEventPool = this.dirtyEventPool.filter(event => event);
-
 			// return the result to the caller
 			return result;
 		}
 
-		// clear the transaction cache
 		finally {
+			// clear the transaction cache
 			this.dirtyState = {};
 			this.dirtyVertex = {};
-			this.dirtyEventPool = [];
+
+			// repack the deferred event pool
+			this.deferredEventPool = this.deferredEventPool.filter(trigger => trigger);
 		}
 	}
 
@@ -136,7 +148,26 @@ export class Instance implements IInstance {
 	 */
 	public setVertex(vertex: model.Vertex): void {
 		if (vertex.parent) {
+
+			//			const oldVertex = this.getVertex(vertex.parent);
+
 			this.dirtyVertex[vertex.parent.qualifiedName] = vertex;
+
+			//			if(oldVertex && (oldVertex !== vertex)) {
+			//				const deferred = this.eventPool[oldVertex.qualifiedName];
+			//
+			//				delete this.eventPool[oldVertex.qualifiedName];
+			//
+			//				if(deferred) {
+			//					console.log(`LEFT ${oldVertex} which has deferred events`);
+			//
+			//					for(let i = 0 ; i < deferred.length; i++ ) {
+			//						log.info(() => `${this} evaluate deferred ${deferred[i]}`, log.Evaluate)
+			//
+			//						evaluate(this.root, this, false, deferred[i]);
+			//					}
+			//				}
+			//			}
 		}
 	}
 
@@ -146,8 +177,9 @@ export class Instance implements IInstance {
 	 * @remarks This should only be called by the state machine runtime, and implementors note, you also need to update the last entered vertex within this call.
 	 */
 	public setState(state: model.State): void {
+		this.setVertex(state);
+
 		if (state.parent) {
-			this.dirtyVertex[state.parent.qualifiedName] = state;
 			this.dirtyState[state.parent.qualifiedName] = state;
 		}
 	}

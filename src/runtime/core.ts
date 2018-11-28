@@ -8,24 +8,15 @@ import { IInstance } from '../runtime';
  * @param instance The state machine instance to evaluate the trigger against.
  * @param deepHistory True if deep history semantics are invoked.
  * @param trigger The trigger event
- * @returns Returns true if the trigger caused a state transition.
+ * @returns Returns true if the trigger was consumed by the state.
  * @hidden
  */
 export function evaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
-	const result = delegate(state, instance, deepHistory, trigger) || accept(state, instance, deepHistory, trigger);
+	const result = delegate(state, instance, deepHistory, trigger) || accept(state, instance, deepHistory, trigger) || defer(state, instance, trigger);
 
 	// check completion transitions if the trigger caused as state transition and this state is still active
 	if (result && state.parent && instance.getState(state.parent) === state) {
 		completion(state, instance, deepHistory, state);
-	}
-
-	// if not processed, check to see if we should defer the event for later processing
-	if (!result) {
-		for (let i = state.deferrableTrigger.length; i--;) {
-			if (trigger.constructor === state.deferrableTrigger[i]) {
-				instance.defer(trigger);
-			}
-		}
 	}
 
 	return result;
@@ -52,15 +43,30 @@ function delegate(state: model.State, instance: IInstance, deepHistory: boolean,
 
 /** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
 function accept(vertex: model.Vertex, instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+	let result = false;
+
 	const transition = vertex.getTransition(trigger);
 
 	if (transition) {
 		traverse(transition, instance, deepHistory, trigger);
 
-		return true;
+		result = true;
 	}
 
-	return false;
+	return result;
+}
+
+/** Evaluates the trigger event against the list of deferred transitions and defers into the event pool if necessary. */
+function defer(state: model.State, instance: IInstance, trigger: any): boolean {
+	let result = false;
+
+	if (state.deferrableTrigger.indexOf(trigger.constructor) !== -1) {
+		instance.defer(state, trigger);
+
+		result = true;
+	}
+
+	return result;
 }
 
 /** Find a transition from any state or pseudo state */
@@ -291,7 +297,7 @@ model.State.prototype.leave = function (instance: IInstance, deepHistory: boolea
 
 	log.info(() => `${instance} leave ${this}`, log.Exit);
 
-	// perform the user define leave behaviour
+	// perform the user defined leave behaviour
 	for (i = this.onLeave.length; i--;) {
 		this.onLeave[i](trigger);
 	}

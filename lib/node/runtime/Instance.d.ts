@@ -8,13 +8,9 @@ export declare class Instance implements IInstance {
     readonly name: string;
     readonly root: model.State;
     /**
-     * A list of deferred events awaiting processing
+     * Outstanding events marked for deferral.
      */
-    private cleanEventPool;
-    /**
-     * The working copy of deferred events during a transaction
-     */
-    private dirtyEventPool;
+    private deferredEventPool;
     /**
      * Creates an instance of the Instance class.
      * @param name The name of the state machine instance.
@@ -25,14 +21,18 @@ export declare class Instance implements IInstance {
     /**
      * Passes a trigger event to the state machine instance for evaluation.
      * @param trigger The trigger event to evaluate.
-     * @returns Returns true if the trigger event caused a state transition.
+     * @returns Returns true if the trigger event was consumed by the state machine (caused a transition or was deferred).
      */
     evaluate(trigger: any): boolean;
     /**
      * Adds a trigger event to the event pool for later evaluation (once the state machine has changed state).
      * @param trigger The trigger event to defer.
      */
-    defer(trigger: any): void;
+    defer(state: model.State, trigger: any): void;
+    /** Check for and send deferred events for evaluation */
+    processDeferredEvents(): void;
+    /** Build a list of all the deferrable events at a particular state (including its children) */
+    activeStateConfigurationDeferrableTriggers(state: model.State): Array<new (...args: any[]) => any>;
     /**
      * Performs an operation within a transactional context.
      * @param TReturn The type of the return parameter of the transactional operation.

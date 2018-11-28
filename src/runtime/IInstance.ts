@@ -18,9 +18,10 @@ export interface IInstance {
 
 	/**
 	 * Adds a trigger event to the event pool for later evaluation (once the state machine has changed state).
+	 * @param state The state at which the trigger event was deferred at.
 	 * @param trigger The trigger event to defer.
 	 */
-	defer(trigger: any): void;
+	defer(state: model.State, trigger: any): void;
 
 	/**
 	 * Updates the transactional state of a region with the last entered vertex.
