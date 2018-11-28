@@ -1,11 +1,13 @@
 ## v7.2
-v7.2 addresses the issue of having to specify the trigger event type twice. This release is a breaking change if you explicity created instances of the ```ExternalTransition```, ```LocalTransition``` and ```InternalTransition``` classes, all of which have been removed; the ```Transaction``` class now caters for all types of transition. The fluent-style API as used in all the examples and tests is backward compatible.
+v7.2 addresses the issue of having to specify the trigger event type twice in the creation of transitions. This release is a breaking change if you explicity created instances of the ```ExternalTransition```, ```LocalTransition``` and ```InternalTransition``` classes, all of which have been removed; the ```Transaction``` class now caters for all types of transition. The fluent-style API as used in all the examples and tests is backward compatible.
 
 The recommended way to create transitions is in the form:
 ```typescript
-source.on(Event).if(guard).to(target).do(action);
+source.on(Event).when(guard).to(target).do(action);
 ```
-By starting transition creation with the ```on``` method, the transition will be typed, meaning that the callbacks specified in will use that event type. E.g. the format of the guard condition will be ```(event: Event) => boolean``` and the action will be ```(event: Event) => any```.
+By starting transition creation with the ```on``` method, the transition will be typed, meaning that the ```when``` and ```do``` callbacks specified in will use that event type. E.g. the format of the guard condition will be ```(event: Event) => boolean``` and the action will be ```(event: Event) => any```.
+
+v7.2 also provides a more robust implementation of deferred events first intoduces in v7.1.
 ## v7.1
 v7.1 is fully backwardly compatible with v7.0, but as it contains two significant new features, it warrants a minor version increment.
 ### New features
