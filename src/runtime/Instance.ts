@@ -59,8 +59,8 @@ export class Instance implements IInstance {
 			const result = evaluate(this.root, this, false, trigger);
 
 			// check for and evaluate any deferred events
-			if (this.deferredEventPool.length > 0) {
-				this.processDeferredEvents();
+			if (result && this.deferredEventPool.length !== 0) {
+				this.evaluateDeferred();
 			}
 
 			return result;
@@ -78,37 +78,35 @@ export class Instance implements IInstance {
 	}
 
 	/** Check for and send deferred events for evaluation */
-	processDeferredEvents(): void {
+	evaluateDeferred(): void {
 		// build the list of deferred event types based on the active state configuration
-		const deferrable = this.activeStateConfigurationDeferrableTriggers(this.root);
+		let deferrableTriggers = this.deferrableTriggers(this.root);
 
 		// process the outstanding event pool
 		for (let i = 0; i < this.deferredEventPool.length; i++) {
 			const trigger = this.deferredEventPool[i];
 
 			// if the event still exists in the pool and its not still deferred, take it and send to the machine for evaluation
-			if (trigger && deferrable.indexOf(trigger.constructor) === -1) {
-				delete this.deferredEventPool[i]; // NOTE: the transaction clean-up repacks the event pool
+			if (trigger && deferrableTriggers.indexOf(trigger.constructor) === -1) {
+				delete this.deferredEventPool[i]; // NOTE: the transaction clean-up packs the event pool
 
 				log.info(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
 
-				// send for evaluation; if the event was 'consumed' it will not be deferred given the test above and we start deferred event processing again
+				// send for evaluation
 				if (evaluate(this.root, this, false, trigger)) {
-					this.processDeferredEvents();
+					// if the event was consumed, start the process again
+					this.evaluateDeferred();
+
+					// as the active state configuration has likely changed, terminate this evaluation of the pool
+					break;
 				}
 			}
 		}
 	}
 
 	/** Build a list of all the deferrable events at a particular state (including its children) */
-	activeStateConfigurationDeferrableTriggers(state: model.State): Array<new (...args: any[]) => any> {
-		let result = state.deferrableTrigger.slice();
-
-		for (let i = state.children.length; i--;) {
-			result = result.concat(this.activeStateConfigurationDeferrableTriggers(this.getState(state.children[i])));
-		}
-
-		return result;
+	deferrableTriggers(state: model.State): Array<new (...args: any[]) => any> {
+		return state.children.reduce((result, region) => result.concat(this.deferrableTriggers(this.getState(region))), state.deferrableTrigger);
 	}
 
 	/**
@@ -148,26 +146,7 @@ export class Instance implements IInstance {
 	 */
 	public setVertex(vertex: model.Vertex): void {
 		if (vertex.parent) {
-
-			//			const oldVertex = this.getVertex(vertex.parent);
-
 			this.dirtyVertex[vertex.parent.qualifiedName] = vertex;
-
-			//			if(oldVertex && (oldVertex !== vertex)) {
-			//				const deferred = this.eventPool[oldVertex.qualifiedName];
-			//
-			//				delete this.eventPool[oldVertex.qualifiedName];
-			//
-			//				if(deferred) {
-			//					console.log(`LEFT ${oldVertex} which has deferred events`);
-			//
-			//					for(let i = 0 ; i < deferred.length; i++ ) {
-			//						log.info(() => `${this} evaluate deferred ${deferred[i]}`, log.Evaluate)
-			//
-			//						evaluate(this.root, this, false, deferred[i]);
-			//					}
-			//				}
-			//			}
 		}
 	}
 
@@ -177,9 +156,8 @@ export class Instance implements IInstance {
 	 * @remarks This should only be called by the state machine runtime, and implementors note, you also need to update the last entered vertex within this call.
 	 */
 	public setState(state: model.State): void {
-		this.setVertex(state);
-
 		if (state.parent) {
+			this.dirtyVertex[state.parent.qualifiedName] = state;
 			this.dirtyState[state.parent.qualifiedName] = state;
 		}
 	}

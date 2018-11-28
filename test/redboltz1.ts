@@ -2,7 +2,7 @@ import * as state from '../lib/node';
 import * as assert from 'assert';
 import 'mocha';
 
-state.log.add((message: string) => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
+//state.log.add((message: string) => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
 
 class Event1 { public constructor(public readonly name: string) { } public toString(): string { return this.name; } }
 class Event2 { public constructor(public readonly name: string) { } public toString(): string { return this.name; } }

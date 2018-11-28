@@ -30,9 +30,9 @@ export declare class Instance implements IInstance {
      */
     defer(state: model.State, trigger: any): void;
     /** Check for and send deferred events for evaluation */
-    processDeferredEvents(): void;
+    evaluateDeferred(): void;
     /** Build a list of all the deferrable events at a particular state (including its children) */
-    activeStateConfigurationDeferrableTriggers(state: model.State): Array<new (...args: any[]) => any>;
+    deferrableTriggers(state: model.State): Array<new (...args: any[]) => any>;
     /**
      * Performs an operation within a transactional context.
      * @param TReturn The type of the return parameter of the transactional operation.
