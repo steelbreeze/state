@@ -1,3 +1,4 @@
+import { func } from './func';
 /**
  * @hidden
  */
@@ -7,5 +8,5 @@ export declare namespace assert {
      * @param value The value to test.
      * @param message A callback to create a message that will be the message of an Error exception.
      */
-    function ok(value: any, message: () => string): void;
+    function ok(value: any, message: func.Producer<string>): void;
 }

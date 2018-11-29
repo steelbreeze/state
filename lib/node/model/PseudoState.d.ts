@@ -1,3 +1,4 @@
+import { func } from '../util';
 import { Vertex } from './Vertex';
 import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
@@ -40,7 +41,8 @@ export declare class PseudoState implements Vertex {
      * @returns Returns the newly created transition.
      * @public
      */
-    on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger>;
+    on<TTrigger>(type: func.Constructor<TTrigger>): Transition<TTrigger>;
+    when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger>;
     /**
      * Creates a new transition with a target vertex.
      * @remarks Once creates with the [[Vertex.tn]] method, the transition can be enhanced using the fluent API calls of [[Transition.on]] [[Transition.if]], [[Transition.local]] and [[Transition.do]]. If an event test is needed, create the transition with the [[on]] method.
@@ -64,6 +66,8 @@ export declare class PseudoState implements Vertex {
      * @public
      */
     else<TTrigger>(target: Vertex): Transition<TTrigger>;
+    /** Find a transition from the pseudo state for a given trigger event */
+    getTransition(trigger: any): Transition | undefined;
     /**
      * Returns the fully qualified name of the pseudo state.
      * @public

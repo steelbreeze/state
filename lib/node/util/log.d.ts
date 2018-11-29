@@ -1,3 +1,4 @@
+import { func } from "./func";
 /**
  * Logging API used by @steelbreeze/state. Enables other logging solutions to be integrated.
  */
@@ -16,7 +17,7 @@ export declare namespace log {
      * @param category A mask representing the types of message to log using the callback.
      * @returns Returns a reference to the callback so it can later be cancelled using remove.
      */
-    function add(callback: (message: string) => void, category?: number): number;
+    function add(callback: func.Consumer<string>, category?: number): number;
     /**
      * Removes a previously registered logging callback.
      * @param ref The reference number returned by the call to add.
@@ -27,5 +28,5 @@ export declare namespace log {
      * @param producer A callback to produce the log message if there is a suitable logger.
      * @param category The type of log message.
      */
-    function info(producer: () => string, category: number): void;
+    function info(producer: func.Producer<string>, category: number): void;
 }

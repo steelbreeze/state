@@ -1,34 +1,80 @@
-import { assert, log, tree } from '../util';
+import { func, assert, log, tree } from '../util';
 import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { PseudoState } from './PseudoState';
+
+/** Interface describing elements to leave and enter when traversing the transition; derived from the source and target using the TransitionType strategy. */
+interface TransitionPath {
+	leave: NamedElement | undefined;
+	enter: Array<NamedElement>;
+}
+
+/** A prototype for functions that derive the TransitionPath; instances of which are used in the Transition class using a variant of the strategy pattern. */
+type TransitionType = (source: Vertex, target: Vertex | undefined) => TransitionPath;
+
+/** Determines the transition path for internal transitions. */
+export function internal(source: Vertex, target: Vertex | undefined): TransitionPath {
+	return { leave: undefined, enter: [] };
+}
+
+/** Determines the transition path for external transitions. */
+export function external(source: Vertex, target: Vertex | undefined): TransitionPath {
+	// determine the source and target vertex ancestries
+	const sourceAncestors = tree.ancestors<NamedElement>(source, element => element.parent);
+	const targetAncestors = tree.ancestors<NamedElement>(target, element => element.parent);
+
+	// determine where to enter and exit from in the ancestries
+	const from = tree.lca(sourceAncestors, targetAncestors) + 1; // NOTE: we enter/exit from the elements below the common ancestor
+	const to = targetAncestors.length - (target instanceof PseudoState && target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
+
+	// initialise the base class with source, target and elements to exit and enter		
+	return { leave: sourceAncestors[from], enter: targetAncestors.slice(from, to).reverse() };
+}
+
+/** Determines the transition path for local transitions. */
+export function local(source: Vertex, target: Vertex | undefined): TransitionPath { // TODO: need to cater for transitions where the target is the parent of the source
+	// determine the target ancestry
+	const targetAncestors = tree.ancestors<NamedElement>(target, element => element.parent); // NOTE: as the target is a child of the source it will be in the same ancestry
+
+	// test that the target is a child of the source
+	assert.ok(targetAncestors.indexOf(source) !== -1, () => `Source vertex (${source}) must an ancestor of the target vertex (${target})`);
+
+	// determine where to enter and exit from in the ancestry
+	const from = targetAncestors.indexOf(source) + 2; // NOTE: in local transitions the source vertex is not exited, but the active child substate is
+	const to = targetAncestors.length - (target instanceof PseudoState && target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
+
+	// initialise the base class with source, target and elements to exit and enter
+	return { leave: targetAncestors[from], enter: targetAncestors.slice(from, to).reverse() };
+}
 
 /**
  * A transition between vertices that defines a valid change in state in response to an event.
  * @param TTrigger The type of triggering event that causes this transition to be traversed.
  */
 export class Transition<TTrigger = any> {
-	public target: Vertex | undefined;
-	private typeTest: (trigger: TTrigger) => boolean = () => true;
-	private guard: (trigger: TTrigger) => boolean = () => true;
-
 	/**
-	 * The element to exit when traversing this transition; the exit operation will cascade though all current active child substate.
+	 * A predicate used to test that the trigger if of the expected type.
 	 * @internal
 	 */
-	toLeave: NamedElement | undefined;
+	private typeTest: func.Predicate<TTrigger> = () => true;
 
 	/**
-	 * The elements to enter when traversing this transition; the entry operation on the last will cascade to any child substate.
+	 * A predicate for a user-defined guard condition that must resolve true for the transition to be traversed.
 	 * @internal
 	 */
-	toEnter: Array<NamedElement> = [];
+	private guard: func.Predicate<TTrigger> = () => true;
+
+	/**
+	 * The elements that need to be left and entered when traversing a transition
+	 * @internal
+	 */
+	path: TransitionPath;
 
 	/**
 	 * The behavior to call when the transition is traversed.
 	 * @internal
 	 */
-	actions: Array<(trigger: TTrigger) => void> = [];
+	actions: Array<func.Consumer<TTrigger>> = [];
 
 	/**
 	 * Creates an instance of the Transition class.
@@ -36,7 +82,10 @@ export class Transition<TTrigger = any> {
 	 * @param type The type of triggering event that causes this transition to be traversed.
 	 * @public
 	 */
-	public constructor(public readonly source: Vertex) {
+	public constructor(public readonly source: Vertex, public target: Vertex | undefined = undefined, type: TransitionType = internal) {
+		// create the path based on the provided or default strategy
+		this.path = type(this.source, this.target);
+
 		source.outgoing.unshift(this);
 
 		log.info(() => `Created transition from ${source}`, log.Create);
@@ -48,19 +97,19 @@ export class Transition<TTrigger = any> {
 	 * @return Returns the transition.
 	 * @public
 	 */
-	public on(type: new (...args: any[]) => TTrigger): this {
-		this.typeTest = (trigger: TTrigger) => trigger.constructor === type;
+	public on(type: func.Constructor<TTrigger>): this {
+		this.typeTest = trigger => trigger.constructor === type;
 
 		return this;
 	}
 
 	/**
 	 * Adds a guard condition to the transition enabling event details to determine if the transition should be traversed.
-	 * @param type A boolean predicate taking the trigger event as a parameter.
+	 * @param type A predicate taking the trigger event as a parameter.
 	 * @return Returns the transition.
 	 * @public
 	 */
-	public when(guard: (trigger: TTrigger) => boolean): this {
+	public when(guard: func.Predicate<TTrigger>): this {
 		this.guard = guard;
 
 		return this;
@@ -68,12 +117,12 @@ export class Transition<TTrigger = any> {
 
 	/**
 	 * A pseudonym of [[Transition.when]].
-	 * @param type A boolean predicate taking the trigger event as a parameter.
+	 * @param type A predicate taking the trigger event as a parameter.
 	 * @return Returns the transition.
 	 * @public
 	 * @deprecated Use Transition.when in its place. This method will be removed in the v8.0 release.
 	 */
-	public if(guard: (trigger: TTrigger) => boolean): this {
+	public if(guard: func.Predicate<TTrigger>): this {
 		return this.when(guard);
 	}
 
@@ -83,20 +132,9 @@ export class Transition<TTrigger = any> {
 	 * @return Returns the transition.
 	 * @public
 	 */
-	public to(target: Vertex): this {
+	public to(target: Vertex, type: TransitionType = external): this {
 		this.target = target;
-
-		// determine the source and target vertex ancestries
-		const sourceAncestors = tree.ancestors<NamedElement>(this.source, element => element.parent);
-		const targetAncestors = tree.ancestors<NamedElement>(target, element => element.parent);
-
-		// determine where to enter and exit from in the ancestries
-		const from = tree.lca(sourceAncestors, targetAncestors) + 1; // NOTE: we enter/exit from the elements below the common ancestor
-		const to = targetAncestors.length - (target instanceof PseudoState && target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
-
-		// initialise the base class with source, target and elements to exit and enter		
-		this.toLeave = sourceAncestors[from];
-		this.toEnter = targetAncestors.slice(from, to).reverse(); // NOTE: reversed as we use a reverse-for at runtime for performance
+		this.path = type(this.source, this.target);
 
 		return this;
 	}
@@ -106,22 +144,11 @@ export class Transition<TTrigger = any> {
 	 * @param target The target vertex of the transition
 	 * @return Returns the transition.
 	 * @public
+	 * @deprecated Use the to method with the transition type of local
 	 */
 	public local(target: Vertex | undefined = undefined): this {
 		if (this.target = (this.target || target)) {
-			// determine the target ancestry
-			const targetAncestors = tree.ancestors<NamedElement>(this.target, element => element.parent); // NOTE: as the target is a child of the source it will be in the same ancestry
-
-			// test that the target is a child of the source
-			assert.ok(targetAncestors.indexOf(this.source) !== -1, () => `Source vertex (${this.source}) must an ancestor of the target vertex (${this.target})`);
-
-			// determine where to enter and exit from in the ancestry
-			const from = targetAncestors.indexOf(this.source) + 2; // NOTE: in local transitions the source vertex is not exited, but the active child substate is
-			const to = targetAncestors.length - (this.target instanceof PseudoState && this.target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
-
-			// initialise the base class with source, target and elements to exit and enter
-			this.toLeave = targetAncestors[from];
-			this.toEnter = targetAncestors.slice(from, to).reverse(); // NOTE: reversed as we use a reverse-for at runtime for performance
+			this.path = local(this.source, this.target);
 		}
 
 		return this;
@@ -133,9 +160,8 @@ export class Transition<TTrigger = any> {
      * @param action The behaviour to call on transition traversal.
      * @returns Returns the transition.
 	 * @public
-	 * @deprecated Use Transition.do instead. This method will be removed in the v8.0 release.
      */
-	public do(action: (trigger: TTrigger) => any): this {
+	public do(action: func.Consumer<TTrigger>): this {
 		this.actions.unshift(action);
 
 		return this;
@@ -148,7 +174,7 @@ export class Transition<TTrigger = any> {
 	 * @public
 	 * @deprecated Use Transition.do instead. This method will be removed in the v8.0 release.
      */
-	public effect(action: (trigger: TTrigger) => void): this {
+	public effect(action: func.Consumer<TTrigger>): this {
 		return this.do(action);
 	}
 

@@ -17,13 +17,13 @@ var paused = new state.State("paused", active);
 // create the state machine model transitions
 initial.to(operational);
 deepHistory.to(stopped);
-stopped.to(running).when(function (trigger) { return trigger === "play"; });
-active.to(stopped).when(function (trigger) { return trigger === "stop"; });
-running.to(paused).when(function (trigger) { return trigger === "pause"; });
-paused.to(running).when(function (trigger) { return trigger === "play"; });
-operational.to(flipped).when(function (trigger) { return trigger === "flip"; });
-flipped.to(operational).when(function (trigger) { return trigger === "flip"; });
-operational.to(finalState).when(function (trigger) { return trigger === "off"; });
+stopped.on(String).when(function (trigger) { return trigger === "play"; }).to(running);
+active.on(String).when(function (trigger) { return trigger === "stop"; }).to(stopped);
+running.on(String).when(function (trigger) { return trigger === "pause"; }).to(paused);
+paused.on(String).when(function (trigger) { return trigger === "play"; }).to(running);
+operational.on(String).when(function (trigger) { return trigger === "flip"; }).to(flipped);
+flipped.on(String).when(function (trigger) { return trigger === "flip"; }).to(operational);
+operational.on(String).when(function (trigger) { return trigger === "off"; }).to(finalState);
 // create a new state machine instance (this stores the active state configuration, allowing many instances to work with a single model)
 var instance = new state.Instance("player", model);
 // send messages to the state machine to cause state transitions

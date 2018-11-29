@@ -1,7 +1,7 @@
-import { assert, log } from '../util';
+import { func, assert, log } from '../util';
 import { Vertex } from './Vertex';
 import { Region } from './Region';
-import { Transition } from './Transition';
+import { Transition, internal, external, local } from './Transition';
 
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
@@ -36,19 +36,19 @@ export class State implements Vertex {
 	 * The behaviour to each time the state is entered.
 	 * @internal
 	 */
-	onEnter: Array<(trigger: any) => void> = [];
+	onEnter: Array<func.Consumer<any>> = [];
 
 	/**
 	 * The behaviour to perform each time the is state exited.
 	 * @internal
 	 */
-	onLeave: Array<(trigger: any) => void> = [];
+	onLeave: Array<func.Consumer<any>> = [];
 
 	/**
 	 * The list of types that this state can defer to the event pool.
 	 * @internal
 	 */
-	deferrableTrigger: Array<new (...args: any[]) => any> = [];
+	deferrableTrigger: Array<func.Constructor<any>> = [];
 
 	/**
 	 * Creates a new instance of the State class.
@@ -114,7 +114,7 @@ export class State implements Vertex {
 	 * @returns Returns the state.
 	 * @public
 	 */
-	public entry(action: (trigger: any) => void): this {
+	public entry(action: func.Consumer<any>): this {
 		this.onEnter.unshift(action); // NOTE: we use unshift as the runtime iterates in reverse
 
 		return this;
@@ -126,7 +126,7 @@ export class State implements Vertex {
 	 * @returns Returns the state.
 	 * @public
 	 */
-	public exit(action: (trigger: any) => void): this {
+	public exit(action: func.Consumer<any>): this {
 		this.onLeave.unshift(action); // NOTE: we use unshift as the runtime iterates in reverse
 
 		return this;
@@ -139,8 +139,12 @@ export class State implements Vertex {
 	 * @returns Returns the newly created transition.
 	 * @public
 	 */
-	public on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger> {
+	public on<TTrigger>(type: func.Constructor<TTrigger>): Transition<TTrigger> {
 		return new Transition<TTrigger>(this).on(type);
+	}
+
+	public when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger> {
+		return new Transition<TTrigger>(this).when(guard);
 	}
 
 	/**
@@ -149,9 +153,10 @@ export class State implements Vertex {
 	 * @param target The target vertex of the external transition.
 	 * @returns The external transition.
 	 * @public
+	 * @deprecated Use [[to]] method instead.
 	 */
 	public external<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this).to(target);
+		return new Transition<TTrigger>(this, target, external);
 	}
 
 	/**
@@ -161,8 +166,8 @@ export class State implements Vertex {
 	 * @returns If target is specified, returns an external transition otherwide an internal transition.
 	 * @public
 	 */
-	public to<TTrigger>(target: Vertex | undefined): Transition<TTrigger> {
-		return target ? this.external(target) : this.internal();
+	public to<TTrigger>(target: Vertex | undefined = undefined): Transition<TTrigger> {
+		return new Transition<TTrigger>(this, target, target ? external : internal);
 	}
 
 	/**
@@ -170,6 +175,7 @@ export class State implements Vertex {
 	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
 	 * @returns Returns the internal transition.
 	 * @public
+	 * @deprecated Use [[to]] method instead.
 	 */
 	public internal<TTrigger>(): Transition<TTrigger> {
 		return new Transition<TTrigger>(this);
@@ -181,6 +187,7 @@ export class State implements Vertex {
 	 * @param target The target vertex of the local transition.
 	 * @returns Returns the local transition.
 	 * @public
+	 * @deprecated Use to method instead.
 	 */
 	public local<TTrigger>(target: Vertex): Transition<TTrigger> {
 		return new Transition<TTrigger>(this).local(target);
@@ -192,10 +199,31 @@ export class State implements Vertex {
 	 * @returns Returns the state.
 	 * @public
 	 */
-	public defer<TTrigger>(type: new (...args: any[]) => TTrigger): State {
+	public defer<TTrigger>(type: func.Constructor<TTrigger>): State {
 		this.deferrableTrigger.unshift(type);
 
 		return this;
+	}
+
+	/**
+	 * Find a transition from the state given a trigger event.
+	 * @param trigger The trigger event to evaluate transtions against.
+	 * @returns Returns the trigger or undefined if none are found.
+	 * @throws Throws an Error if more than one transition was found.
+	 */
+	getTransition(trigger: any): Transition | undefined {
+		let result: Transition | undefined;
+
+		// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
+		for (let i = this.outgoing.length; i--;) {
+			if (this.outgoing[i].evaluate(trigger)) {
+				assert.ok(!result, () => `Multiple transitions found at ${this} for ${trigger}`);
+	
+				result = this.outgoing[i];
+			}
+		}
+	
+		return result;
 	}
 
 	/**

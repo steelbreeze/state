@@ -11,10 +11,10 @@ var initial2 = new state.PseudoState("initial", region1, state.PseudoStateKind.I
 var state1 = new state.State("state1", region1);
 var state2 = new state.State("state2", region1);
 
-initial1.external(myComposite1);
-initial2.external(state1);
-myComposite1.external(state3).when(trigger => trigger === "a");
-state1.external(state2).when(trigger => trigger === "a");
+initial1.to(myComposite1);
+initial2.to(state1);
+myComposite1.on(String).when(trigger => trigger === "a").to(state3);
+state1.on(String).when(trigger => trigger === "a").to(state2);
 
 var instance = new state.Instance("brice", model);
 

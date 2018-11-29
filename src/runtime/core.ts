@@ -1,5 +1,5 @@
 import * as model from '../model';
-import { assert, log, random } from '../util';
+import { assert, log } from '../util';
 import { IInstance } from '../runtime';
 
 /**
@@ -67,37 +67,6 @@ function defer(state: model.State, instance: IInstance, trigger: any): boolean {
 	}
 
 	return result;
-}
-
-/** Find a transition from any state or pseudo state */
-function getTransition(vertex: model.Vertex, trigger: any): model.Transition | undefined {
-	let result: model.Transition | undefined;
-
-	// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
-	for (let i = vertex.outgoing.length; i--;) {
-		if (vertex.outgoing[i].evaluate(trigger)) {
-			assert.ok(!result, () => `Multiple transitions found at ${vertex} for ${trigger}`);
-
-			result = vertex.outgoing[i];
-		}
-	}
-
-	return result;
-}
-
-/** Find a transition from a choice pseudo state */
-function getChoiceTransition(pseudoState: model.PseudoState, trigger: any): model.Transition | undefined {
-	let transitions: Array<model.Transition> = [];
-
-	// iterate through all outgoing transitions of this state looking any whose guard evaluates true
-	for (let i = pseudoState.outgoing.length; i--;) {
-		if (pseudoState.outgoing[i].evaluate(trigger)) {
-			transitions.push(pseudoState.outgoing[i]);
-		}
-	}
-
-	// select a random transition from those that evaluated true
-	return transitions[random.get(transitions.length)];
 }
 
 /** Traverse a transition */
@@ -190,37 +159,16 @@ model.Region.prototype.leave = function (instance: IInstance, deepHistory: boole
 }
 
 /**
- * Runtime extension methods to the vertex interface.
- * @internal
- */
-declare module '../model/Vertex' {
-	interface Vertex {
-		getTransition(trigger: any): model.Transition | undefined;
-	}
-}
-
-/**
  * Runtime extension methods to the pseudo state class.
  * @internal
  */
 declare module '../model/PseudoState' {
 	interface PseudoState {
-		getTransition(trigger: any): model.Transition | undefined;
-
 		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}
-}
-
-/** Find a transition from the pseudo state for a given trigger event */
-model.PseudoState.prototype.getTransition = function (trigger: any): model.Transition | undefined {
-	const result = (this.kind === model.PseudoStateKind.Choice ? getChoiceTransition : getTransition)(this, trigger) || this.elseTransition;
-
-	assert.ok(result, () => `Unable to find transition at ${this} for ${trigger}`);
-
-	return result!;
 }
 
 /** Initiate pseudo state entry */
@@ -250,18 +198,11 @@ model.PseudoState.prototype.leave = function (instance: IInstance, deepHistory: 
  */
 declare module '../model/State' {
 	interface State {
-		getTransition(trigger: any): model.Transition | undefined;
-
 		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}
-}
-
-/** Find a single transition from the state for a given trigger event */
-model.State.prototype.getTransition = function (trigger: any): model.Transition | undefined {
-	return getTransition(this, trigger);
 }
 
 /** Initiate state entry */
@@ -318,8 +259,8 @@ model.Transition.prototype.execute = function (instance: IInstance, deepHistory:
 	log.info(() => `Executing transition from ${this.source} to ${this.target}`, log.Transition);
 
 	// leave elements below the common ancestor
-	if (this.toLeave) {
-		this.toLeave.leave(instance, deepHistory, trigger);
+	if (this.path.leave) {
+		this.path.leave.leave(instance, deepHistory, trigger);
 	}
 
 	// perform the transition behaviour
@@ -328,13 +269,13 @@ model.Transition.prototype.execute = function (instance: IInstance, deepHistory:
 	}
 
 	// enter elements below the common ancestor to the target
-	for (i = this.toEnter.length; i--;) {
-		this.toEnter[i].enterHead(instance, deepHistory, trigger);
+	for (i = this.path.enter.length; i--;) {
+		this.path.enter[i].enterHead(instance, deepHistory, trigger);
 	}
 
 	// cascade the entry action to any child elements of the target
-	if (this.toEnter.length !== 0) {
-		this.toEnter[0].enterTail(instance, deepHistory, trigger);
+	if (this.path.enter.length !== 0) {
+		this.path.enter[0].enterTail(instance, deepHistory, trigger);
 	}
 
 	// test for completion transitions for internal transitions as there will be state entry/exit performed where the test is usually performed

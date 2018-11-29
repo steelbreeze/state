@@ -1,4 +1,5 @@
 import * as model from '../model';
+import { func } from '../util';
 import { IInstance, IState } from '../runtime';
 /**
  * Represents the active state configuration of a state machine instance.
@@ -32,14 +33,14 @@ export declare class Instance implements IInstance {
     /** Check for and send deferred events for evaluation */
     evaluateDeferred(): void;
     /** Build a list of all the deferrable events at a particular state (including its children) */
-    deferrableTriggers(state: model.State): Array<new (...args: any[]) => any>;
+    deferrableTriggers(state: model.State): Array<func.Constructor<any>>;
     /**
      * Performs an operation within a transactional context.
      * @param TReturn The type of the return parameter of the transactional operation.
      * @param operation The operation to perform within the transactional context.
      * @returns Returns the return value from the transactional context.
      */
-    transaction<TReturn>(operation: () => TReturn): TReturn;
+    transaction<TReturn>(operation: func.Producer<TReturn>): TReturn;
     /**
      * Updates the transactional state of a region with the last entered vertex.
      * @param vertex The vertex set as its parents last entered vertex.

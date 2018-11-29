@@ -17,16 +17,16 @@ const showMoveItemPattern = new state.State("showMoveItemPattern", on);
 const hideMoveItemPattern = new state.State("hideMoveItemPattern", on);
 
 initial.to(idle);
-on.to<String>(off).when(trigger => trigger === "Disable");
-off.to<String>(history).when(trigger => trigger === "Enable");
-on.to<String>(clean).when(trigger => trigger === "DestroyInput");
-off.to<String>(clean).when(trigger => trigger === "DestroyInput");
-clean.to<String>(final);
-idle.to<String>(moveItem).when(trigger => trigger === "TransformInput");
-moveItem.to<String>(idle).when(trigger => trigger === "ReleaseInput");
-idle.to<String>(showMoveItemPattern).when(trigger => trigger === "ReleaseInput");
-showMoveItemPattern.to<String>(hideMoveItemPattern).when(trigger => trigger === "ReleaseInput");
-hideMoveItemPattern.to<String>(idle);
+on.on(String).when(trigger => trigger === "Disable").to(off);
+off.on(String).when(trigger => trigger === "Enable").to(history);
+on.on(String).when(trigger => trigger === "DestroyInput").to(clean);
+off.on(String).when(trigger => trigger === "DestroyInput").to(clean);
+clean.to(final);
+idle.to(moveItem).when(trigger => trigger === "TransformInput").on(String);
+moveItem.on(String).when(trigger => trigger === "ReleaseInput").to(idle);
+idle.on(String).to(showMoveItemPattern).when(trigger => trigger === "ReleaseInput");
+showMoveItemPattern.on(String).when(trigger => trigger === "ReleaseInput").to(hideMoveItemPattern);
+hideMoveItemPattern.to(idle);
 
 let instance = new state.Instance("florent", model);
 

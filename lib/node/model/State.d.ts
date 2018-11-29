@@ -1,3 +1,4 @@
+import { func } from '../util';
 import { Vertex } from './Vertex';
 import { Region } from './Region';
 import { Transition } from './Transition';
@@ -55,14 +56,14 @@ export declare class State implements Vertex {
      * @returns Returns the state.
      * @public
      */
-    entry(action: (trigger: any) => void): this;
+    entry(action: func.Consumer<any>): this;
     /**
      * Adds behaviour to the state to be called every time the state is exited.
      * @param action The behaviour to call on state exit.
      * @returns Returns the state.
      * @public
      */
-    exit(action: (trigger: any) => void): this;
+    exit(action: func.Consumer<any>): this;
     /**
      * Creates a new transition with a type test.
      * @remarks Once creates with the [[State.on]] method, the transition can be enhanced using the fluent API calls of [[Transition.if]], [[Transition.to]]/[[Transition.local]] and [[Transition.do]].
@@ -70,13 +71,15 @@ export declare class State implements Vertex {
      * @returns Returns the newly created transition.
      * @public
      */
-    on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger>;
+    on<TTrigger>(type: func.Constructor<TTrigger>): Transition<TTrigger>;
+    when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger>;
     /**
      * Creates a new external transition.
      * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
      * @param target The target vertex of the external transition.
      * @returns The external transition.
      * @public
+     * @deprecated Use [[to]] method instead.
      */
     external<TTrigger>(target: Vertex): Transition<TTrigger>;
     /**
@@ -86,12 +89,13 @@ export declare class State implements Vertex {
      * @returns If target is specified, returns an external transition otherwide an internal transition.
      * @public
      */
-    to<TTrigger>(target: Vertex | undefined): Transition<TTrigger>;
+    to<TTrigger>(target?: Vertex | undefined): Transition<TTrigger>;
     /**
      * Creates a new internal transition.
      * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
      * @returns Returns the internal transition.
      * @public
+     * @deprecated Use [[to]] method instead.
      */
     internal<TTrigger>(): Transition<TTrigger>;
     /**
@@ -100,6 +104,7 @@ export declare class State implements Vertex {
      * @param target The target vertex of the local transition.
      * @returns Returns the local transition.
      * @public
+     * @deprecated Use to method instead.
      */
     local<TTrigger>(target: Vertex): Transition<TTrigger>;
     /**
@@ -108,7 +113,14 @@ export declare class State implements Vertex {
      * @returns Returns the state.
      * @public
      */
-    defer<TTrigger>(type: new (...args: any[]) => TTrigger): State;
+    defer<TTrigger>(type: func.Constructor<TTrigger>): State;
+    /**
+     * Find a transition from the state given a trigger event.
+     * @param trigger The trigger event to evaluate transtions against.
+     * @returns Returns the trigger or undefined if none are found.
+     * @throws Throws an Error if more than one transition was found.
+     */
+    getTransition(trigger: any): Transition | undefined;
     /**
      * Returns the fully qualified name of the state.
      * @public

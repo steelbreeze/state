@@ -1,5 +1,5 @@
 import * as model from '../model';
-import { assert, log } from '../util';
+import { func, assert, log } from '../util';
 import { IInstance, IRegion, IState, evaluate } from '../runtime';
 
 /**
@@ -105,7 +105,7 @@ export class Instance implements IInstance {
 	}
 
 	/** Build a list of all the deferrable events at a particular state (including its children) */
-	deferrableTriggers(state: model.State): Array<new (...args: any[]) => any> {
+	deferrableTriggers(state: model.State): Array<func.Constructor<any>> {
 		return state.children.reduce((result, region) => result.concat(this.deferrableTriggers(this.getState(region))), state.deferrableTrigger);
 	}
 
@@ -115,7 +115,7 @@ export class Instance implements IInstance {
 	 * @param operation The operation to perform within the transactional context.
 	 * @returns Returns the return value from the transactional context.
 	 */
-	transaction<TReturn>(operation: () => TReturn): TReturn {
+	transaction<TReturn>(operation: func.Producer<TReturn>): TReturn {
 		try {
 			// perform the operation
 			const result = operation();

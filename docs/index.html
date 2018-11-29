@@ -349,7 +349,7 @@
 					<p>Use the buttons below to send triggering events into the machine for evaluation; these triggering events become
 						the t in the transition guard conditions.</p>
 					<button class="ripple" onclick="instance.evaluate('play');">play</button>
-					<button class="ripple" onclick="instance.evaluate('pause');">pause</button>
+					<button class="ripple" onclick="instance.evaluate(new Pause());">pause</button>
 					<button class="ripple" onclick="instance.evaluate('stop');">stop</button>
 					<button class="ripple" onclick="instance.evaluate('flip');">flip</button>
 				</article>
@@ -379,6 +379,8 @@
 		let head = document.getElementById("head");
 		let motor = document.getElementById("motor");
 
+		class Pause { }
+
 		// define the operations that the state machine will call as outputs
 		function startMotor() { motor.innerText = "running"; }
 		function stopMotor() { motor.innerText = "stopped"; }
@@ -400,17 +402,20 @@
 		var running = new state.State("running", active);
 		var paused = new state.State("paused", active);
 
+		// defer pause events while in the stopped state
+		stopped.defer(Pause);
+
 		/* create the state machine model transitions */
 		initial.to(operational);
 		deepHistory.to(stopped);
-		stopped.to(running).if(t => t === "play");
-		active.to(stopped).if(t => t === "stop");
-		running.to(paused).if(t => t === "pause");
-		paused.to(running).if(t => t === "play");
-		paused.to(running).if(t => t === "pause");
-		operational.to(flipped).if(t => t === "flip");
-		flipped.to(operational).if(t => t === "flip");
-		operational.to(finalState).if(t => t === "stop");
+		stopped.on(String).when(t => t === "play").to(running);
+		active.on(String).when(t => t === "stop").to(stopped);
+		running.on(Pause).to(paused);
+		paused.on(String).when(t => t === "play").to(running);
+		paused.on(Pause).to(running);
+		operational.on(String).when(t => t === "flip").to(flipped);
+		flipped.on(String).when(t => t === "flip").to(operational);
+		operational.on(String).when(t => t === "stop").to(finalState);
 
 		// define the state entry/exit behaviour
 		active.entry(engageHead).exit(disengageHead);

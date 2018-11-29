@@ -1,9 +1,9 @@
-import { assert, log } from '../util';
+import { func, assert, log, random } from '../util';
 import { Vertex } from './Vertex';
 import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
 import { State } from './State';
-import { Transition } from './Transition';
+import { Transition, external } from './Transition';
 
 /**
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
@@ -67,8 +67,12 @@ export class PseudoState implements Vertex {
 	 * @returns Returns the newly created transition.
 	 * @public
 	 */
-	public on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger> {
+	public on<TTrigger>(type: func.Constructor<TTrigger>): Transition<TTrigger> {
 		return new Transition<TTrigger>(this).on(type);
+	}
+
+	public when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger> {
+		return new Transition<TTrigger>(this).when(guard);
 	}
 
 	/**
@@ -79,7 +83,7 @@ export class PseudoState implements Vertex {
 	 * @public
 	 */
 	public to<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this).to(target);
+		return new Transition<TTrigger>(this, target, external);
 	}
 
 	/**
@@ -103,7 +107,16 @@ export class PseudoState implements Vertex {
 		assert.ok(this.kind === PseudoStateKind.Choice || this.kind === PseudoStateKind.Junction, () => `Else transitions are only valid at Choice and Junction pseudo states`);
 		assert.ok(!this.elseTransition, () => `Only 1 else transition allowed at ${this}`);
 
-		return this.elseTransition = new Transition<TTrigger>(this).if(() => false).to(target);
+		return this.elseTransition = new Transition<TTrigger>(this, target, external).when(() => false);
+	}
+
+	/** Find a transition from the pseudo state for a given trigger event */
+	getTransition(trigger: any): Transition | undefined {
+		const result = (this.kind === PseudoStateKind.Choice ? getTransition.Choice : getTransition)(this, trigger) || this.elseTransition;
+
+		assert.ok(result, () => `Unable to find transition at ${this} for ${trigger}`);
+
+		return result!;
 	}
 
 	/**
@@ -113,4 +126,36 @@ export class PseudoState implements Vertex {
 	public toString(): string {
 		return this.qualifiedName;
 	}
+}
+
+
+/** Find a transition from any state or pseudo state */
+function getTransition(pseudoState: PseudoState, trigger: any): Transition | undefined {
+	let result: Transition | undefined;
+
+	// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
+	for (let i = pseudoState.outgoing.length; i--;) {
+		if (pseudoState.outgoing[i].evaluate(trigger)) {
+			assert.ok(!result, () => `Multiple transitions found at ${pseudoState} for ${trigger}`);
+
+			result = pseudoState.outgoing[i];
+		}
+	}
+
+	return result;
+}
+
+/** Alternative method of transition selection for choice pseudo states */
+getTransition.Choice = (pseudoState: PseudoState, trigger: any): Transition | undefined => {
+	let transitions: Array<Transition> = [];
+
+	// iterate through all outgoing transitions of this state looking any whose guard evaluates true
+	for (let i = pseudoState.outgoing.length; i--;) {
+		if (pseudoState.outgoing[i].evaluate(trigger)) {
+			transitions.push(pseudoState.outgoing[i]);
+		}
+	}
+
+	// select a random transition from those that evaluated true
+	return transitions[random.get(transitions.length)];
 }

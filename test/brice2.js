@@ -14,13 +14,13 @@ const S2 = new state.State("s2", region);
 let i = 0;
 
 // initial transition
-initial.external(S1);
+initial.to(S1);
 
 // IT transition
-S1.internal().when(trigger => i === 0).effect(trigger => i++);
+S1.when(trigger => i === 0).do(trigger => i++);
 
 // T transition
-S1.external(S2).when(trigger => i > 0);
+S1.when(trigger => i > 0).to(S2);
 
 // create the state machine instance and initialise it
 var instance = new state.Instance("brice2", model);

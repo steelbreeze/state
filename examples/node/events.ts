@@ -34,7 +34,7 @@ const waitingA = new State("waitingA", regionA);
 const completeA = new State("completeA", regionA).entry(() => console.info("Received event A"));
 
 initialA.to(waitingA);
-waitingA.on(Event).if(event => event.is("A")).to(completeA);
+waitingA.on(Event).when(event => event.is("A")).to(completeA);
 
 // create a child region which becomes complete once it has received event B.
 const regionB = new Region("regionB", waiting);

@@ -1,3 +1,5 @@
+import { func } from "./func";
+
 /**
  * Logging API used by @steelbreeze/state. Enables other logging solutions to be integrated.
  */
@@ -12,7 +14,7 @@ export namespace log {
 	export const All: number = Create | Entry | Exit | Evaluate | Transition | Transaction | User;
 
 	/** The list of log consumers and the mask of the logging categories they accept */
-	const consumers: Array<{ callback: (message: string) => void; category: number; } | undefined> = [];
+	const consumers: Array<{ callback: func.Consumer<string>; category: number; } | undefined> = [];
 
 	/**
 	 * Registers a callback used to log information log messages.
@@ -20,7 +22,7 @@ export namespace log {
 	 * @param category A mask representing the types of message to log using the callback.
 	 * @returns Returns a reference to the callback so it can later be cancelled using remove.
 	 */
-	export function add(callback: (message: string) => void, category: number = All): number {
+	export function add(callback: func.Consumer<string>, category: number = All): number {
 		return consumers.push({ callback: callback, category: category }) - 1;
 	}
 
@@ -37,7 +39,7 @@ export namespace log {
 	 * @param producer A callback to produce the log message if there is a suitable logger.
 	 * @param category The type of log message.
 	 */
-	export function info(producer: () => string, category: number): void {
+	export function info(producer: func.Producer<string>, category: number): void {
 		let message: string | undefined;
 
 		for (let i = consumers.length; i--;) {

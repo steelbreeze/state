@@ -10,4 +10,6 @@ export interface Vertex extends NamedElement<Region | undefined> {
 	 * The set of outgoind transitions from the vertex.
 	 */
 	outgoing: Array<Transition>;
+
+	getTransition<TTrigger = any>(trigger: TTrigger): Transition | undefined;
 }

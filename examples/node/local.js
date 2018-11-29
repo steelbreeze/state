@@ -14,7 +14,7 @@ var stateAB = new state.State("stateAB", stateA);
 // create the state machine model transitions
 initial.to(stateA);
 initialA.to(stateAA);
-stateA.local(stateAB).when(trigger => trigger === "move");
+stateA.on(String).when(trigger => trigger === "move").to(stateAB, state.local);
 
 // create a state machine instance
 var instance = new state.Instance("instance", model);
