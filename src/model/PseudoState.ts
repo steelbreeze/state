@@ -3,7 +3,9 @@ import { Vertex } from './Vertex';
 import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
 import { State } from './State';
-import { Transition, external } from './Transition';
+import { Transition } from './Transition';
+import { TransitionKind } from './TransitionKind';
+
 
 /**
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
@@ -83,7 +85,7 @@ export class PseudoState implements Vertex {
 	 * @public
 	 */
 	public to<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, target, external);
+		return new Transition<TTrigger>(this, target, TransitionKind.external);
 	}
 
 	/**
@@ -107,13 +109,21 @@ export class PseudoState implements Vertex {
 		assert.ok(this.kind === PseudoStateKind.Choice || this.kind === PseudoStateKind.Junction, () => `Else transitions are only valid at Choice and Junction pseudo states`);
 		assert.ok(!this.elseTransition, () => `Only 1 else transition allowed at ${this}`);
 
-		return this.elseTransition = new Transition<TTrigger>(this, target, external).when(() => false);
+		return this.elseTransition = new Transition<TTrigger>(this, target, TransitionKind.external).when(() => false);
 	}
 
 	/** Find a transition from the pseudo state for a given trigger event */
 	getTransition(trigger: any): Transition | undefined {
-		const result = (this.kind === PseudoStateKind.Choice ? getTransition.Choice : getTransition)(this, trigger) || this.elseTransition;
+		// find all transitions whose guard conditions evaluate true for the trigger
+		let transitions = this.outgoing.filter(transition => transition.evaluate(trigger));
 
+		// validate we didn't get too many
+		assert.ok(this.kind === PseudoStateKind.Choice || transitions.length <= 1, () => `Multiple transitions found at ${this} for ${trigger}`);
+
+		// select the appropriate transition
+		let result = (this.kind === PseudoStateKind.Choice ? transitions[random.get(transitions.length)] : transitions[0] ) || this.elseTransition;
+
+		// validate we have something to return
 		assert.ok(result, () => `Unable to find transition at ${this} for ${trigger}`);
 
 		return result!;
@@ -126,36 +136,4 @@ export class PseudoState implements Vertex {
 	public toString(): string {
 		return this.qualifiedName;
 	}
-}
-
-
-/** Find a transition from any state or pseudo state */
-function getTransition(pseudoState: PseudoState, trigger: any): Transition | undefined {
-	let result: Transition | undefined;
-
-	// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
-	for (let i = pseudoState.outgoing.length; i--;) {
-		if (pseudoState.outgoing[i].evaluate(trigger)) {
-			assert.ok(!result, () => `Multiple transitions found at ${pseudoState} for ${trigger}`);
-
-			result = pseudoState.outgoing[i];
-		}
-	}
-
-	return result;
-}
-
-/** Alternative method of transition selection for choice pseudo states */
-getTransition.Choice = (pseudoState: PseudoState, trigger: any): Transition | undefined => {
-	let transitions: Array<Transition> = [];
-
-	// iterate through all outgoing transitions of this state looking any whose guard evaluates true
-	for (let i = pseudoState.outgoing.length; i--;) {
-		if (pseudoState.outgoing[i].evaluate(trigger)) {
-			transitions.push(pseudoState.outgoing[i]);
-		}
-	}
-
-	// select a random transition from those that evaluated true
-	return transitions[random.get(transitions.length)];
 }

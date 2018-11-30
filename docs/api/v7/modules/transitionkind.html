@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>random | @steelbreeze/state</title>
+	<title>TransitionKind | @steelbreeze/state</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="random.html">random</a>
+					<a href="transitionkind.html">TransitionKind</a>
 				</li>
 			</ul>
-			<h1>Module random</h1>
+			<h1>Module TransitionKind</h1>
 		</div>
 	</div>
 </header>
@@ -67,8 +67,13 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Controls the method used by @steelbreeze/state to create random numbers.</p>
+						<p>A transition&#39;s kind determines its traverasal behaviour.</p>
 					</div>
+					<dl class="tsd-comment-tags">
+						<dt>remarks</dt>
+						<dd><p>These functions implement strategies in a variant of the strategy pattern that uses just functions instead of classes.</p>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -78,8 +83,9 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Functions</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="random.html#get" class="tsd-kind-icon">get</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="random.html#set" class="tsd-kind-icon">set</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="transitionkind.html#external" class="tsd-kind-icon">external</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="transitionkind.html#internal" class="tsd-kind-icon">internal</a></li>
+								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="transitionkind.html#local" class="tsd-kind-icon">local</a></li>
 							</ul>
 						</section>
 					</div>
@@ -88,68 +94,100 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Functions</h2>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-external">
-					<a name="get" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagLet">Let</span> get</h3>
+					<a name="external" class="tsd-anchor"></a>
+					<h3>external</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+						<li class="tsd-signature tsd-kind-icon">external<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, target<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/util/random.ts#L12">util/random.ts:12</a></li>
+									<li>Defined in model/TransitionKind.ts:19</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns a random number between 0 and max - 1</p>
+									<p>An external transition is the default transition kind between any two vertices (states or pseudo states).
+										Upon traversal it will: exit the source vertex and any parent elements (vertex or region) up to, but not including the common ancestor of the source and target;
+										it will then perform and user defined transition behaviour;
+										finally, it will enter the target vertex, having first entered any parent elements below the common ancestor as needed.
+									If the source or target vertices are not leaf-level elements within the state machine hierarchy, the exit or entry operation will cascate to child elements as needed.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>max: <span class="tsd-signature-type">number</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The ceiling for the random number</p>
-										</div>
-									</div>
+									<h5>source: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></h5>
+								</li>
+								<li>
+									<h5>target: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>Returns a random number between 0 and max - 1</p>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-external">
-					<a name="set" class="tsd-anchor"></a>
-					<h3>set</h3>
+					<a name="internal" class="tsd-anchor"></a>
+					<h3>internal</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><a href="func.html#func-1" class="tsd-signature-type">Func</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="func.html#func-1" class="tsd-signature-type">Func</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">internal<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, target<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/util/random.ts#L19">util/random.ts:19</a></li>
+									<li>Defined in model/TransitionKind.ts:35</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Overrides the default method of random number generation.</p>
+									<p>An internal transition does not cause a change of state; when traversed it only executes the user defined transition behaviour.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>value: <a href="func.html#func-1" class="tsd-signature-type">Func</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The new function to use to generate random numbers</p>
-									</div>
+									<h5>source: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></h5>
+								</li>
+								<li>
+									<h5>target: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="func.html#func-1" class="tsd-signature-type">Func</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>Returns the old method used to generate random numbers</p>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-external">
+					<a name="local" class="tsd-anchor"></a>
+					<h3>local</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">local<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, target<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in model/TransitionKind.ts:43</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>A local transition is one where either the source or target is the common ancestor of both vertices.
+									Traversal is the same as an external transition but the common ancestor is not entered/exited.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>source: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></h5>
+								</li>
+								<li>
+									<h5>target: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -164,7 +202,7 @@
 					<li class="label tsd-is-external">
 						<span>Externals</span>
 					</li>
-					<li class=" tsd-kind-module tsd-is-external">
+					<li class="current tsd-kind-module tsd-is-external">
 						<a href="transitionkind.html">Transition<wbr>Kind</a>
 					</li>
 					<li class=" tsd-kind-module tsd-is-external">
@@ -173,7 +211,7 @@
 					<li class=" tsd-kind-module tsd-is-external">
 						<a href="log.html">log</a>
 					</li>
-					<li class="current tsd-kind-module tsd-is-external">
+					<li class=" tsd-kind-module tsd-is-external">
 						<a href="random.html">random</a>
 					</li>
 				</ul>
@@ -181,10 +219,13 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<a href="random.html#get" class="tsd-kind-icon">get</a>
+						<a href="transitionkind.html#external" class="tsd-kind-icon">external</a>
 					</li>
 					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<a href="random.html#set" class="tsd-kind-icon">set</a>
+						<a href="transitionkind.html#internal" class="tsd-kind-icon">internal</a>
+					</li>
+					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
+						<a href="transitionkind.html#local" class="tsd-kind-icon">local</a>
 					</li>
 				</ul>
 			</nav>

@@ -110,13 +110,13 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#activestateconfigurationdeferrabletriggers" class="tsd-kind-icon">active<wbr>State<wbr>Configuration<wbr>Deferrable<wbr>Triggers</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#defer" class="tsd-kind-icon">defer</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#deferrabletriggers" class="tsd-kind-icon">deferrable<wbr>Triggers</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#evaluate" class="tsd-kind-icon">evaluate</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#evaluatedeferred" class="tsd-kind-icon">evaluate<wbr>Deferred</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#getlastknownstate" class="tsd-kind-icon">get<wbr>Last<wbr>Known<wbr>State</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#getstate" class="tsd-kind-icon">get<wbr>State</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#getvertex" class="tsd-kind-icon">get<wbr>Vertex</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#processdeferredevents" class="tsd-kind-icon">process<wbr>Deferred<wbr>Events</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#regionfromjson" class="tsd-kind-icon">region<wbr>FromJSON</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#regiontojson" class="tsd-kind-icon">region<wbr>ToJSON</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#setstate" class="tsd-kind-icon">set<wbr>State</a></li>
@@ -142,7 +142,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L31">runtime/Instance.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L31">runtime/Instance.ts:31</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -190,7 +190,7 @@
 					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L39">runtime/Instance.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L39">runtime/Instance.ts:39</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -206,7 +206,7 @@
 					<aside class="tsd-sources">
 						<p>Implementation of <a href="../interfaces/iinstance.html">IInstance</a>.<a href="../interfaces/iinstance.html#root">root</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L39">runtime/Instance.ts:39</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L39">runtime/Instance.ts:39</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -219,34 +219,6 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="activestateconfigurationdeferrabletriggers" class="tsd-anchor"></a>
-					<h3>active<wbr>State<wbr>Configuration<wbr>Deferrable<wbr>Triggers</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">active<wbr>State<wbr>Configuration<wbr>Deferrable<wbr>Triggers<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">State</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L104">runtime/Instance.ts:104</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Build a list of all the deferrable events at a particular state (including its children)</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>state: <span class="tsd-signature-type">State</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">object</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="defer" class="tsd-anchor"></a>
 					<h3>defer</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -257,7 +229,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/iinstance.html">IInstance</a>.<a href="../interfaces/iinstance.html#defer">defer</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L74">runtime/Instance.ts:74</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L74">runtime/Instance.ts:74</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -282,6 +254,34 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="deferrabletriggers" class="tsd-anchor"></a>
+					<h3>deferrable<wbr>Triggers</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">deferrable<wbr>Triggers<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">State</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/func.html#constructor" class="tsd-signature-type">Constructor</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L108">runtime/Instance.ts:108</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Build a list of all the deferrable events at a particular state (including its children)</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>state: <span class="tsd-signature-type">State</span></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/func.html#constructor" class="tsd-signature-type">Constructor</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="evaluate" class="tsd-anchor"></a>
 					<h3>evaluate</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -292,7 +292,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/iinstance.html">IInstance</a>.<a href="../interfaces/iinstance.html#evaluate">evaluate</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L54">runtime/Instance.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L54">runtime/Instance.ts:54</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -315,6 +315,28 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="evaluatedeferred" class="tsd-anchor"></a>
+					<h3>evaluate<wbr>Deferred</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">evaluate<wbr>Deferred<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L81">runtime/Instance.ts:81</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Check for and send deferred events for evaluation</p>
+								</div>
+							</div>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="getlastknownstate" class="tsd-anchor"></a>
 					<h3>get<wbr>Last<wbr>Known<wbr>State</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
@@ -325,7 +347,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/iinstance.html">IInstance</a>.<a href="../interfaces/iinstance.html#getlastknownstate">getLastKnownState</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L210">runtime/Instance.ts:210</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L188">runtime/Instance.ts:188</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -361,7 +383,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/iinstance.html">IInstance</a>.<a href="../interfaces/iinstance.html#getstate">getState</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L192">runtime/Instance.ts:192</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L170">runtime/Instance.ts:170</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -387,14 +409,14 @@
 					<a name="getvertex" class="tsd-anchor"></a>
 					<h3>get<wbr>Vertex</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Vertex<span class="tsd-signature-symbol">(</span>region<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Region</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vertex</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Vertex<span class="tsd-signature-symbol">(</span>region<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Region</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/iinstance.html">IInstance</a>.<a href="../interfaces/iinstance.html#getvertex">getVertex</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L201">runtime/Instance.ts:201</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L179">runtime/Instance.ts:179</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -411,30 +433,8 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Vertex</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></h4>
 							<p>Returns the last entered vertex for the given region.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="processdeferredevents" class="tsd-anchor"></a>
-					<h3>process<wbr>Deferred<wbr>Events</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">process<wbr>Deferred<wbr>Events<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L81">runtime/Instance.ts:81</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Check for and send deferred events for evaluation</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -448,7 +448,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L257">runtime/Instance.ts:257</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L235">runtime/Instance.ts:235</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -489,7 +489,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L229">runtime/Instance.ts:229</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L207">runtime/Instance.ts:207</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -526,7 +526,7 @@
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/iinstance.html">IInstance</a>.<a href="../interfaces/iinstance.html#setstate">setState</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L179">runtime/Instance.ts:179</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L158">runtime/Instance.ts:158</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -556,14 +556,14 @@
 					<a name="setvertex" class="tsd-anchor"></a>
 					<h3>set<wbr>Vertex</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<wbr>Vertex<span class="tsd-signature-symbol">(</span>vertex<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Vertex</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Vertex<span class="tsd-signature-symbol">(</span>vertex<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<p>Implementation of <a href="../interfaces/iinstance.html">IInstance</a>.<a href="../interfaces/iinstance.html#setvertex">setVertex</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L149">runtime/Instance.ts:149</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L147">runtime/Instance.ts:147</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -579,7 +579,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>vertex: <span class="tsd-signature-type">Vertex</span></h5>
+									<h5>vertex: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The vertex set as its parents last entered vertex.</p>
 									</div>
@@ -599,7 +599,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L241">runtime/Instance.ts:241</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L219">runtime/Instance.ts:219</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -640,7 +640,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L219">runtime/Instance.ts:219</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L197">runtime/Instance.ts:197</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -669,7 +669,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L275">runtime/Instance.ts:275</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L253">runtime/Instance.ts:253</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -686,13 +686,13 @@
 					<a name="transaction" class="tsd-anchor"></a>
 					<h3>transaction</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">transaction&lt;TReturn&gt;<span class="tsd-signature-symbol">(</span>operation<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TReturn</span></li>
+						<li class="tsd-signature tsd-kind-icon">transaction&lt;TReturn&gt;<span class="tsd-signature-symbol">(</span>operation<span class="tsd-signature-symbol">: </span><a href="../modules/func.html#producer" class="tsd-signature-type">Producer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TReturn</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TReturn</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/f7d5c96/src/runtime/Instance.ts#L120">runtime/Instance.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b335222/src/runtime/Instance.ts#L118">runtime/Instance.ts:118</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -712,22 +712,10 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>operation: <span class="tsd-signature-type">function</span></h5>
+									<h5>operation: <a href="../modules/func.html#producer" class="tsd-signature-type">Producer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TReturn</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The operation to perform within the transactional context.</p>
 									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TReturn</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">TReturn</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">TReturn</span></h4>
@@ -765,13 +753,16 @@
 								<a href="instance.html#root" class="tsd-kind-icon">root</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="instance.html#activestateconfigurationdeferrabletriggers" class="tsd-kind-icon">active<wbr>State<wbr>Configuration<wbr>Deferrable<wbr>Triggers</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="instance.html#defer" class="tsd-kind-icon">defer</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="instance.html#deferrabletriggers" class="tsd-kind-icon">deferrable<wbr>Triggers</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="instance.html#evaluate" class="tsd-kind-icon">evaluate</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="instance.html#evaluatedeferred" class="tsd-kind-icon">evaluate<wbr>Deferred</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="instance.html#getlastknownstate" class="tsd-kind-icon">get<wbr>Last<wbr>Known<wbr>State</a>
@@ -781,9 +772,6 @@
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="instance.html#getvertex" class="tsd-kind-icon">get<wbr>Vertex</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="instance.html#processdeferredevents" class="tsd-kind-icon">process<wbr>Deferred<wbr>Events</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="instance.html#regionfromjson" class="tsd-kind-icon">region<wbr>FromJSON</a>
@@ -836,6 +824,9 @@
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter tsd-is-external">
 						<a href="../interfaces/namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="../interfaces/transitionpath.html" class="tsd-kind-icon">Transition<wbr>Path</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-is-external">
 						<a href="../interfaces/vertex.html" class="tsd-kind-icon">Vertex</a>

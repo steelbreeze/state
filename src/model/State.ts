@@ -1,7 +1,8 @@
 import { func, assert, log } from '../util';
 import { Vertex } from './Vertex';
 import { Region } from './Region';
-import { Transition, internal, external, local } from './Transition';
+import { Transition } from './Transition';
+import { TransitionKind } from './TransitionKind';
 
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
@@ -156,7 +157,7 @@ export class State implements Vertex {
 	 * @deprecated Use [[to]] method instead.
 	 */
 	public external<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, target, external);
+		return new Transition<TTrigger>(this, target, TransitionKind.external);
 	}
 
 	/**
@@ -167,7 +168,7 @@ export class State implements Vertex {
 	 * @public
 	 */
 	public to<TTrigger>(target: Vertex | undefined = undefined): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, target, target ? external : internal);
+		return new Transition<TTrigger>(this, target);
 	}
 
 	/**

@@ -1,5 +1,5 @@
 export namespace func {
-	export type Func<TReturn, TArg> = (arg: TArg) => TReturn;
+	export type Func<TReturn, TArg1> = (arg1: TArg1) => TReturn;
 
 	export type Predicate<TArg> = Func<boolean, TArg>;
 

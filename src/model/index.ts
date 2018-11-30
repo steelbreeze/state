@@ -6,4 +6,5 @@ export { Vertex } from './Vertex';
 export { State } from './State';
 export { Region } from './Region';
 export { PseudoState } from './PseudoState';
-export { Transition, internal, external, local } from './Transition';
+export { Transition } from './Transition';
+export { TransitionKind } from './TransitionKind';
