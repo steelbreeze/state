@@ -26,14 +26,14 @@ export namespace TransitionKind {
 		const to = targetAncestors.length - (target instanceof PseudoState && target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
 
 		// initialise the base class with source, target and elements to exit and enter		
-		return { leave: sourceAncestors[from], enter: targetAncestors.slice(from, to).reverse() };
+		return new TransitionPath(sourceAncestors[from], targetAncestors.slice(from, to).reverse());
 	}
 
 	/**
 	 * An internal transition does not cause a change of state; when traversed it only executes the user defined transition behaviour.
 	 */
 	export function internal(source: Vertex, target: Vertex | undefined): TransitionPath {
-		return { leave: undefined, enter: undefined };
+		return new TransitionPath();
 	}
 
 	/**
@@ -52,6 +52,6 @@ export namespace TransitionKind {
 		const to = targetAncestors.length - (target instanceof PseudoState && target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
 
 		// initialise the base class with source, target and elements to exit and enter
-		return { leave: targetAncestors[from], enter: targetAncestors.slice(from, to).reverse() };
+		return new TransitionPath(targetAncestors[from], targetAncestors.slice(from, to).reverse());
 	}
 }

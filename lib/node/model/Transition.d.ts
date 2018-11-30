@@ -8,6 +8,7 @@ import { TransitionPath } from './TransitionPath';
 export declare class Transition<TTrigger = any> {
     readonly source: Vertex;
     target: Vertex | undefined;
+    kind: (source: Vertex, taget: Vertex | undefined) => TransitionPath;
     /**
      * Creates an instance of the Transition class.
      * @param source The source vertex of the transition.
@@ -37,7 +38,7 @@ export declare class Transition<TTrigger = any> {
      * @return Returns the transition.
      * @public
      */
-    to(target: Vertex, type?: ((source: Vertex, target: Vertex) => TransitionPath)): this;
+    to(target: Vertex, kind?: ((source: Vertex, target: Vertex | undefined) => TransitionPath)): this;
     /**
      * Adds behaviour to the transition to be called every time the transition is traversed.
      * @remarks You may make multiple calls to this method to add more behaviour.
