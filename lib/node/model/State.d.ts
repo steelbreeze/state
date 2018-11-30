@@ -50,6 +50,9 @@ export declare class State implements Vertex {
      * @public
      */
     isOrthogonal(): boolean;
+    /**
+     * Returns true if the state is a final state. A final state is one that has no outgoing transitions therefore no more state transitions can occur in it's parent region.
+     */
     isFinal(): boolean;
     /**
      * Adds behaviour to the state to be called every time the state is entered.

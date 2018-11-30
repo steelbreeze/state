@@ -263,12 +263,12 @@ model.Transition.prototype.execute = function (instance: IInstance, deepHistory:
 	this.doActions(trigger);
 
 	// enter elements below the common ancestor to the target
-	for (var i = this.path.enter.length; i--;) {
-		this.path.enter[i].enterHead(instance, deepHistory, trigger);
-	}
+	if(this.path.enter) {
+		for (var i = this.path.enter.length; i--;) {
+			this.path.enter[i].enterHead(instance, deepHistory, trigger);
+		}
 
-	// cascade the entry action to any child elements of the target
-	if (this.path.enter.length !== 0) {
+		// cascade the entry action to any child elements of the target
 		this.path.enter[0].enterTail(instance, deepHistory, trigger);
 	}
 

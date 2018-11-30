@@ -33,7 +33,7 @@ export namespace TransitionKind {
 	 * An internal transition does not cause a change of state; when traversed it only executes the user defined transition behaviour.
 	 */
 	export function internal(source: Vertex, target: Vertex | undefined): TransitionPath {
-		return { leave: undefined, enter: [] };
+		return { leave: undefined, enter: undefined };
 	}
 
 	/**
