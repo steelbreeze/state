@@ -70,11 +70,11 @@ export class PseudoState implements Vertex {
 	 * @public
 	 */
 	public on<TTrigger>(type: func.Constructor<TTrigger>): Transition<TTrigger> {
-		return new Transition<TTrigger>(this).on(type);
+		return new Transition<TTrigger>(this, undefined, TransitionKind.internal, type);
 	}
 
 	public when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger> {
-		return new Transition<TTrigger>(this).when(guard);
+		return new Transition<TTrigger>(this, undefined, TransitionKind.internal, undefined, guard);
 	}
 
 	/**
@@ -85,7 +85,7 @@ export class PseudoState implements Vertex {
 	 * @public
 	 */
 	public to<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, target, TransitionKind.external);
+		return new Transition<TTrigger>(this, target);
 	}
 
 	/**
@@ -109,7 +109,7 @@ export class PseudoState implements Vertex {
 		assert.ok(this.kind === PseudoStateKind.Choice || this.kind === PseudoStateKind.Junction, () => `Else transitions are only valid at Choice and Junction pseudo states`);
 		assert.ok(!this.elseTransition, () => `Only 1 else transition allowed at ${this}`);
 
-		return this.elseTransition = new Transition<TTrigger>(this, target, TransitionKind.external).when(() => false);
+		return this.elseTransition = new Transition<TTrigger>(this, target, TransitionKind.external, undefined, () => false);
 	}
 
 	/** Find a transition from the pseudo state for a given trigger event */

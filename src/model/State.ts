@@ -141,11 +141,11 @@ export class State implements Vertex {
 	 * @public
 	 */
 	public on<TTrigger>(type: func.Constructor<TTrigger>): Transition<TTrigger> {
-		return new Transition<TTrigger>(this).on(type);
+		return new Transition<TTrigger>(this, undefined, TransitionKind.internal, type);
 	}
 
 	public when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger> {
-		return new Transition<TTrigger>(this).when(guard);
+		return new Transition<TTrigger>(this, undefined, TransitionKind.internal, undefined, guard);
 	}
 
 	/**
@@ -157,7 +157,7 @@ export class State implements Vertex {
 	 * @deprecated Use [[to]] method instead.
 	 */
 	public external<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, target, TransitionKind.external);
+		return this.to(target);
 	}
 
 	/**
@@ -179,7 +179,7 @@ export class State implements Vertex {
 	 * @deprecated Use [[to]] method instead.
 	 */
 	public internal<TTrigger>(): Transition<TTrigger> {
-		return new Transition<TTrigger>(this);
+		return this.to();
 	}
 
 	/**
@@ -191,7 +191,7 @@ export class State implements Vertex {
 	 * @deprecated Use to method instead.
 	 */
 	public local<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this).local(target);
+		return new Transition<TTrigger>(this, target, TransitionKind.local);
 	}
 
 	/**
