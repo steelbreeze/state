@@ -12,13 +12,13 @@ export class Transition<TTrigger = any> {
 	 * A test to ensure that a trigger event is the expected type in order for the transition to be traversed.
 	 * @internal
 	 */
-	private typeTest: func.Predicate<TTrigger> = () => true;
+	private typeGuard: func.Predicate<TTrigger>;
 
 	/**
 	 * A user-defined guard condition that must be true for the transition to be traversed.
 	 * @internal
 	 */
-	private guard: func.Predicate<TTrigger> = () => true;
+	private userGuard: func.Predicate<TTrigger> = () => true;
 
 	/**
 	 * The elements that need to be left and entered when traversing a transition
@@ -34,14 +34,16 @@ export class Transition<TTrigger = any> {
 
 	/**
 	 * Creates an instance of the Transition class.
-	 * @param source The source [[Vertex]] of the transition.
-	 * @param target The target [[Vertex]] of the transition; leave undefined for internal transitions.
-	 * @param kind The kind of the transition: external, internal or local.
+	 * @param source The source vertex of the transition.
+	 * @param target The optional target vertex of the transition; leave undefined for internal transitions.
+	 * @param kind The optional kind of the transition: external, internal or local. If left blank, this will be external if a targed vertex is specified otherwise internal.
+	 * @param type The optional type of the trigger event that will cause this transition to be traversed. If left undefined any object or primative type will be considered.
 	 * @public
 	 */
-	public constructor(public readonly source: Vertex, public target: Vertex | undefined = undefined, kind: (source: Vertex, taget: Vertex | undefined) => TransitionPath = target ? TransitionKind.external : TransitionKind.internal) {
-		// derive the transition traversal behaviour based on its source, target and kind.
+	public constructor(public readonly source: Vertex, public target: Vertex | undefined = undefined, kind: (source: Vertex, taget: Vertex | undefined) => TransitionPath = (target ? TransitionKind.external : TransitionKind.internal), type: func.Constructor<TTrigger> | undefined = undefined, guard: func.Predicate<TTrigger> = () => true) {
 		this.path = kind(this.source, this.target);
+		this.typeGuard = type ? (trigger: TTrigger) => trigger.constructor === type : () => true;
+		this.userGuard = guard;
 
 		// add this transition to the set of outgoing transitions of the source vertex.
 		source.outgoing.unshift(this);
@@ -56,7 +58,7 @@ export class Transition<TTrigger = any> {
 	 * @public
 	 */
 	public on(type: func.Constructor<TTrigger>): this {
-		this.typeTest = trigger => trigger.constructor === type;
+		this.typeGuard = trigger => trigger.constructor === type;
 
 		return this;
 	}
@@ -68,7 +70,7 @@ export class Transition<TTrigger = any> {
 	 * @public
 	 */
 	public when(guard: func.Predicate<TTrigger>): this {
-		this.guard = guard;
+		this.userGuard = guard;
 
 		return this;
 	}
@@ -106,7 +108,7 @@ export class Transition<TTrigger = any> {
 	 * @internal
 	 */
 	evaluate(trigger: TTrigger): boolean {
-		return this.typeTest(trigger) && this.guard(trigger);
+		return this.typeGuard(trigger) && this.userGuard(trigger);
 	}
 
 	/**

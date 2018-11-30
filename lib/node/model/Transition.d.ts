@@ -10,12 +10,13 @@ export declare class Transition<TTrigger = any> {
     target: Vertex | undefined;
     /**
      * Creates an instance of the Transition class.
-     * @param source The source [[Vertex]] of the transition.
-     * @param target The target [[Vertex]] of the transition; leave undefined for internal transitions.
-     * @param kind The kind of the transition: external, internal or local.
+     * @param source The source vertex of the transition.
+     * @param target The optional target vertex of the transition; leave undefined for internal transitions.
+     * @param kind The optional kind of the transition: external, internal or local. If left blank, this will be external if a targed vertex is specified otherwise internal.
+     * @param type The optional type of the trigger event that will cause this transition to be traversed. If left undefined any object or primative type will be considered.
      * @public
      */
-    constructor(source: Vertex, target?: Vertex | undefined, kind?: (source: Vertex, taget: Vertex | undefined) => TransitionPath);
+    constructor(source: Vertex, target?: Vertex | undefined, kind?: (source: Vertex, taget: Vertex | undefined) => TransitionPath, type?: func.Constructor<TTrigger> | undefined, guard?: func.Predicate<TTrigger>);
     /**
      * Adds a predicate to the transition to ensure events must be of a certain event type for the transition to be traversed.
      * @param type The type of event to test for.

@@ -1,21 +1,21 @@
-//import * as state from "@steelbreeze/state";
-import * as state from "../../lib/node";
+//import { log, State, PseudoState, PseudoStateKind, Transition, TransitionKind, Instance } from "@steelbreeze/state";
+import { log, State, PseudoState, PseudoStateKind, Transition, TransitionKind, Instance } from "../../lib/node";
 
 // log state entry, exit and trigger event evaluation
-state.log.add(message => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
+log.add(message => console.info(message), log.Entry | log.Exit | log.Evaluate);
 
 // create the state machine model elements
-const model = new state.State("model");
-const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
-const stateA = new state.State("stateA", model);
-const stateB = new state.State("stateB", model);
+const model = new State("model");
+const initial = new PseudoState("initial", model, PseudoStateKind.Initial);
+const stateA = new State("stateA", model);
+const stateB = new State("stateB", model);
 
 // create the state machine model transitions
-initial.to(stateA);
-stateA.on(String).when(event => event === "move").to(stateB);
+new Transition(initial, stateA);
+new Transition(stateA, stateB, TransitionKind.external, String, s => s === "move");
 
 // create an instance of the state machine model
-let instance = new state.Instance("instance", model);
+let instance = new Instance("instance", model);
 
 // send the machine instance a message for evaluation
 instance.evaluate("move");
