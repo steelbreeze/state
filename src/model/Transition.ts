@@ -30,7 +30,7 @@ export class Transition<TTrigger = any> {
 	 * The behavior to call when the transition is traversed.
 	 * @internal
 	 */
-	actions: Array<func.Consumer<TTrigger>> = [];
+	private actions: Array<func.Consumer<TTrigger>> = [];
 
 	/**
 	 * Creates an instance of the Transition class.
@@ -109,6 +109,12 @@ export class Transition<TTrigger = any> {
 	 */
 	evaluate(trigger: TTrigger): boolean {
 		return this.typeGuard(trigger) && this.userGuard(trigger);
+	}
+
+	doActions(trigger: TTrigger): void {
+		for (let i = this.actions.length; i--;) {
+			this.actions[i](trigger);
+		}
 	}
 
 	/**

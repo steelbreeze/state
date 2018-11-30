@@ -50,6 +50,7 @@ export declare class State implements Vertex {
      * @public
      */
     isOrthogonal(): boolean;
+    isFinal(): boolean;
     /**
      * Adds behaviour to the state to be called every time the state is entered.
      * @param action The behaviour to call on state entry.
@@ -121,6 +122,8 @@ export declare class State implements Vertex {
      * @throws Throws an Error if more than one transition was found.
      */
     getTransition(trigger: any): Transition | undefined;
+    doEnter(trigger: any): void;
+    doLeave(trigger: any): void;
     /**
      * Returns the fully qualified name of the state.
      * @public

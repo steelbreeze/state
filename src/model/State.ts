@@ -110,6 +110,13 @@ export class State implements Vertex {
 	}
 
 	/**
+	 * Returns true if the state is a final state. A final state is one that has no outgoing transitions therefore no more state transitions can occur in it's parent region.
+	 */
+	public isFinal(): boolean {
+		return this.outgoing.length === 0;
+	}
+
+	/**
 	 * Adds behaviour to the state to be called every time the state is entered.
 	 * @param action The behaviour to call on state entry.
 	 * @returns Returns the state.
@@ -225,6 +232,18 @@ export class State implements Vertex {
 		}
 	
 		return result;
+	}
+
+	doEnter(trigger: any ) : void {
+		for (let i = this.onEnter.length; i--;) {
+			this.onEnter[i](trigger);
+		}	
+	}
+
+	doLeave(trigger: any) : void {
+		for (let i = this.onLeave.length; i--;) {
+			this.onLeave[i](trigger);
+		}
 	}
 
 	/**

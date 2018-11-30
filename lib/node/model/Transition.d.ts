@@ -46,6 +46,7 @@ export declare class Transition<TTrigger = any> {
      * @public
      */
     do(action: func.Consumer<TTrigger>): this;
+    doActions(trigger: TTrigger): void;
     /**
      * A pseudonym of [[Transition.when]].
      * @param type A predicate taking the trigger event as a parameter.

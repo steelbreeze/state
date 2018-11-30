@@ -87,7 +87,7 @@ function traverse(transition: model.Transition, instance: IInstance, deepHistory
 function completion(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// check to see if the state is complete; fail fast if its not
 	for (let i = state.children.length; i--;) {
-		if (instance.getState(state.children[i]).outgoing.length !== 0) {
+		if (!instance.getState(state.children[i]).isFinal()) {
 			return;
 		}
 	}
@@ -213,9 +213,7 @@ model.State.prototype.enterHead = function (instance: IInstance, deepHistory: bo
 	instance.setState(this);
 
 	// perform the user defined entry behaviour
-	for (let i = this.onEnter.length; i--;) {
-		this.onEnter[i](trigger);
-	}
+	this.doEnter(trigger);
 }
 
 /** Complete state entry */
@@ -239,9 +237,7 @@ model.State.prototype.leave = function (instance: IInstance, deepHistory: boolea
 	log.info(() => `${instance} leave ${this}`, log.Exit);
 
 	// perform the user defined leave behaviour
-	for (i = this.onLeave.length; i--;) {
-		this.onLeave[i](trigger);
-	}
+	this.doLeave(trigger);
 }
 
 /**
@@ -264,12 +260,10 @@ model.Transition.prototype.execute = function (instance: IInstance, deepHistory:
 	}
 
 	// perform the transition behaviour
-	for (var i = this.actions.length; i--;) {
-		this.actions[i](trigger);
-	}
+	this.doActions(trigger);
 
 	// enter elements below the common ancestor to the target
-	for (i = this.path.enter.length; i--;) {
+	for (var i = this.path.enter.length; i--;) {
 		this.path.enter[i].enterHead(instance, deepHistory, trigger);
 	}
 
