@@ -89,12 +89,12 @@ export class Transition<TTrigger = any> {
 	}
 
 	/**
-     * Adds behaviour to the transition to be called every time the transition is traversed.
+	 * Adds behaviour to the transition to be called every time the transition is traversed.
 	 * @remarks You may make multiple calls to this method to add more behaviour.
-     * @param action The behaviour to call on transition traversal.
-     * @returns Returns the transition.
+	 * @param action The behaviour to call on transition traversal.
+	 * @returns Returns the transition.
 	 * @public
-     */
+	 */
 	public do(action: func.Consumer<TTrigger>): this {
 		this.actions.unshift(action);
 
@@ -143,13 +143,13 @@ export class Transition<TTrigger = any> {
 		return this;
 	}
 
-    /**
-     * A pseudonym of do.
-     * @param action The behaviour to call on transition traversal.
-     * @returns Returns the transition.
+	/**
+	 * A pseudonym of do.
+	 * @param action The behaviour to call on transition traversal.
+	 * @returns Returns the transition.
 	 * @public
 	 * @deprecated Use Transition.do instead. This method will be removed in the v8.0 release.
-     */
+	 */
 	public effect(action: func.Consumer<TTrigger>): this {
 		return this.do(action);
 	}

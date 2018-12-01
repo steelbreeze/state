@@ -1,7 +1,7 @@
 import { Vertex } from './Vertex';
 import { TransitionPath } from './TransitionPath';
 /**
- * A transition's kind determines its traverasal behaviour.
+ * A transition's kind determines which elements will be exited and entered upon traversal.
  * @remarks TransitionKind is an implementation of the strategy pattern.
  */
 export interface TransitionKind {
