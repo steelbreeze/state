@@ -1,3 +1,8 @@
+## v7.2.1
+v7.2.1 Is a maintainence release, with just refactoring after the added functionallity of the last two releases. The focus area has been moving code from the runtime to the model where there was no dependency on runtime artefacts and tidying up ```TransitionKind``` by implementing it as a strategy pattern.
+
+The ```Transition``` constructor has widened a little allowing explicit transition construction without the fluent API if so desired.
+
 ## v7.2
 v7.2 addresses the issue of having to specify the trigger event type twice in the creation of transitions. This release is a breaking change if you explicity created instances of the ```ExternalTransition```, ```LocalTransition``` and ```InternalTransition``` classes, all of which have been removed; the ```Transaction``` class now caters for all types of transition. The fluent-style API as used in all the examples and tests is backward compatible.
 

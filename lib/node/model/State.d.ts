@@ -125,7 +125,15 @@ export declare class State implements Vertex {
      * @throws Throws an Error if more than one transition was found.
      */
     getTransition(trigger: any): Transition | undefined;
+    /**
+     * Execute the user defined state entry behaviour.
+     * @param trigger The trigger event that caused the transition.
+     */
     doEnter(trigger: any): void;
+    /**
+     * Execute the user defined state exit behaviour.
+     * @param trigger The trigger event that caused the transition.
+     */
     doLeave(trigger: any): void;
     /**
      * Returns the fully qualified name of the state.

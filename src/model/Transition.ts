@@ -111,6 +111,10 @@ export class Transition<TTrigger = any> {
 		return this.typeGuard(trigger) && this.userGuard(trigger);
 	}
 
+	/**
+	 * Execute the user defined transition behaviour.
+	 * @param trigger The trigger event that caused the transition.
+	 */
 	doActions(trigger: TTrigger): void {
 		for (let i = this.actions.length; i--;) {
 			this.actions[i](trigger);

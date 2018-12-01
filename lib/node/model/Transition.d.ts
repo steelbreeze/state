@@ -46,6 +46,10 @@ export declare class Transition<TTrigger = any> {
      * @public
      */
     do(action: func.Consumer<TTrigger>): this;
+    /**
+     * Execute the user defined transition behaviour.
+     * @param trigger The trigger event that caused the transition.
+     */
     doActions(trigger: TTrigger): void;
     /**
      * A pseudonym of [[Transition.when]].

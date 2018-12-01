@@ -37,13 +37,13 @@ export class State implements Vertex {
 	 * The behaviour to each time the state is entered.
 	 * @internal
 	 */
-	onEnter: Array<func.Consumer<any>> = [];
+	private onEnter: Array<func.Consumer<any>> = [];
 
 	/**
 	 * The behaviour to perform each time the is state exited.
 	 * @internal
 	 */
-	onLeave: Array<func.Consumer<any>> = [];
+	private onLeave: Array<func.Consumer<any>> = [];
 
 	/**
 	 * The list of types that this state can defer to the event pool.
@@ -234,12 +234,20 @@ export class State implements Vertex {
 		return result;
 	}
 
+	/**
+	 * Execute the user defined state entry behaviour.
+	 * @param trigger The trigger event that caused the transition.
+	 */
 	doEnter(trigger: any ) : void {
 		for (let i = this.onEnter.length; i--;) {
 			this.onEnter[i](trigger);
 		}	
 	}
 
+	/**
+	 * Execute the user defined state exit behaviour.
+	 * @param trigger The trigger event that caused the transition.
+	 */
 	doLeave(trigger: any) : void {
 		for (let i = this.onLeave.length; i--;) {
 			this.onLeave[i](trigger);

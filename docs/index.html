@@ -348,10 +348,10 @@
 					<h2>Events</h2>
 					<p>Use the buttons below to send triggering events into the machine for evaluation; these triggering events become
 						the t in the transition guard conditions.</p>
-					<button class="ripple" onclick="instance.evaluate('play');">play</button>
+					<button class="ripple" onclick="instance.evaluate(new Play());">play</button>
 					<button class="ripple" onclick="instance.evaluate(new Pause());">pause</button>
-					<button class="ripple" onclick="instance.evaluate('stop');">stop</button>
-					<button class="ripple" onclick="instance.evaluate('flip');">flip</button>
+					<button class="ripple" onclick="instance.evaluate(new Stop());">stop</button>
+					<button class="ripple" onclick="instance.evaluate(new Flip());">flip</button>
 				</article>
 				<article>
 					<h2>Outputs</h2>
@@ -379,7 +379,11 @@
 		let head = document.getElementById("head");
 		let motor = document.getElementById("motor");
 
+		// create our event types
+		class Play { }
 		class Pause { }
+		class Stop { }
+		class Flip { }
 
 		// define the operations that the state machine will call as outputs
 		function startMotor() { motor.innerText = "running"; }
@@ -408,14 +412,14 @@
 		/* create the state machine model transitions */
 		initial.to(operational);
 		deepHistory.to(stopped);
-		stopped.on(String).when(t => t === "play").to(running);
-		active.on(String).when(t => t === "stop").to(stopped);
+		stopped.on(Play).to(running);
+		active.on(Stop).to(stopped);
 		running.on(Pause).to(paused);
-		paused.on(String).when(t => t === "play").to(running);
+		paused.on(Play).to(running);
 		paused.on(Pause).to(running);
-		operational.on(String).when(t => t === "flip").to(flipped);
-		flipped.on(String).when(t => t === "flip").to(operational);
-		operational.on(String).when(t => t === "stop").to(finalState);
+		operational.on(Flip).to(flipped);
+		flipped.on(Flip).to(operational);
+		operational.on(Stop).to(finalState);
 
 		// define the state entry/exit behaviour
 		active.entry(engageHead).exit(disengageHead);

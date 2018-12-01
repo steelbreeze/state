@@ -27,11 +27,12 @@ var state3 = new state.State("state3", region);
 var state4 = new state.State("state4", region);
 var state5 = new state.State("state5", region);
 state1.defer(Event1);
-initial.to(state1);
-state1.on(Event2).to(state2);
-state2.to(state3);
-state2.on(Event1).to(state5);
-state3.on(Event1).to(state4);
+// use explicit transition creation rather than fluent API
+new state.Transition(initial, state1);
+new state.Transition(state1, state2, state.TransitionKind.external, Event2);
+new state.Transition(state2, state3);
+new state.Transition(state2, state5, state.TransitionKind.external, Event1);
+new state.Transition(state3, state4, state.TransitionKind.external, Event1);
 var instance = new state.Instance("redboltz2", model);
 instance.evaluate(new Event1("event1"));
 instance.evaluate(new Event2("event2"));
