@@ -57,7 +57,7 @@
 					<a href="transitionpath.html">TransitionPath</a>
 				</li>
 			</ul>
-			<h1>Interface TransitionPath</h1>
+			<h1>Class TransitionPath</h1>
 		</div>
 	</div>
 </header>
@@ -84,36 +84,96 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
+							<h3>Constructors</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="transitionpath.html#constructor" class="tsd-kind-icon">constructor</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="transitionpath.html#enter" class="tsd-kind-icon">enter</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-external"><a href="transitionpath.html#leave" class="tsd-kind-icon">leave</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="transitionpath.html#enter" class="tsd-kind-icon">enter</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="transitionpath.html#leave" class="tsd-kind-icon">leave</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Constructors</h2>
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+					<a name="constructor" class="tsd-anchor"></a>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Transition<wbr>Path<span class="tsd-signature-symbol">(</span>leave<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">NamedElement</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, enter<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">NamedElement</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="transitionpath.html" class="tsd-signature-type">TransitionPath</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/aeef587/src/model/TransitionPath.ts#L4">model/TransitionPath.ts:4</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new instance of the TransitionPath class.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> leave: <span class="tsd-signature-type">NamedElement</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> =&nbsp;undefined</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The optional named element to leave when traversing a transition.</p>
+										</div>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> enter: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">NamedElement</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> =&nbsp;undefined</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The optional set of elements to enter when traversing a transition.</p>
+										</div>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="transitionpath.html" class="tsd-signature-type">TransitionPath</a></h4>
+						</li>
+					</ul>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="enter" class="tsd-anchor"></a>
 					<h3>enter</h3>
-					<div class="tsd-signature tsd-kind-icon">enter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">NamedElement</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">enter<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">NamedElement</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in model/TransitionPath.ts:6</li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/aeef587/src/model/TransitionPath.ts#L10">model/TransitionPath.ts:10</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The optional set of elements to enter when traversing a transition.</p>
+						</div>
+					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="leave" class="tsd-anchor"></a>
 					<h3>leave</h3>
 					<div class="tsd-signature tsd-kind-icon">leave<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">NamedElement</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in model/TransitionPath.ts:5</li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/aeef587/src/model/TransitionPath.ts#L10">model/TransitionPath.ts:10</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The optional named element to leave when traversing a transition.</p>
+						</div>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -131,41 +191,32 @@
 						<a href="../enums/pseudostatekind.html" class="tsd-kind-icon">Pseudo<wbr>State<wbr>Kind</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/instance.html" class="tsd-kind-icon">Instance</a>
+						<a href="instance.html" class="tsd-kind-icon">Instance</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/pseudostate.html" class="tsd-kind-icon">Pseudo<wbr>State</a>
+						<a href="pseudostate.html" class="tsd-kind-icon">Pseudo<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/region.html" class="tsd-kind-icon">Region</a>
+						<a href="region.html" class="tsd-kind-icon">Region</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/state.html" class="tsd-kind-icon">State</a>
+						<a href="state.html" class="tsd-kind-icon">State</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter tsd-is-external">
-						<a href="../classes/transition.html" class="tsd-kind-icon">Transition</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="iinstance.html" class="tsd-kind-icon">IInstance</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="iregion.html" class="tsd-kind-icon">IRegion</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="istate.html" class="tsd-kind-icon">IState</a>
-					</li>
-					<li class=" tsd-kind-interface tsd-has-type-parameter tsd-is-external">
-						<a href="namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
+						<a href="transition.html" class="tsd-kind-icon">Transition</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-is-external">
+					<li class="current tsd-kind-class tsd-is-external">
 						<a href="transitionpath.html" class="tsd-kind-icon">Transition<wbr>Path</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+								<a href="transitionpath.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="transitionpath.html#enter" class="tsd-kind-icon">enter</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-external">
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="transitionpath.html#leave" class="tsd-kind-icon">leave</a>
 							</li>
 						</ul>
@@ -173,7 +224,19 @@
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-interface tsd-is-external">
-						<a href="vertex.html" class="tsd-kind-icon">Vertex</a>
+						<a href="../interfaces/iinstance.html" class="tsd-kind-icon">IInstance</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="../interfaces/iregion.html" class="tsd-kind-icon">IRegion</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="../interfaces/istate.html" class="tsd-kind-icon">IState</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-has-type-parameter tsd-is-external">
+						<a href="../interfaces/namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="../interfaces/vertex.html" class="tsd-kind-icon">Vertex</a>
 					</li>
 				</ul>
 			</nav>

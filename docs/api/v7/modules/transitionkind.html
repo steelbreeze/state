@@ -67,11 +67,11 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A transition&#39;s kind determines its traverasal behaviour.</p>
+						<p>A transition&#39;s kind determines which elements will be exited and entered upon traversal.</p>
 					</div>
 					<dl class="tsd-comment-tags">
 						<dt>remarks</dt>
-						<dd><p>These functions implement strategies in a variant of the strategy pattern that uses just functions instead of classes.</p>
+						<dd><p>TransitionKind is an implementation of the strategy pattern.</p>
 						</dd>
 					</dl>
 				</div>
@@ -81,113 +81,112 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Functions</h3>
+							<h3>Variables</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="transitionkind.html#external" class="tsd-kind-icon">external</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="transitionkind.html#internal" class="tsd-kind-icon">internal</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="transitionkind.html#local" class="tsd-kind-icon">local</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-external"><a href="transitionkind.html#external" class="tsd-kind-icon">external</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-external"><a href="transitionkind.html#internal" class="tsd-kind-icon">internal</a></li>
+								<li class="tsd-kind-variable tsd-parent-kind-module tsd-is-external"><a href="transitionkind.html#local" class="tsd-kind-icon">local</a></li>
+							</ul>
+						</section>
+						<section class="tsd-index-section tsd-is-external">
+							<h3>Methods</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-method tsd-parent-kind-module tsd-is-external"><a href="transitionkind.html#getpath" class="tsd-kind-icon">get<wbr>Path</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-external">
+				<h2>Variables</h2>
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-external">
 					<a name="external" class="tsd-anchor"></a>
-					<h3>external</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">external<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, target<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in model/TransitionKind.ts:19</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>An external transition is the default transition kind between any two vertices (states or pseudo states).
-										Upon traversal it will: exit the source vertex and any parent elements (vertex or region) up to, but not including the common ancestor of the source and target;
-										it will then perform and user defined transition behaviour;
-										finally, it will enter the target vertex, having first entered any parent elements below the common ancestor as needed.
-									If the source or target vertices are not leaf-level elements within the state machine hierarchy, the exit or entry operation will cascate to child elements as needed.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>source: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></h5>
-								</li>
-								<li>
-									<h5>target: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></h4>
-						</li>
-					</ul>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> external</h3>
+					<div class="tsd-signature tsd-kind-icon">external<span class="tsd-signature-symbol">:</span> <a href="transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol"> =&nbsp;new ExternalTransitionKind()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/aeef587/src/model/TransitionKind.ts#L103">model/TransitionKind.ts:103</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An external transition is the default transition kind between any two vertices (states or pseudo states).
+								Upon traversal it will: exit the source vertex and any parent elements (vertex or region) up to, but not including the common ancestor of the source and target;
+								it will then perform and user defined transition behaviour;
+								finally, it will enter the target vertex, having first entered any parent elements below the common ancestor as needed.
+							If the source or target vertices are not leaf-level elements within the state machine hierarchy, the exit or entry operation will cascate to child elements as needed.</p>
+						</div>
+					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-external">
 					<a name="internal" class="tsd-anchor"></a>
-					<h3>internal</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">internal<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, target<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in model/TransitionKind.ts:35</li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>An internal transition does not cause a change of state; when traversed it only executes the user defined transition behaviour.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>source: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></h5>
-								</li>
-								<li>
-									<h5>target: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></h4>
-						</li>
-					</ul>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> internal</h3>
+					<div class="tsd-signature tsd-kind-icon">internal<span class="tsd-signature-symbol">:</span> <a href="transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol"> =&nbsp;new InternalTransitionKind()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/aeef587/src/model/TransitionKind.ts#L108">model/TransitionKind.ts:108</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>An internal transition does not cause a change of state; when traversed it only executes the user defined transition behaviour.</p>
+						</div>
+					</div>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-variable tsd-parent-kind-module tsd-is-external">
 					<a name="local" class="tsd-anchor"></a>
-					<h3>local</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">local<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, target<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></li>
+					<h3><span class="tsd-flag ts-flagConst">Const</span> local</h3>
+					<div class="tsd-signature tsd-kind-icon">local<span class="tsd-signature-symbol">:</span> <a href="transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol"> =&nbsp;new LocalTransitionKind()</span></div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/aeef587/src/model/TransitionKind.ts#L114">model/TransitionKind.ts:114</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A local transition is one where either the source or target is the common ancestor of both vertices.
+							Traversal is the same as an external transition but the common ancestor is not entered/exited.</p>
+						</div>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-module tsd-is-external">
+					<a name="getpath" class="tsd-anchor"></a>
+					<h3>get<wbr>Path</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-module tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Path<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, target<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/transitionpath.html" class="tsd-signature-type">TransitionPath</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in model/TransitionKind.ts:43</li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/aeef587/src/model/TransitionKind.ts#L18">model/TransitionKind.ts:18</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>A local transition is one where either the source or target is the common ancestor of both vertices.
-									Traversal is the same as an external transition but the common ancestor is not entered/exited.</p>
+									<p>Derives the path of elements to exit and enter when travesing a transition of a particular kind.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>source: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The source vertex of the transition.</p>
+									</div>
 								</li>
 								<li>
 									<h5>target: <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The optional target vertex of the transition.</p>
+									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../interfaces/transitionpath.html" class="tsd-signature-type">TransitionPath</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/transitionpath.html" class="tsd-signature-type">TransitionPath</a></h4>
+							<p>Returns the path of element to exit and enter when traversing the transition.</p>
 						</li>
 					</ul>
 				</section>
@@ -218,14 +217,17 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-external">
 						<a href="transitionkind.html#external" class="tsd-kind-icon">external</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-external">
 						<a href="transitionkind.html#internal" class="tsd-kind-icon">internal</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
+					<li class=" tsd-kind-variable tsd-parent-kind-module tsd-is-external">
 						<a href="transitionkind.html#local" class="tsd-kind-icon">local</a>
+					</li>
+					<li class=" tsd-kind-method tsd-parent-kind-module tsd-is-external">
+						<a href="transitionkind.html#getpath" class="tsd-kind-icon">get<wbr>Path</a>
 					</li>
 				</ul>
 			</nav>
