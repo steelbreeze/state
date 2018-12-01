@@ -1,6 +1,8 @@
 # state
 Executable finite state machine for TypeScript and JavaScript.
 
+If you like @steelbreeze/state, please star it...
+
 [![NPM Version][npm-image]][npm-url]
 [![NPM Downloads][downloads-image]][npm-url]
 [![Build Status](https://travis-ci.org/steelbreeze/state.svg?branch=master)](https://travis-ci.org/steelbreeze/state)
@@ -12,8 +14,6 @@ Executable finite state machine for TypeScript and JavaScript.
 >v7 is now live and contains breaking changes but offers a much simplified code base and considerable performance improvements. See the [release notes](RELEASES.md) for more information.
 >
 >@steelbreeze/state the new home for [state.js](https://github.com/steelbreeze/state.js) and the versioning starts here from v6.0.0.
-
-If you like @steelbreeze/state, please star it...
 
 ## Install
 ```shell
