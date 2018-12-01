@@ -387,10 +387,10 @@
 		let motor = document.getElementById("motor");
 
 		// create our event types (should simply use class but this is IE friendly)
-		var Play  = (function () { function Play()  { } return Play;  }());
+		var Play = (function () { function Play() { } return Play; }());
 		var Pause = (function () { function Pause() { } return Pause; }());
-		var Stop  = (function () { function Stop()  { } return Stop;  }());
-		var Flip  = (function () { function Flip()  { } return Flip;  }());
+		var Stop = (function () { function Stop() { } return Stop; }());
+		var Flip = (function () { function Flip() { } return Flip; }());
 
 		// define the operations that the state machine will call as outputs
 		function startMotor() { motor.innerText = "running"; }
@@ -399,7 +399,7 @@
 		function disengageHead() { head.innerText = "disengaged"; }
 
 		// log to the browser console
-		state.log.add(message => console.info(message), state.log.Entry | state.log.Exit);
+		state.log.add(function (message) { console.info(message); }, state.log.Entry | state.log.Exit);
 
 		// create the state machine model elements/
 		var model = new state.State("model");
@@ -434,8 +434,8 @@
 
 		// colour the states on entry/exit
 		for (const s of [operational, stopped, active, running, paused, flipped, finalState]) {
-			s.entry(() => document.getElementById(s.name).classList.add("active"));
-			s.exit(() => document.getElementById(s.name).classList.remove("active"));
+			s.entry(function () { document.getElementById(s.name).classList.add("active"); });
+			s.exit(function () { document.getElementById(s.name).classList.remove("active"); });
 		}
 
 		let instance = new state.Instance("instance", model);
