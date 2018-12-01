@@ -1,6 +1,6 @@
 import { func } from '../util';
 import { Vertex } from './Vertex';
-import { TransitionPath } from './TransitionPath';
+import { TransitionKind } from './TransitionKind';
 /**
  * A transition between vertices that defines a valid change in state in response to an event.
  * @param TTrigger The type of triggering event that causes this transition to be traversed.
@@ -8,7 +8,6 @@ import { TransitionPath } from './TransitionPath';
 export declare class Transition<TTrigger = any> {
     readonly source: Vertex;
     target: Vertex | undefined;
-    kind: (source: Vertex, taget: Vertex | undefined) => TransitionPath;
     /**
      * Creates an instance of the Transition class.
      * @param source The source vertex of the transition.
@@ -17,7 +16,7 @@ export declare class Transition<TTrigger = any> {
      * @param type The optional type of the trigger event that will cause this transition to be traversed. If left undefined any object or primative type will be considered.
      * @public
      */
-    constructor(source: Vertex, target?: Vertex | undefined, kind?: (source: Vertex, taget: Vertex | undefined) => TransitionPath, type?: func.Constructor<TTrigger> | undefined, guard?: func.Predicate<TTrigger>);
+    constructor(source: Vertex, target?: Vertex | undefined, kind?: TransitionKind, type?: func.Constructor<TTrigger> | undefined, guard?: func.Predicate<TTrigger>);
     /**
      * Adds a predicate to the transition to ensure events must be of a certain event type for the transition to be traversed.
      * @param type The type of event to test for.
@@ -38,7 +37,7 @@ export declare class Transition<TTrigger = any> {
      * @return Returns the transition.
      * @public
      */
-    to(target: Vertex, kind?: ((source: Vertex, target: Vertex | undefined) => TransitionPath)): this;
+    to(target: Vertex, kind?: TransitionKind): this;
     /**
      * Adds behaviour to the transition to be called every time the transition is traversed.
      * @remarks You may make multiple calls to this method to add more behaviour.

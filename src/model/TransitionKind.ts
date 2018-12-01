@@ -5,18 +5,35 @@ import { PseudoState } from './PseudoState';
 import { TransitionPath } from './TransitionPath';
 
 /**
- * A transition's kind determines its traverasal behaviour.
- * @remarks These functions implement strategies in a variant of the strategy pattern that uses just functions instead of classes.
+ * A transition's kind determines which elements will be exited and entered upon traversal.
+ * @remarks TransitionKind is an implementation of the strategy pattern.
  */
-export namespace TransitionKind {
+export interface TransitionKind {
 	/**
-	 * An external transition is the default transition kind between any two vertices (states or pseudo states).
-	 * Upon traversal it will: exit the source vertex and any parent elements (vertex or region) up to, but not including the common ancestor of the source and target;
-	 * it will then perform and user defined transition behaviour;
-	 * finally, it will enter the target vertex, having first entered any parent elements below the common ancestor as needed.
-	 * If the source or target vertices are not leaf-level elements within the state machine hierarchy, the exit or entry operation will cascate to child elements as needed.
+	 * Derives the path of elements to exit and enter when travesing a transition of a particular kind.
+	 * @param source The source vertex of the transition.
+	 * @param target The optional target vertex of the transition.
+	 * @returns Returns the path of element to exit and enter when traversing the transition.
 	 */
-	export function external(source: Vertex, target: Vertex | undefined): TransitionPath {
+	getPath(source: Vertex, target: Vertex | undefined): TransitionPath;
+}
+
+/**
+ * An external transition is the default transition kind between any two vertices (states or pseudo states).
+ * Upon traversal it will: exit the source vertex and any parent elements (vertex or region) up to, but not including the common ancestor of the source and target;
+ * it will then perform and user defined transition behaviour;
+ * finally, it will enter the target vertex, having first entered any parent elements below the common ancestor as needed.
+ * If the source or target vertices are not leaf-level elements within the state machine hierarchy, the exit or entry operation will cascate to child elements as needed.
+ * @internal
+ */
+class ExternalTransitionKind implements TransitionKind {
+	/**
+	 * Derives the path of elements to exit and enter when travesing an external transition.
+	 * @param source The source vertex of the transition.
+	 * @param target The optional target vertex of the transition.
+	 * @returns Returns the path of element to exit and enter when traversing the transition.
+	 */
+	getPath(source: Vertex, target: Vertex | undefined): TransitionPath {
 		// determine the source and target vertex ancestries
 		const sourceAncestors = tree.ancestors<NamedElement>(source, element => element.parent);
 		const targetAncestors = tree.ancestors<NamedElement>(target, element => element.parent);
@@ -28,19 +45,37 @@ export namespace TransitionKind {
 		// initialise the base class with source, target and elements to exit and enter		
 		return new TransitionPath(sourceAncestors[from], targetAncestors.slice(from, to).reverse());
 	}
+}
 
+/**
+ * An internal transition does not cause a change of state; when traversed it only executes the user defined transition behaviour.
+ * @internal
+ */
+class InternalTransitionKind implements TransitionKind {
 	/**
-	 * An internal transition does not cause a change of state; when traversed it only executes the user defined transition behaviour.
+	 * Derives the path of elements to exit and enter when travesing an internal transition.
+	 * @param source The source vertex of the transition.
+	 * @param target The optional target vertex of the transition.
+	 * @returns Returns the path of element to exit and enter when traversing the transition.
 	 */
-	export function internal(source: Vertex, target: Vertex | undefined): TransitionPath {
+	getPath(source: Vertex, target: Vertex | undefined): TransitionPath {
 		return new TransitionPath();
 	}
+}
 
+/**
+ * A local transition is one where either the source or target is the common ancestor of both vertices.
+ * Traversal is the same as an external transition but the common ancestor is not entered/exited.
+ * @internal
+ */
+class LocalTransitionKind implements TransitionKind {
 	/**
-	 * A local transition is one where either the source or target is the common ancestor of both vertices.
-	 * Traversal is the same as an external transition but the common ancestor is not entered/exited.
+	 * Derives the path of elements to exit and enter when travesing a local transition.
+	 * @param source The source vertex of the transition.
+	 * @param target The optional target vertex of the transition.
+	 * @returns Returns the path of element to exit and enter when traversing the transition.
 	 */
-	export function local(source: Vertex, target: Vertex | undefined): TransitionPath { // TODO: need to cater for transitions where the target is the parent of the source
+	getPath(source: Vertex, target: Vertex | undefined): TransitionPath {
 		// determine the target ancestry
 		const targetAncestors = tree.ancestors<NamedElement>(target, element => element.parent); // NOTE: as the target is a child of the source it will be in the same ancestry
 
@@ -54,4 +89,27 @@ export namespace TransitionKind {
 		// initialise the base class with source, target and elements to exit and enter
 		return new TransitionPath(targetAncestors[from], targetAncestors.slice(from, to).reverse());
 	}
+}
+
+// extend the TransitionKind interface, adding instances of each strategy as constants making it appear like an enumeration.
+export namespace TransitionKind {
+	/**
+	 * An external transition is the default transition kind between any two vertices (states or pseudo states).
+	 * Upon traversal it will: exit the source vertex and any parent elements (vertex or region) up to, but not including the common ancestor of the source and target;
+	 * it will then perform and user defined transition behaviour;
+	 * finally, it will enter the target vertex, having first entered any parent elements below the common ancestor as needed.
+	 * If the source or target vertices are not leaf-level elements within the state machine hierarchy, the exit or entry operation will cascate to child elements as needed.
+	 */
+	export const external: TransitionKind = new ExternalTransitionKind();
+
+	/**
+	 * An internal transition does not cause a change of state; when traversed it only executes the user defined transition behaviour.
+	 */
+	export const internal: TransitionKind = new InternalTransitionKind();
+
+	/**
+	 * A local transition is one where either the source or target is the common ancestor of both vertices.
+	 * Traversal is the same as an external transition but the common ancestor is not entered/exited.
+	 */
+	export const local: TransitionKind = new LocalTransitionKind();
 }

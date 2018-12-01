@@ -40,8 +40,8 @@ export class Transition<TTrigger = any> {
 	 * @param type The optional type of the trigger event that will cause this transition to be traversed. If left undefined any object or primative type will be considered.
 	 * @public
 	 */
-	public constructor(public readonly source: Vertex, public target: Vertex | undefined = undefined, public kind: (source: Vertex, taget: Vertex | undefined) => TransitionPath = (target ? TransitionKind.external : TransitionKind.internal), type: func.Constructor<TTrigger> | undefined = undefined, guard: func.Predicate<TTrigger> = () => true) {
-		this.path = this.kind(this.source, this.target);
+	public constructor(public readonly source: Vertex, public target: Vertex | undefined = undefined, kind: TransitionKind = (target ? TransitionKind.external : TransitionKind.internal), type: func.Constructor<TTrigger> | undefined = undefined, guard: func.Predicate<TTrigger> = () => true) {
+		this.path = kind.getPath(this.source, this.target);
 		this.typeGuard = type ? (trigger: TTrigger) => trigger.constructor === type : () => true;
 		this.userGuard = guard;
 
@@ -81,10 +81,9 @@ export class Transition<TTrigger = any> {
 	 * @return Returns the transition.
 	 * @public
 	 */
-	public to(target: Vertex, kind: ((source: Vertex, target: Vertex | undefined) => TransitionPath) = TransitionKind.external): this {
+	public to(target: Vertex, kind: TransitionKind = TransitionKind.external): this {
 		this.target = target;
-		this.kind = kind;
-		this.path = this.kind(this.source, this.target);
+		this.path = kind.getPath(this.source, this.target);
 
 		return this;
 	}
@@ -138,8 +137,7 @@ export class Transition<TTrigger = any> {
 	 */
 	public local(target: Vertex | undefined = undefined): this {
 		if (this.target = (this.target || target)) {
-			this.kind = TransitionKind.local;
-			this.path = this.kind(this.source, this.target);
+			this.path = TransitionKind.local.getPath(this.source, this.target);
 		}
 
 		return this;
