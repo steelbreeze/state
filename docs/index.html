@@ -438,7 +438,7 @@
 		active.entry(function () { document.getElementById("active").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("active").setAttribute("class", "st1"); });
 		running.entry(function () { document.getElementById("running").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("running").setAttribute("class", "st1"); });
 		paused.entry(function () { document.getElementById("paused").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("paused").setAttribute("class", "st1"); });
-		flipped.entry(function () { document.getElementById("flipped").classList.add("active"); }).exit(function () { document.getElementById("flipped").setAttribute("class", "st1"); });
+		flipped.entry(function () { document.getElementById("flipped").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("flipped").setAttribute("class", "st1"); });
 		finalState.entry(function () { document.getElementById("finalState").setAttribute("class", "st1 active"); });
 
 		// create an instance of the model
