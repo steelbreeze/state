@@ -433,13 +433,13 @@
 		running.entry(startMotor).exit(stopMotor);
 
 		// colour the states on entry/exit
-		operational.entry(function () { document.getElementById("operational").classList.add("active"); }).exit(function () { document.getElementById("operational").classList.remove("active"); });
-		stopped.entry(function () { document.getElementById("stopped").classList.add("active"); }).exit(function () { document.getElementById("stopped").classList.remove("active"); });
-		active.entry(function () { document.getElementById("active").classList.add("active"); }).exit(function () { document.getElementById("active").classList.remove("active"); });
-		running.entry(function () { document.getElementById("running").classList.add("active"); }).exit(function () { document.getElementById("running").classList.remove("active"); });
-		paused.entry(function () { document.getElementById("paused").classList.add("active"); }).exit(function () { document.getElementById("paused").classList.remove("active"); });
-		flipped.entry(function () { document.getElementById("flipped").classList.add("active"); }).exit(function () { document.getElementById("flipped").classList.remove("active"); });
-		finalState.entry(function () { document.getElementById("finalState").classList.add("active"); });
+		operational.entry(function () { document.getElementById("operational").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("operational").setAttribute("class", "st1"); });
+		stopped.entry(function () { document.getElementById("stopped").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("stopped").setAttribute("class", "st1"); });
+		active.entry(function () { document.getElementById("active").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("active").setAttribute("class", "st1"); });
+		running.entry(function () { document.getElementById("running").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("running").setAttribute("class", "st1"); });
+		paused.entry(function () { document.getElementById("paused").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("paused").setAttribute("class", "st1"); });
+		flipped.entry(function () { document.getElementById("flipped").classList.add("active"); }).exit(function () { document.getElementById("flipped").setAttribute("class", "st1"); });
+		finalState.entry(function () { document.getElementById("finalState").setAttribute("class", "st1 active"); });
 
 		// create an instance of the model
 		let instance = new state.Instance("instance", model);
