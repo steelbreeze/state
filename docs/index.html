@@ -232,10 +232,10 @@
 							<text x="38.39" y="246.25" class="st2" v:langID="2057">
 								<v:paragraph v:horizAlign="1" />
 								<v:tabList />stopped</text>
-								<text x="30.39" y="275" class="st2" v:langID="2057">
-									<v:paragraph v:horizAlign="1" />
-									<v:tabList />Pause / defer</text>
-							</g>
+							<text x="30.39" y="275" class="st2" v:langID="2057">
+								<v:paragraph v:horizAlign="1" />
+								<v:tabList />Pause / defer</text>
+						</g>
 						<g id="shape10-45" v:mID="10" v:groupContext="shape" v:layerMember="0" transform="translate(170.079,-149.819)">
 							<title>Dynamic connector.10</title>
 							<desc>Play</desc>
@@ -373,7 +373,8 @@
 						in
 						prior to entering the flipped state; next, there are two transitions that respond to the Stop event, this
 						shows depth-first evaluation; last, the transition from stopped to running crosses the region boundary within the
-						active state such that there is no need for an initial state; last, the stopped state can defer the Pause event for evaluation after it has been exited.</p>
+						active state such that there is no need for an initial state; last, the stopped state can defer the Pause event
+						for evaluation after it has been exited.</p>
 					<p>The active state configuration changes colour on state entry/exit with transparency to show the nesting of the
 						current state. If you open your browser console you will see some further log output.</p>
 				</article>
@@ -385,11 +386,11 @@
 		let head = document.getElementById("head");
 		let motor = document.getElementById("motor");
 
-		// create our event types
-		class Play { }
-		class Pause { }
-		class Stop { }
-		class Flip { }
+		// create our event types (should simply use class but this is IE friendly)
+		var Play  = (function () { function Play()  { } return Play;  }());
+		var Pause = (function () { function Pause() { } return Pause; }());
+		var Stop  = (function () { function Stop()  { } return Stop;  }());
+		var Flip  = (function () { function Flip()  { } return Flip;  }());
 
 		// define the operations that the state machine will call as outputs
 		function startMotor() { motor.innerText = "running"; }
