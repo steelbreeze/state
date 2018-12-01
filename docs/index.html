@@ -339,7 +339,7 @@
 								<desc>final</desc>
 								<v:textBlock v:margins="rect(4,4,4,4)" v:tabSpace="42.5197" />
 								<v:textRect cx="14.1732" cy="320.898" width="56.7" height="14.1732" />
-								<ellipse cx="14.1732" cy="299.638" rx="14.1732" ry="14.1732" class="st1" id="final" />
+								<ellipse cx="14.1732" cy="299.638" rx="14.1732" ry="14.1732" class="st1" id="finalState" />
 								<text x="4.45" y="324.2" class="st2" v:langID="2057">
 									<v:paragraph v:horizAlign="1" />
 									<v:tabList />final</text>
@@ -406,7 +406,7 @@
 		var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
 		var operational = new state.State("operational", model);
 		var flipped = new state.State("flipped", model);
-		var finalState = new state.State("final", model);
+		var finalState = new state.State("finalState", model);
 		var deepHistory = new state.PseudoState("history", operational, state.PseudoStateKind.DeepHistory);
 		var stopped = new state.State("stopped", operational);
 		var active = new state.State("active", operational);
@@ -433,11 +433,15 @@
 		running.entry(startMotor).exit(stopMotor);
 
 		// colour the states on entry/exit
-		for (const s of [operational, stopped, active, running, paused, flipped, finalState]) {
-			s.entry(function () { document.getElementById(s.name).classList.add("active"); });
-			s.exit(function () { document.getElementById(s.name).classList.remove("active"); });
-		}
+		operational.entry(function () { document.getElementById("operational").classList.add("active"); }).exit(function () { document.getElementById("operational").classList.remove("active"); });
+		stopped.entry(function () { document.getElementById("stopped").classList.add("active"); }).exit(function () { document.getElementById("stopped").classList.remove("active"); });
+		active.entry(function () { document.getElementById("active").classList.add("active"); }).exit(function () { document.getElementById("active").classList.remove("active"); });
+		running.entry(function () { document.getElementById("running").classList.add("active"); }).exit(function () { document.getElementById("running").classList.remove("active"); });
+		paused.entry(function () { document.getElementById("paused").classList.add("active"); }).exit(function () { document.getElementById("paused").classList.remove("active"); });
+		flipped.entry(function () { document.getElementById("flipped").classList.add("active"); }).exit(function () { document.getElementById("flipped").classList.remove("active"); });
+		finalState.entry(function () { document.getElementById("finalState").classList.add("active"); });
 
+		// create an instance of the model
 		let instance = new state.Instance("instance", model);
 	</script>
 
