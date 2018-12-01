@@ -1,0 +1,377 @@
+<!doctype html>
+<html class="default no-js">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<title>PseudoStateKind | state.js</title>
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="../assets/css/main.css">
+</head>
+<body>
+<header>
+	<div class="tsd-page-toolbar">
+		<div class="container">
+			<div class="table-wrap">
+				<div class="table-cell" id="tsd-search" data-index="../assets/js/search.js" data-base="..">
+					<div class="field">
+						<label for="tsd-search-field" class="tsd-widget search no-caption">Search</label>
+						<input id="tsd-search-field" type="text" />
+					</div>
+					<ul class="results">
+						<li class="state loading">Preparing search index...</li>
+						<li class="state failure">The search index is not available</li>
+					</ul>
+					<a href="../index.html" class="title">state.js</a>
+				</div>
+				<div class="table-cell" id="tsd-widgets">
+					<div id="tsd-filter">
+						<a href="#" class="tsd-widget options no-caption" data-toggle="options">Options</a>
+						<div class="tsd-filter-group">
+							<div class="tsd-select" id="tsd-filter-visibility">
+								<span class="tsd-select-label">All</span>
+								<ul class="tsd-select-list">
+									<li data-value="public">Public</li>
+									<li data-value="protected">Public/Protected</li>
+									<li data-value="private" class="selected">All</li>
+								</ul>
+							</div>
+							<input type="checkbox" id="tsd-filter-inherited" checked />
+							<label class="tsd-widget" for="tsd-filter-inherited">Inherited</label>
+							<input type="checkbox" id="tsd-filter-externals" checked />
+							<label class="tsd-widget" for="tsd-filter-externals">Externals</label>
+						</div>
+					</div>
+					<a href="#" class="tsd-widget menu no-caption" data-toggle="menu">Menu</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="tsd-page-title">
+		<div class="container">
+			<ul class="tsd-breadcrumb">
+				<li>
+					<a href="../index.html">Globals</a>
+				</li>
+				<li>
+					<a href="pseudostatekind.html">PseudoStateKind</a>
+				</li>
+			</ul>
+			<h1>Enumeration PseudoStateKind</h1>
+		</div>
+	</div>
+</header>
+<div class="container container-main">
+	<div class="row">
+		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>An enumeration used to dictate the behavior of instances of the <a href="../classes/pseudostate.html">PseudoState</a> class.</p>
+					</div>
+					<p>Use these constants as the <code>kind</code> parameter when creating new <a href="../classes/pseudostate.html">PseudoState</a> instances to define their behavior (see the description of each member).</p>
+				</div>
+			</section>
+			<section class="tsd-panel-group tsd-index-group">
+				<h2>Index</h2>
+				<section class="tsd-panel tsd-index-panel">
+					<div class="tsd-index-content">
+						<section class="tsd-index-section ">
+							<h3>Enumeration members</h3>
+							<ul class="tsd-index-list">
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="pseudostatekind.html#choice" class="tsd-kind-icon">Choice</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="pseudostatekind.html#deephistory" class="tsd-kind-icon">Deep<wbr>History</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="pseudostatekind.html#initial" class="tsd-kind-icon">Initial</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="pseudostatekind.html#junction" class="tsd-kind-icon">Junction</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="pseudostatekind.html#shallowhistory" class="tsd-kind-icon">Shallow<wbr>History</a></li>
+								<li class="tsd-kind-enum-member tsd-parent-kind-enum"><a href="pseudostatekind.html#terminate" class="tsd-kind-icon">Terminate</a></li>
+							</ul>
+						</section>
+					</div>
+				</section>
+			</section>
+			<section class="tsd-panel-group tsd-member-group ">
+				<h2>Enumeration members</h2>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="choice" class="tsd-anchor"></a>
+					<h3>Choice</h3>
+					<div class="tsd-signature tsd-kind-icon">Choice<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state.js/blob/be5db68/src/state.ts#L19">state.ts:19</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Enables a dynamic conditional branches; within a compound <a href="../classes/transition.html">Transition</a>.</p>
+						</div>
+						<p>All outbound transition guards from a <a href="pseudostatekind.html#choice">Choice</a> <a href="../classes/pseudostate.html">PseudoState</a> are evaluated upon entering the <a href="../classes/pseudostate.html">PseudoState</a>: if a single <a href="../classes/transition.html">Transition</a> is found, it will be traversed; if many are found, an arbitary one will be selected and traversed; if none evaluate true, and there is no &#39;else transition&#39; defined, the machine is deemed illformed and an exception will be thrown.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="deephistory" class="tsd-anchor"></a>
+					<h3>Deep<wbr>History</h3>
+					<div class="tsd-signature tsd-kind-icon">Deep<wbr>History<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state.js/blob/be5db68/src/state.ts#L22">state.ts:22</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>As per <a href="pseudostatekind.html#shallowhistory">ShallowHistory</a>, but the history semantic cascades through all child regions irrespective of their history semantics.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="initial" class="tsd-anchor"></a>
+					<h3>Initial</h3>
+					<div class="tsd-signature tsd-kind-icon">Initial<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state.js/blob/be5db68/src/state.ts#L25">state.ts:25</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Defines the <a href="../classes/pseudostate.html">PseudoState</a> that will be the initial staring point when entering its enclosing <a href="../classes/region.html">Region</a>.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="junction" class="tsd-anchor"></a>
+					<h3>Junction</h3>
+					<div class="tsd-signature tsd-kind-icon">Junction<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state.js/blob/be5db68/src/state.ts#L32">state.ts:32</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Enables a static conditional branches; within a compound <a href="../classes/transition.html">Transition</a>.</p>
+						</div>
+						<p>All outbound transition guards from a <a href="pseudostatekind.html#junction">Junction</a> <a href="../classes/pseudostate.html">PseudoState</a> are evaluated upon entering the <a href="../classes/pseudostate.html">PseudoState</a>: if a single <a href="../classes/transition.html">Transition</a> is found, it will be traversed; if many or none evaluate true, and there is no &#39;else transition&#39; defined, the machine is deemed illformed and an exception will be thrown.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="shallowhistory" class="tsd-anchor"></a>
+					<h3>Shallow<wbr>History</h3>
+					<div class="tsd-signature tsd-kind-icon">Shallow<wbr>History<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state.js/blob/be5db68/src/state.ts#L35">state.ts:35</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Ensures that re-entry of the enclosing <a href="../classes/region.html">Region</a> will start at the last known active state configuration.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum">
+					<a name="terminate" class="tsd-anchor"></a>
+					<h3>Terminate</h3>
+					<div class="tsd-signature tsd-kind-icon">Terminate<span class="tsd-signature-symbol">:</span> </div>
+					<aside class="tsd-sources">
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state.js/blob/be5db68/src/state.ts#L41">state.ts:41</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Entering a terminate <a href="../classes/pseudostate.html">PseudoState</a> implies that the execution of <a href="../classes/statemachine.html">StateMachine</a> is terminated and will not respond to any more messages.</p>
+						</div>
+						<dl class="tsd-comment-tags">
+							<dt>depricated</dt>
+							<dd><p>since v5.10.2 (use a transition to a top-leval state with no outbound transitions).</p>
+							</dd>
+						</dl>
+					</div>
+				</section>
+			</section>
+		</div>
+		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
+			<nav class="tsd-navigation primary">
+				<ul>
+					<li class="globals  ">
+						<a href="../index.html"><em>Globals</em></a>
+					</li>
+				</ul>
+			</nav>
+			<nav class="tsd-navigation secondary menu-sticky">
+				<ul class="before-current">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-enum">
+						<a href="pseudostatekind.html" class="tsd-kind-icon">Pseudo<wbr>State<wbr>Kind</a>
+						<ul>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="pseudostatekind.html#choice" class="tsd-kind-icon">Choice</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="pseudostatekind.html#deephistory" class="tsd-kind-icon">Deep<wbr>History</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="pseudostatekind.html#initial" class="tsd-kind-icon">Initial</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="pseudostatekind.html#junction" class="tsd-kind-icon">Junction</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="pseudostatekind.html#shallowhistory" class="tsd-kind-icon">Shallow<wbr>History</a>
+							</li>
+							<li class=" tsd-kind-enum-member tsd-parent-kind-enum">
+								<a href="pseudostatekind.html#terminate" class="tsd-kind-icon">Terminate</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
+					<li class=" tsd-kind-enum">
+						<a href="transitionkind.html" class="tsd-kind-icon">Transition<wbr>Kind</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="../classes/element.html" class="tsd-kind-icon">Element</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/finalstate.html" class="tsd-kind-icon">Final<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/jsoninstance.html" class="tsd-kind-icon">JSONInstance</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="../classes/namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/pseudostate.html" class="tsd-kind-icon">Pseudo<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/region.html" class="tsd-kind-icon">Region</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/state.html" class="tsd-kind-icon">State</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/statemachine.html" class="tsd-kind-icon">State<wbr>Machine</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/statemachineinstance.html" class="tsd-kind-icon">State<wbr>Machine<wbr>Instance</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/transition.html" class="tsd-kind-icon">Transition</a>
+					</li>
+					<li class=" tsd-kind-class">
+						<a href="../classes/vertex.html" class="tsd-kind-icon">Vertex</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter">
+						<a href="../classes/visitor.html" class="tsd-kind-icon">Visitor</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/action.html" class="tsd-kind-icon">Action</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="../interfaces/iinstance.html" class="tsd-kind-icon">IInstance</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../index.html#internaltransitionstriggercompletion" class="tsd-kind-icon">internal<wbr>Transitions<wbr>Trigger<wbr>Completion</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#evaluate" class="tsd-kind-icon">evaluate</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#initialise" class="tsd-kind-icon">initialise</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#iscomplete" class="tsd-kind-icon">is<wbr>Complete</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#random" class="tsd-kind-icon">random</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#setconsole" class="tsd-kind-icon">set<wbr>Console</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#setinternaltransitionstriggercompletion" class="tsd-kind-icon">set<wbr>Internal<wbr>Transitions<wbr>Trigger<wbr>Completion</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#setrandom" class="tsd-kind-icon">set<wbr>Random</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="../index.html#validate" class="tsd-kind-icon">validate</a>
+					</li>
+					<li class=" tsd-kind-object-literal">
+						<a href="../index.html#console" class="tsd-kind-icon">console</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<footer class="with-border-bottom">
+	<div class="container">
+		<h2>Legend</h2>
+		<div class="tsd-legend-group">
+			<ul class="tsd-legend">
+				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
+				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
+				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
+				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
+				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
+				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
+				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
+				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
+				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
+				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
+				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
+				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
+				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
+				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
+			</ul>
+			<ul class="tsd-legend">
+				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
+				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
+			</ul>
+		</div>
+	</div>
+</footer>
+<div class="container tsd-generator">
+	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+</div>
+<div class="overlay"></div>
+<script src="../assets/js/main.js"></script>
+<script>if (location.protocol == 'file:') document.write('<script src="../assets/js/search.js"><' + '/script>');</script>
+</body>
+</html>
