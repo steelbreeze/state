@@ -5,7 +5,9 @@ import { log, State, PseudoState, PseudoStateKind, Transition, TransitionKind, I
 class MyEvent {
 	public constructor(public fieldA: string, public fieldB: number) { }
 
-	public toString(): string { return JSON.stringify(this); }
+	public toString(): string {
+		return JSON.stringify(this);
+	}
 }
 
 // log state entry, exit and trigger event evaluation
