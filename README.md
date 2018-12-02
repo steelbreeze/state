@@ -31,28 +31,47 @@ The full API reference can be found [here](https://steelbreeze.net/state/api/v7)
 ```typescript
 import * as state from "@steelbreeze/state";
 
+// create event class that a transition will respond to
+class MyEvent {
+	public constructor(public fieldA: string, public fieldB: number) { }
+
+	public toString(): string {
+		return JSON.stringify(this);
+	}
+}
+
 // log state entry, exit and trigger event evaluation
-state.log.add(message => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
+log.add(message => console.info(message), log.Entry | log.Exit | log.Evaluate);
 
 // create the state machine model elements
-const model = new state.State("model");
-const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
-const stateA = new state.State("stateA", model);
-const stateB = new state.State("stateB", model);
+const model = new State("model");
+const initial = new PseudoState("initial", model, PseudoStateKind.Initial);
+const stateA = new State("stateA", model);
+const stateB = new State("stateB", model);
 
-// create the state machine model transitions
+// create the transition from initial pseudo state to stateA
 initial.to(stateA);
-stateA.on(String).when(event => event === "move").to(stateB);
+
+// create a transtion from stateA to stateB a for events of type MyEvent with a guard condition
+stateA.on(MyEvent).when(myEvent => myEvent.fieldB > 2).to(stateB);
 
 // create an instance of the state machine model
-let instance = new state.Instance("instance", model);
+let instance = new Instance("instance", model);
 
-// send the machine instance a message for evaluation
-instance.evaluate("move");
+// send the machine events for evaluation
+instance.evaluate(new MyEvent("test", 1));
+instance.evaluate(new MyEvent("test", 3));
 ```
 ### JavaScript
 ```javascript
 var state = require("@steelbreeze/state");
+
+// create event class that a transition will respond to
+class MyEvent {
+	constructor(fieldA, fieldB) { this.fieldA = fieldA; this.fieldB = fieldB; }
+
+	toString() { return JSON.stringify(this); }
+}
 
 // log state entry, exit and trigger event evaluation
 state.log.add(function (message) { return console.info(message); }, state.log.Entry | state.log.Exit | state.log.Evaluate);
@@ -63,15 +82,18 @@ var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Init
 var stateA = new state.State("stateA", model);
 var stateB = new state.State("stateB", model);
 
-// create the state machine model transitions
+// create the transition from initial pseudo state to stateA
 initial.to(stateA);
-stateA.on(String).when(event => event === "move").to(stateB);
+
+// create a transtion from stateA to stateB a for events of type MyEvent with a guard condition
+stateA.on(MyEvent).when(myEvent => myEvent.fieldB > 2).to(stateB);
 
 // create an instance of the state machine model
 var instance = new state.Instance("instance", model);
 
-// send the machine instance a message for evaluation
-instance.evaluate("move");
+// send the machine events for evaluation
+instance.evaluate(new MyEvent("test", 1));
+instance.evaluate(new MyEvent("test", 3));
 ```
 ### Output
 The output of the above code will be:
@@ -81,7 +103,8 @@ instance enter model.model
 instance enter model.model.initial
 instance leave model.model.initial
 instance enter model.model.stateA
-instance evaluate string trigger: move
+instance evaluate {"fieldA":"test","fieldB":1}
+instance evaluate {"fieldA":"test","fieldB":3}
 instance leave model.model.stateA
 instance enter model.model.stateB
 ```
