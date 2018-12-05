@@ -274,6 +274,6 @@ model.Transition.prototype.execute = function (instance: IInstance, deepHistory:
 
 	// test for completion transitions for internal transitions as there will be state entry/exit performed where the test is usually performed
 	if (!this.target && this.source instanceof model.State) {
-		completion(this.source, instance, deepHistory, this.target);
+		completion(this.source, instance, deepHistory, this.source);
 	}
 }

@@ -42,7 +42,7 @@ export class Instance implements IInstance {
 		if (activeStateConfiguration) {
 			this.transaction(() => this.stateFromJSON(this.root, activeStateConfiguration));
 		} else {
-			this.transaction(() => this.root.enter(this, false, undefined));
+			this.transaction(() => this.root.enter(this, false, this.root));
 		}
 	}
 

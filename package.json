@@ -1,6 +1,6 @@
 {
 	"name": "@steelbreeze/state",
-	"version": "7.2.1",
+	"version": "7.2.2",
 	"description": "Finite state machine for TypeScript and JavaScript",
 	"main": "lib/node/index.js",
 	"typings": "lib/node/index.d.ts",
