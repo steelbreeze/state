@@ -62,7 +62,7 @@ let instance = new Instance("instance", model);
 instance.evaluate(new MyEvent("test", 1));
 instance.evaluate(new MyEvent("test", 3));
 ```
-### JavaScript
+### JavaScript (ECMAScript 2015)
 ```javascript
 var state = require("@steelbreeze/state");
 
@@ -74,13 +74,13 @@ class MyEvent {
 }
 
 // log state entry, exit and trigger event evaluation
-state.log.add(function (message) { console.info(message); }, state.log.Entry | state.log.Exit | state.log.Evaluate);
+state.log.add(message => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
 
 // create the state machine model elements
-var model = new state.State("model");
-var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
-var stateA = new state.State("stateA", model);
-var stateB = new state.State("stateB", model);
+const model = new state.State("model");
+const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
+const stateA = new state.State("stateA", model);
+const stateB = new state.State("stateB", model);
 
 // create the transition from initial pseudo state to stateA
 initial.to(stateA);
@@ -89,7 +89,7 @@ initial.to(stateA);
 stateA.on(MyEvent).when(myEvent => myEvent.fieldB > 2).to(stateB);
 
 // create an instance of the state machine model
-var instance = new state.Instance("instance", model);
+let instance = new state.Instance("instance", model);
 
 // send the machine events for evaluation
 instance.evaluate(new MyEvent("test", 1));
