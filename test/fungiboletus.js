@@ -2,7 +2,7 @@
 var assert = require("assert"),
 	state = require("../lib/node/index");
 
-state.log.add(message => console.info(message));
+//state.log.add(message => console.info(message));
 
 const model = new state.State("model");
 const initial = new state.PseudoState("initial", model);
