@@ -8,11 +8,13 @@ var MyEvent = /** @class */ (function () {
         this.fieldA = fieldA;
         this.fieldB = fieldB;
     }
-    MyEvent.prototype.toString = function () { return JSON.stringify(this); };
+    MyEvent.prototype.toString = function () {
+        return JSON.stringify(this);
+    };
     return MyEvent;
 }());
 // log state entry, exit and trigger event evaluation
-node_1.log.add(function (message) { return console.info(message); }, node_1.log.Entry | node_1.log.Exit | node_1.log.Evaluate);
+node_1.log.add(function (message) { return console.info(message); });
 // create the state machine model elements
 var model = new node_1.State("model");
 var initial = new node_1.PseudoState("initial", model, node_1.PseudoStateKind.Initial);

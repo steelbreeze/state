@@ -38,7 +38,7 @@ export class Region implements NamedElement<State> {
 
 		this.parent.children.unshift(this);
 
-		log.info(() => `Created ${this}`, log.Create);
+		log.info(() => `Created region ${this}`, log.Create);
 	}
 
 	/**

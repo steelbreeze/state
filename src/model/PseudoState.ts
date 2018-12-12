@@ -51,7 +51,7 @@ export class PseudoState implements Vertex {
 
 		this.parent.children.unshift(this);
 
-		log.info(() => `Created ${this}`, log.Create);
+		log.info(() => `Created ${this.kind} pseudo state ${this}`, log.Create);
 	}
 
 	/**

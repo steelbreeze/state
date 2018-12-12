@@ -11,7 +11,7 @@ class MyEvent {
 }
 
 // log state entry, exit and trigger event evaluation
-log.add(message => console.info(message), log.Entry | log.Exit | log.Evaluate);
+log.add(message => console.info(message));
 
 // create the state machine model elements
 const model = new State("model");
