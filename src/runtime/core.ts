@@ -103,7 +103,7 @@ function completion(state: model.State, instance: IInstance, deepHistory: boolea
 declare module '../model/NamedElement' {
 	interface NamedElement<TParent> {
 		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
-		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: model.NamedElement | undefined): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}
@@ -116,7 +116,7 @@ declare module '../model/NamedElement' {
 declare module '../model/Region' {
 	interface Region {
 		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
-		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: model.NamedElement | undefined): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}
@@ -124,12 +124,12 @@ declare module '../model/Region' {
 
 /** Enter a region, state or pseudo state */
 model.Region.prototype.enter = model.State.prototype.enter = model.PseudoState.prototype.enter = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
-	this.enterHead(instance, deepHistory, trigger);
+	this.enterHead(instance, deepHistory, trigger, undefined);
 	this.enterTail(instance, deepHistory, trigger);
 }
 
 /** Initiate region entry */
-model.Region.prototype.enterHead = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+model.Region.prototype.enterHead = function (instance: IInstance, deepHistory: boolean, trigger: any, nextElement: model.NamedElement | undefined): void {
 	log.info(() => `${instance} enter ${this}`, log.Entry);
 }
 
@@ -165,14 +165,14 @@ model.Region.prototype.leave = function (instance: IInstance, deepHistory: boole
 declare module '../model/PseudoState' {
 	interface PseudoState {
 		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
-		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: model.NamedElement | undefined): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}
 }
 
 /** Initiate pseudo state entry */
-model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+model.PseudoState.prototype.enterHead = function (instance: IInstance, deepHistory: boolean, trigger: any, nextElement: model.NamedElement | undefined): void {
 	log.info(() => `${instance} enter ${this}`, log.Entry);
 
 	// update the current vertex of the parent region
@@ -199,14 +199,24 @@ model.PseudoState.prototype.leave = function (instance: IInstance, deepHistory: 
 declare module '../model/State' {
 	interface State {
 		enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
-		enterHead(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: model.NamedElement | undefined): void;
 		enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}
 }
 
 /** Initiate state entry */
-model.State.prototype.enterHead = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+model.State.prototype.enterHead = function (instance: IInstance, deepHistory: boolean, trigger: any, nextElement: model.NamedElement | undefined): void {
+	// when entering a state indirectly (part of the target ancestry in a transition that crosses region boundaries), ensure all child regions are entered
+	if (nextElement) {
+		// enter all child regions except for the next in the ancestry
+		for (const region of this.children) {
+			if (region !== nextElement) {
+				region.enter(instance, deepHistory, trigger);
+			}
+		}
+	}
+
 	log.info(() => `${instance} enter ${this}`, log.Entry);
 
 	// update the current state and vertex of the parent region
@@ -263,9 +273,9 @@ model.Transition.prototype.execute = function (instance: IInstance, deepHistory:
 	this.doActions(trigger);
 
 	// enter elements below the common ancestor to the target
-	if(this.path.enter) {
+	if (this.path.enter) {
 		for (var i = this.path.enter.length; i--;) {
-			this.path.enter[i].enterHead(instance, deepHistory, trigger);
+			this.path.enter[i].enterHead(instance, deepHistory, trigger, this.path.enter[i - 1]);
 		}
 
 		// cascade the entry action to any child elements of the target
