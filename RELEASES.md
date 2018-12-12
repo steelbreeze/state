@@ -1,8 +1,8 @@
 ## v7.2.3
-This fixes bug #13 where direct entry to a region that is part of an orthogonal state did not cause entry to its sibling regions.
+Fixes bug #13 where direct entry to a region that is part of an orthogonal state did not cause entry to its sibling regions.
 
 ## v7.2.2
-This fixes a bug seen with a combination of internal transitions and testing for continuation transitions, where transition guards were passed an undefined value.
+Fixes a bug seen with a combination of internal transitions and testing for continuation transitions, where transition guards were passed an undefined value.
 
 ## v7.2.1
 v7.2.1 Is a maintainence release, with just refactoring after the added functionallity of the last two releases. The focus area has been moving code from the runtime to the model where there was no dependency on runtime artefacts and tidying up ```TransitionKind``` by implementing it as a strategy pattern.
