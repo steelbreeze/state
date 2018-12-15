@@ -69,7 +69,7 @@ export class State implements Vertex {
 			this.qualifiedName = name;
 		}
 
-		log.info(() => `Created ${this}`, log.Create);
+		log.info(() => `Created state ${this}`, log.Create);
 
 	}
 

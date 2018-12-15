@@ -1,3 +1,11 @@
+## v7.2.3
+Fixes bug #13 where direct entry to a region that is part of an orthogonal state did not cause entry to its sibling regions.
+
+Enhance logging: change the PseudoStateKind enumeration from integer values to strings and improve the logging of state machine model elements; add better transition creation logging.
+
+## v7.2.2
+Fixes a bug seen with a combination of internal transitions and testing for continuation transitions, where transition guards were passed an undefined value.
+
 ## v7.2.1
 v7.2.1 Is a maintainence release, with just refactoring after the added functionallity of the last two releases. The focus area has been moving code from the runtime to the model where there was no dependency on runtime artefacts and tidying up ```TransitionKind``` by implementing it as a strategy pattern.
 

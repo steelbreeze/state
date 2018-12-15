@@ -43,7 +43,11 @@ class ExternalTransitionKind implements TransitionKind {
 		const to = targetAncestors.length - (target instanceof PseudoState && target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
 
 		// initialise the base class with source, target and elements to exit and enter		
-		return new TransitionPath(sourceAncestors[from], targetAncestors.slice(from, to).reverse());
+		return new TransitionPath(this, sourceAncestors[from], targetAncestors.slice(from, to).reverse());
+	}
+
+	public toString(): string {
+		return "external";
 	}
 }
 
@@ -59,7 +63,11 @@ class InternalTransitionKind implements TransitionKind {
 	 * @returns Returns the path of element to exit and enter when traversing the transition.
 	 */
 	getPath(source: Vertex, target: Vertex | undefined): TransitionPath {
-		return new TransitionPath();
+		return new TransitionPath(this);
+	}
+
+	public toString(): string {
+		return "internal";
 	}
 }
 
@@ -87,7 +95,11 @@ class LocalTransitionKind implements TransitionKind {
 		const to = targetAncestors.length - (target instanceof PseudoState && target.isHistory() ? 1 : 0); // NOTE: if the target is a history pseudo state we just enter the parent region and it's history logic will come into play
 
 		// initialise the base class with source, target and elements to exit and enter
-		return new TransitionPath(targetAncestors[from], targetAncestors.slice(from, to).reverse());
+		return new TransitionPath(this, targetAncestors[from], targetAncestors.slice(from, to).reverse());
+	}
+
+	public toString(): string {
+		return "local";
 	}
 }
 

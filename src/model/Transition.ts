@@ -48,7 +48,7 @@ export class Transition<TTrigger = any> {
 		// add this transition to the set of outgoing transitions of the source vertex.
 		source.outgoing.unshift(this);
 
-		log.info(() => `Created transition from ${source}`, log.Create);
+		log.info(() => `Created ${this}`, log.Create);
 	}
 
 	/**
@@ -84,6 +84,8 @@ export class Transition<TTrigger = any> {
 	public to(target: Vertex, kind: TransitionKind = TransitionKind.external): this {
 		this.target = target;
 		this.path = kind.getPath(this.source, this.target);
+
+		log.info(() => `- converted to ${this}`, log.Create);
 
 		return this;
 	}
@@ -156,5 +158,9 @@ export class Transition<TTrigger = any> {
 	 */
 	public effect(action: func.Consumer<TTrigger>): this {
 		return this.do(action);
+	}
+
+	public toString(): string {
+		return `${this.path.kind} transition from ${this.source} to ${this.target}`;
 	}
 }
