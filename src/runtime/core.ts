@@ -262,7 +262,7 @@ declare module '../model/Transition' {
 
 /** Traverse an external or local transition */
 model.Transition.prototype.execute = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
-	log.info(() => `Executing transition from ${this.source} to ${this.target}`, log.Transition);
+	log.info(() => `Executing ${this}`, log.Transition);
 
 	// leave elements below the common ancestor
 	if (this.path.leave) {

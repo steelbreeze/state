@@ -75,4 +75,5 @@ export declare class Transition<TTrigger = any> {
      * @deprecated Use Transition.do instead. This method will be removed in the v8.0 release.
      */
     effect(action: func.Consumer<TTrigger>): this;
+    toString(): string;
 }
