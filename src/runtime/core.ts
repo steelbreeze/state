@@ -265,25 +265,61 @@ model.Transition.prototype.execute = function (instance: IInstance, deepHistory:
 	log.info(() => `Executing ${this}`, log.Transition);
 
 	// leave elements below the common ancestor
-	if (this.path.leave) {
-		this.path.leave.leave(instance, deepHistory, trigger);
-	}
+	this.activation.exitSource(instance, deepHistory, trigger);
 
 	// perform the transition behaviour
 	this.doActions(trigger);
 
 	// enter elements below the common ancestor to the target
-	if (this.path.enter) {
-		for (var i = this.path.enter.length; i--;) {
-			this.path.enter[i].enterHead(instance, deepHistory, trigger, this.path.enter[i - 1]);
-		}
+	this.activation.enterTarget(instance, deepHistory, trigger);
+}
 
-		// cascade the entry action to any child elements of the target
-		this.path.enter[0].enterTail(instance, deepHistory, trigger);
+declare module '../model/TransitionActivation' {
+	interface TransitionActivation {
+		exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}
 
+	interface ExternalTransitionActivation {
+		exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
+	}
+
+	interface LocalTransitionActivation {
+		exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
+	}
+
+	interface InternalTransitionActivation {
+		exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
+	}
+}
+
+model.ExternalTransitionActivation.prototype.exitSource = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	this.toExit.leave(instance, deepHistory, trigger);
+}
+
+model.LocalTransitionActivation.prototype.exitSource = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	for (var i = this.source.children.length; i--;) {
+		instance.getState(this.source.children[i]).leave(instance, deepHistory, trigger);
+	}
+}
+
+model.InternalTransitionActivation.prototype.exitSource = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+}
+
+model.ExternalTransitionActivation.prototype.enterTarget = model.LocalTransitionActivation.prototype.enterTarget = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	// enter elements below the common ancestor to the target
+	for (var i = this.toEnter.length; i--;) {
+		this.toEnter[i].enterHead(instance, deepHistory, trigger, this.toEnter[i - 1]);
+	}
+
+	// cascade the entry action to any child elements of the target
+	this.toEnter[0].enterTail(instance, deepHistory, trigger);
+}
+
+model.InternalTransitionActivation.prototype.enterTarget = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// test for completion transitions for internal transitions as there will be state entry/exit performed where the test is usually performed
-	if (!this.target && this.source instanceof model.State) {
-		completion(this.source, instance, deepHistory, this.source);
-	}
+	completion(this.source, instance, deepHistory, this.source);
 }

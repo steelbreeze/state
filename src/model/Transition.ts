@@ -1,6 +1,6 @@
 import { func, log } from '../util';
 import { Vertex } from './Vertex';
-import { TransitionPath } from './TransitionPath';
+import { TransitionActivation } from './TransitionActivation';
 import { TransitionKind } from './TransitionKind';
 
 /**
@@ -21,10 +21,10 @@ export class Transition<TTrigger = any> {
 	private userGuard: func.Predicate<TTrigger> = () => true;
 
 	/**
-	 * The elements that need to be left and entered when traversing a transition
+	 * The semantics for transition traversal.
 	 * @internal
 	 */
-	path: TransitionPath;
+	activation: TransitionActivation;
 
 	/**
 	 * The behavior to call when the transition is traversed.
@@ -41,7 +41,7 @@ export class Transition<TTrigger = any> {
 	 * @public
 	 */
 	public constructor(public readonly source: Vertex, public target: Vertex | undefined = undefined, kind: TransitionKind = (target ? TransitionKind.external : TransitionKind.internal), type: func.Constructor<TTrigger> | undefined = undefined, guard: func.Predicate<TTrigger> = () => true) {
-		this.path = kind.getPath(this.source, this.target);
+		this.activation = new kind(this);
 		this.typeGuard = type ? (trigger: TTrigger) => trigger.constructor === type : () => true;
 		this.userGuard = guard;
 
@@ -83,7 +83,7 @@ export class Transition<TTrigger = any> {
 	 */
 	public to(target: Vertex, kind: TransitionKind = TransitionKind.external): this {
 		this.target = target;
-		this.path = kind.getPath(this.source, this.target);
+		this.activation = new kind(this);
 
 		log.info(() => `- converted to ${this}`, log.Create);
 
@@ -143,7 +143,7 @@ export class Transition<TTrigger = any> {
 	 */
 	public local(target: Vertex | undefined = undefined): this {
 		if (this.target = (this.target || target)) {
-			this.path = TransitionKind.local.getPath(this.source, this.target);
+			this.activation = new TransitionKind.local(this);
 		}
 
 		return this;
@@ -161,6 +161,6 @@ export class Transition<TTrigger = any> {
 	}
 
 	public toString(): string {
-		return `${this.path.kind} transition from ${this.source} to ${this.target}`;
+		return `${this.activation} transition from ${this.source} to ${this.target}`;
 	}
 }

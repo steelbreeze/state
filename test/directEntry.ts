@@ -2,7 +2,7 @@ import * as state from '../lib/node';
 import * as assert from 'assert';
 import 'mocha';
 
-state.log.add(message => console.info(message), state.log.Entry | state.log.Exit);
+//state.log.add(message => console.info(message), state.log.Entry | state.log.Exit);
 
 const model = new state.State("model");
 const initial = new state.PseudoState("initial", model);

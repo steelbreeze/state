@@ -1,7 +1,14 @@
-## v7.2.3
+## v7.2.5
+Fixes bug #14 where a local transition didn't exit the current state.
+
+Adpot the use of TransitionActivation, ExternalTransitionActivation, LocalTransitionActivation and InternalTransitionActivation as per the Precise Semantics of UML State Machines document to encapsulate the logic for transition exiting of sources and entering of targets. Re-purpose TransitionKind to be a factory for the TransitionActivation strategy. 
+
+## v7.2.4
 Fixes bug #13 where direct entry to a region that is part of an orthogonal state did not cause entry to its sibling regions.
 
 Enhance logging: change the PseudoStateKind enumeration from integer values to strings and improve the logging of state machine model elements; add better transition creation logging.
+
+> Note: v7.2.3 was bypassed due to a release error.
 
 ## v7.2.2
 Fixes a bug seen with a combination of internal transitions and testing for continuation transitions, where transition guards were passed an undefined value.
