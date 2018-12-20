@@ -41,7 +41,7 @@ export class Transition<TTrigger = any> {
 	 * @public
 	 */
 	public constructor(public readonly source: Vertex, public target: Vertex | undefined = undefined, kind: TransitionKind = (target ? TransitionKind.external : TransitionKind.internal), type: func.Constructor<TTrigger> | undefined = undefined, guard: func.Predicate<TTrigger> = () => true) {
-		this.activation = new kind(this);
+		this.activation = new kind(this.source, this.target);
 		this.typeGuard = type ? (trigger: TTrigger) => trigger.constructor === type : () => true;
 		this.userGuard = guard;
 
@@ -83,7 +83,7 @@ export class Transition<TTrigger = any> {
 	 */
 	public to(target: Vertex, kind: TransitionKind = TransitionKind.external): this {
 		this.target = target;
-		this.activation = new kind(this);
+		this.activation = new kind(this.source, this.target);
 
 		log.info(() => `- converted to ${this}`, log.Create);
 
@@ -143,7 +143,7 @@ export class Transition<TTrigger = any> {
 	 */
 	public local(target: Vertex | undefined = undefined): this {
 		if (this.target = (this.target || target)) {
-			this.activation = new TransitionKind.local(this);
+			this.activation = new TransitionKind.local(this.source, this.target);
 		}
 
 		return this;

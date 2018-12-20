@@ -1,24 +1,27 @@
 import { NamedElement } from './NamedElement';
-import { Transition } from './Transition';
+import { Vertex } from './Vertex';
 import { State } from './State';
-/** Interface describing elements to leave and enter when traversing the transition; derived from the source and target using the TransitionType strategy. */
+/** Encapsulates the semantics of different transition types. */
 export interface TransitionActivation {
     toString(): string;
 }
+/** Semantics of external transitions. */
 export declare class ExternalTransitionActivation implements TransitionActivation {
     readonly toExit: NamedElement;
     readonly toEnter: Array<NamedElement>;
-    constructor(transition: Transition);
+    constructor(source: Vertex, target: Vertex | undefined);
     toString(): string;
 }
+/** Semantics of local transitions. */
 export declare class LocalTransitionActivation implements TransitionActivation {
-    readonly source: State;
-    readonly toEnter: Array<NamedElement>;
-    constructor(transition: Transition);
+    readonly target: Vertex;
+    vertexToEnter: Vertex | undefined;
+    constructor(source: Vertex, target: Vertex | undefined);
     toString(): string;
 }
+/** Semantics of internal transitions. */
 export declare class InternalTransitionActivation implements TransitionActivation {
     readonly source: State;
-    constructor(transition: Transition);
+    constructor(source: Vertex);
     toString(): string;
 }

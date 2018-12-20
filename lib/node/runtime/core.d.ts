@@ -10,21 +10,3 @@ import { IInstance } from '../runtime';
  * @hidden
  */
 export declare function evaluate(state: model.State, instance: IInstance, deepHistory: boolean, trigger: any): boolean;
-declare module '../model/TransitionActivation' {
-    interface TransitionActivation {
-        exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
-        enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
-    }
-    interface ExternalTransitionActivation {
-        exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
-        enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
-    }
-    interface LocalTransitionActivation {
-        exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
-        enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
-    }
-    interface InternalTransitionActivation {
-        exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
-        enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
-    }
-}

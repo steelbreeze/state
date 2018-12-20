@@ -1,7 +1,7 @@
 //var state = require("@steelbreeze/state");
 var state = require("../../lib/node")
 
-state.log.add(message => console.info(message), state.log.Entry | state.log.Exit);
+state.log.add(message => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
 
 // create the state machine model elements
 var model = new state.State("model");

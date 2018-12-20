@@ -1,13 +1,12 @@
-import { Transition } from './Transition';
+import { Vertex } from './Vertex';
 import { TransitionActivation, ExternalTransitionActivation, InternalTransitionActivation as InternalTransitionActivation, LocalTransitionActivation } from './TransitionActivation';
 
-/** The transition kind defines the semantics of  */
+/**
+ * A transition's kind defines its precise semantics at runtime.
+ * While a TransitionKind is a prototype for constructors of TransitionActivation objects, it should be used as an enumeration with the [[external]], [[local]] and [[internal]] constants.
+ */
 export interface TransitionKind {
-	/**
-	 * A transition kind is a constructor for the appropriate transition activation.
-	 * @internal
-	 */
-	new (transition: Transition): TransitionActivation;
+	new (source: Vertex, target: Vertex | undefined): TransitionActivation;
 }
 
 export namespace TransitionKind {
