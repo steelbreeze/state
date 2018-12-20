@@ -291,6 +291,8 @@ declare module '../model/TransitionActivation' {
 	}
 
 	interface LocalTransitionActivation {
+		vertexToEnter: model.Vertex | undefined;
+
 		exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
 		enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}

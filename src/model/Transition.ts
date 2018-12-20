@@ -9,6 +9,16 @@ import { TransitionKind } from './TransitionKind';
  */
 export class Transition<TTrigger = any> {
 	/**
+	 * The source vertex of the transition.
+	 */
+	public readonly source: Vertex;
+
+	/**
+	 * The target vertex of the transition.
+	 */
+	public target: Vertex;
+
+	/**
 	 * A test to ensure that a trigger event is the expected type in order for the transition to be traversed.
 	 * @internal
 	 */
@@ -40,7 +50,9 @@ export class Transition<TTrigger = any> {
 	 * @param type The optional type of the trigger event that will cause this transition to be traversed. If left undefined any object or primative type will be considered.
 	 * @public
 	 */
-	public constructor(public readonly source: Vertex, public target: Vertex | undefined = undefined, kind: TransitionKind = (target ? TransitionKind.external : TransitionKind.internal), type: func.Constructor<TTrigger> | undefined = undefined, guard: func.Predicate<TTrigger> = () => true) {
+	public constructor(source: Vertex, target: Vertex | undefined = undefined, kind: TransitionKind = (target ? TransitionKind.external : TransitionKind.internal), type: func.Constructor<TTrigger> | undefined = undefined, guard: func.Predicate<TTrigger> = () => true) {
+		this.source = source;
+		this.target = target || source;
 		this.activation = new kind(this.source, this.target);
 		this.typeGuard = type ? (trigger: TTrigger) => trigger.constructor === type : () => true;
 		this.userGuard = guard;
@@ -142,7 +154,7 @@ export class Transition<TTrigger = any> {
 	 * @deprecated Use the to method with the transition type of local
 	 */
 	public local(target: Vertex | undefined = undefined): this {
-		if (this.target = (this.target || target)) {
+		if (this.target = (target || this.target)) {
 			this.activation = new TransitionKind.local(this.source, this.target);
 		}
 

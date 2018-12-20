@@ -6,8 +6,14 @@ import { TransitionKind } from './TransitionKind';
  * @param TTrigger The type of triggering event that causes this transition to be traversed.
  */
 export declare class Transition<TTrigger = any> {
+    /**
+     * The source vertex of the transition.
+     */
     readonly source: Vertex;
-    target: Vertex | undefined;
+    /**
+     * The target vertex of the transition.
+     */
+    target: Vertex;
     /**
      * Creates an instance of the Transition class.
      * @param source The source vertex of the transition.

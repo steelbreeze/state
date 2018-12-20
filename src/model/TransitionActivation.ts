@@ -1,4 +1,4 @@
-import { tree, assert } from '../util';
+import { tree } from '../util';
 import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { PseudoState } from './PseudoState';
@@ -25,7 +25,7 @@ export class ExternalTransitionActivation implements TransitionActivation {
 	 * @param source The source vertex of the external transition.
 	 * @param target The target vertex of the external transition.
 	 */
-	constructor(source: Vertex, target: Vertex | undefined) {
+	constructor(source: Vertex, target: Vertex) {
 		// determine the source and target vertex ancestries
 		const sourceAncestors = tree.ancestors<NamedElement>(source, element => element.parent);
 		const targetAncestors = tree.ancestors<NamedElement>(target, element => element.parent);
@@ -52,18 +52,12 @@ export class ExternalTransitionActivation implements TransitionActivation {
  * @hidden 
  */
 export class LocalTransitionActivation implements TransitionActivation {
-	readonly target: Vertex;
-	vertexToEnter: Vertex | undefined;
-
 	/**
 	 * Creates a new instance of the LocalTransitionActivation class.
 	 * @param source The source vertex of the local transition.
 	 * @param target The target vertex of the local transition.
 	 */
-	constructor(source: Vertex, target: Vertex | undefined) {
-		assert.ok(target, () => `Local transitions must have a target defined`);
-
-		this.target = target!;
+	constructor(source: Vertex, public readonly target: Vertex) {
 	}
 
 	/**
@@ -86,7 +80,7 @@ export class InternalTransitionActivation implements TransitionActivation {
 	 * @param source The source vertex of the internal transition.
 	 * @param target The target vertex of the internal transition.
 	 */
-	constructor(source: Vertex) {
+	constructor(source: Vertex, target: Vertex) {
 		if (source instanceof State) {
 			this.source = source;
 		} else {

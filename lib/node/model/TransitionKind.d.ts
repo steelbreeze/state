@@ -5,7 +5,7 @@ import { TransitionActivation } from './TransitionActivation';
  * While a TransitionKind is a prototype for constructors of TransitionActivation objects, it should be used as an enumeration with the [[external]], [[local]] and [[internal]] constants.
  */
 export interface TransitionKind {
-    new (source: Vertex, target: Vertex | undefined): TransitionActivation;
+    new (source: Vertex, target: Vertex): TransitionActivation;
 }
 export declare namespace TransitionKind {
     /**
