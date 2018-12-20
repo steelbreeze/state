@@ -3,7 +3,7 @@ exports.__esModule = true;
 var state = require("../lib/node");
 var assert = require("assert");
 require("mocha");
-state.log.add(function (message) { return console.info(message); }, state.log.Entry | state.log.Exit);
+//state.log.add(message => console.info(message), state.log.Entry | state.log.Exit);
 var model = new state.State("model");
 var initial = new state.PseudoState("initial", model);
 var stateA = new state.State("stateA", model);

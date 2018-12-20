@@ -265,25 +265,92 @@ model.Transition.prototype.execute = function (instance: IInstance, deepHistory:
 	log.info(() => `Executing ${this}`, log.Transition);
 
 	// leave elements below the common ancestor
-	if (this.path.leave) {
-		this.path.leave.leave(instance, deepHistory, trigger);
-	}
+	this.activation.exitSource(instance, deepHistory, trigger);
 
 	// perform the transition behaviour
 	this.doActions(trigger);
 
 	// enter elements below the common ancestor to the target
-	if (this.path.enter) {
-		for (var i = this.path.enter.length; i--;) {
-			this.path.enter[i].enterHead(instance, deepHistory, trigger, this.path.enter[i - 1]);
-		}
+	this.activation.enterTarget(instance, deepHistory, trigger);
+}
 
-		// cascade the entry action to any child elements of the target
-		this.path.enter[0].enterTail(instance, deepHistory, trigger);
+
+/**
+ * Runtime extension methods to the TransitionActivation classes.
+ * @internal
+ */
+declare module '../model/TransitionActivation' {
+	interface TransitionActivation {
+		exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	}
 
+	interface ExternalTransitionActivation {
+		exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
+	}
+
+	interface LocalTransitionActivation {
+		vertexToEnter: model.Vertex | undefined;
+
+		exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
+	}
+
+	interface InternalTransitionActivation {
+		exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
+		enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
+	}
+}
+
+model.ExternalTransitionActivation.prototype.exitSource = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	// exit the element below the common ancestor
+	this.toExit.leave(instance, deepHistory, trigger);
+}
+
+model.ExternalTransitionActivation.prototype.enterTarget = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	// enter elements below the common ancestor to the target
+	for (var i = this.toEnter.length; i--;) {
+		this.toEnter[i].enterHead(instance, deepHistory, trigger, this.toEnter[i - 1]);
+	}
+
+	// cascade the entry action to any child elements of the target
+	this.toEnter[0].enterTail(instance, deepHistory, trigger);
+}
+
+model.LocalTransitionActivation.prototype.exitSource = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	this.vertexToEnter = this.target;
+
+	// iterate towards the root until we find an active state
+	while (this.vertexToEnter.parent && !isActive(this.vertexToEnter.parent.parent, instance)) {
+		this.vertexToEnter = this.vertexToEnter.parent.parent;
+	}
+
+	// exit the currently active vertex in the target vertex's parent region
+	if (!isActive(this.vertexToEnter, instance) && this.vertexToEnter.parent) {
+		instance.getVertex(this.vertexToEnter.parent).leave(instance, deepHistory, trigger);
+	}
+}
+
+model.LocalTransitionActivation.prototype.enterTarget = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	if (this.vertexToEnter && !isActive(this.vertexToEnter, instance)) {
+		this.vertexToEnter!.enter(instance, deepHistory, trigger);
+	}
+}
+
+model.InternalTransitionActivation.prototype.exitSource = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
+	// don't exit anything
+}
+
+model.InternalTransitionActivation.prototype.enterTarget = function (instance: IInstance, deepHistory: boolean, trigger: any): void {
 	// test for completion transitions for internal transitions as there will be state entry/exit performed where the test is usually performed
-	if (!this.target && this.source instanceof model.State) {
-		completion(this.source, instance, deepHistory, this.source);
-	}
+	completion(this.source, instance, deepHistory, this.source);
+}
+
+//function isRegionActive(region: model.Region, instance: IInstance): boolean {
+//	return isVertexActive(region.parent, instance);
+//}
+
+function isActive(vertex: model.Vertex, instance: IInstance): boolean {
+	return vertex.parent ? isActive(vertex.parent.parent, instance) && instance.getVertex(vertex.parent) === vertex : true;
 }

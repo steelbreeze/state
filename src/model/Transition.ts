@@ -1,6 +1,6 @@
 import { func, log } from '../util';
 import { Vertex } from './Vertex';
-import { TransitionPath } from './TransitionPath';
+import { TransitionActivation } from './TransitionActivation';
 import { TransitionKind } from './TransitionKind';
 
 /**
@@ -8,6 +8,16 @@ import { TransitionKind } from './TransitionKind';
  * @param TTrigger The type of triggering event that causes this transition to be traversed.
  */
 export class Transition<TTrigger = any> {
+	/**
+	 * The source vertex of the transition.
+	 */
+	public readonly source: Vertex;
+
+	/**
+	 * The target vertex of the transition.
+	 */
+	public target: Vertex;
+
 	/**
 	 * A test to ensure that a trigger event is the expected type in order for the transition to be traversed.
 	 * @internal
@@ -21,10 +31,10 @@ export class Transition<TTrigger = any> {
 	private userGuard: func.Predicate<TTrigger> = () => true;
 
 	/**
-	 * The elements that need to be left and entered when traversing a transition
+	 * The semantics for transition traversal.
 	 * @internal
 	 */
-	path: TransitionPath;
+	activation: TransitionActivation;
 
 	/**
 	 * The behavior to call when the transition is traversed.
@@ -40,8 +50,10 @@ export class Transition<TTrigger = any> {
 	 * @param type The optional type of the trigger event that will cause this transition to be traversed. If left undefined any object or primative type will be considered.
 	 * @public
 	 */
-	public constructor(public readonly source: Vertex, public target: Vertex | undefined = undefined, kind: TransitionKind = (target ? TransitionKind.external : TransitionKind.internal), type: func.Constructor<TTrigger> | undefined = undefined, guard: func.Predicate<TTrigger> = () => true) {
-		this.path = kind.getPath(this.source, this.target);
+	public constructor(source: Vertex, target: Vertex | undefined = undefined, kind: TransitionKind = (target ? TransitionKind.external : TransitionKind.internal), type: func.Constructor<TTrigger> | undefined = undefined, guard: func.Predicate<TTrigger> = () => true) {
+		this.source = source;
+		this.target = target || source;
+		this.activation = new kind(this.source, this.target);
 		this.typeGuard = type ? (trigger: TTrigger) => trigger.constructor === type : () => true;
 		this.userGuard = guard;
 
@@ -83,7 +95,7 @@ export class Transition<TTrigger = any> {
 	 */
 	public to(target: Vertex, kind: TransitionKind = TransitionKind.external): this {
 		this.target = target;
-		this.path = kind.getPath(this.source, this.target);
+		this.activation = new kind(this.source, this.target);
 
 		log.info(() => `- converted to ${this}`, log.Create);
 
@@ -142,8 +154,8 @@ export class Transition<TTrigger = any> {
 	 * @deprecated Use the to method with the transition type of local
 	 */
 	public local(target: Vertex | undefined = undefined): this {
-		if (this.target = (this.target || target)) {
-			this.path = TransitionKind.local.getPath(this.source, this.target);
+		if (this.target = (target || this.target)) {
+			this.activation = new TransitionKind.local(this.source, this.target);
 		}
 
 		return this;
@@ -161,6 +173,6 @@ export class Transition<TTrigger = any> {
 	}
 
 	public toString(): string {
-		return `${this.path.kind} transition from ${this.source} to ${this.target}`;
+		return `${this.activation} transition from ${this.source} to ${this.target}`;
 	}
 }

@@ -1,17 +1,11 @@
 import { Vertex } from './Vertex';
-import { TransitionPath } from './TransitionPath';
+import { TransitionActivation } from './TransitionActivation';
 /**
- * A transition's kind determines which elements will be exited and entered upon traversal.
- * @remarks TransitionKind is an implementation of the strategy pattern.
+ * A transition's kind defines its precise semantics at runtime.
+ * While a TransitionKind is a prototype for constructors of TransitionActivation objects, it should be used as an enumeration with the [[external]], [[local]] and [[internal]] constants.
  */
 export interface TransitionKind {
-    /**
-     * Derives the path of elements to exit and enter when travesing a transition of a particular kind.
-     * @param source The source vertex of the transition.
-     * @param target The optional target vertex of the transition.
-     * @returns Returns the path of element to exit and enter when traversing the transition.
-     */
-    getPath(source: Vertex, target: Vertex | undefined): TransitionPath;
+    new (source: Vertex, target: Vertex): TransitionActivation;
 }
 export declare namespace TransitionKind {
     /**
