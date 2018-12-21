@@ -1,10 +1,7 @@
 import { func, log } from './util';
 import { Vertex } from './Vertex';
-import { PseudoStateKind } from './PseudoStateKind';
-import { PseudoState } from './PseudoState';
+import { PseudoStateKind, TransitionKind, PseudoState, Instance } from './index';
 import { TransitionActivation } from './TransitionActivation';
-import { TransitionKind } from './TransitionKind';
-import { Instance } from './Instance';
 
 /**
  * A transition between vertices that defines a valid change in state in response to an event.

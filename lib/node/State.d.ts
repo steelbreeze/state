@@ -1,26 +1,13 @@
 import { func } from './util';
 import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
-import { Region } from './Region';
-import { Transition } from './Transition';
-import { TransitionKind } from './TransitionKind';
-import { Instance } from './Instance';
+import { TransitionKind, Region, Transition, Instance } from './index';
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
  */
-export declare class State implements Vertex {
+export declare class State extends Vertex<Region | undefined> {
     readonly name: string;
-    readonly parent: Region | undefined;
-    /**
-     * The fully qualified name of the vertex including its parent's qualified name.
-     * @public
-     */
-    readonly qualifiedName: string;
-    /**
-     * The outgoing transitions available from this vertex.
-     */
-    outgoing: Array<Transition>;
     /**
      * Creates a new instance of the State class.
      * @param name The name of the state.
@@ -97,13 +84,6 @@ export declare class State implements Vertex {
      */
     defer<TTrigger>(type: func.Constructor<TTrigger>): State;
     /**
-     * Find a transition from the state given a trigger event.
-     * @param trigger The trigger event to evaluate transtions against.
-     * @returns Returns the trigger or undefined if none are found.
-     * @throws Throws an Error if more than one transition was found.
-     */
-    getTransition(trigger: any): Transition | undefined;
-    /**
      * Passes a trigger event to a state machine instance for evaluation
      * @param state The state to evaluate the trigger event against.
      * @param instance The state machine instance to evaluate the trigger against.
@@ -114,10 +94,9 @@ export declare class State implements Vertex {
      */
     evaluate(instance: Instance, deepHistory: boolean, trigger: any): boolean;
     /** Delegate a trigger to children for evaluation */
-    delegate(instance: Instance, deepHistory: boolean, trigger: any): boolean;
+    private delegate;
     /** Evaluates the trigger event against the list of deferred transitions and defers into the event pool if necessary. */
-    testDefer(instance: Instance, trigger: any): boolean;
-    enter(instance: Instance, deepHistory: boolean, trigger: any): void;
+    private deferTrigger;
     /** Initiate state entry */
     enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
     /** Complete state entry */

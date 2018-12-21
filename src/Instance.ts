@@ -1,8 +1,6 @@
-import { Vertex } from './Vertex';
-import { State } from './State';
-import { Region } from './Region';
-
 import { func, assert, log } from './util';
+import { State, Region } from './index';
+import { Vertex } from './Vertex';
 
 /**
  * Represents the active state configuration of a state machine instance.

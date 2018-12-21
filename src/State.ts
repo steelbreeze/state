@@ -1,28 +1,13 @@
 import { func, assert, log } from './util';
 import { NamedElement } from './NamedElement';
-import { Vertex, accept } from './Vertex';
-import { Region } from './Region';
-import { Transition } from './Transition';
-import { TransitionKind } from './TransitionKind';
-import { Instance } from './Instance';
+import { Vertex } from './Vertex';
+import { TransitionKind, Region, Transition, Instance } from './index';
 
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
  */
-export class State implements Vertex {
-	public readonly parent: Region | undefined;
-	/**
-	 * The fully qualified name of the vertex including its parent's qualified name.
-	 * @public
-	 */
-	public readonly qualifiedName: string;
-
-	/**
-	 * The outgoing transitions available from this vertex.
-	 */
-	public outgoing: Array<Transition> = [];
-
+export class State extends Vertex<Region | undefined> {
 	/**
 	 * The child regions belonging to this state.
 	 * @internal
@@ -61,18 +46,14 @@ export class State implements Vertex {
 	 * @public
 	 */
 	public constructor(public readonly name: string, parent: State | Region | undefined = undefined) {
-		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
+		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
 
 		if (this.parent) {
 			assert.ok(!this.parent.children.filter((vertex): vertex is State => vertex instanceof State && vertex.name === this.name).length, () => `State names must be unique within a region`);
-			this.qualifiedName = `${this.parent}.${name}`;
 			this.parent.children.unshift(this);
-		} else {
-			this.qualifiedName = name;
 		}
 
 		log.info(() => `Created state ${this}`, log.Create);
-
 	}
 
 	/**
@@ -182,83 +163,55 @@ export class State implements Vertex {
 	}
 
 	/**
-	 * Find a transition from the state given a trigger event.
-	 * @param trigger The trigger event to evaluate transtions against.
-	 * @returns Returns the trigger or undefined if none are found.
-	 * @throws Throws an Error if more than one transition was found.
+	 * Passes a trigger event to a state machine instance for evaluation
+	 * @param state The state to evaluate the trigger event against.
+	 * @param instance The state machine instance to evaluate the trigger against.
+	 * @param deepHistory True if deep history semantics are invoked.
+	 * @param trigger The trigger event
+	 * @returns Returns true if the trigger was consumed by the state.
+	 * @hidden
 	 */
-	getTransition(trigger: any): Transition | undefined {
-		let result: Transition | undefined;
+	evaluate(instance: Instance, deepHistory: boolean, trigger: any): boolean {
+		const result = this.delegate(instance, deepHistory, trigger) || this.accept(instance, deepHistory, trigger) || this.deferTrigger(instance, trigger);
 
-		// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
-		for (let i = this.outgoing.length; i--;) {
-			if (this.outgoing[i].evaluate(trigger)) {
-				assert.ok(!result, () => `Multiple transitions found at ${this} for ${trigger}`);
+		// check completion transitions if the trigger caused as state transition and this state is still active
+		if (result && this.parent && instance.getState(this.parent) === this) {
+			this.completion(instance, deepHistory, this);
+		}
 
-				result = this.outgoing[i];
+		return result;
+	}
+
+	/** Delegate a trigger to children for evaluation */
+	private delegate(instance: Instance, deepHistory: boolean, trigger: any): boolean {
+		let result: boolean = false;
+
+		// delegate to the current state of child regions for evaluation
+		for (let i = this.children.length; i--;) {
+			if (instance.getState(this.children[i]).evaluate(instance, deepHistory, trigger)) {
+				result = true;
+
+				// if a transition in a child state causes us to exit this state, break out now 
+				if (this.parent && instance.getState(this.parent) !== this) {
+					break;
+				}
 			}
 		}
 
 		return result;
 	}
 
-/**
- * Passes a trigger event to a state machine instance for evaluation
- * @param state The state to evaluate the trigger event against.
- * @param instance The state machine instance to evaluate the trigger against.
- * @param deepHistory True if deep history semantics are invoked.
- * @param trigger The trigger event
- * @returns Returns true if the trigger was consumed by the state.
- * @hidden
- */
- evaluate( instance: Instance, deepHistory: boolean, trigger: any): boolean {
-	const result = this.delegate( instance, deepHistory, trigger) || accept(this, instance, deepHistory, trigger) || this.testDefer( instance, trigger);
+	/** Evaluates the trigger event against the list of deferred transitions and defers into the event pool if necessary. */
+	private deferTrigger(instance: Instance, trigger: any): boolean {
+		let result = false;
 
-	// check completion transitions if the trigger caused as state transition and this state is still active
-	if (result && this.parent && instance.getState(this.parent) === this) {
-		this.completion(instance, deepHistory, this);
-	}
+		if (this.deferrableTrigger.indexOf(trigger.constructor) !== -1) {
+			instance.defer(this, trigger);
 
-	return result;
-}
-
-
-/** Delegate a trigger to children for evaluation */
-delegate(instance: Instance, deepHistory: boolean, trigger: any): boolean {
-	let result: boolean = false;
-
-	// delegate to the current state of child regions for evaluation
-	for (let i = this.children.length; i--;) {
-		if (instance.getState(this.children[i]).evaluate(instance, deepHistory, trigger)) {
 			result = true;
-
-			// if a transition in a child state causes us to exit this state, break out now 
-			if (this.parent && instance.getState(this.parent) !== this) {
-				break;
-			}
 		}
-	}
 
-	return result;
-}
-
-/** Evaluates the trigger event against the list of deferred transitions and defers into the event pool if necessary. */
-testDefer( instance: Instance, trigger: any): boolean {
-	let result = false;
-
-	if (this.deferrableTrigger.indexOf(trigger.constructor) !== -1) {
-		instance.defer(this, trigger);
-
-		result = true;
-	}
-
-	return result;
-}
-
-
-	enter(instance: Instance, deepHistory: boolean, trigger: any): void {
-		this.enterHead(instance, deepHistory, trigger, undefined);
-		this.enterTail(instance, deepHistory, trigger);
+		return result;
 	}
 
 	/** Initiate state entry */
@@ -320,9 +273,8 @@ testDefer( instance: Instance, trigger: any): boolean {
 		}
 
 		// look for transitions
-		accept(this, instance, deepHistory, trigger);
+		this.accept(instance, deepHistory, trigger);
 	}
-
 
 	/**
 	 * Returns the fully qualified name of the state.

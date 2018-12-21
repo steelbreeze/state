@@ -1,9 +1,7 @@
 import { tree } from './util';
 import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
-import { PseudoState } from './PseudoState';
-import { State } from './State';
-import { Instance } from './Instance';
+import { State, PseudoState, Instance} from './index';
 
 /**
  * Encapsulates the semantics of different transition types.
@@ -85,13 +83,13 @@ export class LocalTransitionActivation implements TransitionActivation {
 		this.vertexToEnter = this.target;
 
 		// iterate towards the root until we find an active state
-		while (this.vertexToEnter.parent && !isActive(this.vertexToEnter.parent.parent, instance)) {
-			this.vertexToEnter = this.vertexToEnter.parent.parent;
+		while (this.vertexToEnter!.parent && !isActive(this.vertexToEnter!.parent.parent, instance)) {
+			this.vertexToEnter = this.vertexToEnter!.parent.parent;
 		}
 
 		// exit the currently active vertex in the target vertex's parent region
-		if (!isActive(this.vertexToEnter, instance) && this.vertexToEnter.parent) {
-			instance.getVertex(this.vertexToEnter.parent).leave(instance, deepHistory, trigger);
+		if (!isActive(this.vertexToEnter!, instance) && this.vertexToEnter!.parent) {
+			instance.getVertex(this.vertexToEnter!.parent).leave(instance, deepHistory, trigger);
 		}
 	}
 

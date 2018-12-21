@@ -1,7 +1,6 @@
-import { Vertex } from './Vertex';
-import { State } from './State';
-import { Region } from './Region';
 import { func } from './util';
+import { State, Region } from './index';
+import { Vertex } from './Vertex';
 /**
  * Represents the active state configuration of a state machine instance.
  * @remarks This is the default implementation of the IInstance class and reads/writes to the active state configuration in a transactional manner at both initilisation and each call to evaluate.

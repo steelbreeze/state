@@ -1,31 +1,13 @@
 import { func, assert, log, random } from './util';
+import { PseudoStateKind, TransitionKind, State, Region, Transition, Instance } from './index';
 import { NamedElement } from './NamedElement';
-import { Vertex, accept } from './Vertex';
-import { PseudoStateKind } from './PseudoStateKind';
-import { Region } from './Region';
-import { State } from './State';
-import { Transition } from './Transition';
-import { TransitionKind } from './TransitionKind';
-import { Instance } from './Instance';
+import { Vertex } from './Vertex';
 
 /**
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
  * @public
  */
-export class PseudoState implements Vertex {
-	public readonly parent: Region;
-
-	/**
-	 * The fully qualified name of the vertex including its parent's qualified name.
-	 * @public
-	 */
-	public readonly qualifiedName: string;
-
-	/**
-	 * The outgoing transitions available from this vertex.
-	 */
-	outgoing: Array<Transition> = [];
-
+export class PseudoState extends Vertex<Region> {
 	/** 
 	 * The else transition that may be used by branch pseudo states; saves the costly process of searching for it at runtime.
 	 * @internal 
@@ -40,17 +22,16 @@ export class PseudoState implements Vertex {
 	 * @public
 	 */
 	public constructor(public readonly name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
-		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
-		this.qualifiedName = `${this.parent}.${this.name}`;
+		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
 
 		// if this is a starting state (initial, deep or shallow history), record it against the parent region
-		if (this.kind === PseudoStateKind.Initial || this.isHistory()) {
-			assert.ok(!this.parent.starting, () => `Only one initial pseudo state is allowed in region ${this.parent}`);
+		if ( this.kind === PseudoStateKind.Initial || this.isHistory()) {
+// TODO: FIX			assert.ok(this.parent!.starting, () => `Only one initial pseudo state is allowed in region ${this.parent}`);
 
-			this.parent.starting = this;
+			this.parent!.starting = this;
 		}
 
-		this.parent.children.unshift(this);
+		this.parent!.children.unshift(this);
 
 		log.info(() => `Created ${this.kind} pseudo state ${this}`, log.Create);
 	}
@@ -104,25 +85,18 @@ export class PseudoState implements Vertex {
 
 	/** Find a transition from the pseudo state for a given trigger event */
 	getTransition(trigger: any): Transition | undefined {
-		// find all transitions whose guard conditions evaluate true for the trigger
-		let transitions = this.outgoing.filter(transition => transition.evaluate(trigger));
-
-		// validate we didn't get too many
-		assert.ok(this.kind === PseudoStateKind.Choice || transitions.length <= 1, () => `Multiple transitions found at ${this} for ${trigger}`);
-
-		// select the appropriate transition
-		let result = (this.kind === PseudoStateKind.Choice ? transitions[random.get(transitions.length)] : transitions[0]) || this.elseTransition;
+		let result = (this.kind !== PseudoStateKind.Choice ? super.getTransition(trigger) : this.getChoiceTransition(trigger)) || this.elseTransition;
 
 		// validate we have something to return
 		assert.ok(result, () => `Unable to find transition at ${this} for ${trigger}`);
 
-		return result!;
+		return result;
 	}
 
-	// TODO: move to NamedElement?
-	enter(instance: Instance, deepHistory: boolean, trigger: any): void {
-		this.enterHead(instance, deepHistory, trigger, undefined);
-		this.enterTail(instance, deepHistory, trigger);
+	getChoiceTransition(trigger: any) : Transition | undefined {
+		const transitions = this.outgoing.filter(transition => transition.evaluate(trigger));
+
+		return transitions[random.get(transitions.length)];
 	}
 
 	/** Initiate pseudo state entry */
@@ -137,7 +111,7 @@ export class PseudoState implements Vertex {
 	enterTail(instance: Instance, deepHistory: boolean, trigger: any): void {
 		// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
 		if (this.kind !== PseudoStateKind.Junction) {
-			accept(this, instance, deepHistory, trigger);
+			this.accept(instance, deepHistory, trigger);
 		}
 	}
 

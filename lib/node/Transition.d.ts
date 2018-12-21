@@ -1,7 +1,6 @@
 import { func } from './util';
 import { Vertex } from './Vertex';
-import { TransitionKind } from './TransitionKind';
-import { Instance } from './Instance';
+import { TransitionKind, Instance } from './index';
 /**
  * A transition between vertices that defines a valid change in state in response to an event.
  * @param TTrigger The type of triggering event that causes this transition to be traversed.

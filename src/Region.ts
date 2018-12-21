@@ -1,22 +1,13 @@
 import { assert, log } from './util';
-import { PseudoStateKind } from './PseudoStateKind';
+import { PseudoStateKind, State, PseudoState, Instance } from './index';
 import { NamedElement } from './NamedElement';
-import { State } from './State';
-import { PseudoState } from './PseudoState';
 import { Vertex } from './Vertex';
-import { Instance } from './Instance';
 
 /**
  * A region is a container of vertices (states and pseudo states) in a state machine model.
  * @public
  */
-export class Region implements NamedElement<State> {
-	/**
-	 * The fully qualified name of the region including its parent's qualified name.
-	 * @public
-	 */
-	public readonly qualifiedName: string;
-
+export class Region extends NamedElement<State> {
 	/**
 	 * The child vertices belonging to this region.
 	 * @internal
@@ -35,18 +26,12 @@ export class Region implements NamedElement<State> {
 	 * @param parent The parent state of the region.
 	 * @public
 	 */
-	public constructor(public readonly name: string, public readonly parent: State) {
-		this.qualifiedName = `${parent}.${name}`;
+	public constructor(name: string, parent: State) {
+		super(name, parent);
 
 		this.parent.children.unshift(this);
 
 		log.info(() => `Created region ${this}`, log.Create);
-	}
-
-	/** Enter a region, state or pseudo state */
-	enter(instance: Instance, deepHistory: boolean, trigger: any): void {
-		this.enterHead(instance, deepHistory, trigger, undefined);
-		this.enterTail(instance, deepHistory, trigger);
 	}
 
 	/** Initiate region entry */

@@ -1,7 +1,6 @@
 import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
-import { State } from './State';
-import { Instance } from './Instance';
+import { State, Instance } from './index';
 /**
  * Encapsulates the semantics of different transition types.
  * @hidden
