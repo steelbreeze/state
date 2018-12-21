@@ -1,5 +1,12 @@
-export { PseudoStateKind, State, Region, PseudoState, Transition, TransitionKind } from './model';
+export { PseudoStateKind } from './PseudoStateKind';
+export { TransitionKind} from './TransitionKind';
 
-export { IInstance, Instance } from './runtime';
+export { State } from './State';
+export { Region } from './Region';
+export { PseudoState } from './PseudoState';
+export { Transition } from './Transition';
+
+export { IInstance } from './IInstance';
+export { Instance } from './Instance';
 
 export { log, random } from './util';

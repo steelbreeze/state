@@ -1,4 +1,4 @@
-import { log } from '../util';
+import { log } from './util';
 import { NamedElement } from './NamedElement';
 import { State } from './State';
 import { PseudoState } from './PseudoState';

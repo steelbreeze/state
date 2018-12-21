@@ -1,4 +1,4 @@
-import { func, assert, log } from '../util';
+import { func, assert, log } from './util';
 import { Vertex } from './Vertex';
 import { Region } from './Region';
 import { Transition } from './Transition';

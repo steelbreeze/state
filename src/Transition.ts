@@ -1,4 +1,4 @@
-import { func, log } from '../util';
+import { func, log } from './util';
 import { Vertex } from './Vertex';
 import { TransitionActivation } from './TransitionActivation';
 import { TransitionKind } from './TransitionKind';

@@ -1,4 +1,4 @@
-import { func, assert, log, random } from '../util';
+import { func, assert, log, random } from './util';
 import { Vertex } from './Vertex';
 import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';

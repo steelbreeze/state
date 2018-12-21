@@ -1,4 +1,4 @@
-import { tree } from '../util';
+import { tree } from './util';
 import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { PseudoState } from './PseudoState';

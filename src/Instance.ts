@@ -1,6 +1,10 @@
-import * as model from '../model';
-import { func, assert, log } from '../util';
-import { IInstance, evaluate } from '../runtime';
+import { Vertex } from './Vertex';
+import { State } from './State';
+import { Region } from './Region';
+import { IInstance } from './IInstance';
+import { evaluate } from './core';
+
+import { func, assert, log } from './util';
 
 /**
  * Represents the active state configuration of a state machine instance.
@@ -11,19 +15,19 @@ export class Instance implements IInstance {
 	 * The last known state of each region in the state machine instance that has been entered.
 	 * @internal
 	 */
-	private cleanState: Record<string, model.State> = {};
+	private cleanState: Record<string, State> = {};
 
 	/**
 	 * The last known state of each region in the state machine instance that has been entered during a transaction.
 	 * @internal
 	 */
-	private dirtyState: Record<string, model.State> = {};
+	private dirtyState: Record<string, State> = {};
 
 	/**
 	 * The last entered vertex of each region in the state machine instance that has been entered during a transaction.
 	 * @internal
 	 */
-	private dirtyVertex: Record<string, model.Vertex> = {};
+	private dirtyVertex: Record<string, Vertex> = {};
 
 	/**
 	 * Outstanding events marked for deferral.
@@ -36,7 +40,7 @@ export class Instance implements IInstance {
 	 * @param root The root element of the state machine model that this an instance of.
 	 * @param activeStateConfiguration Optional JSON object used to initialise the active state configuration. The json object must have been produced by a prior call to Instance.toJSON from an instance using the same model.
 	 */
-	public constructor(public readonly name: string, public readonly root: model.State) {
+	public constructor(public readonly name: string, public readonly root: State) {
 		assert.ok(!root.parent, () => `The state provided as the root for an instance cannot have a parent`);
 
 		this.transaction(() => this.root.enter(this, false, this.root));
@@ -67,7 +71,7 @@ export class Instance implements IInstance {
 	 * Adds a trigger event to the event pool for later evaluation (once the state machine has changed state).
 	 * @param trigger The trigger event to defer.
 	 */
-	defer(state: model.State, trigger: any): void {
+	defer(state: State, trigger: any): void {
 		log.info(() => `${this} deferred ${trigger} while in ${state}`, log.Evaluate);
 
 		this.deferredEventPool.push(trigger);
@@ -101,7 +105,7 @@ export class Instance implements IInstance {
 	}
 
 	/** Build a list of all the deferrable events at a particular state (including its children) */
-	deferrableTriggers(state: model.State): Array<func.Constructor<any>> {
+	deferrableTriggers(state: State): Array<func.Constructor<any>> {
 		return state.children.reduce((result, region) => result.concat(this.deferrableTriggers(this.getState(region))), state.deferrableTrigger);
 	}
 
@@ -140,7 +144,7 @@ export class Instance implements IInstance {
 	 * @param vertex The vertex set as its parents last entered vertex.
 	 * @remarks This should only be called by the state machine runtime.
 	 */
-	public setVertex(vertex: model.Vertex): void {
+	public setVertex(vertex: Vertex): void {
 		if (vertex.parent) {
 			this.dirtyVertex[vertex.parent.qualifiedName] = vertex;
 		}
@@ -151,7 +155,7 @@ export class Instance implements IInstance {
 	 * @param state The state set as its parents last entered state.
 	 * @remarks This should only be called by the state machine runtime, and implementors note, you also need to update the last entered vertex within this call.
 	 */
-	public setState(state: model.State): void {
+	public setState(state: State): void {
 		if (state.parent) {
 			this.dirtyVertex[state.parent.qualifiedName] = state;
 			this.dirtyState[state.parent.qualifiedName] = state;
@@ -163,7 +167,7 @@ export class Instance implements IInstance {
 	 * @param region The region to get the last known state of.
 	 * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
 	 */
-	public getState(region: model.Region): model.State {
+	public getState(region: Region): State {
 		return this.dirtyState[region.qualifiedName] || this.cleanState[region.qualifiedName];
 	}
 
@@ -172,7 +176,7 @@ export class Instance implements IInstance {
 	 * @param region The region to get the last entered vertex of.
 	 * @returns Returns the last entered vertex for the given region.
 	 */
-	public getVertex(region: model.Region): model.Vertex {
+	public getVertex(region: Region): Vertex {
 		return this.dirtyVertex[region.qualifiedName] || this.cleanState[region.qualifiedName];
 	}
 
@@ -181,7 +185,7 @@ export class Instance implements IInstance {
 	 * @param region The region to get the last known state of.
 	 * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
 	 */
-	public getLastKnownState(region: model.Region): model.State | undefined {
+	public getLastKnownState(region: Region): State | undefined {
 		return this.cleanState[region.qualifiedName];
 	}
 
