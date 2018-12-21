@@ -347,10 +347,6 @@ model.InternalTransitionActivation.prototype.enterTarget = function (instance: I
 	completion(this.source, instance, deepHistory, this.source);
 }
 
-//function isRegionActive(region: model.Region, instance: IInstance): boolean {
-//	return isVertexActive(region.parent, instance);
-//}
-
 function isActive(vertex: model.Vertex, instance: IInstance): boolean {
 	return vertex.parent ? isActive(vertex.parent.parent, instance) && instance.getVertex(vertex.parent) === vertex : true;
 }

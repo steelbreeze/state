@@ -11,8 +11,8 @@ const initial = new state.PseudoState("initial", model, state.PseudoStateKind.In
 const stateA = new state.State("stateA", model).exit(trigger => calls += 1);
 const stateB = new state.State("stateB", model).entry(trigger => calls += 2);
 
-initial.external(stateA);
-stateA.external(stateB).when(trigger => trigger === "move").effect(trigger => calls += 4);
+initial.to(stateA);
+stateA.to(stateB).when(trigger => trigger === "move").do(trigger => calls += 4);
 
 var instance = new state.Instance("callbacks", model);
 

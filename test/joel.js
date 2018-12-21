@@ -11,10 +11,10 @@ var b = new state.State('b', model);
 var aa = new state.State('aa', a);
 var aChoice = new state.PseudoState('aChoice', a, state.PseudoStateKind.Choice);
 
-initial.external(aa);
-aa.internal().when(trigger => trigger === "stay");
-aa.external(aChoice).when(trigger => trigger === "move");
-aChoice.external(b);
+initial.to(aa);
+aa.when(trigger => trigger === "stay");
+aa.to(aChoice).when(trigger => trigger === "move");
+aChoice.to(b);
 
 var instance = new state.Instance('instance', model);
 

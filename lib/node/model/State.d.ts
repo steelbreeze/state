@@ -2,6 +2,7 @@ import { func } from '../util';
 import { Vertex } from './Vertex';
 import { Region } from './Region';
 import { Transition } from './Transition';
+import { TransitionKind } from './TransitionKind';
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
@@ -81,36 +82,11 @@ export declare class State implements Vertex {
      * Creates a new external transition.
      * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
      * @param target The target vertex of the external transition.
-     * @returns The external transition.
-     * @public
-     * @deprecated Use [[to]] method instead.
-     */
-    external<TTrigger>(target: Vertex): Transition<TTrigger>;
-    /**
-     * Creates a new external transition.
-     * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-     * @param target The target vertex of the external transition.
+     * @param kind The kind of transition, defaults to external, but can also be local.
      * @returns If target is specified, returns an external transition otherwide an internal transition.
      * @public
      */
-    to<TTrigger>(target?: Vertex | undefined): Transition<TTrigger>;
-    /**
-     * Creates a new internal transition.
-     * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-     * @returns Returns the internal transition.
-     * @public
-     * @deprecated Use [[to]] method instead.
-     */
-    internal<TTrigger>(): Transition<TTrigger>;
-    /**
-     * Creates a new local transition.
-     * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-     * @param target The target vertex of the local transition.
-     * @returns Returns the local transition.
-     * @public
-     * @deprecated Use to method instead.
-     */
-    local<TTrigger>(target: Vertex): Transition<TTrigger>;
+    to<TTrigger>(target: Vertex, kind?: TransitionKind): Transition<TTrigger>;
     /**
      * Marks a particular type of event for deferral if it is not processed by the state. Deferred events are placed in the event pool for subsiquent evaluation.
      * @param type The type of event that this state will defer.

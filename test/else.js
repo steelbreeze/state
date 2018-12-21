@@ -13,10 +13,10 @@ const finalState = new state.State("final", model);
 
 var data = {};
 
-initial.external(choice);
-choice.external(junction).when(trigger => !data.hello).effect(trigger => data.hello = "hello");
+initial.to(choice);
+choice.to(junction).when(trigger => !data.hello).do(trigger => data.hello = "hello");
 choice.else(finalState);
-junction.external(choice).when(trigger => !data.world).effect(trigger => data.world = "world");
+junction.to(choice).when(trigger => !data.world).do(trigger => data.world = "world");
 
 var instance = new state.Instance("instance", model);
 

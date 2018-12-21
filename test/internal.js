@@ -13,10 +13,10 @@ var region = new state.Region("region", model);
 var initial = new state.PseudoState("initial", region, state.PseudoStateKind.Initial);
 var target = new state.State("state", region).entry(trigger => entryCount++).exit(trigger => exitCount++);
 
-initial.external(target);
+initial.to(target);
 
-target.internal().when(trigger => trigger === "internal").effect(trigger => transitionCount++);
-target.external(target).when(trigger => trigger === "external").effect(trigger => transitionCount++);
+target.when(trigger => trigger === "internal").do(trigger => transitionCount++);
+target.to(target).when(trigger => trigger === "external").do(trigger => transitionCount++);
 
 var instance = new state.Instance("internal", model);
 

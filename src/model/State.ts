@@ -159,46 +159,12 @@ export class State implements Vertex {
 	 * Creates a new external transition.
 	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
 	 * @param target The target vertex of the external transition.
-	 * @returns The external transition.
-	 * @public
-	 * @deprecated Use [[to]] method instead.
-	 */
-	public external<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return this.to(target);
-	}
-
-	/**
-	 * Creates a new external transition.
-	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-	 * @param target The target vertex of the external transition.
+	 * @param kind The kind of transition, defaults to external, but can also be local.
 	 * @returns If target is specified, returns an external transition otherwide an internal transition.
 	 * @public
 	 */
-	public to<TTrigger>(target: Vertex | undefined = undefined): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, target);
-	}
-
-	/**
-	 * Creates a new internal transition.
-	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-	 * @returns Returns the internal transition.
-	 * @public
-	 * @deprecated Use [[to]] method instead.
-	 */
-	public internal<TTrigger>(): Transition<TTrigger> {
-		return this.to();
-	}
-
-	/**
-	 * Creates a new local transition.
-	 * @param TTrigger The type of the trigger event that may cause the transition to be traversed.
-	 * @param target The target vertex of the local transition.
-	 * @returns Returns the local transition.
-	 * @public
-	 * @deprecated Use to method instead.
-	 */
-	public local<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, target, TransitionKind.local);
+	public to<TTrigger>(target: Vertex, kind: TransitionKind = TransitionKind.external): Transition<TTrigger> {
+		return new Transition<TTrigger>(this, target, kind);
 	}
 
 	/**

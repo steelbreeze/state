@@ -21,17 +21,17 @@ var s2 = new state.State("s2", r2);
 var f1 = new state.State("f1", r1);
 var f2 = new state.State("f2", r2);
 
-initial.external(ortho);
+initial.to(ortho);
 
-i1.external(s1);
-i2.external(s2);
+i1.to(s1);
+i2.to(s2);
 
-ortho.external(final); // This should happen once all regions in ortho are complete?
+ortho.to(final); // This should happen once all regions in ortho are complete?
 
-s1.external(f1).when(trigger => trigger === "complete1");
-s2.external(f2).when(trigger => trigger === "complete2");
-ortho.external(simple).when(trigger => trigger === "jump");
-simple.external(ortho).when(trigger => trigger === "back");
+s1.to(f1).when(trigger => trigger === "complete1");
+s2.to(f2).when(trigger => trigger === "complete2");
+ortho.to(simple).when(trigger => trigger === "jump");
+simple.to(ortho).when(trigger => trigger === "back");
 
 var instance = new state.Instance("muximise", model);
 

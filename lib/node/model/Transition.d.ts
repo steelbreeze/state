@@ -57,29 +57,5 @@ export declare class Transition<TTrigger = any> {
      * @param trigger The trigger event that caused the transition.
      */
     doActions(trigger: TTrigger): void;
-    /**
-     * A pseudonym of [[Transition.when]].
-     * @param type A predicate taking the trigger event as a parameter.
-     * @return Returns the transition.
-     * @public
-     * @deprecated Use Transition.when in its place. This method will be removed in the v8.0 release.
-     */
-    if(guard: func.Predicate<TTrigger>): this;
-    /**
-     * Specifies the target vertex which is a child of the source and specify it as a local transition.
-     * @param target The target vertex of the transition
-     * @return Returns the transition.
-     * @public
-     * @deprecated Use the to method with the transition type of local
-     */
-    local(target?: Vertex | undefined): this;
-    /**
-     * A pseudonym of do.
-     * @param action The behaviour to call on transition traversal.
-     * @returns Returns the transition.
-     * @public
-     * @deprecated Use Transition.do instead. This method will be removed in the v8.0 release.
-     */
-    effect(action: func.Consumer<TTrigger>): this;
     toString(): string;
 }

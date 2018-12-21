@@ -15,9 +15,9 @@ var counter = 0;
 
 initial.to(junction1);
 
-junction1.to(junction2).when(trigger => counter === 0).effect(trigger => counter++);
+junction1.to(junction2).when(trigger => counter === 0).do(trigger => counter++);
 junction1.else(fail);
-junction2.to(pass).when(trigger => counter === 0).effect(trigger => counter++);
+junction2.to(pass).when(trigger => counter === 0).do(trigger => counter++);
 junction2.else(fail);
 
 var instance = new state.Instance("static", model);

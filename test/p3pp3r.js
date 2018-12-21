@@ -26,16 +26,16 @@ var regionBb = new state.Region("regionBb", state4);
 var initialBb = new state.PseudoState("initialBb", regionBb, state.PseudoStateKind.Initial);
 var state7 = new state.State("state7", regionBb);
 
-initial.external(state1);
-initialA.external(state3);
-initialB.external(state4);
-initialBa.external(state6);
-initialBb.external(state7);
+initial.to(state1);
+initialA.to(state3);
+initialB.to(state4);
+initialBa.to(state6);
+initialBb.to(state7);
 
-state3.external(state2).when(trigger => trigger === "event2");
-state3.external(state8).when(trigger => trigger === "event1");
-state7.external(state5).when(trigger => trigger === "event2");
-state7.external(state5).when(trigger => trigger === "event1");
+state3.to(state2).when(trigger => trigger === "event2");
+state3.to(state8).when(trigger => trigger === "event1");
+state7.to(state5).when(trigger => trigger === "event2");
+state7.to(state5).when(trigger => trigger === "event1");
 
 var instance = new state.Instance("p3pp3r", model);
 

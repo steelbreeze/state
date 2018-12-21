@@ -52,14 +52,6 @@ export declare class PseudoState implements Vertex {
      */
     to<TTrigger>(target: Vertex): Transition<TTrigger>;
     /**
-     * A pseudonym for [[PseudoState.to]] provided for backwards compatability.
-     * @param to The target vertex of the transition.
-     * @returns Returns the newly created transition.
-     * @public
-     * @deprecated Use [[PseudoState.to]]. This method will be removed in the v8.0 release.
-     */
-    external<TTrigger>(target: Vertex): Transition<TTrigger>;
-    /**
      * Creates an else transition from Junction or Choice pseudo states.
      * @param to The target vertex of the transition.
      * @returns Returns the newly created transition.

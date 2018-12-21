@@ -15,17 +15,17 @@ var moveItem = new state.State("moveItem", onRegion);
 var showMoveItemPattern = new state.State("showMoveItemPattern", onRegion);
 var hideMoveItemPattern = new state.State("hideMoveItemPattern", onRegion);
 
-initial.external(idle);
-on.external(off).when(trigger => trigger === "Disable");
-off.external(history).when(trigger => trigger === "Enable");
-on.external(clean).when(trigger => trigger === "DestroyInput");
-off.external(clean).when(trigger => trigger === "DestroyInput");
-clean.external(final);
-idle.external(moveItem).when(trigger => trigger=== "TransformInput" );
-moveItem.external(idle).when(trigger => trigger === "ReleaseInput" );
-idle.external(showMoveItemPattern).when(trigger => trigger === "ReleaseInput" );
-showMoveItemPattern.external(hideMoveItemPattern).when(trigger => trigger === "ReleaseInput");
-hideMoveItemPattern.external(idle);
+initial.to(idle);
+on.to(off).when(trigger => trigger === "Disable");
+off.to(history).when(trigger => trigger === "Enable");
+on.to(clean).when(trigger => trigger === "DestroyInput");
+off.to(clean).when(trigger => trigger === "DestroyInput");
+clean.to(final);
+idle.to(moveItem).when(trigger => trigger=== "TransformInput" );
+moveItem.to(idle).when(trigger => trigger === "ReleaseInput" );
+idle.to(showMoveItemPattern).when(trigger => trigger === "ReleaseInput" );
+showMoveItemPattern.to(hideMoveItemPattern).when(trigger => trigger === "ReleaseInput");
+hideMoveItemPattern.to(idle);
 
 var instance = new state.Instance("florent", model);
 

@@ -85,18 +85,7 @@ export class PseudoState implements Vertex {
 	 * @public
 	 */
 	public to<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return new Transition<TTrigger>(this, target);
-	}
-
-	/**
-	 * A pseudonym for [[PseudoState.to]] provided for backwards compatability.
-	 * @param to The target vertex of the transition.
-	 * @returns Returns the newly created transition.
-	 * @public
-	 * @deprecated Use [[PseudoState.to]]. This method will be removed in the v8.0 release.
-	 */
-	public external<TTrigger>(target: Vertex): Transition<TTrigger> {
-		return this.to(target);
+		return new Transition<TTrigger>(this, target, TransitionKind.external);
 	}
 
 	/**
