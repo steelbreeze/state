@@ -7,7 +7,7 @@ import { Vertex } from './Vertex';
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
  * @public
  */
-export class PseudoState extends Vertex<Region> {
+export class PseudoState extends Vertex {
 	/** 
 	 * The else transition that may be used by branch pseudo states; saves the costly process of searching for it at runtime.
 	 * @internal 
@@ -22,7 +22,7 @@ export class PseudoState extends Vertex<Region> {
 	 * @public
 	 */
 	public constructor(public readonly name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
-		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
+		super(name, parent);
 
 		// if this is a starting state (initial, deep or shallow history), record it against the parent region
 		if ( this.kind === PseudoStateKind.Initial || this.isHistory()) {
@@ -30,10 +30,6 @@ export class PseudoState extends Vertex<Region> {
 
 			this.parent!.starting = this;
 		}
-
-		this.parent!.children.unshift(this);
-
-		log.info(() => `Created ${this.kind} pseudo state ${this}`, log.Create);
 	}
 
 	/**

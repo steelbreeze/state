@@ -1,3 +1,4 @@
+import { log } from './util';
 import { Instance } from './index';
 
 /**
@@ -8,10 +9,12 @@ export abstract class NamedElement<TParent = any> {
 	/**
 	 * The fully qualified name of the named element, including parent names.
 	 */
-	readonly qualifiedName: string;
+	public readonly qualifiedName: string;
 
 	protected constructor(public readonly name: string, public readonly parent: TParent ) {
 		this.qualifiedName = parent ? `${parent}.${name}` :  name;
+
+		log.info(() => `Created ${this.qualifiedName}`, log.Create);
 	}
 
 	enter(instance: Instance, deepHistory: boolean, trigger: any): void {

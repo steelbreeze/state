@@ -29,9 +29,8 @@ export class Region extends NamedElement<State> {
 	public constructor(name: string, parent: State) {
 		super(name, parent);
 
+		// add this region to the parent state
 		this.parent.children.unshift(this);
-
-		log.info(() => `Created region ${this}`, log.Create);
 	}
 
 	/** Initiate region entry */

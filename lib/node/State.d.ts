@@ -6,7 +6,7 @@ import { TransitionKind, Region, Transition, Instance } from './index';
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
  */
-export declare class State extends Vertex<Region | undefined> {
+export declare class State extends Vertex {
     readonly name: string;
     /**
      * Creates a new instance of the State class.

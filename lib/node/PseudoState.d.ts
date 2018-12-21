@@ -6,7 +6,7 @@ import { Vertex } from './Vertex';
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
  * @public
  */
-export declare class PseudoState extends Vertex<Region> {
+export declare class PseudoState extends Vertex {
     readonly name: string;
     readonly kind: PseudoStateKind;
     /**

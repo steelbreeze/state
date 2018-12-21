@@ -1,18 +1,24 @@
 import { assert } from './util';
 import { NamedElement } from "./NamedElement";
-import { Transition, Instance } from './index';
+import { State, Region, Transition, Instance } from './index';
 
 /**
  * A vertex is an element that can be the source or target of a transition.
  */
-export abstract class Vertex<TParent = any> extends NamedElement<TParent> {
+export abstract class Vertex extends NamedElement<Region | undefined> {
 	/**
 	 * The outgoing transitions available from this vertex.
+	 * @internal
 	 */
-	public outgoing: Array<Transition> = [];
+	outgoing: Array<Transition> = [];
 
-	protected constructor(name: string, parent: TParent) {
-		super(name, parent);
+	protected constructor(name: string, parent: State | Region | undefined) {
+		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
+
+		// add this vertex to the parent region
+		if (this.parent) {
+			this.parent.children.unshift(this);
+		}
 	}
 
 	/** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */

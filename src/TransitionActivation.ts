@@ -82,14 +82,16 @@ export class LocalTransitionActivation implements TransitionActivation {
 	exitSource(instance: Instance, deepHistory: boolean, trigger: any): void {
 		this.vertexToEnter = this.target;
 
+		// TODO: remove !'s
 		// iterate towards the root until we find an active state
-		while (this.vertexToEnter!.parent && !isActive(this.vertexToEnter!.parent.parent, instance)) {
-			this.vertexToEnter = this.vertexToEnter!.parent.parent;
+		while (this.vertexToEnter!.parent && !isActive(this.vertexToEnter!.parent!.parent, instance)) {
+			this.vertexToEnter = this.vertexToEnter!.parent!.parent;
 		}
 
+		// TODO: remove !'s
 		// exit the currently active vertex in the target vertex's parent region
 		if (!isActive(this.vertexToEnter!, instance) && this.vertexToEnter!.parent) {
-			instance.getVertex(this.vertexToEnter!.parent).leave(instance, deepHistory, trigger);
+			instance.getVertex(this.vertexToEnter!.parent!).leave(instance, deepHistory, trigger);
 		}
 	}
 

@@ -1,4 +1,4 @@
-import { func, assert, log } from './util';
+import { func, log } from './util';
 import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { TransitionKind, Region, Transition, Instance } from './index';
@@ -7,7 +7,7 @@ import { TransitionKind, Region, Transition, Instance } from './index';
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
  */
-export class State extends Vertex<Region | undefined> {
+export class State extends Vertex {
 	/**
 	 * The child regions belonging to this state.
 	 * @internal
@@ -46,14 +46,7 @@ export class State extends Vertex<Region | undefined> {
 	 * @public
 	 */
 	public constructor(public readonly name: string, parent: State | Region | undefined = undefined) {
-		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
-
-		if (this.parent) {
-			assert.ok(!this.parent.children.filter((vertex): vertex is State => vertex instanceof State && vertex.name === this.name).length, () => `State names must be unique within a region`);
-			this.parent.children.unshift(this);
-		}
-
-		log.info(() => `Created state ${this}`, log.Create);
+		super(name, parent);
 	}
 
 	/**
