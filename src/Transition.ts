@@ -1,7 +1,10 @@
 import { func, log } from './util';
 import { Vertex } from './Vertex';
+import { PseudoStateKind } from './PseudoStateKind';
+import { PseudoState } from './PseudoState';
 import { TransitionActivation } from './TransitionActivation';
 import { TransitionKind } from './TransitionKind';
+import { Instance } from './Instance';
 
 /**
  * A transition between vertices that defines a valid change in state in response to an event.
@@ -125,13 +128,29 @@ export class Transition<TTrigger = any> {
 		return this.typeGuard(trigger) && this.userGuard(trigger);
 	}
 
-	/**
-	 * Execute the user defined transition behaviour.
-	 * @param trigger The trigger event that caused the transition.
-	 */
-	doActions(trigger: TTrigger): void {
-		for (let i = this.actions.length; i--;) {
-			this.actions[i](trigger);
+	/** Traverse a transition */
+	traverse(instance: Instance, deepHistory: boolean, trigger: any): void {
+		let transition: Transition<any> = this;
+		const transitions: Array<Transition> = [transition];
+
+		// gather all transitions to be taversed either side of static conditional branches (junctions)
+		while (transition.target instanceof PseudoState && transition.target.kind === PseudoStateKind.Junction) {
+			transitions.unshift(transition = transition.target.getTransition(trigger)!);
+		}
+		// traverse all transitions
+		for (let i = transitions.length; i--;) {
+			log.info(() => `Executing ${transitions[i]}`, log.Transition);
+
+			// leave elements below the common ancestor
+			transitions[i].activation.exitSource(instance, deepHistory, trigger);
+
+			// perform the transition behaviour
+			for (let j = transitions[i].actions.length; j--;) {
+				transitions[i].actions[j](trigger);
+			}
+
+			// enter elements below the common ancestor to the target
+			transitions[i].activation.enterTarget(instance, deepHistory, trigger);
 		}
 	}
 

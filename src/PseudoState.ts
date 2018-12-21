@@ -1,11 +1,12 @@
 import { func, assert, log, random } from './util';
-import { Vertex } from './Vertex';
+import { NamedElement } from './NamedElement';
+import { Vertex, accept } from './Vertex';
 import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
 import { State } from './State';
 import { Transition } from './Transition';
 import { TransitionKind } from './TransitionKind';
-
+import { Instance } from './Instance';
 
 /**
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
@@ -110,7 +111,7 @@ export class PseudoState implements Vertex {
 		assert.ok(this.kind === PseudoStateKind.Choice || transitions.length <= 1, () => `Multiple transitions found at ${this} for ${trigger}`);
 
 		// select the appropriate transition
-		let result = (this.kind === PseudoStateKind.Choice ? transitions[random.get(transitions.length)] : transitions[0] ) || this.elseTransition;
+		let result = (this.kind === PseudoStateKind.Choice ? transitions[random.get(transitions.length)] : transitions[0]) || this.elseTransition;
 
 		// validate we have something to return
 		assert.ok(result, () => `Unable to find transition at ${this} for ${trigger}`);
@@ -118,6 +119,32 @@ export class PseudoState implements Vertex {
 		return result!;
 	}
 
+	// TODO: move to NamedElement?
+	enter(instance: Instance, deepHistory: boolean, trigger: any): void {
+		this.enterHead(instance, deepHistory, trigger, undefined);
+		this.enterTail(instance, deepHistory, trigger);
+	}
+
+	/** Initiate pseudo state entry */
+	enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void {
+		log.info(() => `${instance} enter ${this}`, log.Entry);
+
+		// update the current vertex of the parent region
+		instance.setVertex(this);
+	}
+
+	/** Complete pseudo state entry */
+	enterTail(instance: Instance, deepHistory: boolean, trigger: any): void {
+		// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
+		if (this.kind !== PseudoStateKind.Junction) {
+			accept(this, instance, deepHistory, trigger);
+		}
+	}
+
+	/** Leave a pseudo state */
+	leave(instance: Instance, deepHistory: boolean, trigger: any): void {
+		log.info(() => `${instance} leave ${this}`, log.Exit);
+	}
 	/**
 	 * Returns the fully qualified name of the pseudo state.
 	 * @public

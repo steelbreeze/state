@@ -1,9 +1,11 @@
 import { func } from './util';
+import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
 import { State } from './State';
 import { Transition } from './Transition';
+import { Instance } from './Instance';
 /**
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
  * @public
@@ -60,6 +62,13 @@ export declare class PseudoState implements Vertex {
     else<TTrigger>(target: Vertex): Transition<TTrigger>;
     /** Find a transition from the pseudo state for a given trigger event */
     getTransition(trigger: any): Transition | undefined;
+    enter(instance: Instance, deepHistory: boolean, trigger: any): void;
+    /** Initiate pseudo state entry */
+    enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
+    /** Complete pseudo state entry */
+    enterTail(instance: Instance, deepHistory: boolean, trigger: any): void;
+    /** Leave a pseudo state */
+    leave(instance: Instance, deepHistory: boolean, trigger: any): void;
     /**
      * Returns the fully qualified name of the pseudo state.
      * @public

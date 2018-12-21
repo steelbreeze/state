@@ -1,6 +1,7 @@
 import { func } from './util';
 import { Vertex } from './Vertex';
 import { TransitionKind } from './TransitionKind';
+import { Instance } from './Instance';
 /**
  * A transition between vertices that defines a valid change in state in response to an event.
  * @param TTrigger The type of triggering event that causes this transition to be traversed.
@@ -52,10 +53,7 @@ export declare class Transition<TTrigger = any> {
      * @public
      */
     do(action: func.Consumer<TTrigger>): this;
-    /**
-     * Execute the user defined transition behaviour.
-     * @param trigger The trigger event that caused the transition.
-     */
-    doActions(trigger: TTrigger): void;
+    /** Traverse a transition */
+    traverse(instance: Instance, deepHistory: boolean, trigger: any): void;
     toString(): string;
 }

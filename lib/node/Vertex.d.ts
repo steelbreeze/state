@@ -1,6 +1,7 @@
 import { NamedElement } from "./NamedElement";
 import { Region } from './Region';
 import { Transition } from './Transition';
+import { Instance } from './Instance';
 /**
  * A vertex is an element that can be the source or target of a transition.
  */
@@ -11,3 +12,5 @@ export interface Vertex extends NamedElement<Region | undefined> {
     outgoing: Array<Transition>;
     getTransition<TTrigger = any>(trigger: TTrigger): Transition | undefined;
 }
+/** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
+export declare function accept(vertex: Vertex, instance: Instance, deepHistory: boolean, trigger: any): boolean;

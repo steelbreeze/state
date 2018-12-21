@@ -1,8 +1,10 @@
-import { log } from './util';
+import { assert, log } from './util';
+import { PseudoStateKind } from './PseudoStateKind';
 import { NamedElement } from './NamedElement';
 import { State } from './State';
 import { PseudoState } from './PseudoState';
 import { Vertex } from './Vertex';
+import { Instance } from './Instance';
 
 /**
  * A region is a container of vertices (states and pseudo states) in a state machine model.
@@ -39,6 +41,42 @@ export class Region implements NamedElement<State> {
 		this.parent.children.unshift(this);
 
 		log.info(() => `Created region ${this}`, log.Create);
+	}
+
+	/** Enter a region, state or pseudo state */
+	enter(instance: Instance, deepHistory: boolean, trigger: any): void {
+		this.enterHead(instance, deepHistory, trigger, undefined);
+		this.enterTail(instance, deepHistory, trigger);
+	}
+
+	/** Initiate region entry */
+	enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void {
+		log.info(() => `${instance} enter ${this}`, log.Entry);
+	}
+
+	/** Complete region entry */
+	enterTail(instance: Instance, deepHistory: boolean, trigger: any): void {
+		let current: State | undefined;
+		let starting: Vertex | undefined = this.starting;
+
+		// determine if history semantics are in play and the region has previously been entered then select the starting vertex accordingly
+		if ((deepHistory || (this.starting && this.starting.isHistory())) && (current = instance.getState(this))) {
+			starting = current;
+			deepHistory = deepHistory || (this.starting!.kind === PseudoStateKind.DeepHistory);
+		}
+
+		assert.ok(starting, () => `${instance} no initial pseudo state found at ${this}`);
+
+		// cascade the entry operation to the approriate child vertex
+		starting!.enter(instance, deepHistory, trigger);
+	}
+
+	/** Leave a region */
+	leave(instance: Instance, deepHistory: boolean, trigger: any): void {
+		// cascade the leave operation to the currently active child vertex
+		instance.getVertex(this).leave(instance, deepHistory, trigger);
+
+		log.info(() => `${instance} leave ${this}`, log.Exit);
 	}
 
 	/**

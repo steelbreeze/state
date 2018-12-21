@@ -1,5 +1,6 @@
 import { NamedElement } from './NamedElement';
 import { State } from './State';
+import { Instance } from './Instance';
 /**
  * A region is a container of vertices (states and pseudo states) in a state machine model.
  * @public
@@ -19,6 +20,14 @@ export declare class Region implements NamedElement<State> {
      * @public
      */
     constructor(name: string, parent: State);
+    /** Enter a region, state or pseudo state */
+    enter(instance: Instance, deepHistory: boolean, trigger: any): void;
+    /** Initiate region entry */
+    enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
+    /** Complete region entry */
+    enterTail(instance: Instance, deepHistory: boolean, trigger: any): void;
+    /** Leave a region */
+    leave(instance: Instance, deepHistory: boolean, trigger: any): void;
     /**
      * Returns the fully qualified name of the region.
      * @public

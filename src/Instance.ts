@@ -1,7 +1,6 @@
 import { Vertex } from './Vertex';
 import { State } from './State';
 import { Region } from './Region';
-import { evaluate } from './core';
 
 import { func, assert, log } from './util';
 
@@ -55,7 +54,7 @@ export class Instance {
 
 		return this.transaction(() => {
 			// evaluate the trigger event passed
-			const result = evaluate(this.root, this, false, trigger);
+			const result = this.root.evaluate(this, false, trigger);
 
 			// check for and evaluate any deferred events
 			if (result && this.deferredEventPool.length !== 0) {
@@ -92,7 +91,7 @@ export class Instance {
 				log.info(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
 
 				// send for evaluation
-				if (evaluate(this.root, this, false, trigger)) {
+				if (this.root.evaluate(this, false, trigger)) {
 					// if the event was consumed, start the process again
 					this.evaluateDeferred();
 
@@ -184,7 +183,7 @@ export class Instance {
 	 * @param region The region to get the last known state of.
 	 * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
 	 */
-	 public getLastKnownState(region: Region): State | undefined {
+	public getLastKnownState(region: Region): State | undefined {
 		return this.cleanState[region.qualifiedName];
 	}
 

@@ -1,8 +1,10 @@
 import { func } from './util';
+import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { Region } from './Region';
 import { Transition } from './Transition';
 import { TransitionKind } from './TransitionKind';
+import { Instance } from './Instance';
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
@@ -102,15 +104,28 @@ export declare class State implements Vertex {
      */
     getTransition(trigger: any): Transition | undefined;
     /**
-     * Execute the user defined state entry behaviour.
-     * @param trigger The trigger event that caused the transition.
+     * Passes a trigger event to a state machine instance for evaluation
+     * @param state The state to evaluate the trigger event against.
+     * @param instance The state machine instance to evaluate the trigger against.
+     * @param deepHistory True if deep history semantics are invoked.
+     * @param trigger The trigger event
+     * @returns Returns true if the trigger was consumed by the state.
+     * @hidden
      */
-    doEnter(trigger: any): void;
-    /**
-     * Execute the user defined state exit behaviour.
-     * @param trigger The trigger event that caused the transition.
-     */
-    doLeave(trigger: any): void;
+    evaluate(instance: Instance, deepHistory: boolean, trigger: any): boolean;
+    /** Delegate a trigger to children for evaluation */
+    delegate(instance: Instance, deepHistory: boolean, trigger: any): boolean;
+    /** Evaluates the trigger event against the list of deferred transitions and defers into the event pool if necessary. */
+    testDefer(instance: Instance, trigger: any): boolean;
+    enter(instance: Instance, deepHistory: boolean, trigger: any): void;
+    /** Initiate state entry */
+    enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
+    /** Complete state entry */
+    enterTail(instance: Instance, deepHistory: boolean, trigger: any): void;
+    /** Leave a state */
+    leave(instance: Instance, deepHistory: boolean, trigger: any): void;
+    /** Checks for and executes completion transitions */
+    completion(instance: Instance, deepHistory: boolean, trigger: any): void;
     /**
      * Returns the fully qualified name of the state.
      * @public
