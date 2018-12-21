@@ -1,5 +1,5 @@
 //import { log, State, PseudoState, PseudoStateKind, Transition, TransitionKind, Instance } from "@steelbreeze/state";
-import { log, State, PseudoState, PseudoStateKind, Transition, TransitionKind, Instance } from "../../lib/node";
+import { log, State, PseudoState, PseudoStateKind, Transition, TransitionKind, Instance } from "../lib/node";
 
 // create event class that a transition will respond to
 class MyEvent {

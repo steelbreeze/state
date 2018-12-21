@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 //import * as state from "@steelbreeze/state";
-var state = require("../../lib/node");
+var state = require("../lib/node");
 state.log.add(function (message) { return console.info(message); }, state.log.Entry | state.log.Exit);
 // create the state machine model elements
 var model = new state.State("model");

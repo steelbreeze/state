@@ -16,7 +16,7 @@ export declare abstract class NamedElement<TParent = any> {
     abstract enterTail(instance: Instance, deepHistory: boolean, trigger: any): void;
     abstract leave(instance: Instance, deepHistory: boolean, trigger: any): void;
     /**
-     * Returns the fully qualified name of the state.
+     * Returns the fully qualified name of the named element.
      */
     toString(): string;
 }

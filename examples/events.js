@@ -2,7 +2,7 @@
 exports.__esModule = true;
 // This example shows a model with orthogonal regions, each one waiting on a different event
 // before the machine completes (a region is deemed complete when it reaches a state with no outgoing transitions).
-var node_1 = require("../../lib/node");
+var node_1 = require("../lib/node");
 // log state entry, exit and event evaluation
 node_1.log.add(function (message) { return console.info(message); }, node_1.log.Entry | node_1.log.Exit | node_1.log.Evaluate);
 // create a class to encapsulate events

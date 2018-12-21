@@ -268,12 +268,4 @@ export class State extends Vertex {
 		// look for transitions
 		this.accept(instance, deepHistory, trigger);
 	}
-
-	/**
-	 * Returns the fully qualified name of the state.
-	 * @public
-	 */
-	public toString(): string {
-		return this.qualifiedName;
-	}
 }

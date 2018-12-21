@@ -1,5 +1,6 @@
 import { log } from './util';
 import { Instance } from './index';
+import { type } from 'os';
 
 /**
  * A named element is a part of the state machine hierarchy.
@@ -14,7 +15,7 @@ export abstract class NamedElement<TParent = any> {
 	protected constructor(public readonly name: string, public readonly parent: TParent ) {
 		this.qualifiedName = parent ? `${parent}.${name}` :  name;
 
-		log.info(() => `Created ${this.qualifiedName}`, log.Create);
+		log.info(() => `Created ${this}`, log.Create);
 	}
 
 	enter(instance: Instance, deepHistory: boolean, trigger: any): void {
@@ -27,7 +28,7 @@ export abstract class NamedElement<TParent = any> {
 	abstract leave(instance: Instance, deepHistory: boolean, trigger: any): void;
 	
 	/**
-	 * Returns the fully qualified name of the state.
+	 * Returns the fully qualified name of the named element.
 	 */
 	public toString(): string {
 		return this.qualifiedName;

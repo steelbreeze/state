@@ -4,10 +4,6 @@ import { State, Region, Transition, Instance } from './index';
  * A vertex is an element that can be the source or target of a transition.
  */
 export declare abstract class Vertex extends NamedElement<Region | undefined> {
-    /**
-     * The outgoing transitions available from this vertex.
-     */
-    outgoing: Array<Transition>;
     protected constructor(name: string, parent: State | Region | undefined);
     /** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
     accept(instance: Instance, deepHistory: boolean, trigger: any): boolean;

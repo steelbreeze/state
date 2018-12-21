@@ -62,12 +62,4 @@ export class Region extends NamedElement<State> {
 
 		log.info(() => `${instance} leave ${this}`, log.Exit);
 	}
-
-	/**
-	 * Returns the fully qualified name of the region.
-	 * @public
-	 */
-	public toString(): string {
-		return this.qualifiedName;
-	}
 }

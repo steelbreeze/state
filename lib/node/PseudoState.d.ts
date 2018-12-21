@@ -55,9 +55,4 @@ export declare class PseudoState extends Vertex {
     enterTail(instance: Instance, deepHistory: boolean, trigger: any): void;
     /** Leave a pseudo state */
     leave(instance: Instance, deepHistory: boolean, trigger: any): void;
-    /**
-     * Returns the fully qualified name of the pseudo state.
-     * @public
-     */
-    toString(): string;
 }

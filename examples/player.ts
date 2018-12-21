@@ -1,5 +1,5 @@
 //import * as state from "@steelbreeze/state";
-import * as state from "../../lib/node";
+import * as state from "../lib/node";
 
 state.log.add(message => console.info(message), state.log.Entry | state.log.Exit);
 

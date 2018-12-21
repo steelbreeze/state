@@ -1,7 +1,7 @@
 "use strict";
 exports.__esModule = true;
 //import { log, State, PseudoState, PseudoStateKind, Transition, TransitionKind, Instance } from "@steelbreeze/state";
-var node_1 = require("../../lib/node");
+var node_1 = require("../lib/node");
 // create event class that a transition will respond to
 var MyEvent = /** @class */ (function () {
     function MyEvent(fieldA, fieldB) {

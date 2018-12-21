@@ -18,9 +18,4 @@ export declare class Region extends NamedElement<State> {
     enterTail(instance: Instance, deepHistory: boolean, trigger: any): void;
     /** Leave a region */
     leave(instance: Instance, deepHistory: boolean, trigger: any): void;
-    /**
-     * Returns the fully qualified name of the region.
-     * @public
-     */
-    toString(): string;
 }

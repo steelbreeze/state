@@ -1,6 +1,6 @@
 // This example shows a model with orthogonal regions, each one waiting on a different event
 // before the machine completes (a region is deemed complete when it reaches a state with no outgoing transitions).
-import { log, State, Region, PseudoState, PseudoStateKind, Instance } from "../../lib/node";
+import { log, State, Region, PseudoState, PseudoStateKind, Instance } from "../lib/node";
 
 // log state entry, exit and event evaluation
 log.add((message: string) => console.info(message), log.Entry | log.Exit | log.Evaluate);

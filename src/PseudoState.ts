@@ -115,11 +115,4 @@ export class PseudoState extends Vertex {
 	leave(instance: Instance, deepHistory: boolean, trigger: any): void {
 		log.info(() => `${instance} leave ${this}`, log.Exit);
 	}
-	/**
-	 * Returns the fully qualified name of the pseudo state.
-	 * @public
-	 */
-	public toString(): string {
-		return this.qualifiedName;
-	}
 }

@@ -1,5 +1,5 @@
 //var state = require("@steelbreeze/state");
-var state = require("../../lib/node");
+var state = require("../lib/node");
 
 // create event class that a transition will respond to
 class MyEvent {
