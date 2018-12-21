@@ -1,7 +1,6 @@
 import { Vertex } from './Vertex';
 import { State } from './State';
 import { Region } from './Region';
-import { IInstance } from './IInstance';
 import { evaluate } from './core';
 
 import { func, assert, log } from './util';
@@ -10,7 +9,7 @@ import { func, assert, log } from './util';
  * Represents the active state configuration of a state machine instance.
  * @remarks This is the default implementation of the IInstance class and reads/writes to the active state configuration in a transactional manner at both initilisation and each call to evaluate.
  */
-export class Instance implements IInstance {
+export class Instance {
 	/**
 	 * The last known state of each region in the state machine instance that has been entered.
 	 * @internal
@@ -144,7 +143,7 @@ export class Instance implements IInstance {
 	 * @param vertex The vertex set as its parents last entered vertex.
 	 * @remarks This should only be called by the state machine runtime.
 	 */
-	public setVertex(vertex: Vertex): void {
+	setVertex(vertex: Vertex): void {
 		if (vertex.parent) {
 			this.dirtyVertex[vertex.parent.qualifiedName] = vertex;
 		}
@@ -155,7 +154,7 @@ export class Instance implements IInstance {
 	 * @param state The state set as its parents last entered state.
 	 * @remarks This should only be called by the state machine runtime, and implementors note, you also need to update the last entered vertex within this call.
 	 */
-	public setState(state: State): void {
+	setState(state: State): void {
 		if (state.parent) {
 			this.dirtyVertex[state.parent.qualifiedName] = state;
 			this.dirtyState[state.parent.qualifiedName] = state;
@@ -167,7 +166,7 @@ export class Instance implements IInstance {
 	 * @param region The region to get the last known state of.
 	 * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
 	 */
-	public getState(region: Region): State {
+	getState(region: Region): State {
 		return this.dirtyState[region.qualifiedName] || this.cleanState[region.qualifiedName];
 	}
 
@@ -176,7 +175,7 @@ export class Instance implements IInstance {
 	 * @param region The region to get the last entered vertex of.
 	 * @returns Returns the last entered vertex for the given region.
 	 */
-	public getVertex(region: Region): Vertex {
+	getVertex(region: Region): Vertex {
 		return this.dirtyVertex[region.qualifiedName] || this.cleanState[region.qualifiedName];
 	}
 
@@ -185,7 +184,7 @@ export class Instance implements IInstance {
 	 * @param region The region to get the last known state of.
 	 * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
 	 */
-	public getLastKnownState(region: Region): State | undefined {
+	 public getLastKnownState(region: Region): State | undefined {
 		return this.cleanState[region.qualifiedName];
 	}
 

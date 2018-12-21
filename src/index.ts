@@ -6,7 +6,6 @@ export { Region } from './Region';
 export { PseudoState } from './PseudoState';
 export { Transition } from './Transition';
 
-export { IInstance } from './IInstance';
 export { Instance } from './Instance';
 
 export { log, random } from './util';

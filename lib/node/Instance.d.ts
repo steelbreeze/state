@@ -1,13 +1,12 @@
 import { Vertex } from './Vertex';
 import { State } from './State';
 import { Region } from './Region';
-import { IInstance } from './IInstance';
 import { func } from './util';
 /**
  * Represents the active state configuration of a state machine instance.
  * @remarks This is the default implementation of the IInstance class and reads/writes to the active state configuration in a transactional manner at both initilisation and each call to evaluate.
  */
-export declare class Instance implements IInstance {
+export declare class Instance {
     readonly name: string;
     readonly root: State;
     /**

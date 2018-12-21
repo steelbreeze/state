@@ -1,5 +1,5 @@
 import { State } from './State';
-import { IInstance } from './IInstance';
+import { Instance } from './Instance';
 /**
  * Passes a trigger event to a state machine instance for evaluation
  * @param state The state to evaluate the trigger event against.
@@ -9,4 +9,4 @@ import { IInstance } from './IInstance';
  * @returns Returns true if the trigger was consumed by the state.
  * @hidden
  */
-export declare function evaluate(state: State, instance: IInstance, deepHistory: boolean, trigger: any): boolean;
+export declare function evaluate(state: State, instance: Instance, deepHistory: boolean, trigger: any): boolean;
