@@ -212,9 +212,9 @@ export class State extends Vertex {
 		// when entering a state indirectly (part of the target ancestry in a transition that crosses region boundaries), ensure all child regions are entered
 		if (nextElement) {
 			// enter all child regions except for the next in the ancestry
-			for (const region of this.children) {
-				if (region !== nextElement) {
-					region.enter(instance, deepHistory, trigger);
+			for (let i = this.children.length; i--;) {
+				if (this.children[i] !== nextElement) {
+					this.children[i].enter(instance, deepHistory, trigger);
 				}
 			}
 		}

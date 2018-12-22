@@ -57,6 +57,9 @@ export class Instance {
 			// check for and evaluate any deferred events
 			if (result && this.deferredEventPool.length !== 0) {
 				this.evaluateDeferred();
+
+				// repack any gaps in the event pool
+				this.deferredEventPool = this.deferredEventPool.filter(e => e);
 			}
 
 			return result;
@@ -70,7 +73,7 @@ export class Instance {
 	defer(state: State, trigger: any): void {
 		log.info(() => `${this} deferred ${trigger} while in ${state}`, log.Evaluate);
 
-		this.deferredEventPool.push(trigger);
+		this.deferredEventPool.unshift(trigger);
 	}
 
 	/** Check for and send deferred events for evaluation */
@@ -79,12 +82,12 @@ export class Instance {
 		let deferrableTriggers = this.deferrableTriggers(this.root);
 
 		// process the outstanding event pool
-		for (let i = 0; i < this.deferredEventPool.length; i++) {
+		for (let i = this.deferredEventPool.length; i--;) {
 			const trigger = this.deferredEventPool[i];
 
 			// if the event still exists in the pool and its not still deferred, take it and send to the machine for evaluation
 			if (trigger && deferrableTriggers.indexOf(trigger.constructor) === -1) {
-				delete this.deferredEventPool[i]; // NOTE: the transaction clean-up packs the event pool
+				delete this.deferredEventPool[i];
 
 				log.info(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
 
@@ -129,9 +132,6 @@ export class Instance {
 			// clear the transaction cache
 			this.dirtyState = {};
 			this.dirtyVertex = {};
-
-			// repack the deferred event pool
-			this.deferredEventPool = this.deferredEventPool.filter(trigger => trigger);
 		}
 	}
 

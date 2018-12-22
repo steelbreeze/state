@@ -40,7 +40,7 @@ export class Transition<TTrigger = any> {
 	 * The behavior to call when the transition is traversed.
 	 * @internal
 	 */
-	private actions: Array<func.Consumer<TTrigger>> = [];
+	private onTraverse: Array<func.Consumer<TTrigger>> = [];
 
 	/**
 	 * Creates an instance of the Transition class.
@@ -110,7 +110,7 @@ export class Transition<TTrigger = any> {
 	 * @public
 	 */
 	public do(action: func.Consumer<TTrigger>): this {
-		this.actions.unshift(action);
+		this.onTraverse.unshift(action);
 
 		return this;
 	}
@@ -142,8 +142,8 @@ export class Transition<TTrigger = any> {
 			transitions[i].activation.exitSource(instance, deepHistory, trigger);
 
 			// perform the transition behaviour
-			for (let j = transitions[i].actions.length; j--;) {
-				transitions[i].actions[j](trigger);
+			for (let j = transitions[i].onTraverse.length; j--;) {
+				transitions[i].onTraverse[j](trigger);
 			}
 
 			// enter elements below the common ancestor to the target

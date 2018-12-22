@@ -25,8 +25,8 @@ export class PseudoState extends Vertex {
 		super(name, parent);
 
 		// if this is a starting state (initial, deep or shallow history), record it against the parent region
-		if ( this.kind === PseudoStateKind.Initial || this.isHistory()) {
-// TODO: FIX			assert.ok(this.parent!.starting, () => `Only one initial pseudo state is allowed in region ${this.parent}`);
+		if (this.kind === PseudoStateKind.Initial || this.isHistory()) {
+			// TODO: FIX			assert.ok(this.parent!.starting, () => `Only one initial pseudo state is allowed in region ${this.parent}`);
 
 			this.parent!.starting = this;
 		}
@@ -89,8 +89,15 @@ export class PseudoState extends Vertex {
 		return result;
 	}
 
-	getChoiceTransition(trigger: any) : Transition | undefined {
-		const transitions = this.outgoing.filter(transition => transition.evaluate(trigger));
+	getChoiceTransition(trigger: any): Transition | undefined {
+		const transitions: Array<Transition> = [];
+
+		// find all transitions that evaluate true
+		for (let i = this.outgoing.length; i--;) {
+			if (this.outgoing[i].evaluate(trigger)) {
+				transitions.unshift(this.outgoing[i]);
+			}
+		}
 
 		return transitions[random.get(transitions.length)];
 	}

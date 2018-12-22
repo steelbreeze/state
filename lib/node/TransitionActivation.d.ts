@@ -1,6 +1,5 @@
-import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
-import { State, Instance } from './index';
+import { Instance } from './index';
 /**
  * Encapsulates the semantics of different transition types.
  * @hidden
@@ -15,8 +14,8 @@ export interface TransitionActivation {
  * @hidden
  */
 export declare class ExternalTransitionActivation implements TransitionActivation {
-    readonly toExit: NamedElement;
-    readonly toEnter: Array<NamedElement>;
+    private readonly toExit;
+    private readonly toEnter;
     /**
      * Creates a new instance of the ExternalTransitionActivation class.
      * @param source The source vertex of the external transition.
@@ -36,7 +35,7 @@ export declare class ExternalTransitionActivation implements TransitionActivatio
  */
 export declare class LocalTransitionActivation implements TransitionActivation {
     readonly target: Vertex;
-    vertexToEnter: Vertex | undefined;
+    private toEnter;
     /**
      * Creates a new instance of the LocalTransitionActivation class.
      * @param source The source vertex of the local transition.
@@ -55,7 +54,7 @@ export declare class LocalTransitionActivation implements TransitionActivation {
  * @hidden
  */
 export declare class InternalTransitionActivation implements TransitionActivation {
-    readonly source: State;
+    private readonly source;
     /**
      * Creates a new instance of the InternalTransitionActivation class.
      * @param source The source vertex of the internal transition.

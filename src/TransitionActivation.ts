@@ -19,8 +19,8 @@ export interface TransitionActivation {
  * @hidden
  */
 export class ExternalTransitionActivation implements TransitionActivation {
-	readonly toExit: NamedElement;
-	readonly toEnter: Array<NamedElement>;
+	private readonly toExit: NamedElement;
+	private readonly toEnter: Array<NamedElement>;
 
 	/**
 	 * Creates a new instance of the ExternalTransitionActivation class.
@@ -69,7 +69,7 @@ export class ExternalTransitionActivation implements TransitionActivation {
  * @hidden 
  */
 export class LocalTransitionActivation implements TransitionActivation {
-	vertexToEnter: Vertex | undefined;
+	private toEnter: Vertex | undefined;
 
 	/**
 	 * Creates a new instance of the LocalTransitionActivation class.
@@ -80,24 +80,24 @@ export class LocalTransitionActivation implements TransitionActivation {
 	}
 
 	exitSource(instance: Instance, deepHistory: boolean, trigger: any): void {
-		this.vertexToEnter = this.target;
+		this.toEnter = this.target;
 
 		// TODO: remove !'s
 		// iterate towards the root until we find an active state
-		while (this.vertexToEnter!.parent && !isActive(this.vertexToEnter!.parent!.parent, instance)) {
-			this.vertexToEnter = this.vertexToEnter!.parent!.parent;
+		while (this.toEnter!.parent && !isActive(this.toEnter!.parent!.parent, instance)) {
+			this.toEnter = this.toEnter!.parent!.parent;
 		}
 
 		// TODO: remove !'s
 		// exit the currently active vertex in the target vertex's parent region
-		if (!isActive(this.vertexToEnter!, instance) && this.vertexToEnter!.parent) {
-			instance.getVertex(this.vertexToEnter!.parent!).leave(instance, deepHistory, trigger);
+		if (!isActive(this.toEnter!, instance) && this.toEnter!.parent) {
+			instance.getVertex(this.toEnter!.parent!).leave(instance, deepHistory, trigger);
 		}
 	}
 
 	enterTarget(instance: Instance, deepHistory: boolean, trigger: any): void {
-		if (this.vertexToEnter && !isActive(this.vertexToEnter, instance)) {
-			this.vertexToEnter!.enter(instance, deepHistory, trigger);
+		if (this.toEnter && !isActive(this.toEnter, instance)) {
+			this.toEnter!.enter(instance, deepHistory, trigger);
 		}
 	}
 
@@ -114,7 +114,7 @@ export class LocalTransitionActivation implements TransitionActivation {
  * @hidden 
  */
 export class InternalTransitionActivation implements TransitionActivation {
-	readonly source: State;
+	private readonly source: State;
 
 	/**
 	 * Creates a new instance of the InternalTransitionActivation class.
