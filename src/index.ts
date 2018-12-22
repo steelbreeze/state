@@ -1,6 +1,6 @@
 // enumerations
 export { PseudoStateKind } from './PseudoStateKind';
-export { TransitionKind} from './TransitionKind';
+export { TransitionKind } from './TransitionKind';
 
 // model elements
 export { State } from './State';

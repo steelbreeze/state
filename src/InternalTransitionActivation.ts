@@ -28,7 +28,7 @@ export class InternalTransitionActivation implements TransitionActivation {
 
 	enterTarget(instance: Instance, deepHistory: boolean, trigger: any): void {
 		// test for completion transitions for internal transitions as there will be state entry/exit performed where the test is usually performed
-		this.source.completion( instance, deepHistory, this.source);
+		this.source.completion(instance, deepHistory, this.source);
 	}
 
 	/**

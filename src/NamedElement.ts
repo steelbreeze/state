@@ -12,8 +12,8 @@ export abstract class NamedElement<TParent = any> {
 	 */
 	public readonly qualifiedName: string;
 
-	protected constructor(public readonly name: string, public readonly parent: TParent ) {
-		this.qualifiedName = parent ? `${parent}.${name}` :  name;
+	protected constructor(public readonly name: string, public readonly parent: TParent) {
+		this.qualifiedName = parent ? `${parent}.${name}` : name;
 
 		log.info(() => `Created ${this}`, log.Create);
 	}
@@ -26,7 +26,7 @@ export abstract class NamedElement<TParent = any> {
 	abstract enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
 	abstract enterTail(instance: Instance, deepHistory: boolean, trigger: any): void;
 	abstract leave(instance: Instance, deepHistory: boolean, trigger: any): void;
-	
+
 	/**
 	 * Returns the fully qualified name of the named element.
 	 */

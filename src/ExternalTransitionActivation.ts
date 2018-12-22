@@ -59,6 +59,7 @@ export class ExternalTransitionActivation implements TransitionActivation {
  * @param node The node to get the ancestry of.
  * @param getParent A function that will return the immediate parent of a node.
  * @returns Returns an array of nodes with the root node of the tree in element 0.
+ * @internal
  */
 function ancestors<TNode>(node: TNode | undefined, getParent: func.Func<TNode | undefined, TNode>): Array<TNode> {
 	const result: Array<TNode> = [];
@@ -77,6 +78,7 @@ function ancestors<TNode>(node: TNode | undefined, getParent: func.Func<TNode | 
  * @param a The first anccesrty array.
  * @param b The second ancestry array.
  * @returns Returns the index of the lowest common ancestor.
+ * @internal
  */
 function lca<TNode>(a: Array<TNode>, b: Array<TNode>): number {
 	const max = Math.min(a.length, b.length);

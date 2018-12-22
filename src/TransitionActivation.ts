@@ -1,4 +1,4 @@
-import { Instance} from './index';
+import { Instance } from './index';
 
 /**
  * Encapsulates the semantics of different transition types.
