@@ -5,6 +5,7 @@ import { State, Region, Transition, Instance } from './index';
  */
 export declare abstract class Vertex extends NamedElement<Region | undefined> {
     protected constructor(name: string, parent: State | Region | undefined);
+    isActive(instance: Instance): boolean;
     /** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
     accept(instance: Instance, deepHistory: boolean, trigger: any): boolean;
     /**

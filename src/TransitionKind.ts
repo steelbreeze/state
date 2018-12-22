@@ -1,5 +1,8 @@
 import { Vertex } from './Vertex';
-import { TransitionActivation, ExternalTransitionActivation, InternalTransitionActivation as InternalTransitionActivation, LocalTransitionActivation } from './TransitionActivation';
+import { TransitionActivation } from './TransitionActivation';
+import { ExternalTransitionActivation } from './ExternalTransitionActivation';
+import { LocalTransitionActivation } from './LocalTransitionActivation';
+import { InternalTransitionActivation } from './InternalTransitionActivation';
 
 /**
  * A transition's kind defines its precise semantics at runtime.

@@ -21,6 +21,10 @@ export abstract class Vertex extends NamedElement<Region | undefined> {
 		}
 	}
 
+	isActive(instance: Instance): boolean {
+		return this.parent ? this.parent.parent.isActive(instance) && instance.getVertex(this.parent) === this : true;
+	}
+
 	/** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
 	accept(instance: Instance, deepHistory: boolean, trigger: any): boolean {
 		let result = false;
