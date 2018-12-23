@@ -1,3 +1,6 @@
+## v7.2.6
+Make TransitionKind a real enum to tidy up documentation. 
+
 ## v7.2.5
 Fixes bug #14 where a local transition didn't exit the current state.
 
