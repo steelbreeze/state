@@ -53,7 +53,7 @@ export class Transition<TTrigger = any> {
 	public constructor(source: Vertex, target: Vertex | undefined = undefined, kind: TransitionKind = (target ? TransitionKind.external : TransitionKind.internal), type: func.Constructor<TTrigger> | undefined = undefined, guard: func.Predicate<TTrigger> = () => true) {
 		this.source = source;
 		this.target = target || source;
-		this.activation = new kind(this.source, this.target);
+		this.activation = new TransitionKind.map[kind](this.source, this.target);
 		this.typeGuard = type ? (trigger: TTrigger) => trigger.constructor === type : () => true;
 		this.userGuard = guard;
 
@@ -95,7 +95,7 @@ export class Transition<TTrigger = any> {
 	 */
 	public to(target: Vertex, kind: TransitionKind = TransitionKind.external): this {
 		this.target = target;
-		this.activation = new kind(this.source, this.target);
+		this.activation = new TransitionKind.map[kind](this.source, this.target);
 
 		log.info(() => `- converted to ${this}`, log.Create);
 
