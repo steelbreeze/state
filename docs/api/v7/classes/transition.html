@@ -134,13 +134,13 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Transition<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, target<span class="tsd-signature-symbol">?: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, kind<span class="tsd-signature-symbol">?: </span><a href="../modules/transitionkind.html" class="tsd-signature-type">TransitionKind</a>, type<span class="tsd-signature-symbol">?: </span><a href="../modules/func.html#constructor" class="tsd-signature-type">Constructor</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TTrigger</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, guard<span class="tsd-signature-symbol">?: </span><a href="../modules/func.html#predicate" class="tsd-signature-type">Predicate</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TTrigger</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="transition.html" class="tsd-signature-type">Transition</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Transition<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, target<span class="tsd-signature-symbol">?: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, kind<span class="tsd-signature-symbol">?: </span><a href="../enums/transitionkind.html" class="tsd-signature-type">TransitionKind</a>, type<span class="tsd-signature-symbol">?: </span><a href="../modules/func.html#constructor" class="tsd-signature-type">Constructor</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TTrigger</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span>, guard<span class="tsd-signature-symbol">?: </span><a href="../modules/func.html#predicate" class="tsd-signature-type">Predicate</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TTrigger</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="transition.html" class="tsd-signature-type">Transition</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L33">model/Transition.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L43">model/Transition.ts:43</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -167,7 +167,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> kind: <a href="../modules/transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol"> =&nbsp;(target ? TransitionKind.external : TransitionKind.internal)</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> kind: <a href="../enums/transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol"> =&nbsp;(target ? TransitionKind.external : TransitionKind.internal)</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>The optional kind of the transition: external, internal or local. If left blank, this will be external if a targed vertex is specified otherwise internal.</p>
@@ -199,7 +199,7 @@
 					<div class="tsd-signature tsd-kind-icon">activation<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TransitionActivation</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L27">model/Transition.ts:27</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L37">model/Transition.ts:37</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -218,7 +218,7 @@
 					<div class="tsd-signature tsd-kind-icon">source<span class="tsd-signature-symbol">:</span> <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L43">model/Transition.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L14">model/Transition.ts:14</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -230,15 +230,15 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="target" class="tsd-anchor"></a>
 					<h3>target</h3>
-					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L43">model/Transition.ts:43</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L19">model/Transition.ts:19</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The optional target vertex of the transition; leave undefined for internal transitions.</p>
+							<p>The target vertex of the transition.</p>
 						</div>
 					</div>
 				</section>
@@ -255,7 +255,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L100">model/Transition.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L112">model/Transition.ts:112</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -292,7 +292,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L120">model/Transition.ts:120</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L132">model/Transition.ts:132</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -323,7 +323,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L159">model/Transition.ts:159</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L171">model/Transition.ts:171</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -360,7 +360,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L112">model/Transition.ts:112</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L124">model/Transition.ts:124</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -396,7 +396,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L133">model/Transition.ts:133</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L145">model/Transition.ts:145</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -430,7 +430,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L144">model/Transition.ts:144</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L156">model/Transition.ts:156</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -467,7 +467,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L60">model/Transition.ts:60</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L72">model/Transition.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -493,13 +493,13 @@
 					<a name="to" class="tsd-anchor"></a>
 					<h3>to</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">to<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, kind<span class="tsd-signature-symbol">?: </span><a href="../modules/transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">to<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="../interfaces/vertex.html" class="tsd-signature-type">Vertex</a>, kind<span class="tsd-signature-symbol">?: </span><a href="../enums/transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L84">model/Transition.ts:84</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L96">model/Transition.ts:96</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -516,7 +516,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> kind: <a href="../modules/transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol"> =&nbsp;TransitionKind.external</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> kind: <a href="../enums/transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol"> =&nbsp;TransitionKind.external</span></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">this</span></h4>
@@ -534,7 +534,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L163">model/Transition.ts:163</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L175">model/Transition.ts:175</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -551,7 +551,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e1120fc/src/model/Transition.ts#L72">model/Transition.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/6d7437f/src/model/Transition.ts#L84">model/Transition.ts:84</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -584,6 +584,9 @@
 				<ul class="before-current">
 					<li class=" tsd-kind-enum tsd-is-external">
 						<a href="../enums/pseudostatekind.html" class="tsd-kind-icon">Pseudo<wbr>State<wbr>Kind</a>
+					</li>
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="../enums/transitionkind.html" class="tsd-kind-icon">Transition<wbr>Kind</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="instance.html" class="tsd-kind-icon">Instance</a>
