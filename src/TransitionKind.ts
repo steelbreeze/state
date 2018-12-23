@@ -13,20 +13,20 @@ export enum TransitionKind {
 	external = 0,
 
 	/**
+	 * An internal transition does not cause a change of state; when traversed it only executes the user defined transition behaviour.
+ 	*/
+	internal = 1,
+
+	/**
 	 * A local transition is one where either the source or target is the common ancestor of both vertices.
 	 * Traversal is the same as an external transition but the common ancestor is not entered/exited.
 	 */
-	local = 1,
-
-	/**
-	 * An internal transition does not cause a change of state; when traversed it only executes the user defined transition behaviour.
-	 */
-	internal = 2
+	local = 2
 }
 
 export namespace TransitionKind {
 	/**
 	 * Map from transition kind to the transition activation strategies.
 	 */
-	export const map = [ExternalTransitionActivation, LocalTransitionActivation, InternalTransitionActivation];
+	export const map = [ExternalTransitionActivation, InternalTransitionActivation, LocalTransitionActivation];
 }
