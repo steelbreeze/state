@@ -15,4 +15,6 @@ export declare abstract class Vertex extends NamedElement<Region | undefined> {
      * @throws Throws an Error if more than one transition was found.
      */
     getTransition(trigger: any): Transition | undefined;
+    /** Initiate state entry */
+    enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
 }

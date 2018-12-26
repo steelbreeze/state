@@ -59,4 +59,11 @@ export abstract class Vertex extends NamedElement<Region | undefined> {
 
 		return result;
 	}
+
+	/** Initiate state entry */
+	enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void {
+		super.enterHead(instance, deepHistory, trigger, nextElement);
+
+		instance.setVertex(this);
+	}
 }

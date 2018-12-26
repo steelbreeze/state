@@ -27,11 +27,12 @@ export class Instance {
 
 	/**
 	 * Outstanding events marked for deferral.
+	 * @internal
 	 */
 	private deferredEventPool: Array<any> = [];
 
 	/**
-	 * Creates an instance of the Instance class.
+	 * Creates a new instance of the Instance class.
 	 * @param name The name of the state machine instance.
 	 * @param root The root element of the state machine model that this an instance of.
 	 * @param activeStateConfiguration Optional JSON object used to initialise the active state configuration. The json object must have been produced by a prior call to Instance.toJSON from an instance using the same model.
@@ -69,6 +70,7 @@ export class Instance {
 	/**
 	 * Adds a trigger event to the event pool for later evaluation (once the state machine has changed state).
 	 * @param trigger The trigger event to defer.
+	 * @internal
 	 */
 	defer(state: State, trigger: any): void {
 		log.info(() => `${this} deferred ${trigger} while in ${state}`, log.Evaluate);
@@ -76,7 +78,10 @@ export class Instance {
 		this.deferredEventPool.unshift(trigger);
 	}
 
-	/** Check for and send deferred events for evaluation */
+	/**
+	 * Check for and send deferred events for evaluation
+	 * @internal
+	 */
 	evaluateDeferred(): void {
 		// build the list of deferred event types based on the active state configuration
 		let deferrableTriggers = this.deferrableTriggers(this.root);
@@ -103,7 +108,10 @@ export class Instance {
 		}
 	}
 
-	/** Build a list of all the deferrable events at a particular state (including its children) */
+	/**
+	 * Build a list of all the deferrable events at a particular state (including its children)
+	 * @internal
+	 */
 	deferrableTriggers(state: State): Array<func.Constructor<any>> {
 		return state.children.reduce((result, region) => result.concat(this.deferrableTriggers(this.getState(region))), state.deferrableTrigger);
 	}
@@ -113,6 +121,7 @@ export class Instance {
 	 * @param TReturn The type of the return parameter of the transactional operation.
 	 * @param operation The operation to perform within the transactional context.
 	 * @returns Returns the return value from the transactional context.
+	 * @internal
 	 */
 	transaction<TReturn>(operation: func.Producer<TReturn>): TReturn {
 		try {
@@ -139,22 +148,15 @@ export class Instance {
 	 * Updates the transactional state of a region with the last entered vertex.
 	 * @param vertex The vertex set as its parents last entered vertex.
 	 * @remarks This should only be called by the state machine runtime.
+	 * @internal
 	 */
 	setVertex(vertex: Vertex): void {
 		if (vertex.parent) {
 			this.dirtyVertex[vertex.parent.qualifiedName] = vertex;
-		}
-	}
 
-	/**
-	 * Updates the transactional state of a region with the last entered state.
-	 * @param state The state set as its parents last entered state.
-	 * @remarks This should only be called by the state machine runtime, and implementors note, you also need to update the last entered vertex within this call.
-	 */
-	setState(state: State): void {
-		if (state.parent) {
-			this.dirtyVertex[state.parent.qualifiedName] = state;
-			this.dirtyState[state.parent.qualifiedName] = state;
+			if(vertex instanceof State) {
+				this.dirtyState[vertex.parent!.qualifiedName] = vertex;
+			}
 		}
 	}
 
@@ -162,6 +164,7 @@ export class Instance {
 	 * Returns the last known state of a given region. This is the call for the state machine runtime to use as it returns the dirty transactional state.
 	 * @param region The region to get the last known state of.
 	 * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
+	 * @internal
 	 */
 	getState(region: Region): State {
 		return this.dirtyState[region.qualifiedName] || this.cleanState[region.qualifiedName];
@@ -171,6 +174,7 @@ export class Instance {
 	 * Returns the last entered vertex to the state machine runtime.
 	 * @param region The region to get the last entered vertex of.
 	 * @returns Returns the last entered vertex for the given region.
+	 * @internal
 	 */
 	getVertex(region: Region): Vertex {
 		return this.dirtyVertex[region.qualifiedName] || this.cleanState[region.qualifiedName];

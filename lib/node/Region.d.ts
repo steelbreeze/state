@@ -12,8 +12,6 @@ export declare class Region extends NamedElement<State> {
      * @public
      */
     constructor(name: string, parent: State);
-    /** Initiate region entry */
-    enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
     /** Complete region entry */
     enterTail(instance: Instance, deepHistory: boolean, trigger: any): void;
     /** Leave a region */

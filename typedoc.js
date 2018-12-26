@@ -1,5 +1,5 @@
 module.exports = {
-	out: './docs/api/v7',
+	out: './docs/api/v8',
 	readme: 'none',
 	mode: 'file',
 	includeDeclatations: false,

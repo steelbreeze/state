@@ -33,11 +33,6 @@ export class Region extends NamedElement<State> {
 		this.parent.children.unshift(this);
 	}
 
-	/** Initiate region entry */
-	enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void {
-		log.info(() => `${instance} enter ${this}`, log.Entry);
-	}
-
 	/** Complete region entry */
 	enterTail(instance: Instance, deepHistory: boolean, trigger: any): void {
 		let current: State | undefined;
@@ -60,6 +55,6 @@ export class Region extends NamedElement<State> {
 		// cascade the leave operation to the currently active child vertex
 		instance.getVertex(this).leave(instance, deepHistory, trigger);
 
-		log.info(() => `${instance} leave ${this}`, log.Exit);
+		super.leave(instance, deepHistory, trigger);
 	}
 }

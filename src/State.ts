@@ -219,10 +219,7 @@ export class State extends Vertex {
 			}
 		}
 
-		log.info(() => `${instance} enter ${this}`, log.Entry);
-
-		// update the current state and vertex of the parent region
-		instance.setState(this);
+		super.enterHead(instance, deepHistory, trigger, nextElement);
 
 		// perform the user defined entry behaviour
 		for (let i = this.onEnter.length; i--;) {
@@ -248,7 +245,7 @@ export class State extends Vertex {
 			this.children[i].leave(instance, deepHistory, trigger);
 		}
 
-		log.info(() => `${instance} leave ${this}`, log.Exit);
+		super.leave(instance, deepHistory, trigger);
 
 		// perform the user defined leave behaviour
 		for (let i = this.onLeave.length; i--;) {

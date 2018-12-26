@@ -19,7 +19,6 @@ export class PseudoState extends Vertex {
 	 * @param name The name of the pseudo state.
 	 * @param parent The parent region of the pseudo state; a state may also be specified in which case the state's default region will be used as the parent region.
 	 * @param kind The kind of pseudo state; this defines its behaviour and use. See PseudoStateKind for more information.
-	 * @public
 	 */
 	public constructor(public readonly name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
 		super(name, parent);
@@ -36,31 +35,33 @@ export class PseudoState extends Vertex {
 	 * Tests a pseudo state to see if is is a history pseudo state
 	 * @returns Returns true if the pseudo state is of the deep or shallow history kind
 	 */
-	isHistory(): boolean {
+	public isHistory(): boolean {
 		return this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
 	}
 
 	/**
 	 * Creates a new transition with a type test.
-	 * @remarks Once creates with the [[Vertex.on]] method, the transition can be enhanced using the fluent API calls of [[Transition.if]], [[Transition.to]]/[[Transition.local]] and [[Transition.do]].
+	 * @remarks Once creates with the [[Vertex.on]] method, the transition can be enhanced using the fluent API calls of [[Transition.when]], [[Transition.to]] and [[Transition.do]].
 	 * @param type The type of event that this transition will look for.
 	 * @returns Returns the newly created transition.
-	 * @public
 	 */
 	public on<TTrigger>(type: func.Constructor<TTrigger>): Transition<TTrigger> {
 		return new Transition<TTrigger>(this, undefined, TransitionKind.internal, type);
 	}
 
+	/**
+	 * Adds a user-defined guard condition that allows to further restricts the conditions under which a transition may be traversed.
+	 * @param guard The guard condition that takes the triggering event as a parameter and returns a boolean.
+	 */
 	public when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger> {
 		return new Transition<TTrigger>(this, undefined, TransitionKind.internal, undefined, guard);
 	}
 
 	/**
-	 * Creates a new transition with a target vertex.
+	 * Creates a new external transition with a target vertex.
 	 * @remarks Once creates with the [[Vertex.tn]] method, the transition can be enhanced using the fluent API calls of [[Transition.on]] [[Transition.if]], [[Transition.local]] and [[Transition.do]]. If an event test is needed, create the transition with the [[on]] method.
 	 * @param to The target vertex of the transition.
 	 * @returns Returns the newly created transition.
-	 * @public
 	 */
 	public to<TTrigger>(target: Vertex): Transition<TTrigger> {
 		return new Transition<TTrigger>(this, target, TransitionKind.external);
@@ -70,7 +71,6 @@ export class PseudoState extends Vertex {
 	 * Creates an else transition from Junction or Choice pseudo states.
 	 * @param to The target vertex of the transition.
 	 * @returns Returns the newly created transition.
-	 * @public
 	 */
 	public else<TTrigger>(target: Vertex): Transition<TTrigger> {
 		assert.ok(this.kind === PseudoStateKind.Choice || this.kind === PseudoStateKind.Junction, () => `Else transitions are only valid at Choice and Junction pseudo states`);
@@ -79,7 +79,12 @@ export class PseudoState extends Vertex {
 		return this.elseTransition = new Transition<TTrigger>(this, target, TransitionKind.external, undefined, () => false);
 	}
 
-	/** Find a transition from the pseudo state for a given trigger event */
+	/**
+	 * Find a transition from the pseudo state for a given trigger event
+	 * @param trigger The trigger event to use to look for viable transitions.
+	 * @returns Returns a transition to traverse in response to the trigger event.
+	 * @internal
+	 */
 	getTransition(trigger: any): Transition | undefined {
 		let result = (this.kind !== PseudoStateKind.Choice ? super.getTransition(trigger) : this.getChoiceTransition(trigger)) || this.elseTransition;
 
@@ -89,6 +94,12 @@ export class PseudoState extends Vertex {
 		return result;
 	}
 
+	/**
+	 * A specialisation of [[getTransition]] for choice pseudo states.
+	 * @param trigger The trigger event to use to look for viable transitions.
+	 * @returns Returns a transition to traverse in response to the trigger event.
+	 * @internal
+	 */
 	getChoiceTransition(trigger: any): Transition | undefined {
 		const transitions: Array<Transition> = [];
 
@@ -102,24 +113,17 @@ export class PseudoState extends Vertex {
 		return transitions[random.get(transitions.length)];
 	}
 
-	/** Initiate pseudo state entry */
-	enterHead(instance: Instance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void {
-		log.info(() => `${instance} enter ${this}`, log.Entry);
-
-		// update the current vertex of the parent region
-		instance.setVertex(this);
-	}
-
-	/** Complete pseudo state entry */
+	/**
+	 * Cascade the entry operation to child elements as required.
+	 * @param instance The state machine instance.
+	 * @param deepHistory True if deep history semantics are in force at the time of entry.
+	 * @param trigger The trigger event that caused the entry operation.
+	 * @internal
+	 */
 	enterTail(instance: Instance, deepHistory: boolean, trigger: any): void {
 		// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
 		if (this.kind !== PseudoStateKind.Junction) {
 			this.accept(instance, deepHistory, trigger);
 		}
-	}
-
-	/** Leave a pseudo state */
-	leave(instance: Instance, deepHistory: boolean, trigger: any): void {
-		log.info(() => `${instance} leave ${this}`, log.Exit);
 	}
 }

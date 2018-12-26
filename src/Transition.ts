@@ -134,6 +134,7 @@ export class Transition<TTrigger = any> {
 		while (transition.target instanceof PseudoState && transition.target.kind === PseudoStateKind.Junction) {
 			transitions.unshift(transition = transition.target.getTransition(trigger)!);
 		}
+		
 		// traverse all transitions
 		for (let i = transitions.length; i--;) {
 			log.info(() => `Executing ${transitions[i]}`, log.Transition);

@@ -6,7 +6,6 @@ import { TransitionActivation } from './TransitionActivation';
 
 /**
  * Semantics of external transitions. Derives elements to exit and enter in advance using the lowest common ancestor rule.
- * @hidden
  */
 export class ExternalTransitionActivation implements TransitionActivation {
 	private readonly toExit: NamedElement;
@@ -31,11 +30,23 @@ export class ExternalTransitionActivation implements TransitionActivation {
 		this.toEnter = targetAncestors.slice(from, to).reverse();
 	}
 
+	/**
+	 * Exits the source of the transition
+	 * @param instance The state machine instance.
+	 * @param deepHistory True if deep history semantics are in force at the time of exit.
+	 * @param trigger The trigger event that caused the exit operation.
+	 */
 	exitSource(instance: Instance, deepHistory: boolean, trigger: any): void {
 		// exit the element below the common ancestor
 		this.toExit.leave(instance, deepHistory, trigger);
 	}
 
+	/**
+	 * Exits the target of the transition
+	 * @param instance The state machine instance.
+	 * @param deepHistory True if deep history semantics are in force at the time of entry.
+	 * @param trigger The trigger event that caused the exit operation.
+	 */
 	enterTarget(instance: Instance, deepHistory: boolean, trigger: any): void {
 		// enter elements below the common ancestor to the target
 		for (var i = this.toEnter.length; i--;) {

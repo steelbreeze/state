@@ -4,7 +4,6 @@ import { TransitionActivation } from './TransitionActivation';
 
 /**
  * Semantics of local transitions. The elements to exit and enter when traversing a local transition  depend on the active state configuration at the time of traversal.
- * @hidden 
  */
 export class LocalTransitionActivation implements TransitionActivation {
 	private toEnter: Vertex | undefined;
@@ -17,6 +16,12 @@ export class LocalTransitionActivation implements TransitionActivation {
 	constructor(source: Vertex, public readonly target: Vertex) {
 	}
 
+	/**
+	 * Exits the source of the transition
+	 * @param instance The state machine instance.
+	 * @param deepHistory True if deep history semantics are in force at the time of exit.
+	 * @param trigger The trigger event that caused the exit operation.
+	 */
 	exitSource(instance: Instance, deepHistory: boolean, trigger: any): void {
 		this.toEnter = this.target;
 
@@ -33,6 +38,12 @@ export class LocalTransitionActivation implements TransitionActivation {
 		}
 	}
 
+	/**
+	 * Exits the target of the transition
+	 * @param instance The state machine instance.
+	 * @param deepHistory True if deep history semantics are in force at the time of entry.
+	 * @param trigger The trigger event that caused the exit operation.
+	 */
 	enterTarget(instance: Instance, deepHistory: boolean, trigger: any): void {
 		if (this.toEnter && !this.toEnter.isActive(instance)) {
 			this.toEnter!.enter(instance, deepHistory, trigger);

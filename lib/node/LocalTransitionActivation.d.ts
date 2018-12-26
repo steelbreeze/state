@@ -3,7 +3,6 @@ import { Instance } from './index';
 import { TransitionActivation } from './TransitionActivation';
 /**
  * Semantics of local transitions. The elements to exit and enter when traversing a local transition  depend on the active state configuration at the time of traversal.
- * @hidden
  */
 export declare class LocalTransitionActivation implements TransitionActivation {
     readonly target: Vertex;
@@ -14,7 +13,19 @@ export declare class LocalTransitionActivation implements TransitionActivation {
      * @param target The target vertex of the local transition.
      */
     constructor(source: Vertex, target: Vertex);
+    /**
+     * Exits the source of the transition
+     * @param instance The state machine instance.
+     * @param deepHistory True if deep history semantics are in force at the time of exit.
+     * @param trigger The trigger event that caused the exit operation.
+     */
     exitSource(instance: Instance, deepHistory: boolean, trigger: any): void;
+    /**
+     * Exits the target of the transition
+     * @param instance The state machine instance.
+     * @param deepHistory True if deep history semantics are in force at the time of entry.
+     * @param trigger The trigger event that caused the exit operation.
+     */
     enterTarget(instance: Instance, deepHistory: boolean, trigger: any): void;
     /**
      * Returns the type of the transtiion.
