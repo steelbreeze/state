@@ -1,3 +1,7 @@
+## v7.2.7
+Minor performance improvements:
+- Do not re-pack the deferred event pool unless deferred events were evaluated.
+
 ## v7.2.6
 Make TransitionKind a real enum to tidy up documentation. 
 

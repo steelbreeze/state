@@ -61,6 +61,9 @@ export class Instance implements IInstance {
 			// check for and evaluate any deferred events
 			if (result && this.deferredEventPool.length !== 0) {
 				this.evaluateDeferred();
+
+				// repack the deferred event pool
+				this.deferredEventPool = this.deferredEventPool.filter(trigger => trigger);
 			}
 
 			return result;
@@ -133,9 +136,6 @@ export class Instance implements IInstance {
 			// clear the transaction cache
 			this.dirtyState = {};
 			this.dirtyVertex = {};
-
-			// repack the deferred event pool
-			this.deferredEventPool = this.deferredEventPool.filter(trigger => trigger);
 		}
 	}
 
