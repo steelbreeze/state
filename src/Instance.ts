@@ -152,10 +152,12 @@ export class Instance {
 	 */
 	setVertex(vertex: Vertex): void {
 		if (vertex.parent) {
-			this.dirtyVertex[vertex.parent.qualifiedName] = vertex;
+			const region = vertex.parent.qualifiedName;
+
+			this.dirtyVertex[region] = vertex;
 
 			if(vertex instanceof State) {
-				this.dirtyState[vertex.parent!.qualifiedName] = vertex;
+				this.dirtyState[region] = vertex;
 			}
 		}
 	}

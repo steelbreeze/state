@@ -116,7 +116,7 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vertex.html#accept" class="tsd-kind-icon">accept</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="vertex.html#enter" class="tsd-kind-icon">enter</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="vertex.html#enterhead" class="tsd-kind-icon">enter<wbr>Head</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="vertex.html#enterhead" class="tsd-kind-icon">enter<wbr>Head</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="vertex.html#entertail" class="tsd-kind-icon">enter<wbr>Tail</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vertex.html#gettransition" class="tsd-kind-icon">get<wbr>Transition</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vertex.html#isactive" class="tsd-kind-icon">is<wbr>Active</a></li>
@@ -140,7 +140,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#constructor">constructor</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/Vertex.ts#L13">Vertex.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/Vertex.ts#L13">Vertex.ts:13</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -166,9 +166,14 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#name">name</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/NamedElement.ts#L15">NamedElement.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L19">NamedElement.ts:19</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The name of the named element.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="outgoing" class="tsd-anchor"></a>
@@ -176,7 +181,7 @@
 					<div class="tsd-signature tsd-kind-icon">outgoing<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/Vertex.ts#L13">Vertex.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/Vertex.ts#L13">Vertex.ts:13</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -196,9 +201,14 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#parent">parent</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/NamedElement.ts#L15">NamedElement.ts:15</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L19">NamedElement.ts:19</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The parent element of the named element.</p>
+						</div>
+					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="qualifiedname" class="tsd-anchor"></a>
@@ -207,7 +217,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#qualifiedname">qualifiedName</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/NamedElement.ts#L13">NamedElement.ts:13</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L12">NamedElement.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -229,7 +239,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/Vertex.ts#L29">Vertex.ts:29</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/Vertex.ts#L29">Vertex.ts:29</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -264,39 +274,62 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#enter">enter</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/NamedElement.ts#L21">NamedElement.ts:21</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L32">NamedElement.ts:32</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Enter an element during state machine execution.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The state machine instance.</p>
+									</div>
 								</li>
 								<li>
 									<h5>deepHistory: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>True if deep history semantics are in force at the time of entry.</p>
+									</div>
 								</li>
 								<li>
 									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The trigger event that caused the entry operation.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 					<a name="enterhead" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> enter<wbr>Head</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<h3>enter<wbr>Head</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">enter<wbr>Head<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, deepHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextElement<span class="tsd-signature-symbol">: </span><a href="namedelement.html" class="tsd-signature-type">NamedElement</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
-								<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#enterhead">enterHead</a></p>
+								<p>Overrides <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#enterhead">enterHead</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/NamedElement.ts#L26">NamedElement.ts:26</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/Vertex.ts#L64">Vertex.ts:64</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Initiate state entry</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
@@ -327,19 +360,37 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#entertail">enterTail</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/NamedElement.ts#L27">NamedElement.ts:27</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L56">NamedElement.ts:56</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Cascade the entry operation to child elements as required.</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The state machine instance.</p>
+									</div>
 								</li>
 								<li>
 									<h5>deepHistory: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>True if deep history semantics are in force at the time of entry.</p>
+									</div>
 								</li>
 								<li>
 									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The trigger event that caused the entry operation.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -356,7 +407,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/Vertex.ts#L48">Vertex.ts:48</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/Vertex.ts#L48">Vertex.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -396,7 +447,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/Vertex.ts#L24">Vertex.ts:24</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/Vertex.ts#L24">Vertex.ts:24</a></li>
 								</ul>
 							</aside>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -411,7 +462,7 @@
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="leave" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> leave</h3>
+					<h3>leave</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">leave<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, deepHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
@@ -420,19 +471,37 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#leave">leave</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/NamedElement.ts#L28">NamedElement.ts:28</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L65">NamedElement.ts:65</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Leaves an element and cascades the leaver operation to child eleemtns as required</p>
+								</div>
+								<dl class="tsd-comment-tags">
+									<dt>internal</dt>
+									<dd></dd>
+								</dl>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The state machine instance.</p>
+									</div>
 								</li>
 								<li>
 									<h5>deepHistory: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>True if deep history semantics are in force at the time of exiting the element.</p>
+									</div>
 								</li>
 								<li>
 									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The trigger event that caused the entry operation.</p>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
@@ -450,7 +519,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ad4444a/src/NamedElement.ts#L33">NamedElement.ts:33</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L72">NamedElement.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -481,7 +550,16 @@
 						<a href="../enums/transitionkind.html" class="tsd-kind-icon">Transition<wbr>Kind</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
+						<a href="externaltransitionactivation.html" class="tsd-kind-icon">External<wbr>Transition<wbr>Activation</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
 						<a href="instance.html" class="tsd-kind-icon">Instance</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="internaltransitionactivation.html" class="tsd-kind-icon">Internal<wbr>Transition<wbr>Activation</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="localtransitionactivation.html" class="tsd-kind-icon">Local<wbr>Transition<wbr>Activation</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter tsd-is-external">
 						<a href="namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
@@ -524,7 +602,7 @@
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="vertex.html#enter" class="tsd-kind-icon">enter</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 								<a href="vertex.html#enterhead" class="tsd-kind-icon">enter<wbr>Head</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
@@ -546,6 +624,9 @@
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-interface tsd-is-external">
+						<a href="../interfaces/transitionactivation.html" class="tsd-kind-icon">Transition<wbr>Activation</a>
+					</li>
 				</ul>
 			</nav>
 		</div>

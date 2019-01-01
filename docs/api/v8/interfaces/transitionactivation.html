@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>random | @steelbreeze/state</title>
+	<title>TransitionActivation | @steelbreeze/state</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="random.html">random</a>
+					<a href="transitionactivation.html">TransitionActivation</a>
 				</li>
 			</ul>
-			<h1>Module random</h1>
+			<h1>Interface TransitionActivation</h1>
 		</div>
 	</div>
 </header>
@@ -67,89 +67,143 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Controls the method used by @steelbreeze/state to create random numbers.</p>
+						<p>Encapsulates the semantics of different transition types.</p>
 					</div>
 				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">TransitionActivation</span>
+					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implemented by</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../classes/externaltransitionactivation.html" class="tsd-signature-type">ExternalTransitionActivation</a></li>
+					<li><a href="../classes/internaltransitionactivation.html" class="tsd-signature-type">InternalTransitionActivation</a></li>
+					<li><a href="../classes/localtransitionactivation.html" class="tsd-signature-type">LocalTransitionActivation</a></li>
+				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Functions</h3>
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="random.html#get" class="tsd-kind-icon">get</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="random.html#set" class="tsd-kind-icon">set</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="transitionactivation.html#entertarget" class="tsd-kind-icon">enter<wbr>Target</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="transitionactivation.html#exitsource" class="tsd-kind-icon">exit<wbr>Source</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="transitionactivation.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-external">
-					<a name="get" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagLet">Let</span> get</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<span class="tsd-signature-symbol">(</span>max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="entertarget" class="tsd-anchor"></a>
+					<h3>enter<wbr>Target</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">enter<wbr>Target<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="../classes/instance.html" class="tsd-signature-type">Instance</a>, deepHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/util/random.ts#L12">util/random.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/TransitionActivation.ts#L21">TransitionActivation.ts:21</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns a random number between 0 and max - 1</p>
+									<p>Exits the target of the transition</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>max: <span class="tsd-signature-type">number</span></h5>
+									<h5>instance: <a href="../classes/instance.html" class="tsd-signature-type">Instance</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The ceiling for the random number</p>
-										</div>
+										<p>The state machine instance.</p>
+									</div>
+								</li>
+								<li>
+									<h5>deepHistory: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>True if deep history semantics are in force at the time of entry.</p>
+									</div>
+								</li>
+								<li>
+									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The trigger event that caused the exit operation.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-							<p>Returns a random number between 0 and max - 1</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-external">
-					<a name="set" class="tsd-anchor"></a>
-					<h3>set</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><a href="func.html#func-1" class="tsd-signature-type">Func</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="func.html#func-1" class="tsd-signature-type">Func</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="exitsource" class="tsd-anchor"></a>
+					<h3>exit<wbr>Source</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">exit<wbr>Source<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="../classes/instance.html" class="tsd-signature-type">Instance</a>, deepHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/util/random.ts#L19">util/random.ts:19</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/TransitionActivation.ts#L13">TransitionActivation.ts:13</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Overrides the default method of random number generation.</p>
+									<p>Exits the source of the transition</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>value: <a href="func.html#func-1" class="tsd-signature-type">Func</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>instance: <a href="../classes/instance.html" class="tsd-signature-type">Instance</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The new function to use to generate random numbers</p>
+										<p>The state machine instance.</p>
+									</div>
+								</li>
+								<li>
+									<h5>deepHistory: <span class="tsd-signature-type">boolean</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>True if deep history semantics are in force at the time of exit.</p>
+									</div>
+								</li>
+								<li>
+									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The trigger event that caused the exit operation.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="func.html#func-1" class="tsd-signature-type">Func</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>Returns the old method used to generate random numbers</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="tostring" class="tsd-anchor"></a>
+					<h3>to<wbr>String</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/TransitionActivation.ts#L23">TransitionActivation.ts:23</a></li>
+								</ul>
+							</aside>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -161,28 +215,64 @@
 					<li class="globals  ">
 						<a href="../index.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="func.html">func</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="log.html">log</a>
-					</li>
-					<li class="current tsd-kind-module tsd-is-external">
-						<a href="random.html">random</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<a href="random.html#get" class="tsd-kind-icon">get</a>
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="../enums/pseudostatekind.html" class="tsd-kind-icon">Pseudo<wbr>State<wbr>Kind</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<a href="random.html#set" class="tsd-kind-icon">set</a>
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="../enums/transitionkind.html" class="tsd-kind-icon">Transition<wbr>Kind</a>
 					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/externaltransitionactivation.html" class="tsd-kind-icon">External<wbr>Transition<wbr>Activation</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/instance.html" class="tsd-kind-icon">Instance</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/internaltransitionactivation.html" class="tsd-kind-icon">Internal<wbr>Transition<wbr>Activation</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/localtransitionactivation.html" class="tsd-kind-icon">Local<wbr>Transition<wbr>Activation</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter tsd-is-external">
+						<a href="../classes/namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/pseudostate.html" class="tsd-kind-icon">Pseudo<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/region.html" class="tsd-kind-icon">Region</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/state.html" class="tsd-kind-icon">State</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter tsd-is-external">
+						<a href="../classes/transition.html" class="tsd-kind-icon">Transition</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/vertex.html" class="tsd-kind-icon">Vertex</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-is-external">
+						<a href="transitionactivation.html" class="tsd-kind-icon">Transition<wbr>Activation</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="transitionactivation.html#entertarget" class="tsd-kind-icon">enter<wbr>Target</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="transitionactivation.html#exitsource" class="tsd-kind-icon">exit<wbr>Source</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="transitionactivation.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>

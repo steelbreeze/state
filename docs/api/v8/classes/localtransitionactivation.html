@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>NamedElement | @steelbreeze/state</title>
+	<title>LocalTransitionActivation | @steelbreeze/state</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="namedelement.html">NamedElement</a>
+					<a href="localtransitionactivation.html">LocalTransitionActivation</a>
 				</li>
 			</ul>
-			<h1>Class NamedElement&lt;TParent&gt;</h1>
+			<h1>Class LocalTransitionActivation</h1>
 		</div>
 	</div>
 </header>
@@ -67,110 +67,91 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>A named element is a part of the state machine hierarchy.</p>
+						<p>Semantics of local transitions. The elements to exit and enter when traversing a local transition  depend on the active state configuration at the time of traversal.</p>
 					</div>
 				</div>
-			</section>
-			<section class="tsd-panel tsd-type-parameters">
-				<h3>Type parameters</h3>
-				<ul class="tsd-type-parameters">
-					<li>
-						<h4>TParent</h4>
-						<div class="tsd-comment tsd-typography">
-							<div class="lead">
-								<p>The type of the parent of the named element.</p>
-							</div>
-						</div>
-					</li>
-				</ul>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">NamedElement</span>
-						<ul class="tsd-hierarchy">
-							<li>
-								<a href="vertex.html" class="tsd-signature-type">Vertex</a>
-							</li>
-							<li>
-								<a href="region.html" class="tsd-signature-type">Region</a>
-							</li>
-						</ul>
+						<span class="target">LocalTransitionActivation</span>
 					</li>
+				</ul>
+			</section>
+			<section class="tsd-panel">
+				<h3>Implements</h3>
+				<ul class="tsd-hierarchy">
+					<li><a href="../interfaces/transitionactivation.html" class="tsd-signature-type">TransitionActivation</a></li>
 				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
-						<section class="tsd-index-section tsd-is-private-protected tsd-is-external">
+						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-protected tsd-is-external"><a href="namedelement.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="localtransitionactivation.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="namedelement.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="namedelement.html#parent" class="tsd-kind-icon">parent</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="namedelement.html#qualifiedname" class="tsd-kind-icon">qualified<wbr>Name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="localtransitionactivation.html#target" class="tsd-kind-icon">target</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="namedelement.html#enter" class="tsd-kind-icon">enter</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="namedelement.html#enterhead" class="tsd-kind-icon">enter<wbr>Head</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="namedelement.html#entertail" class="tsd-kind-icon">enter<wbr>Tail</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="namedelement.html#leave" class="tsd-kind-icon">leave</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="namedelement.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="localtransitionactivation.html#entertarget" class="tsd-kind-icon">enter<wbr>Target</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="localtransitionactivation.html#exitsource" class="tsd-kind-icon">exit<wbr>Source</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="localtransitionactivation.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-private-protected tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-protected tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
 					<a name="constructor" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagProtected">Protected</span> constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-protected tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Named<wbr>Element<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, parent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TParent</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="namedelement.html" class="tsd-signature-type">NamedElement</a></li>
+					<h3>constructor</h3>
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Local<wbr>Transition<wbr>Activation<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><a href="vertex.html" class="tsd-signature-type">Vertex</a>, target<span class="tsd-signature-symbol">: </span><a href="vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="localtransitionactivation.html" class="tsd-signature-type">LocalTransitionActivation</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L12">NamedElement.ts:12</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/LocalTransitionActivation.ts#L9">LocalTransitionActivation.ts:9</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a new instance of the NamedElement class</p>
+									<p>Creates a new instance of the LocalTransitionActivation class.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<h5>source: <a href="vertex.html" class="tsd-signature-type">Vertex</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The name of the named element.</p>
+											<p>The source vertex of the local transition.</p>
 										</div>
 									</div>
 								</li>
 								<li>
-									<h5>parent: <span class="tsd-signature-type">TParent</span></h5>
+									<h5>target: <a href="vertex.html" class="tsd-signature-type">Vertex</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
-											<p>The parent element of the named element.</p>
+											<p>The target vertex of the local transition.</p>
 										</div>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="namedelement.html" class="tsd-signature-type">NamedElement</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="localtransitionactivation.html" class="tsd-signature-type">LocalTransitionActivation</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -178,47 +159,17 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="target" class="tsd-anchor"></a>
+					<h3>target</h3>
+					<div class="tsd-signature tsd-kind-icon">target<span class="tsd-signature-symbol">:</span> <a href="vertex.html" class="tsd-signature-type">Vertex</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L19">NamedElement.ts:19</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/LocalTransitionActivation.ts#L16">LocalTransitionActivation.ts:16</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The name of the named element.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="parent" class="tsd-anchor"></a>
-					<h3>parent</h3>
-					<div class="tsd-signature tsd-kind-icon">parent<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">TParent</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L19">NamedElement.ts:19</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The parent element of the named element.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="qualifiedname" class="tsd-anchor"></a>
-					<h3>qualified<wbr>Name</h3>
-					<div class="tsd-signature tsd-kind-icon">qualified<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L12">NamedElement.ts:12</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The fully qualified name of the named element, including parent names.</p>
+							<p>The target vertex of the local transition.</p>
 						</div>
 					</div>
 				</section>
@@ -226,26 +177,23 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="enter" class="tsd-anchor"></a>
-					<h3>enter</h3>
+					<a name="entertarget" class="tsd-anchor"></a>
+					<h3>enter<wbr>Target</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">enter<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, deepHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">enter<wbr>Target<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, deepHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/transitionactivation.html">TransitionActivation</a>.<a href="../interfaces/transitionactivation.html#entertarget">enterTarget</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L32">NamedElement.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/LocalTransitionActivation.ts#L47">LocalTransitionActivation.ts:47</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Enter an element during state machine execution.</p>
+									<p>Exits the target of the transition</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>internal</dt>
-									<dd></dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -264,7 +212,7 @@
 								<li>
 									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The trigger event that caused the entry operation.</p>
+										<p>The trigger event that caused the exit operation.</p>
 									</div>
 								</li>
 							</ul>
@@ -273,26 +221,23 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="enterhead" class="tsd-anchor"></a>
-					<h3>enter<wbr>Head</h3>
+					<a name="exitsource" class="tsd-anchor"></a>
+					<h3>exit<wbr>Source</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">enter<wbr>Head<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, deepHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span>, nextElement<span class="tsd-signature-symbol">: </span><a href="namedelement.html" class="tsd-signature-type">NamedElement</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+						<li class="tsd-signature tsd-kind-icon">exit<wbr>Source<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, deepHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/transitionactivation.html">TransitionActivation</a>.<a href="../interfaces/transitionactivation.html#exitsource">exitSource</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L45">NamedElement.ts:45</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/LocalTransitionActivation.ts#L25">LocalTransitionActivation.ts:25</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Enter an element, without cascading the entry operation.</p>
+									<p>Exits the source of the transition</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>internal</dt>
-									<dd></dd>
-								</dl>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -305,113 +250,13 @@
 								<li>
 									<h5>deepHistory: <span class="tsd-signature-type">boolean</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>True if deep history semantics are in force at the time of entry.</p>
+										<p>True if deep history semantics are in force at the time of exit.</p>
 									</div>
 								</li>
 								<li>
 									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The trigger event that caused the entry operation.</p>
-									</div>
-								</li>
-								<li>
-									<h5>nextElement: <a href="namedelement.html" class="tsd-signature-type">NamedElement</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The next element to be entered after this one (used to assist regino entry)</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="entertail" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagAbstract">Abstract</span> enter<wbr>Tail</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">enter<wbr>Tail<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, deepHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L56">NamedElement.ts:56</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Cascade the entry operation to child elements as required.</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>internal</dt>
-									<dd></dd>
-								</dl>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The state machine instance.</p>
-									</div>
-								</li>
-								<li>
-									<h5>deepHistory: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>True if deep history semantics are in force at the time of entry.</p>
-									</div>
-								</li>
-								<li>
-									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The trigger event that caused the entry operation.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="leave" class="tsd-anchor"></a>
-					<h3>leave</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">leave<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, deepHistory<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L65">NamedElement.ts:65</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Leaves an element and cascades the leaver operation to child eleemtns as required</p>
-								</div>
-								<dl class="tsd-comment-tags">
-									<dt>internal</dt>
-									<dd></dd>
-								</dl>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The state machine instance.</p>
-									</div>
-								</li>
-								<li>
-									<h5>deepHistory: <span class="tsd-signature-type">boolean</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>True if deep history semantics are in force at the time of exiting the element.</p>
-									</div>
-								</li>
-								<li>
-									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The trigger event that caused the entry operation.</p>
+										<p>The trigger event that caused the exit operation.</p>
 									</div>
 								</li>
 							</ul>
@@ -428,13 +273,14 @@
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Implementation of <a href="../interfaces/transitionactivation.html">TransitionActivation</a>.<a href="../interfaces/transitionactivation.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/NamedElement.ts#L72">NamedElement.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/ce25906/src/LocalTransitionActivation.ts#L56">LocalTransitionActivation.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns the fully qualified name of the named element.</p>
+									<p>Returns the type of the transtiion.</p>
 								</div>
 							</div>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
@@ -468,45 +314,33 @@
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="internaltransitionactivation.html" class="tsd-kind-icon">Internal<wbr>Transition<wbr>Activation</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-external">
-						<a href="localtransitionactivation.html" class="tsd-kind-icon">Local<wbr>Transition<wbr>Activation</a>
-					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-class tsd-has-type-parameter tsd-is-external">
-						<a href="namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
+					<li class="current tsd-kind-class tsd-is-external">
+						<a href="localtransitionactivation.html" class="tsd-kind-icon">Local<wbr>Transition<wbr>Activation</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-protected tsd-is-external">
-								<a href="namedelement.html#constructor" class="tsd-kind-icon">constructor</a>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+								<a href="localtransitionactivation.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="namedelement.html#name" class="tsd-kind-icon">name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="namedelement.html#parent" class="tsd-kind-icon">parent</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="namedelement.html#qualifiedname" class="tsd-kind-icon">qualified<wbr>Name</a>
+								<a href="localtransitionactivation.html#target" class="tsd-kind-icon">target</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="namedelement.html#enter" class="tsd-kind-icon">enter</a>
+								<a href="localtransitionactivation.html#entertarget" class="tsd-kind-icon">enter<wbr>Target</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="namedelement.html#enterhead" class="tsd-kind-icon">enter<wbr>Head</a>
+								<a href="localtransitionactivation.html#exitsource" class="tsd-kind-icon">exit<wbr>Source</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="namedelement.html#entertail" class="tsd-kind-icon">enter<wbr>Tail</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="namedelement.html#leave" class="tsd-kind-icon">leave</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="namedelement.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
+								<a href="localtransitionactivation.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
+					<li class=" tsd-kind-class tsd-has-type-parameter tsd-is-external">
+						<a href="namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
+					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="pseudostate.html" class="tsd-kind-icon">Pseudo<wbr>State</a>
 					</li>
