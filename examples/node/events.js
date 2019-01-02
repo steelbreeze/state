@@ -31,7 +31,7 @@ var initialA = new node_1.PseudoState("initialA", regionA, node_1.PseudoStateKin
 var waitingA = new node_1.State("waitingA", regionA);
 var completeA = new node_1.State("completeA", regionA).entry(function () { return console.info("Received event A"); });
 initialA.to(waitingA);
-waitingA.on(Event)["if"](function (event) { return event.is("A"); }).to(completeA);
+waitingA.on(Event).when(function (event) { return event.is("A"); }).to(completeA);
 // create a child region which becomes complete once it has received event B.
 var regionB = new node_1.Region("regionB", waiting);
 var initialB = new node_1.PseudoState("initialB", regionB, node_1.PseudoStateKind.Initial);
