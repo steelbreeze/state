@@ -113,20 +113,38 @@ export class PseudoState implements Vertex {
 	}
 
 	/** Find a transition from the pseudo state for a given trigger event */
-	getTransition(trigger: any): Transition | undefined {
-		// find all transitions whose guard conditions evaluate true for the trigger
-		let transitions = this.outgoing.filter(transition => transition.evaluate(trigger));
+	getTransition(trigger: any): Transition  {
+		let result = this.kind === PseudoStateKind.Choice ? this.getChoiceTransition(trigger) : this.getOtherTransition(trigger);
 
-		// validate we didn't get too many
-		assert.ok(this.kind === PseudoStateKind.Choice || transitions.length <= 1, () => `Multiple transitions found at ${this} for ${trigger}`);
+		if(!result) {
+			throw new Error (`No outgoing transition found at ${this}`);
+		}
 
-		// select the appropriate transition
-		let result = (this.kind === PseudoStateKind.Choice ? transitions[random.get(transitions.length)] : transitions[0] ) || this.elseTransition;
+		return result;
+	}
 
-		// validate we have something to return
-		assert.ok(result, () => `Unable to find transition at ${this} for ${trigger}`);
+	getChoiceTransition(trigger: any): Transition | undefined {
+		const results: Array<Transition> = [];
 
-		return result!;
+		for (let i = this.outgoing.length; i--;) {
+			if (this.outgoing[i].evaluate(trigger)) {
+				results.push(this.outgoing[i]);
+			}
+		}
+
+		return results[random.get(results.length)] || this.elseTransition;
+	}
+
+	getOtherTransition(trigger: any): Transition | undefined {
+		let result: Transition | undefined;
+
+		for (let i = this.outgoing.length; i--;) {
+			if (this.outgoing[i].evaluate(trigger)) {
+				result = this.outgoing[i];
+			}
+		}
+
+		return result || this.elseTransition;
 	}
 
 	/**

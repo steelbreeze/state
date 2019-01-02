@@ -1,6 +1,8 @@
 ## v7.2.7
-Minor performance improvements:
-- Do not re-pack the deferred event pool unless deferred events were evaluated.
+Minor performance improvements in the following areas:
+- Deferred event pool processing.
+- PseudoState.getTransition
+- State.enterHead
 
 ## v7.2.6
 Make TransitionKind a real enum to tidy up documentation. 

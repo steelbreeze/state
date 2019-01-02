@@ -67,7 +67,9 @@ export declare class PseudoState implements Vertex {
      */
     else<TTrigger>(target: Vertex): Transition<TTrigger>;
     /** Find a transition from the pseudo state for a given trigger event */
-    getTransition(trigger: any): Transition | undefined;
+    getTransition(trigger: any): Transition;
+    getChoiceTransition(trigger: any): Transition | undefined;
+    getOtherTransition(trigger: any): Transition | undefined;
     /**
      * Returns the fully qualified name of the pseudo state.
      * @public
