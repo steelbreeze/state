@@ -1,6 +1,7 @@
 ## v7.2.8
 Housekeeping release:
 - Remove legacy files from lib directory
+- Tidy .d.ts files and documentation
 
 ## v7.2.7
 Minor performance improvements in the following areas:

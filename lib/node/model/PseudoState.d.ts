@@ -38,6 +38,10 @@ export declare class PseudoState implements Vertex {
      * @public
      */
     on<TTrigger>(type: func.Constructor<TTrigger>): Transition<TTrigger>;
+    /**
+     * Creates a new transition with a guard condition.
+     * @param guard
+     */
     when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger>;
     /**
      * Creates a new transition with a target vertex.

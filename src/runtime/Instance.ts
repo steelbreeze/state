@@ -83,7 +83,7 @@ export class Instance implements IInstance {
 	/** Check for and send deferred events for evaluation */
 	evaluateDeferred(): void {
 		// build the list of deferred event types based on the active state configuration
-		let deferrableTriggers = this.deferrableTriggers(this.root);
+		const deferrableTriggers = this.deferrableTriggers(this.root);
 
 		// process the outstanding event pool
 		for (let i = this.deferredEventPool.length; i--;) {
@@ -91,6 +91,7 @@ export class Instance implements IInstance {
 
 			// if the event still exists in the pool and its not still deferred, take it and send to the machine for evaluation
 			if (trigger && deferrableTriggers.indexOf(trigger.constructor) === -1) {
+				// take the event from the pool
 				delete this.deferredEventPool[i];
 
 				log.info(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
@@ -205,7 +206,7 @@ export class Instance implements IInstance {
 	 * @internal
 	 */
 	regionToJSON(region: model.Region): IRegion {
-		let lastKnownState = this.getLastKnownState(region);
+		const lastKnownState = this.getLastKnownState(region);
 
 		return { name: region.name, children: region.children.filter((vertex): vertex is model.State => vertex instanceof model.State).reverse().map(state => this.toJSON(state)), lastKnownState: lastKnownState ? lastKnownState.name : undefined };
 	}

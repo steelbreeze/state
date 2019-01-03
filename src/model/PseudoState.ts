@@ -125,7 +125,7 @@ export class PseudoState implements Vertex {
 	 * @internal
 	 */
 	getTransition(trigger: any): Transition  {
-		let result = this.kind === PseudoStateKind.Choice ? this.getChoiceTransition(trigger) : this.getOtherTransition(trigger);
+		const result = this.kind === PseudoStateKind.Choice ? this.getChoiceTransition(trigger) : this.getOtherTransition(trigger);
 
 		if(!result) {
 			throw new Error (`No outgoing transition found at ${this}`);
