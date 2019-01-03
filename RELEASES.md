@@ -1,3 +1,7 @@
+## v7.2.8
+Housekeeping release:
+- Remove legacy files from lib directory
+
 ## v7.2.7
 Minor performance improvements in the following areas:
 - Deferred event pool processing.

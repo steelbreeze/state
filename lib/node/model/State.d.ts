@@ -15,10 +15,6 @@ export declare class State implements Vertex {
      */
     readonly qualifiedName: string;
     /**
-     * The outgoing transitions available from this vertex.
-     */
-    outgoing: Array<Transition>;
-    /**
      * Creates a new instance of the State class.
      * @param name The name of the state.
      * @param parent The parent region of the state or a state whose default region will be used as the parent region.
@@ -118,13 +114,6 @@ export declare class State implements Vertex {
      * @public
      */
     defer<TTrigger>(type: func.Constructor<TTrigger>): State;
-    /**
-     * Find a transition from the state given a trigger event.
-     * @param trigger The trigger event to evaluate transtions against.
-     * @returns Returns the trigger or undefined if none are found.
-     * @throws Throws an Error if more than one transition was found.
-     */
-    getTransition(trigger: any): Transition | undefined;
     /**
      * Execute the user defined state entry behaviour.
      * @param trigger The trigger event that caused the transition.

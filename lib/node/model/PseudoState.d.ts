@@ -18,10 +18,6 @@ export declare class PseudoState implements Vertex {
      */
     readonly qualifiedName: string;
     /**
-     * The outgoing transitions available from this vertex.
-     */
-    outgoing: Array<Transition>;
-    /**
      * Creates a new instance of the PseudoState class.
      * @param name The name of the pseudo state.
      * @param parent The parent region of the pseudo state; a state may also be specified in which case the state's default region will be used as the parent region.
@@ -66,10 +62,6 @@ export declare class PseudoState implements Vertex {
      * @public
      */
     else<TTrigger>(target: Vertex): Transition<TTrigger>;
-    /** Find a transition from the pseudo state for a given trigger event */
-    getTransition(trigger: any): Transition;
-    getChoiceTransition(trigger: any): Transition | undefined;
-    getOtherTransition(trigger: any): Transition | undefined;
     /**
      * Returns the fully qualified name of the pseudo state.
      * @public

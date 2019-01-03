@@ -22,6 +22,7 @@ export class PseudoState implements Vertex {
 
 	/**
 	 * The outgoing transitions available from this vertex.
+	 * @internal
 	 */
 	outgoing: Array<Transition> = [];
 
@@ -73,6 +74,10 @@ export class PseudoState implements Vertex {
 		return new Transition<TTrigger>(this, undefined, TransitionKind.internal, type);
 	}
 
+	/**
+	 * Creates a new transition with a guard condition.
+	 * @param guard 
+	 */
 	public when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger> {
 		return new Transition<TTrigger>(this, undefined, TransitionKind.internal, undefined, guard);
 	}
@@ -112,7 +117,13 @@ export class PseudoState implements Vertex {
 		return this.elseTransition = new Transition<TTrigger>(this, target, TransitionKind.external, undefined, () => false);
 	}
 
-	/** Find a transition from the pseudo state for a given trigger event */
+	/**
+	 * Returns the transition to take given a trigger event.
+	 * @param trigger The trigger event.
+	 * @returns Returns the transition to take in response to the trigger.
+	 * @throws Throws an Error if the state machine model is ill defined.
+	 * @internal
+	 */
 	getTransition(trigger: any): Transition  {
 		let result = this.kind === PseudoStateKind.Choice ? this.getChoiceTransition(trigger) : this.getOtherTransition(trigger);
 
@@ -123,6 +134,12 @@ export class PseudoState implements Vertex {
 		return result;
 	}
 
+	/**
+	 * Returns the transition to take given a trigger event at choice pseudo states.
+	 * @param trigger The trigger event.
+	 * @returns Returns the transition to take in response to the trigger.
+	 * @internal
+	 */
 	getChoiceTransition(trigger: any): Transition | undefined {
 		const results: Array<Transition> = [];
 
@@ -135,6 +152,12 @@ export class PseudoState implements Vertex {
 		return results[random.get(results.length)] || this.elseTransition;
 	}
 
+	/**
+	 * Returns the transition to take given a trigger event at non-choice pseudo ststes.
+	 * @param trigger The trigger event.
+	 * @returns Returns the transition to take in response to the trigger.
+	 * @internal
+	 */
 	getOtherTransition(trigger: any): Transition | undefined {
 		let result: Transition | undefined;
 

@@ -18,8 +18,9 @@ export class State implements Vertex {
 
 	/**
 	 * The outgoing transitions available from this vertex.
+	 * @internal
 	 */
-	public outgoing: Array<Transition> = [];
+	outgoing: Array<Transition> = [];
 
 	/**
 	 * The child regions belonging to this state.
@@ -214,10 +215,11 @@ export class State implements Vertex {
 	}
 
 	/**
-	 * Find a transition from the state given a trigger event.
-	 * @param trigger The trigger event to evaluate transtions against.
-	 * @returns Returns the trigger or undefined if none are found.
+	 * Returns the transition to take given a trigger event.
+	 * @param trigger The trigger event.
+	 * @returns Returns the transition to take in response to the trigger, of undefined if none found.
 	 * @throws Throws an Error if more than one transition was found.
+	 * @internal
 	 */
 	getTransition(trigger: any): Transition | undefined {
 		let result: Transition | undefined;
