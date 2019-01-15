@@ -210,7 +210,7 @@ model.State.prototype.enterHead = function (instance: IInstance, deepHistory: bo
 	// when entering a state indirectly (part of the target ancestry in a transition that crosses region boundaries), ensure all child regions are entered
 	if (nextElement) {
 		// enter all child regions except for the next in the ancestry
-		for(let i = this.children.length; i--; ) {
+		for (let i = this.children.length; i--;) {
 			if (this.children[i] !== nextElement) {
 				this.children[i].enter(instance, deepHistory, trigger);
 			}
@@ -223,7 +223,9 @@ model.State.prototype.enterHead = function (instance: IInstance, deepHistory: bo
 	instance.setState(this);
 
 	// perform the user defined entry behaviour
-	this.doEnter(trigger);
+	for (let i = this.onEnter.length; i--;) {
+		this.onEnter[i](trigger);
+	}
 }
 
 /** Complete state entry */
@@ -247,7 +249,9 @@ model.State.prototype.leave = function (instance: IInstance, deepHistory: boolea
 	log.info(() => `${instance} leave ${this}`, log.Exit);
 
 	// perform the user defined leave behaviour
-	this.doLeave(trigger);
+	for (let i = this.onLeave.length; i--;) {
+		this.onLeave[i](trigger);
+	}
 }
 
 /**

@@ -115,16 +115,6 @@ export declare class State implements Vertex {
      */
     defer<TTrigger>(type: func.Constructor<TTrigger>): State;
     /**
-     * Execute the user defined state entry behaviour.
-     * @param trigger The trigger event that caused the transition.
-     */
-    doEnter(trigger: any): void;
-    /**
-     * Execute the user defined state exit behaviour.
-     * @param trigger The trigger event that caused the transition.
-     */
-    doLeave(trigger: any): void;
-    /**
      * Returns the fully qualified name of the state.
      * @public
      */

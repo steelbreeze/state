@@ -218,7 +218,8 @@ export class Instance implements IInstance {
 	 * @internal
 	 */
 	stateFromJSON(state: model.State, jsonState: IState): void {
-		for (const jsonRegion of jsonState.children) { // NOTE: not all regions in the model may have an entry in the JSON
+		for (let i = 0, l = jsonState.children.length; i < l; ++i) {
+			const jsonRegion = jsonState.children[i];
 			const region = state.children.filter(region => region.name === jsonRegion.name)[0];
 
 			assert.ok(region, () => `Unable to find region ${jsonRegion.name}`)
@@ -234,7 +235,8 @@ export class Instance implements IInstance {
 	 * @internal
 	 */
 	regionFromJSON(region: model.Region, jsonRegion: IRegion): void {
-		for (const jsonState of jsonRegion.children) {
+		for (let i = 0, l = jsonRegion.children.length; i < l; ++i) {
+			const jsonState = jsonRegion.children[i];
 			const state = region.children.filter((vertex): vertex is model.State => vertex instanceof model.State && vertex.name === jsonState.name)[0];
 
 			assert.ok(state, () => `Unable to find state ${jsonState.name}`);
