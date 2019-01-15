@@ -8,6 +8,10 @@ import { Transition } from './Transition';
  */
 export declare class State implements Vertex {
     readonly name: string;
+    /**
+     * The parent element of the state.
+     * @public
+     */
     readonly parent: Region | undefined;
     /**
      * The fully qualified name of the vertex including its parent's qualified name.
@@ -72,6 +76,12 @@ export declare class State implements Vertex {
      * @public
      */
     on<TTrigger>(type: func.Constructor<TTrigger>): Transition<TTrigger>;
+    /**
+     * Creates a new internal transition with a guard condition.
+     * @param guard The guard condition to add.
+     * @returns Returns the new transition.
+     * @public
+     */
     when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger>;
     /**
      * Creates a new external transition.

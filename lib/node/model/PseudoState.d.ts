@@ -11,6 +11,10 @@ import { Transition } from './Transition';
 export declare class PseudoState implements Vertex {
     readonly name: string;
     readonly kind: PseudoStateKind;
+    /**
+     * The parent element of the pseudo state.
+     * @public
+     */
     readonly parent: Region;
     /**
      * The fully qualified name of the vertex including its parent's qualified name.

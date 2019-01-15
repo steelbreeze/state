@@ -9,7 +9,12 @@ import { TransitionKind } from './TransitionKind';
  * @public
  */
 export class State implements Vertex {
+	/**
+	 * The parent element of the state.
+	 * @public
+	 */
 	public readonly parent: Region | undefined;
+
 	/**
 	 * The fully qualified name of the vertex including its parent's qualified name.
 	 * @public
@@ -71,7 +76,6 @@ export class State implements Vertex {
 		}
 
 		log.info(() => `Created state ${this}`, log.Create);
-
 	}
 
 	/**
@@ -152,6 +156,12 @@ export class State implements Vertex {
 		return new Transition<TTrigger>(this, undefined, TransitionKind.internal, type);
 	}
 
+	/**
+	 * Creates a new internal transition with a guard condition.
+	 * @param guard The guard condition to add.
+	 * @returns Returns the new transition.
+	 * @public
+	 */
 	public when<TTrigger>(guard: func.Predicate<TTrigger>): Transition<TTrigger> {
 		return new Transition<TTrigger>(this, undefined, TransitionKind.internal, undefined, guard);
 	}

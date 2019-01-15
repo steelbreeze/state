@@ -18,7 +18,6 @@ export interface NamedElement<TParent = any> {
 	 */
 	readonly qualifiedName: string;
 
-	
 	/**
 	 * Returns the fully qualified name of the state.
 	 */
