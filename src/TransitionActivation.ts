@@ -3,12 +3,18 @@ import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { PseudoState } from './PseudoState';
 import { State } from './State';
+import { IInstance } from './IInstance';
+
+import { completion } from './core';
 
 /**
  * Encapsulates the semantics of different transition types.
  * @hidden
  */
 export interface TransitionActivation {
+	exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void;
+	enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void;
+
 	toString(): string;
 }
 
@@ -39,6 +45,21 @@ export class ExternalTransitionActivation implements TransitionActivation {
 		this.toEnter = targetAncestors.slice(from, to).reverse();
 	}
 
+	exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		// exit the element below the common ancestor
+		this.toExit.leave(instance, deepHistory, trigger);
+	}
+
+	enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		// enter elements below the common ancestor to the target
+		for (var i = this.toEnter.length; i--;) {
+			this.toEnter[i].enterHead(instance, deepHistory, trigger, this.toEnter[i - 1]);
+		}
+
+		// cascade the entry action to any child elements of the target
+		this.toEnter[0].enterTail(instance, deepHistory, trigger);
+	}
+
 	/**
 	 * Returns the type of the transtiion.
 	 */
@@ -52,12 +73,33 @@ export class ExternalTransitionActivation implements TransitionActivation {
  * @hidden 
  */
 export class LocalTransitionActivation implements TransitionActivation {
+	private vertexToEnter: Vertex | undefined;
 	/**
 	 * Creates a new instance of the LocalTransitionActivation class.
 	 * @param source The source vertex of the local transition.
 	 * @param target The target vertex of the local transition.
 	 */
 	constructor(source: Vertex, public readonly target: Vertex) {
+	}
+
+	exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		this.vertexToEnter = this.target;
+
+		// iterate towards the root until we find an active state
+		while (this.vertexToEnter.parent && !this.vertexToEnter.parent.parent.isActive(instance)) {
+			this.vertexToEnter = this.vertexToEnter.parent.parent;
+		}
+
+		// exit the currently active vertex in the target vertex's parent region
+		if (!this.vertexToEnter.isActive(instance) && this.vertexToEnter.parent) {
+			instance.getVertex(this.vertexToEnter.parent).leave(instance, deepHistory, trigger);
+		}
+	}
+
+	enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		if (this.vertexToEnter && !this.vertexToEnter.isActive(instance)) {
+			this.vertexToEnter!.enter(instance, deepHistory, trigger);
+		}
 	}
 
 	/**
@@ -86,6 +128,15 @@ export class InternalTransitionActivation implements TransitionActivation {
 		} else {
 			throw new Error(`Source of local transition must be a State.`);
 		}
+	}
+
+	exitSource(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		// don't exit anything
+	}
+
+	enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		// test for completion transitions for internal transitions as there will be state entry/exit performed where the test is usually performed
+		completion(this.source, instance, deepHistory, this.source);
 	}
 
 	/**

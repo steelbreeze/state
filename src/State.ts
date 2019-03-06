@@ -8,24 +8,12 @@ import { TransitionKind } from './TransitionKind';
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
  */
-export class State implements Vertex {
+export class State extends Vertex {
 	/**
 	 * The parent element of the state.
 	 * @public
 	 */
 	public readonly parent: Region | undefined;
-
-	/**
-	 * The fully qualified name of the vertex including its parent's qualified name.
-	 * @public
-	 */
-	public readonly qualifiedName: string;
-
-	/**
-	 * The outgoing transitions available from this vertex.
-	 * @internal
-	 */
-	outgoing: Array<Transition> = [];
 
 	/**
 	 * The child regions belonging to this state.
@@ -64,15 +52,12 @@ export class State implements Vertex {
 	 * If left undefined, this state is the root state in a state machine model.
 	 * @public
 	 */
-	public constructor(public readonly name: string, parent: State | Region | undefined = undefined) {
-		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
+	public constructor( name: string, parent: State | Region | undefined = undefined) {
+		super(name,  parent instanceof State ? parent.getDefaultRegion() : parent );
 
 		if (this.parent) {
 			assert.ok(!this.parent.children.filter((vertex): vertex is State => vertex instanceof State && vertex.name === this.name).length, () => `State names must be unique within a region`);
-			this.qualifiedName = `${this.parent}.${name}`;
 			this.parent.children.unshift(this);
-		} else {
-			this.qualifiedName = name;
 		}
 
 		log.info(() => `Created state ${this}`, log.Create);

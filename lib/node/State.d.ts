@@ -6,18 +6,12 @@ import { Transition } from './Transition';
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
  */
-export declare class State implements Vertex {
-    readonly name: string;
+export declare class State extends Vertex {
     /**
      * The parent element of the state.
      * @public
      */
     readonly parent: Region | undefined;
-    /**
-     * The fully qualified name of the vertex including its parent's qualified name.
-     * @public
-     */
-    readonly qualifiedName: string;
     /**
      * Creates a new instance of the State class.
      * @param name The name of the state.

@@ -8,19 +8,8 @@ import { Transition } from './Transition';
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
  * @public
  */
-export declare class PseudoState implements Vertex {
-    readonly name: string;
+export declare class PseudoState extends Vertex {
     readonly kind: PseudoStateKind;
-    /**
-     * The parent element of the pseudo state.
-     * @public
-     */
-    readonly parent: Region;
-    /**
-     * The fully qualified name of the vertex including its parent's qualified name.
-     * @public
-     */
-    readonly qualifiedName: string;
     /**
      * Creates a new instance of the PseudoState class.
      * @param name The name of the pseudo state.

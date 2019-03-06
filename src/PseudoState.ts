@@ -10,25 +10,7 @@ import { TransitionKind } from './TransitionKind';
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
  * @public
  */
-export class PseudoState implements Vertex {
-	/**
-	 * The parent element of the pseudo state.
-	 * @public
-	 */
-	public readonly parent: Region;
-
-	/**
-	 * The fully qualified name of the vertex including its parent's qualified name.
-	 * @public
-	 */
-	public readonly qualifiedName: string;
-
-	/**
-	 * The outgoing transitions available from this vertex.
-	 * @internal
-	 */
-	outgoing: Array<Transition> = [];
-
+export class PseudoState extends Vertex {
 	/** 
 	 * The else transition that may be used by branch pseudo states; saves the costly process of searching for it at runtime.
 	 * @internal 
@@ -42,18 +24,23 @@ export class PseudoState implements Vertex {
 	 * @param kind The kind of pseudo state; this defines its behaviour and use. See PseudoStateKind for more information.
 	 * @public
 	 */
-	public constructor(public readonly name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
-		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
-		this.qualifiedName = `${this.parent}.${this.name}`;
+	public constructor( name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
+
+		super(name, parent instanceof State ? parent.getDefaultRegion() : parent );
+
+		// TODO: remove the !'s below
+
+		//		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
+//		this.qualifiedName = `${this.parent}.${this.name}`;
 
 		// if this is a starting state (initial, deep or shallow history), record it against the parent region
 		if (this.kind === PseudoStateKind.Initial || this.isHistory()) {
-			assert.ok(!this.parent.starting, () => `Only one initial pseudo state is allowed in region ${this.parent}`);
+			assert.ok(!this.parent!.starting, () => `Only one initial pseudo state is allowed in region ${this.parent}`);
 
-			this.parent.starting = this;
+			this.parent!.starting = this;
 		}
 
-		this.parent.children.unshift(this);
+		this.parent!.children.unshift(this);
 
 		log.info(() => `Created ${this.kind} pseudo state ${this}`, log.Create);
 	}
