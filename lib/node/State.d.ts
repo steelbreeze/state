@@ -133,9 +133,4 @@ export declare class State extends Vertex {
     doDefer(instance: IInstance, trigger: any): boolean;
     /** Checks for and executes completion transitions */
     completion(instance: IInstance, deepHistory: boolean, trigger: any): void;
-    /**
-     * Returns the fully qualified name of the state.
-     * @public
-     */
-    toString(): string;
 }

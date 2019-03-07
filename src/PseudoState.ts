@@ -28,13 +28,7 @@ export class PseudoState extends Vertex {
 	 * @public
 	 */
 	public constructor(name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
-
 		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
-
-		// TODO: remove the !'s below
-
-		//		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
-		//		this.qualifiedName = `${this.parent}.${this.name}`;
 
 		// if this is a starting state (initial, deep or shallow history), record it against the parent region
 		if (this.kind === PseudoStateKind.Initial || this.isHistory()) {
@@ -44,8 +38,6 @@ export class PseudoState extends Vertex {
 		}
 
 		this.parent!.children.unshift(this);
-
-		log.info(() => `Created ${this.kind} pseudo state ${this}`, log.Create);
 	}
 
 	/**
@@ -165,7 +157,7 @@ export class PseudoState extends Vertex {
 
 	/** Initiate pseudo state entry */
 	enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void {
-		log.info(() => `${instance} enter ${this}`, log.Entry);
+		super.enterHead(instance, deepHistory, trigger, nextElement);
 
 		// update the current vertex of the parent region
 		instance.setVertex(this);
@@ -177,18 +169,5 @@ export class PseudoState extends Vertex {
 		if (this.kind !== PseudoStateKind.Junction) {
 			this.accept(instance, deepHistory, trigger);
 		}
-	}
-
-	/** Leave a pseudo state */
-	leave(instance: IInstance, deepHistory: boolean, trigger: any): void {
-		log.info(() => `${instance} leave ${this}`, log.Exit);
-	}
-
-	/**
-	 * Returns the fully qualified name of the pseudo state.
-	 * @public
-	 */
-	public toString(): string {
-		return this.qualifiedName;
 	}
 }

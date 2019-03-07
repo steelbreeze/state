@@ -1,32 +1,41 @@
+import { log } from './util';
 import { IInstance } from './IInstance';
 
 /**
  * A named element is a part of the state machine hierarchy.
  * @param TParent The type of the parent of the named element.
  */
-export interface NamedElement<TParent = any> {
-	/**
-	 * The parent element of the named element.
-	 */
-	readonly parent: TParent;
-
-	/**
-	 * The name of the named element.
-	 */
-	readonly name: String;
-
+export abstract class NamedElement<TParent = any> {
 	/**
 	 * The fully qualified name of the named element, including parent names.
 	 */
-	readonly qualifiedName: string;
+	private readonly qualifiedName: string;
 
-	enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
-	enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
-	enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
-	leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
+	protected constructor(public readonly name: string, public readonly parent: TParent) {
+		this.qualifiedName = parent ? `${parent}.${name}` : name;
+
+		log.info(() => `Created ${this}`, log.Create);
+	}
+
+	enter(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		this.enterHead(instance, deepHistory, trigger, undefined);
+		this.enterTail(instance, deepHistory, trigger);
+	}
+
+	enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void {
+		log.info(() => `${instance} enter ${this}`, log.Entry);
+	}
+
+	abstract enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
+
+	leave(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		log.info(() => `${instance} leave ${this}`, log.Exit);
+	}
 
 	/**
 	 * Returns the fully qualified name of the state.
 	 */
-	toString(): string;
+	toString(): string {
+		return this.qualifiedName;
+	}
 }

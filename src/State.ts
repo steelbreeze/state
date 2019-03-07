@@ -61,8 +61,6 @@ export class State extends Vertex {
 			assert.ok(!this.parent.children.filter((vertex): vertex is State => vertex instanceof State && vertex.name === this.name).length, () => `State names must be unique within a region`);
 			this.parent.children.unshift(this);
 		}
-
-		log.info(() => `Created state ${this}`, log.Create);
 	}
 
 	/**
@@ -245,7 +243,7 @@ export class State extends Vertex {
 			}
 		}
 
-		log.info(() => `${instance} enter ${this}`, log.Entry);
+		super.enterHead(instance, deepHistory, trigger, nextElement);
 
 		// update the current state and vertex of the parent region
 		instance.setState(this);
@@ -274,7 +272,7 @@ export class State extends Vertex {
 			this.children[i].leave(instance, deepHistory, trigger);
 		}
 
-		log.info(() => `${instance} leave ${this}`, log.Exit);
+		super.leave(instance, deepHistory, trigger);
 
 		// perform the user defined leave behaviour
 		for (let i = this.onLeave.length; i--;) {
@@ -336,13 +334,5 @@ export class State extends Vertex {
 
 		// look for transitions
 		this.accept(instance, deepHistory, trigger);
-	}
-
-	/**
-	 * Returns the fully qualified name of the state.
-	 * @public
-	 */
-	public toString(): string {
-		return this.qualifiedName;
 	}
 }

@@ -65,11 +65,4 @@ export declare class PseudoState extends Vertex {
     enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
     /** Complete pseudo state entry */
     enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
-    /** Leave a pseudo state */
-    leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
-    /**
-     * Returns the fully qualified name of the pseudo state.
-     * @public
-     */
-    toString(): string;
 }

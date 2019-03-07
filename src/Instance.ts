@@ -151,7 +151,7 @@ export class Instance implements IInstance {
 	 */
 	public setVertex(vertex: Vertex): void {
 		if (vertex.parent) {
-			this.dirtyVertex[vertex.parent.qualifiedName] = vertex;
+			this.dirtyVertex[vertex.parent.toString()] = vertex;
 		}
 	}
 
@@ -162,8 +162,8 @@ export class Instance implements IInstance {
 	 */
 	public setState(state: State): void {
 		if (state.parent) {
-			this.dirtyVertex[state.parent.qualifiedName] = state;
-			this.dirtyState[state.parent.qualifiedName] = state;
+			this.dirtyVertex[state.parent.toString()] = state;
+			this.dirtyState[state.parent.toString()] = state;
 		}
 	}
 
@@ -173,7 +173,7 @@ export class Instance implements IInstance {
 	 * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
 	 */
 	public getState(region: Region): State {
-		return this.dirtyState[region.qualifiedName] || this.cleanState[region.qualifiedName];
+		return this.dirtyState[region.toString()] || this.cleanState[region.toString()];
 	}
 
 	/**
@@ -182,7 +182,7 @@ export class Instance implements IInstance {
 	 * @returns Returns the last entered vertex for the given region.
 	 */
 	public getVertex(region: Region): Vertex {
-		return this.dirtyVertex[region.qualifiedName] || this.cleanState[region.qualifiedName];
+		return this.dirtyVertex[region.toString()] || this.cleanState[region.toString()];
 	}
 
 	/**
@@ -191,7 +191,7 @@ export class Instance implements IInstance {
 	 * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
 	 */
 	public getLastKnownState(region: Region): State | undefined {
-		return this.cleanState[region.qualifiedName];
+		return this.cleanState[region.toString()];
 	}
 
 	/**
