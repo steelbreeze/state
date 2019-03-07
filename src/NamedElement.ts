@@ -1,4 +1,4 @@
-import {IInstance} from './IInstance';
+import { IInstance } from './IInstance';
 
 /**
  * A named element is a part of the state machine hierarchy.

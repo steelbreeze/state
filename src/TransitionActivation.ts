@@ -5,8 +5,6 @@ import { PseudoState } from './PseudoState';
 import { State } from './State';
 import { IInstance } from './IInstance';
 
-import { completion } from './core';
-
 /**
  * Encapsulates the semantics of different transition types.
  * @hidden
@@ -136,7 +134,7 @@ export class InternalTransitionActivation implements TransitionActivation {
 
 	enterTarget(instance: IInstance, deepHistory: boolean, trigger: any): void {
 		// test for completion transitions for internal transitions as there will be state entry/exit performed where the test is usually performed
-		completion(this.source, instance, deepHistory, this.source);
+		this.source.completion(instance, deepHistory, this.source);
 	}
 
 	/**

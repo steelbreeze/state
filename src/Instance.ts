@@ -1,11 +1,10 @@
 import { func, assert, log } from './util';
 import { Vertex } from './Vertex';
 import { State } from './State';
-import {Region } from './Region';
+import { Region } from './Region';
 import { IInstance } from './IInstance';
 import { IRegion } from './IRegion';
 import { IState } from './IState';
-import {  evaluate } from './core';
 
 /**
  * Represents the active state configuration of a state machine instance.
@@ -61,7 +60,7 @@ export class Instance implements IInstance {
 
 		return this.transaction(() => {
 			// evaluate the trigger event passed
-			const result = evaluate(this.root, this, false, trigger);
+			const result = this.root.evaluate(this, false, trigger);
 
 			// check for and evaluate any deferred events
 			if (result && this.deferredEventPool.length !== 0) {
@@ -102,7 +101,7 @@ export class Instance implements IInstance {
 				log.info(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
 
 				// send for evaluation
-				if (evaluate(this.root, this, false, trigger)) {
+				if (this.root.evaluate(this, false, trigger)) {
 					// if the event was consumed, start the process again
 					this.evaluateDeferred();
 

@@ -1,10 +1,13 @@
 import { func, assert, log, random } from './util';
+import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { PseudoStateKind } from './PseudoStateKind';
 import { Region } from './Region';
 import { State } from './State';
 import { Transition } from './Transition';
 import { TransitionKind } from './TransitionKind';
+import { IInstance } from './IInstance';
+
 
 /**
  * A pseudo state is a transient elemement within a state machine, once entered it will evaluate outgoing transitions and attempt to exit.
@@ -24,14 +27,14 @@ export class PseudoState extends Vertex {
 	 * @param kind The kind of pseudo state; this defines its behaviour and use. See PseudoStateKind for more information.
 	 * @public
 	 */
-	public constructor( name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
+	public constructor(name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
 
-		super(name, parent instanceof State ? parent.getDefaultRegion() : parent );
+		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
 
 		// TODO: remove the !'s below
 
 		//		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
-//		this.qualifiedName = `${this.parent}.${this.name}`;
+		//		this.qualifiedName = `${this.parent}.${this.name}`;
 
 		// if this is a starting state (initial, deep or shallow history), record it against the parent region
 		if (this.kind === PseudoStateKind.Initial || this.isHistory()) {
@@ -114,11 +117,11 @@ export class PseudoState extends Vertex {
 	 * @throws Throws an Error if the state machine model is ill defined.
 	 * @internal
 	 */
-	getTransition(trigger: any): Transition  {
+	getTransition(trigger: any): Transition {
 		const result = this.kind === PseudoStateKind.Choice ? this.getChoiceTransition(trigger) : this.getOtherTransition(trigger);
 
-		if(!result) {
-			throw new Error (`No outgoing transition found at ${this}`);
+		if (!result) {
+			throw new Error(`No outgoing transition found at ${this}`);
 		}
 
 		return result;
@@ -158,6 +161,27 @@ export class PseudoState extends Vertex {
 		}
 
 		return result || this.elseTransition;
+	}
+
+	/** Initiate pseudo state entry */
+	enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void {
+		log.info(() => `${instance} enter ${this}`, log.Entry);
+
+		// update the current vertex of the parent region
+		instance.setVertex(this);
+	}
+
+	/** Complete pseudo state entry */
+	enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		// a pseudo state must always have a completion transition (junction pseudo state completion occurs within the traverse method above)
+		if (this.kind !== PseudoStateKind.Junction) {
+			this.accept(instance, deepHistory, trigger);
+		}
+	}
+
+	/** Leave a pseudo state */
+	leave(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		log.info(() => `${instance} leave ${this}`, log.Exit);
 	}
 
 	/**

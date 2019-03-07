@@ -1,7 +1,9 @@
 import { func } from './util';
+import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { Region } from './Region';
 import { Transition } from './Transition';
+import { IInstance } from './IInstance';
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
  * @public
@@ -118,6 +120,19 @@ export declare class State extends Vertex {
      * @public
      */
     defer<TTrigger>(type: func.Constructor<TTrigger>): State;
+    /** Initiate state entry */
+    enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
+    /** Complete state entry */
+    enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
+    /** Leave a state */
+    leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
+    evaluate(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
+    /** Delegate a trigger to children for evaluation */
+    delegate(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
+    /** Evaluates the trigger event against the list of deferred transitions and defers into the event pool if necessary. */
+    doDefer(instance: IInstance, trigger: any): boolean;
+    /** Checks for and executes completion transitions */
+    completion(instance: IInstance, deepHistory: boolean, trigger: any): void;
     /**
      * Returns the fully qualified name of the state.
      * @public

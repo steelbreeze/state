@@ -1,7 +1,7 @@
 import { NamedElement } from "./NamedElement";
 import { Region } from './Region';
 import { Transition } from './Transition';
-import {IInstance} from './IInstance';
+import { IInstance } from './IInstance';
 
 /**
  * A vertex is an element that can be the source or target of a transition.
@@ -24,7 +24,7 @@ export abstract class Vertex implements NamedElement<Region | undefined> {
 	}
 
 	isActive(instance: IInstance): boolean {
-		return this.parent ? this.parent.parent.isActive( instance) && instance.getVertex(this.parent) === this : true;
+		return this.parent ? this.parent.parent.isActive(instance) && instance.getVertex(this.parent) === this : true;
 	}
 
 
@@ -42,9 +42,22 @@ export abstract class Vertex implements NamedElement<Region | undefined> {
 		this.enterTail(instance, deepHistory, trigger);
 	}
 
-
 	abstract enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
 	abstract enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
 	abstract leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
- 
+
+	/** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
+	accept(instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+		let result = false;
+
+		const transition = this.getTransition(trigger);
+
+		if (transition) {
+			transition.traverse(instance, deepHistory, trigger);
+
+			result = true;
+		}
+
+		return result;
+	}
 }

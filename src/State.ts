@@ -1,8 +1,10 @@
 import { func, assert, log } from './util';
+import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { Region } from './Region';
 import { Transition } from './Transition';
 import { TransitionKind } from './TransitionKind';
+import { IInstance } from './IInstance';
 
 /**
  * A state represents a condition in a state machine that is the result of the triggers processed.
@@ -52,8 +54,8 @@ export class State extends Vertex {
 	 * If left undefined, this state is the root state in a state machine model.
 	 * @public
 	 */
-	public constructor( name: string, parent: State | Region | undefined = undefined) {
-		super(name,  parent instanceof State ? parent.getDefaultRegion() : parent );
+	public constructor(name: string, parent: State | Region | undefined = undefined) {
+		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
 
 		if (this.parent) {
 			assert.ok(!this.parent.children.filter((vertex): vertex is State => vertex instanceof State && vertex.name === this.name).length, () => `State names must be unique within a region`);
@@ -223,12 +225,117 @@ export class State extends Vertex {
 		for (let i = this.outgoing.length; i--;) {
 			if (this.outgoing[i].evaluate(trigger)) {
 				assert.ok(!result, () => `Multiple transitions found at ${this} for ${trigger}`);
-	
+
 				result = this.outgoing[i];
 			}
 		}
-	
+
 		return result;
+	}
+
+	/** Initiate state entry */
+	enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void {
+		// when entering a state indirectly (part of the target ancestry in a transition that crosses region boundaries), ensure all child regions are entered
+		if (nextElement) {
+			// enter all child regions except for the next in the ancestry
+			for (let i = this.children.length; i--;) {
+				if (this.children[i] !== nextElement) {
+					this.children[i].enter(instance, deepHistory, trigger);
+				}
+			}
+		}
+
+		log.info(() => `${instance} enter ${this}`, log.Entry);
+
+		// update the current state and vertex of the parent region
+		instance.setState(this);
+
+		// perform the user defined entry behaviour
+		for (let i = this.onEnter.length; i--;) {
+			this.onEnter[i](trigger);
+		}
+	}
+
+	/** Complete state entry */
+	enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		// cascade the enter operation to child regions
+		for (let i = this.children.length; i--;) {
+			this.children[i].enter(instance, deepHistory, trigger);
+		}
+
+		// test for completion transitions
+		this.completion(instance, deepHistory, this);
+	}
+
+	/** Leave a state */
+	leave(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		// cascade the leave operation to all child regions
+		for (var i = this.children.length; i--;) {
+			this.children[i].leave(instance, deepHistory, trigger);
+		}
+
+		log.info(() => `${instance} leave ${this}`, log.Exit);
+
+		// perform the user defined leave behaviour
+		for (let i = this.onLeave.length; i--;) {
+			this.onLeave[i](trigger);
+		}
+	}
+
+	evaluate(instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+		const result = this.delegate(instance, deepHistory, trigger) || this.accept(instance, deepHistory, trigger) || this.doDefer(instance, trigger);
+
+		// check completion transitions if the trigger caused as state transition and this state is still active
+		if (result && this.parent && instance.getState(this.parent) === this) {
+			this.completion(instance, deepHistory, this);
+		}
+
+		return result;
+	}
+
+	/** Delegate a trigger to children for evaluation */
+	delegate(instance: IInstance, deepHistory: boolean, trigger: any): boolean {
+		let result: boolean = false;
+
+		// delegate to the current state of child regions for evaluation
+		for (let i = this.children.length; i--;) {
+			if (instance.getState(this.children[i]).evaluate(instance, deepHistory, trigger)) {
+				result = true;
+
+				// if a transition in a child state causes us to exit this state, break out now 
+				if (this.parent && instance.getState(this.parent) !== this) {
+					break;
+				}
+			}
+		}
+
+		return result;
+	}
+
+	/** Evaluates the trigger event against the list of deferred transitions and defers into the event pool if necessary. */
+	doDefer(instance: IInstance, trigger: any): boolean {
+		let result = false;
+
+		if (this.deferrableTrigger.indexOf(trigger.constructor) !== -1) {
+			instance.defer(this, trigger);
+
+			result = true;
+		}
+
+		return result;
+	}
+
+	/** Checks for and executes completion transitions */
+	completion(instance: IInstance, deepHistory: boolean, trigger: any): void {
+		// check to see if the state is complete; fail fast if its not
+		for (let i = this.children.length; i--;) {
+			if (!instance.getState(this.children[i]).isFinal()) {
+				return;
+			}
+		}
+
+		// look for transitions
+		this.accept(instance, deepHistory, trigger);
 	}
 
 	/**

@@ -18,4 +18,6 @@ export declare abstract class Vertex implements NamedElement<Region | undefined>
     abstract enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
     abstract enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
     abstract leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
+    /** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
+    accept(instance: IInstance, deepHistory: boolean, trigger: any): boolean;
 }
