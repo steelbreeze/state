@@ -1,4 +1,4 @@
-import { func, assert, log, random } from './util';
+import { func, assert, random } from './util';
 import { NamedElement } from './NamedElement';
 import { Vertex } from './Vertex';
 import { PseudoStateKind } from './PseudoStateKind';
@@ -36,8 +36,6 @@ export class PseudoState extends Vertex {
 
 			this.parent!.starting = this;
 		}
-
-		this.parent!.children.unshift(this);
 	}
 
 	/**
@@ -102,15 +100,8 @@ export class PseudoState extends Vertex {
 		return this.elseTransition = new Transition<TTrigger>(this, target, TransitionKind.external, undefined, () => false);
 	}
 
-	/**
-	 * Returns the transition to take given a trigger event.
-	 * @param trigger The trigger event.
-	 * @returns Returns the transition to take in response to the trigger.
-	 * @throws Throws an Error if the state machine model is ill defined.
-	 * @internal
-	 */
 	getTransition(trigger: any): Transition {
-		const result = this.kind === PseudoStateKind.Choice ? this.getChoiceTransition(trigger) : this.getOtherTransition(trigger);
+		const result = (this.kind === PseudoStateKind.Choice ? this.getChoiceTransition(trigger) : super.getTransition(trigger)) || this.elseTransition;
 
 		if (!result) {
 			throw new Error(`No outgoing transition found at ${this}`);
@@ -134,25 +125,7 @@ export class PseudoState extends Vertex {
 			}
 		}
 
-		return results[random.get(results.length)] || this.elseTransition;
-	}
-
-	/**
-	 * Returns the transition to take given a trigger event at non-choice pseudo ststes.
-	 * @param trigger The trigger event.
-	 * @returns Returns the transition to take in response to the trigger.
-	 * @internal
-	 */
-	getOtherTransition(trigger: any): Transition | undefined {
-		let result: Transition | undefined;
-
-		for (let i = this.outgoing.length; i--;) {
-			if (this.outgoing[i].evaluate(trigger)) {
-				result = this.outgoing[i];
-			}
-		}
-
-		return result || this.elseTransition;
+		return results[random.get(results.length)];
 	}
 
 	/** Initiate pseudo state entry */

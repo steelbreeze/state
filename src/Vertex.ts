@@ -1,3 +1,4 @@
+import { assert } from './util';
 import { NamedElement } from "./NamedElement";
 import { Region } from './Region';
 import { Transition } from './Transition';
@@ -13,18 +14,32 @@ export abstract class Vertex extends NamedElement<Region | undefined> {
 	 */
 	outgoing: Array<Transition> = [];
 
+	protected constructor(name: string, parent: Region | undefined) {
+		super(name, parent);
+
+		if(this.parent) {
+			this.parent.children.unshift(this);
+		}
+	}
+
 	isActive(instance: IInstance): boolean {
 		return this.parent ? this.parent.parent.isActive(instance) && instance.getVertex(this.parent) === this : true;
 	}
 
-	/**
-	 * Returns the transition to take given a trigger event.
-	 * @param trigger The trigger event.
-	 * @returns Returns the transition to take in response to the trigger, of undefined if none found.
-	 * @throws Throws an Error exception if the state machine model is malformed. 
-	 * @internal
-	 */
-	abstract getTransition<TTrigger = any>(trigger: TTrigger): Transition | undefined;
+	getTransition(trigger: any): Transition | undefined {
+		let result: Transition | undefined;
+
+		// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
+		for (let i = this.outgoing.length; i--;) {
+			if (this.outgoing[i].evaluate(trigger)) {
+				assert.ok(!result, () => `Multiple transitions found at ${this} for ${trigger}`);
+
+				result = this.outgoing[i];
+			}
+		}
+
+		return result;
+	}
 
 	/** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
 	accept(instance: IInstance, deepHistory: boolean, trigger: any): boolean {

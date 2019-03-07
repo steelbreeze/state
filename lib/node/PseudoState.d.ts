@@ -61,6 +61,7 @@ export declare class PseudoState extends Vertex {
      * @public
      */
     else<TTrigger>(target: Vertex): Transition<TTrigger>;
+    getTransition(trigger: any): Transition;
     /** Initiate pseudo state entry */
     enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
     /** Complete pseudo state entry */

@@ -56,11 +56,6 @@ export class State extends Vertex {
 	 */
 	public constructor(name: string, parent: State | Region | undefined = undefined) {
 		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
-
-		if (this.parent) {
-			assert.ok(!this.parent.children.filter((vertex): vertex is State => vertex instanceof State && vertex.name === this.name).length, () => `State names must be unique within a region`);
-			this.parent.children.unshift(this);
-		}
 	}
 
 	/**
@@ -207,28 +202,6 @@ export class State extends Vertex {
 		this.deferrableTrigger.unshift(type);
 
 		return this;
-	}
-
-	/**
-	 * Returns the transition to take given a trigger event.
-	 * @param trigger The trigger event.
-	 * @returns Returns the transition to take in response to the trigger, of undefined if none found.
-	 * @throws Throws an Error if more than one transition was found.
-	 * @internal
-	 */
-	getTransition(trigger: any): Transition | undefined {
-		let result: Transition | undefined;
-
-		// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
-		for (let i = this.outgoing.length; i--;) {
-			if (this.outgoing[i].evaluate(trigger)) {
-				assert.ok(!result, () => `Multiple transitions found at ${this} for ${trigger}`);
-
-				result = this.outgoing[i];
-			}
-		}
-
-		return result;
 	}
 
 	/** Initiate state entry */
