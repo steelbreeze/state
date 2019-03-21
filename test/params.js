@@ -1,6 +1,6 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/index");
+	state = require("../lib/node");
 
 var exitParams = 0;
 var entryParams = 0;
@@ -11,9 +11,9 @@ var initial = new state.PseudoState("initial", model);
 var first = new state.State("first", model).exit(trigger => exitParams = trigger.first && trigger.second ? 2 : 0);
 var second = new state.State("second", model).entry(trigger => entryParams = trigger.first && trigger.second ? 2 : 0);
 
-initial.external(first);
+initial.to(first);
 
-first.external(second).when(trigger => trigger && trigger.second === "closer").effect(trigger => transParams = trigger.first && trigger.second ? 2 : 0);
+first.to(second).when(trigger => trigger && trigger.second === "closer").effect(trigger => transParams = trigger.first && trigger.second ? 2 : 0);
 
 var instance = new state.Instance("params", model);
 

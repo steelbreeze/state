@@ -1,6 +1,6 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/index");
+	state = require("../lib/node");
 
 // this test overrides the default implementation of the random selector for choices as we're not looking to test the randomness of hte numbers, but the application of them to choose different transtiions therefore we need to turn the non-deterministic into something deterministic
 let nextRand = 0;
@@ -20,13 +20,13 @@ const initial = new state.PseudoState("initial", model, state.PseudoStateKind.In
 const stateA = new state.State("stateA", model);
 const choice = new state.PseudoState("choice", model, state.PseudoStateKind.Choice);
 
-initial.external(stateA);
+initial.to(stateA);
 
-stateA.external(choice).when(trigger => trigger && trigger.event === "choose");
+stateA.to(choice).when(trigger => trigger && trigger.event === "choose");
 
-choice.external(stateA).effect(trigger => trigger.data.path1++);
-choice.external(stateA).effect(trigger => trigger.data.path2++);
-choice.external(stateA).effect(trigger => trigger.data.path3++);
+choice.to(stateA).effect(trigger => trigger.data.path1++);
+choice.to(stateA).effect(trigger => trigger.data.path2++);
+choice.to(stateA).effect(trigger => trigger.data.path3++);
 
 describe("test/choice.js", function () {
 

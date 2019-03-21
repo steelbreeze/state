@@ -1,6 +1,6 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/index");
+	state = require("../lib/node");
 
 //state.log.add(message => console.info(message));
 
@@ -17,7 +17,7 @@ let i = 0;
 initial.to(S1);
 
 // IT transition
-S1.when(trigger => i === 0).do(trigger => i++);
+S1.when(trigger => i === 0).effect(trigger => i++);
 
 // T transition
 S1.when(trigger => i > 0).to(S2);

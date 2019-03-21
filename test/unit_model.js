@@ -1,5 +1,5 @@
 var assert = require("assert"),
-	state = require("../lib/node/index");
+	state = require("../lib/node");
 
 var model = new state.State("unit_model");
 var initial = new state.PseudoState("initial", model);

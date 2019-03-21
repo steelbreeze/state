@@ -1,6 +1,6 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/index");
+	state = require("../lib/node");
 
 var model = new state.State("compTest");
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);

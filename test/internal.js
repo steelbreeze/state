@@ -1,6 +1,6 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/index");
+	state = require("../lib/node");
 
 //state.log.add(m => console.info(m));
 
@@ -13,10 +13,10 @@ var region = new state.Region("region", model);
 var initial = new state.PseudoState("initial", region, state.PseudoStateKind.Initial);
 var target = new state.State("state", region).entry(trigger => entryCount++).exit(trigger => exitCount++);
 
-initial.external(target);
+initial.to(target);
 
-target.internal().when(trigger => trigger === "internal").effect(trigger => transitionCount++);
-target.external(target).when(trigger => trigger === "external").effect(trigger => transitionCount++);
+target.when(trigger => trigger === "internal").effect(trigger => transitionCount++);
+target.to(target).when(trigger => trigger === "to").effect(trigger => transitionCount++);
 
 var instance = new state.Instance("internal", model);
 
@@ -32,7 +32,7 @@ describe("test/internal.js", function () {
 
 	it("External transitions do trigger a state transition", function () {
 
-		instance.evaluate("external");
+		instance.evaluate("to");
 
 		assert.equal(target, instance.getLastKnownState(region));
 		assert.equal(2, entryCount);

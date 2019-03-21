@@ -1,13 +1,13 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/index");
+	state = require("../lib/node");
 
 const model = new state.State("model");
 const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
 const stateA = new state.State("stateA", model);
 const stateB = new state.State("stateB", model);
 
-initial.external(stateA);
+initial.to(stateA);
 
 let instance = new state.Instance("instance", model);
 
@@ -20,7 +20,7 @@ describe("test/callbacks.js", function () {
 
 	describe("With the full model defined:", function () {
 		it("Model will respond to events", function () {
-			stateA.external(stateB).when(trigger => trigger === "move");
+			stateA.to(stateB).when(trigger => trigger === "move");
 
 			assert.equal(true, instance.evaluate("move"));
 		});

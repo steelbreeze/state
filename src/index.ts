@@ -1,14 +1,14 @@
+export { log } from './log';
+export { random } from './random';
+
 export { PseudoStateKind } from './PseudoStateKind';
 export { TransitionKind } from './TransitionKind';
 
+export { NamedElement } from './NamedElement';
+export { Vertex } from './Vertex';
+
+export { Region } from './Region';
 export { State } from './State';
 export { PseudoState } from './PseudoState';
-export { Region } from './Region';
 export { Transition } from './Transition';
-
-export { IInstance } from './IInstance';
-export { IRegion } from './IRegion';
-export { IState } from './IState';
 export { Instance } from './Instance';
-
-export { log, random } from './util';

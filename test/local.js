@@ -12,7 +12,7 @@
 
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/index");
+	state = require("../lib/node");
 
 // create the state machine model elements
 var model = new state.State("model");
@@ -26,13 +26,13 @@ var bStateI = new state.State("bStateI", regionB);
 var bStateII = new state.State("bStateII", regionB);
 
 // create the state machine model transitions
-initial.external(stateA);
-stateA.external(stateB).when(trigger => trigger === "move");
+initial.to(stateA);
+stateA.to(stateB).when(trigger => trigger === "move");
 
-bInitial.external(bStateI);
+bInitial.to(bStateI);
 
-var local = stateB.local(bStateII).when(trigger => trigger === "local");
-var exter = stateB.external(bStateII).when(trigger => trigger === "external");
+var local = stateB.to(bStateII, state.TransitionKind.Local).when(trigger => trigger === "local");
+var exter = stateB.to(bStateII).when(trigger => trigger === "to");
 
 // create a state machine instance
 var instance = new state.Instance("instance", model);
@@ -40,7 +40,7 @@ var instance = new state.Instance("instance", model);
 // send the machine instance a message for evaluation, this will trigger the transition from stateA to stateB
 instance.evaluate("move");
 instance.evaluate("local");
-instance.evaluate("external");
+instance.evaluate("to");
 
 describe("Local transition tests", function () {
 	it("External transition fired OK", function () {

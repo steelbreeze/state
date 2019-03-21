@@ -1,6 +1,6 @@
 "use strict";
 exports.__esModule = true;
-var state = require("../lib/node/index");
+var state = require("../lib/node");
 
 // States
 const model = new state.State("model");

@@ -1,62 +1,44 @@
-import { assert, log } from './util';
-import { NamedElement } from './NamedElement';
-import { State } from './State';
-import { PseudoStateKind } from './PseudoStateKind';
-import { PseudoState } from './PseudoState';
-import { Vertex } from './Vertex';
-import { IInstance } from './IInstance';
+import { PseudoStateKind, NamedElement, Vertex, State, PseudoState, Instance } from '.';
 
-/**
- * A region is a container of vertices (states and pseudo states) in a state machine model.
- * @public
- */
-export class Region extends NamedElement<State> {
-	/**
-	 * The child vertices belonging to this region.
-	 * @internal
-	 */
+export class Region extends NamedElement {
 	children: Array<Vertex> = [];
+	initial: PseudoState | undefined;
 
-	/**
-	 * The initial starting pseudo state of this region; saves the costly process of searching for it at runtime.
-	 * @internal
-	 */
-	starting: PseudoState | undefined;
-
-	/**
-	 * Creates a new instance of the Region class.
-	 * @param name The name of the region.
-	 * @param parent The parent state of the region.
-	 * @public
-	 */
-	public constructor(name: string, parent: State) {
+	public constructor(name: string, public readonly parent: State) {
 		super(name, parent);
 
-		this.parent.children.unshift(this);
+		parent.children.push(this);
 	}
 
-	/** Complete region entry */
-	enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void {
-		let current: State | undefined;
-		let starting: Vertex | undefined = this.starting;
+	getParent(): NamedElement | undefined {
+		return this.parent;
+	}
 
-		// determine if history semantics are in play and the region has previously been entered then select the starting vertex accordingly
-		if ((deepHistory || (this.starting && this.starting.isHistory())) && (current = instance.getState(this))) {
+	public isComplete(instance: Instance): boolean {
+		const currentState = instance.getState(this);
+
+		return currentState && currentState.isFinal();
+	}
+
+	doEnterTail(instance: Instance, history: boolean, trigger: any): void {
+		let current: State | undefined;
+		let starting: Vertex | undefined = this.initial;
+
+		if ((history || (this.initial && this.initial.isHistory())) && (current = instance.getState(this))) {
 			starting = current;
-			deepHistory = deepHistory || (this.starting!.kind === PseudoStateKind.DeepHistory);
+			history = history || (this.initial!.kind === PseudoStateKind.DeepHistory);
 		}
 
-		assert.ok(starting, () => `${instance} no initial pseudo state found at ${this}`);
-
-		// cascade the entry operation to the approriate child vertex
-		starting!.enter(instance, deepHistory, trigger);
+		if (starting) {
+			starting.doEnter(instance, history, trigger);
+		} else {
+			throw new Error(`${instance} unable to find initial or history vertex at ${this}`);
+		}
 	}
 
-	/** Leave a region */
-	leave(instance: IInstance, deepHistory: boolean, trigger: any): void {
-		// cascade the leave operation to the currently active child vertex
-		instance.getVertex(this).leave(instance, deepHistory, trigger);
+	doExit(instance: Instance, history: boolean, trigger: any): void {
+		instance.getVertex(this).doExit(instance, history, trigger);
 
-		super.leave(instance, deepHistory, trigger);
+		super.doExit(instance, history, trigger);
 	}
 }

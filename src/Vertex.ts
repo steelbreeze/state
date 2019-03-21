@@ -1,58 +1,84 @@
-import { assert } from './util';
-import { NamedElement } from "./NamedElement";
-import { Region } from './Region';
-import { Transition } from './Transition';
-import { IInstance } from './IInstance';
+import { TransitionKind, NamedElement, Region, Transition, Instance } from '.';
 
 /**
- * A vertex is an element that can be the source or target of a transition.
+ * Represents an element within a state machine model hierarchy that can be the source or target of a transition.
+ * Vertices are contained within regions.
  */
-export abstract class Vertex extends NamedElement<Region | undefined> {
-	/**
-	 * The set of outgoind transitions from the vertex.
-	 * @internal
-	 */
-	outgoing: Array<Transition> = [];
+export abstract class Vertex extends NamedElement {
+	/** The transitions originating from this vertex. */
+	public readonly outgoing: Array<Transition> = [];
 
-	protected constructor(name: string, parent: Region | undefined) {
+	/**
+	 * Creates a new instance of the vertex class.
+	 * @param name The name of the vertex.
+	 * @param parent The parent region of this vertex.
+	 * @protected 
+	 */
+	protected constructor(name: string, public readonly parent: Region | undefined) {
 		super(name, parent);
 
-		if(this.parent) {
-			this.parent.children.unshift(this);
+		if (this.parent) {
+			this.parent.children.push(this);
 		}
 	}
 
-	isActive(instance: IInstance): boolean {
-		return this.parent ? this.parent.parent.isActive(instance) && instance.getVertex(this.parent) === this : true;
+	/**
+	 * Returns the parent element of this element.
+	 * @returns Returns the parent element of this element or undefined if the element is the root element of the hierarchy.
+	 * @internal
+	 */
+	getParent(): NamedElement | undefined {
+		return this.parent;
 	}
 
-	getTransition(trigger: any): Transition | undefined {
-		let result: Transition | undefined;
-
-		// iterate through all outgoing transitions of this state looking for a single one whose guard evaluates true
-		for (let i = this.outgoing.length; i--;) {
-			if (this.outgoing[i].evaluate(trigger)) {
-				assert.ok(!result, () => `Multiple transitions found at ${this} for ${trigger}`);
-
-				result = this.outgoing[i];
-			}
-		}
-
-		return result;
+	/**
+	 * Creates a new transition at this vertex triggered by an event of a specific type.
+	 * @param TTrigger The type of the triggering event.
+	 * @param type The type (class name) of the triggering event.
+	 * @returns Returns a new typed transition. A typed transition being one whose guard condition and behaviour will accept a parameter of the same type specified.
+	 * @remarks The generic parameter TTrigger is not generally required as this will be
+	 */
+	public on<TTrigger>(type: new (...args: any[]) => TTrigger): Transition<TTrigger> {
+		return new Transition<TTrigger>(this).on(type);
 	}
 
-	/** Accept a trigger and vertex: evaluate the guard conditions of the transitions and traverse if one evaluates true. */
-	accept(instance: IInstance, deepHistory: boolean, trigger: any): boolean {
-		let result = false;
+	/**
+	 * Creates a new transition at this vertex with a guard condition.
+	 * @param TTrigger The type of the triggering event.
+	 * @param guard The guard condition to determine if the transition should be traversed.
+	 * @returns Returns a new transition; if TTrigger is specified, a typed transition will be returned.
+	 */
+	public when<TTrigger = any>(guard: (trigger: TTrigger) => boolean): Transition<TTrigger> {
+		return new Transition<TTrigger>(this).when(guard);
+	}
 
-		const transition = this.getTransition(trigger);
+	public to(target: Vertex, kind: TransitionKind = TransitionKind.External): Transition<any> {
+		return new Transition(this).to(target, kind);
+	}
+
+	public isActive(instance: Instance): boolean {
+		return this.parent ? instance.getVertex(this.parent) === this : true;
+	}
+
+	evaluate(instance: Instance, history: boolean, trigger: any): boolean {
+		const transition = this.getTransition(instance, trigger);
 
 		if (transition) {
-			transition.traverse(instance, deepHistory, trigger);
+			transition.doTraverse(instance, history, trigger);
 
-			result = true;
+			return true;
 		}
 
-		return result;
+		return false;
+	}
+
+	getTransition(instance: Instance, trigger: any): Transition | undefined {
+		return this.outgoing.filter(transition => transition.evaluate(trigger))[0]; // TODO: use Array.find
+	}
+
+	doEnterHead(instance: Instance, history: boolean, trigger: any, next: NamedElement | undefined): void {
+		super.doEnterHead(instance, history, trigger, next);
+
+		instance.setVertex(this);
 	}
 }

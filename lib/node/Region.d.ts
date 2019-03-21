@@ -1,20 +1,11 @@
-import { NamedElement } from './NamedElement';
-import { State } from './State';
-import { IInstance } from './IInstance';
-/**
- * A region is a container of vertices (states and pseudo states) in a state machine model.
- * @public
- */
-export declare class Region extends NamedElement<State> {
-    /**
-     * Creates a new instance of the Region class.
-     * @param name The name of the region.
-     * @param parent The parent state of the region.
-     * @public
-     */
+import { NamedElement, Vertex, State, PseudoState, Instance } from '.';
+export declare class Region extends NamedElement {
+    readonly parent: State;
+    children: Array<Vertex>;
+    initial: PseudoState | undefined;
     constructor(name: string, parent: State);
-    /** Complete region entry */
-    enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
-    /** Leave a region */
-    leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
+    getParent(): NamedElement | undefined;
+    isComplete(instance: Instance): boolean;
+    doEnterTail(instance: Instance, history: boolean, trigger: any): void;
+    doExit(instance: Instance, history: boolean, trigger: any): void;
 }

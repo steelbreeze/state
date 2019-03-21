@@ -1,262 +1,94 @@
-import { func, assert, log } from './util';
-import { Vertex } from './Vertex';
-import { State } from './State';
-import { Region } from './Region';
-import { IInstance } from './IInstance';
-import { IRegion } from './IRegion';
-import { IState } from './IState';
+import { log, Vertex, Region, State } from '.';
 
-/**
- * Represents the active state configuration of a state machine instance.
- * @remarks This is the default implementation of the IInstance class and reads/writes to the active state configuration in a transactional manner at both initilisation and each call to evaluate.
- */
-export class Instance implements IInstance {
-	/**
-	 * The last known state of each region in the state machine instance that has been entered.
-	 * @internal
-	 */
+
+export class Instance {
 	private cleanState: Record<string, State> = {};
-
-	/**
-	 * The last known state of each region in the state machine instance that has been entered during a transaction.
-	 * @internal
-	 */
 	private dirtyState: Record<string, State> = {};
-
-	/**
-	 * The last entered vertex of each region in the state machine instance that has been entered during a transaction.
-	 * @internal
-	 */
 	private dirtyVertex: Record<string, Vertex> = {};
-
-	/**
-	 * Outstanding events marked for deferral.
-	 */
 	private deferredEventPool: Array<any> = [];
 
-	/**
-	 * Creates an instance of the Instance class.
-	 * @param name The name of the state machine instance.
-	 * @param root The root element of the state machine model that this an instance of.
-	 * @param activeStateConfiguration Optional JSON object used to initialise the active state configuration. The json object must have been produced by a prior call to Instance.toJSON from an instance using the same model.
-	 */
-	public constructor(public readonly name: string, public readonly root: State, activeStateConfiguration: IState | undefined = undefined) {
-		assert.ok(!root.parent, () => `The state provided as the root for an instance cannot have a parent`);
-
-		if (activeStateConfiguration) {
-			this.transaction(() => this.stateFromJSON(this.root, activeStateConfiguration));
-		} else {
-			this.transaction(() => this.root.enter(this, false, this.root));
-		}
+	public constructor(public readonly name: string, public readonly root: State) {
+		this.transaction(() => this.root.doEnter(this, false, this.root));
 	}
 
-	/**
-	 * Passes a trigger event to the state machine instance for evaluation.
-	 * @param trigger The trigger event to evaluate.
-	 * @returns Returns true if the trigger event was consumed by the state machine (caused a transition or was deferred).
-	 */
 	public evaluate(trigger: any): boolean {
-		log.info(() => `${this} evaluate ${trigger}`, log.Evaluate)
+		log.write(() => `${this} evaluate ${trigger}`, log.Evaluate);
 
 		return this.transaction(() => {
-			// evaluate the trigger event passed
-			const result = this.root.evaluate(this, false, trigger);
+			const result = this.root.evaluate(this, false, trigger);				// evaluate the trigger event
 
-			// check for and evaluate any deferred events
-			if (result && this.deferredEventPool.length !== 0) {
+			if (result && this.deferredEventPool.length !== 0) {					// if there are deferred events, process them
 				this.evaluateDeferred();
 
-				// repack the deferred event pool
-				this.deferredEventPool = this.deferredEventPool.filter(trigger => trigger);
+				this.deferredEventPool = this.deferredEventPool.filter(t => t);		// repack the deferred event pool
 			}
 
 			return result;
 		});
 	}
 
-	/**
-	 * Adds a trigger event to the event pool for later evaluation (once the state machine has changed state).
-	 * @param trigger The trigger event to defer.
-	 */
-	defer(state: State, trigger: any): void {
-		log.info(() => `${this} deferred ${trigger} while in ${state}`, log.Evaluate);
+	transaction<TReturn>(operation: () => TReturn): TReturn {
+		try {
+			const result = operation();												// perform the transactional operation
+
+			for (let keys = Object.keys(this.dirtyState), i = keys.length; i--;) {	// update the clean state
+				this.cleanState[keys[i]] = this.dirtyState[keys[i]];
+			}
+
+			return result;															// return to the caller
+		}
+
+		finally {
+			this.dirtyState = {};													// reset the dirty state
+			this.dirtyVertex = {};
+		}
+	}
+
+	defer(instance: Instance, trigger: any): void {
+		log.write(() => `${instance} deferring ${trigger}`, log.Evaluate);
 
 		this.deferredEventPool.unshift(trigger);
 	}
 
-	/** Check for and send deferred events for evaluation */
 	evaluateDeferred(): void {
-		// build the list of deferred event types based on the active state configuration
-		const deferrableTriggers = this.deferrableTriggers(this.root);
-
-		// process the outstanding event pool
 		for (let i = this.deferredEventPool.length; i--;) {
 			const trigger = this.deferredEventPool[i];
 
-			// if the event still exists in the pool and its not still deferred, take it and send to the machine for evaluation
-			if (trigger && deferrableTriggers.indexOf(trigger.constructor) === -1) {
-				// take the event from the pool
+			if (trigger && this.root.getDeferred(this).indexOf(trigger.constructor) === -1) {
 				delete this.deferredEventPool[i];
 
-				log.info(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
+				log.write(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
 
-				// send for evaluation
 				if (this.root.evaluate(this, false, trigger)) {
-					// if the event was consumed, start the process again
 					this.evaluateDeferred();
-
-					// as the active state configuration has likely changed, terminate this evaluation of the pool
 					break;
 				}
 			}
 		}
 	}
 
-	/** Build a list of all the deferrable events at a particular state (including its children) */
-	deferrableTriggers(state: State): Array<func.Constructor<any>> {
-		return state.children.reduce((result, region) => result.concat(this.deferrableTriggers(this.getState(region))), state.deferrableTrigger);
-	}
-
-	/**
-	 * Performs an operation within a transactional context.
-	 * @param TReturn The type of the return parameter of the transactional operation.
-	 * @param operation The operation to perform within the transactional context.
-	 * @returns Returns the return value from the transactional context.
-	 */
-	transaction<TReturn>(operation: func.Producer<TReturn>): TReturn {
-		try {
-			// perform the operation
-			const result = operation();
-
-			// commit the transaction cache to the clean state
-			for (let k = Object.keys(this.dirtyState), i = k.length; i--;) {
-				this.cleanState[k[i]] = this.dirtyState[k[i]];
-			}
-
-			// return the result to the caller
-			return result;
-		}
-
-		finally {
-			// clear the transaction cache
-			this.dirtyState = {};
-			this.dirtyVertex = {};
-		}
-	}
-
-	/**
-	 * Updates the transactional state of a region with the last entered vertex.
-	 * @param vertex The vertex set as its parents last entered vertex.
-	 * @remarks This should only be called by the state machine runtime.
-	 */
-	public setVertex(vertex: Vertex): void {
+	setVertex(vertex: Vertex): void {
 		if (vertex.parent) {
 			this.dirtyVertex[vertex.parent.toString()] = vertex;
+
+			if (vertex instanceof State) {
+				this.dirtyState[vertex.parent.toString()] = vertex;
+			}
 		}
 	}
 
-	/**
-	 * Updates the transactional state of a region with the last entered state.
-	 * @param state The state set as its parents last entered state.
-	 * @remarks This should only be called by the state machine runtime, and implementors note, you also need to update the last entered vertex within this call.
-	 */
-	public setState(state: State): void {
-		if (state.parent) {
-			this.dirtyVertex[state.parent.toString()] = state;
-			this.dirtyState[state.parent.toString()] = state;
-		}
-	}
-
-	/**
-	 * Returns the last known state of a given region. This is the call for the state machine runtime to use as it returns the dirty transactional state.
-	 * @param region The region to get the last known state of.
-	 * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
-	 */
-	public getState(region: Region): State {
+	getState(region: Region): State {
 		return this.dirtyState[region.toString()] || this.cleanState[region.toString()];
 	}
 
-	/**
-	 * Returns the last entered vertex to the state machine runtime.
-	 * @param region The region to get the last entered vertex of.
-	 * @returns Returns the last entered vertex for the given region.
-	 */
-	public getVertex(region: Region): Vertex {
+	getVertex(region: Region): Vertex {
 		return this.dirtyVertex[region.toString()] || this.cleanState[region.toString()];
 	}
 
-	/**
-	 * Returns the last known state of a given region. This is the call for application programmers to use as it returns the clean transactional state more efficently.
-	 * @param region The region to get the last known state of.
-	 * @returns Returns the last known region of the given state. If the state has not been entered this will return undefined.
-	 */
 	public getLastKnownState(region: Region): State | undefined {
 		return this.cleanState[region.toString()];
 	}
 
-	/**
-	 * Serialize the active state configuration of the state machine instance to JSON.
-	 * @param Optional starting state; defaults to the root element within the state machine model.
-	 * @returns Returns the JSON representation of the active state configuration. This contains just the hierarchy of states and regions with the last known state of each region.
-	 */
-	toJSON(state: State = this.root): IState {
-		return { name: state.name, children: state.children.map(region => this.regionToJSON(region)).reverse() };
-	}
-
-	/**
-	 * Seriaize the active state configuration of a region to JSON.
-	 * @param region The region to serialize.
-	 * @returns Returns the JSON representation of the active state configuration of the region.
-	 * @internal
-	 */
-	regionToJSON(region: Region): IRegion {
-		const lastKnownState = this.getLastKnownState(region);
-
-		return { name: region.name, children: region.children.filter((vertex): vertex is State => vertex instanceof State).reverse().map(state => this.toJSON(state)), lastKnownState: lastKnownState ? lastKnownState.name : undefined };
-	}
-
-	/**
-	 * Reconstruct the active state configuration of a state from a json object.
-	 * @param state The state to reconstruct.
-	 * @param jsonState The json object holding a serialized version of the active state configuration.
-	 * @internal
-	 */
-	stateFromJSON(state: State, jsonState: IState): void {
-		for (let i = 0, l = jsonState.children.length; i < l; ++i) {
-			const jsonRegion = jsonState.children[i];
-			const region = state.children.filter(region => region.name === jsonRegion.name)[0];
-
-			assert.ok(region, () => `Unable to find region ${jsonRegion.name}`)
-
-			this.regionFromJSON(region, jsonRegion);
-		}
-	}
-
-	/**
-	 * Reconstruct the active state configuration of a region from a json object.
-	 * @param region The region to reconstruct.
-	 * @param jsonRegion The json object holding a serialized version of the active state configuration.
-	 * @internal
-	 */
-	regionFromJSON(region: Region, jsonRegion: IRegion): void {
-		for (let i = 0, l = jsonRegion.children.length; i < l; ++i) {
-			const jsonState = jsonRegion.children[i];
-			const state = region.children.filter((vertex): vertex is State => vertex instanceof State && vertex.name === jsonState.name)[0];
-
-			assert.ok(state, () => `Unable to find state ${jsonState.name}`);
-
-			this.stateFromJSON(state, jsonState);
-
-			if (state.name === jsonRegion.lastKnownState) {
-				this.setState(state as State);
-			}
-		}
-	}
-
-	/**
-	 * Returns the name of the state machine instance.
-	 * @returns The name of the state machine instance.
-	 */
 	public toString(): string {
 		return this.name;
 	}

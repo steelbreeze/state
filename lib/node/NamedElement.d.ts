@@ -1,22 +1,23 @@
-import { IInstance } from './IInstance';
 /**
- * A named element is a part of the state machine hierarchy.
- * @param TParent The type of the parent of the named element.
+ * Represents an element within a state machine model hierarchy.
+ * The model hierarchy is an arbitory tree structure representing composite state machines.
  */
-export declare abstract class NamedElement<TParent = any> {
+export declare abstract class NamedElement {
     readonly name: string;
-    readonly parent: TParent;
     /**
-     * The fully qualified name of the named element, including parent names.
+     * The fully qualified name of the element; a composition of the name of element and all its parent elements.
+     * @private
      */
     private readonly qualifiedName;
-    protected constructor(name: string, parent: TParent);
-    enter(instance: IInstance, deepHistory: boolean, trigger: any): void;
-    enterHead(instance: IInstance, deepHistory: boolean, trigger: any, nextElement: NamedElement | undefined): void;
-    abstract enterTail(instance: IInstance, deepHistory: boolean, trigger: any): void;
-    leave(instance: IInstance, deepHistory: boolean, trigger: any): void;
     /**
-     * Returns the fully qualified name of the state.
+     * Creates a new instance of an element.
+     * @param name The name of the element.
+     * @param parent The parent of this element.
+     * @protected
+     */
+    protected constructor(name: string, parent: NamedElement | undefined);
+    /**
+     * Returns the element in string form; the fully qualified name of the element.
      */
     toString(): string;
 }

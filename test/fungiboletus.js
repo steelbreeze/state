@@ -1,6 +1,6 @@
 /* global describe, it */
 var assert = require("assert"),
-	state = require("../lib/node/index");
+	state = require("../lib/node");
 
 //state.log.add(message => console.info(message));
 
@@ -10,7 +10,7 @@ const defaultState = new state.State("defaultState", model);
 
 initial.to(defaultState);
 
-defaultState.to().when((msg) => { console.log(`EVAL ${msg}`); return msg.type === 'abc'; }).effect((stalled) => { console.log('abc'); });
+defaultState.when((msg) => msg.type === 'abc');
 
 describe("test/fungiboletus.js", function () {
 	it("Completion transition evaluation after internal transition should use the source vertex as the trigger event", function () {
