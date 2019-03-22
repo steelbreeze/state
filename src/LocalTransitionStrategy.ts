@@ -1,6 +1,10 @@
 import { Vertex, Instance } from '.';
 import { TransitionStrategy } from './TransitionStrategy';
 
+/**
+ * Logic used to traverse local transitions.
+ * @internal
+ */
 export class LocalTransitionStrategy implements TransitionStrategy {
 	vertexToEnter: Vertex | undefined;
 

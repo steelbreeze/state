@@ -1,3 +1,7 @@
+/**
+ * @module state
+ * Finite state machine for TypeScript and JavaScript
+ */
 export { log } from './log';
 export { random } from './random';
 export { PseudoStateKind } from './PseudoStateKind';

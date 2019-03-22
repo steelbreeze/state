@@ -7,7 +7,7 @@ export class PseudoState extends Vertex {
 	public constructor(name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
 		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
 
-		this.getTransition = this.kind === PseudoStateKind.Choice ? (instance, trigger) => random(this.outgoing.filter(transition => transition.evaluate(trigger))) || this.elseTransition : (instance, trigger) => super.getTransition(instance, trigger) || this.elseTransition;
+		this.getTransition = this.kind === PseudoStateKind.Choice ? (instance, trigger) => random.get(this.outgoing.filter(transition => transition.evaluate(trigger))) || this.elseTransition : (instance, trigger) => super.getTransition(instance, trigger) || this.elseTransition;
 
 		if (this.kind === PseudoStateKind.Initial || this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory) {
 			this.parent!.initial = this;

@@ -1,4 +1,3 @@
-//import { log, State, PseudoState, PseudoStateKind, Transition, TransitionKind, Instance } from "@steelbreeze/state";
 import { log, State, PseudoState, PseudoStateKind, Instance } from "../lib/node";
 
 // create event class that a transition will respond to
@@ -11,7 +10,7 @@ class MyEvent {
 }
 
 // log state entry, exit and trigger event evaluation
-log.add(message => console.info(message), log.Entry | log.Exit);
+log.add(message => console.info(message), log.Entry, log.Exit);
 
 // create the state machine model elements
 const model = new State("model");
