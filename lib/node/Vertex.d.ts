@@ -5,13 +5,14 @@ import { types, TransitionKind, NamedElement, Region, Transition, Instance } fro
  */
 export declare abstract class Vertex extends NamedElement {
     readonly parent: Region | undefined;
-    /** The transitions originating from this vertex. */
+    /**
+     * The transitions originating from this vertex.
+     */
     readonly outgoing: Array<Transition>;
     /**
      * Creates a new instance of the vertex class.
      * @param name The name of the vertex.
      * @param parent The parent region of this vertex.
-     * @protected
      */
     protected constructor(name: string, parent: Region | undefined);
     /**
@@ -29,9 +30,18 @@ export declare abstract class Vertex extends NamedElement {
      * @returns Returns a new transition; if TTrigger is specified, a typed transition will be returned.
      */
     when<TTrigger = any>(guard: types.Predicate<TTrigger>): Transition<TTrigger>;
-    to(target: Vertex, kind?: TransitionKind): Transition<any>;
+    /**
+     * Creates a new transition from this vertex to the target vertex.
+     * @param TTrigger The type of the triggering event that the guard will evaluate.
+     * @param target The target of the transition.
+     * @param kind The kind of the transition, specifying its behaviour.
+     * @returns Returns a new transition; if TTrigger is specified, a typed transition will be returned.
+     */
+    to<TTrigger = any>(target: Vertex, kind?: TransitionKind): Transition<any>;
+    /**
+     * Tests the vertex to see if it is current part of the state machine instances active state configuration.
+     * @param instance The instance to test.
+     * @returns Returns true if this vertex is active in the specified instance.
+     */
     isActive(instance: Instance): boolean;
-    evaluate(instance: Instance, history: boolean, trigger: any): boolean;
-    getTransition(instance: Instance, trigger: any): Transition | undefined;
-    doEnterHead(instance: Instance, history: boolean, trigger: any, next: NamedElement | undefined): void;
 }

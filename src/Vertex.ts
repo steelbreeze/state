@@ -5,14 +5,15 @@ import { types, TransitionKind, NamedElement, Region, Transition, Instance } fro
  * Vertices are contained within regions.
  */
 export abstract class Vertex extends NamedElement {
-	/** The transitions originating from this vertex. */
+	/**
+	 * The transitions originating from this vertex.
+	 */
 	public readonly outgoing: Array<Transition> = [];
 
 	/**
 	 * Creates a new instance of the vertex class.
 	 * @param name The name of the vertex.
 	 * @param parent The parent region of this vertex.
-	 * @protected 
 	 */
 	protected constructor(name: string, public readonly parent: Region | undefined) {
 		super(name, parent);
@@ -26,6 +27,7 @@ export abstract class Vertex extends NamedElement {
 	 * Returns the parent element of this element.
 	 * @returns Returns the parent element of this element or undefined if the element is the root element of the hierarchy.
 	 * @internal
+	 * @hidden
 	 */
 	getParent(): NamedElement | undefined {
 		return this.parent;
@@ -52,14 +54,39 @@ export abstract class Vertex extends NamedElement {
 		return new Transition<TTrigger>(this).when(guard);
 	}
 
-	public to(target: Vertex, kind: TransitionKind = TransitionKind.External): Transition<any> {
-		return new Transition(this).to(target, kind);
+	/**
+	 * Creates a new transition from this vertex to the target vertex.
+	 * @param TTrigger The type of the triggering event that the guard will evaluate.
+	 * @param target The target of the transition.
+	 * @param kind The kind of the transition, specifying its behaviour.
+	 * @returns Returns a new transition; if TTrigger is specified, a typed transition will be returned.
+	 */
+	public to<TTrigger = any>(target: Vertex, kind: TransitionKind = TransitionKind.External): Transition<any> {
+		if(kind === TransitionKind.Internal && target !== this) {
+			throw new Error( `Internal transitions must have the same source and target states.`);
+		}
+
+		return new Transition<TTrigger>(this).to(target, kind);
 	}
 
+	/**
+	 * Tests the vertex to see if it is current part of the state machine instances active state configuration.
+	 * @param instance The instance to test.
+	 * @returns Returns true if this vertex is active in the specified instance.
+	 */
 	public isActive(instance: Instance): boolean {
 		return this.parent ? instance.getVertex(this.parent) === this : true;
 	}
 
+	/**
+	 * Evaluates a trigger event at this vertex to determine if it will trigger an outgoing transition.
+	 * @param instance The state machine instance.
+	 * @param history True if deep history semantics are in play.
+	 * @param trigger The trigger event.
+	 * @returns Returns true if one of outgoing transitions guard conditions passed.
+	 * @internal
+	 * @hidden
+	 */
 	evaluate(instance: Instance, history: boolean, trigger: any): boolean {
 		const transition = this.getTransition(instance, trigger);
 
@@ -72,10 +99,26 @@ export abstract class Vertex extends NamedElement {
 		return false;
 	}
 
+	/**
+	 * Selects an outgoing transition from this vertex based on the trigger event.
+	 * @param instance The state machine instance.
+	 * @param trigger The trigger event.
+	 * @returns Returns a transition or undefined if none were found.
+	 * @internal
+	 * @hidden
+	 */
 	getTransition(instance: Instance, trigger: any): Transition | undefined {
 		return this.outgoing.filter(transition => transition.evaluate(trigger))[0]; // TODO: use Array.find
 	}
 
+	/**
+	 * Performs the initial steps required a vertex during a state transition; updates teh active state configuration.
+	 * @param instance The state machine instance that is entering the element.
+	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
+	 * @param trigger The event that triggered the state transition.
+	 * @internal
+	 * @hidden
+	 */
 	doEnterHead(instance: Instance, history: boolean, trigger: any, next: NamedElement | undefined): void {
 		super.doEnterHead(instance, history, trigger, next);
 
