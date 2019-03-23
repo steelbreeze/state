@@ -54,7 +54,7 @@ export class State extends Vertex {
 	}
 
 	evaluate(instance: Instance, history: boolean, trigger: any): boolean {
-		const result = this.delegate(instance, history, trigger) || super.evaluate(instance, history, trigger) || this.doDefer(instance, trigger);
+		const result = this.delegate(instance, history, trigger) || super.evaluate(instance, history, trigger) || this.deferrable(instance, trigger);
 
 		if (result) {
 			this.completion(instance, history);
@@ -79,7 +79,7 @@ export class State extends Vertex {
 		return result;
 	}
 
-	doDefer(instance: Instance, trigger: any): boolean {
+	deferrable(instance: Instance, trigger: any): boolean {
 		if (this.deferrableTriggers.indexOf(trigger.constructor) !== -1) {
 			instance.defer(instance, trigger);
 

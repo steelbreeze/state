@@ -17,7 +17,7 @@ export declare class State extends Vertex {
     isComplete(instance: Instance): boolean;
     evaluate(instance: Instance, history: boolean, trigger: any): boolean;
     delegate(instance: Instance, history: boolean, trigger: any): boolean;
-    doDefer(instance: Instance, trigger: any): boolean;
+    deferrable(instance: Instance, trigger: any): boolean;
     getDeferrableTriggers(instance: Instance): Array<types.Constructor<any>>;
     doEnterHead(instance: Instance, history: boolean, trigger: any, next: NamedElement | undefined): void;
     doEnterTail(instance: Instance, history: boolean, trigger: any): void;
