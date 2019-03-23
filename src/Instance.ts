@@ -54,7 +54,7 @@ export class Instance {
 		for (let i = this.deferredEventPool.length; i--;) {
 			const trigger = this.deferredEventPool[i];
 
-			if (trigger && this.root.getDeferred(this).indexOf(trigger.constructor) === -1) {
+			if (trigger && this.root.getDeferrableTriggers(this).indexOf(trigger.constructor) === -1) {
 				delete this.deferredEventPool[i];
 
 				log.write(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)

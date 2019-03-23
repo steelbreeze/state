@@ -1,7 +1,7 @@
 import { types, NamedElement, Vertex, Region, Instance } from '.';
 export declare class State extends Vertex {
     children: Array<Region>;
-    private deferrableTrigger;
+    private deferrableTriggers;
     private defaultRegion;
     private entryActions;
     private exitActions;
@@ -18,7 +18,7 @@ export declare class State extends Vertex {
     evaluate(instance: Instance, history: boolean, trigger: any): boolean;
     delegate(instance: Instance, history: boolean, trigger: any): boolean;
     doDefer(instance: Instance, trigger: any): boolean;
-    getDeferred(instance: Instance): Array<types.Constructor<any>>;
+    getDeferrableTriggers(instance: Instance): Array<types.Constructor<any>>;
     doEnterHead(instance: Instance, history: boolean, trigger: any, next: NamedElement | undefined): void;
     doEnterTail(instance: Instance, history: boolean, trigger: any): void;
     doExit(instance: Instance, history: boolean, trigger: any): void;

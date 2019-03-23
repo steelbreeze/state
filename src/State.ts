@@ -2,7 +2,7 @@ import { types, NamedElement, Vertex, Region, Instance } from '.';
 
 export class State extends Vertex {
 	children: Array<Region> = [];
-	private deferrableTrigger: Array<types.Constructor<any>> = [];
+	private deferrableTriggers: Array<types.Constructor<any>> = [];
 	private defaultRegion: Region | undefined;
 	private entryActions: Array<types.Consumer<any>> = [];
 	private exitActions: Array<types.Consumer<any>> = [];
@@ -24,7 +24,7 @@ export class State extends Vertex {
 	}
 
 	public defer(...type: types.Constructor<any>[]): this {
-		this.deferrableTrigger.push(...type);
+		this.deferrableTriggers.push(...type);
 
 		return this;
 	}
@@ -80,7 +80,7 @@ export class State extends Vertex {
 	}
 
 	doDefer(instance: Instance, trigger: any): boolean {
-		if (this.deferrableTrigger.indexOf(trigger.constructor) !== -1) {
+		if (this.deferrableTriggers.indexOf(trigger.constructor) !== -1) {
 			instance.defer(instance, trigger);
 
 			return true
@@ -89,8 +89,8 @@ export class State extends Vertex {
 		return false;
 	}
 
-	getDeferred(instance: Instance): Array<types.Constructor<any>> {
-		return this.children.reduce((result, region) => result.concat(instance.getState(region).getDeferred(instance)), this.deferrableTrigger);
+	getDeferrableTriggers(instance: Instance): Array<types.Constructor<any>> {
+		return this.children.reduce((result, region) => result.concat(instance.getState(region).getDeferrableTriggers(instance)), this.deferrableTriggers);
 	}
 
 	doEnterHead(instance: Instance, history: boolean, trigger: any, next: NamedElement | undefined): void {
