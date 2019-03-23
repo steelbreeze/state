@@ -1,4 +1,4 @@
-import { log, PseudoStateKind, TransitionKind, Vertex, PseudoState, Instance } from '.';
+import { types, log, PseudoStateKind, TransitionKind, Vertex, PseudoState, Instance } from '.';
 import { TransitionStrategy } from './TransitionStrategy';
 import { ExternalTransitionStrategy } from './ExternalTransitionStrategy';
 import { InternalTransitionStrategy } from './InternalTransitionStrategy';
@@ -12,9 +12,9 @@ const TransitionStrategyMap = {
 
 export class Transition<TTrigger = any> {
 	public target: Vertex;
-	private eventType: (new (...args: any[]) => TTrigger) | undefined;
-	private guard: ((trigger: TTrigger) => boolean) | undefined;
-	private traverseActions: Array<(trigger: TTrigger) => any> = [];
+	private eventType: types.Constructor<TTrigger> | undefined;
+	private guard: types.Predicate<TTrigger> | undefined;
+	private traverseActions: Array<types.Consumer<TTrigger>> = [];
 	private strategy: TransitionStrategy;
 
 	constructor(public readonly source: Vertex) {
@@ -24,13 +24,13 @@ export class Transition<TTrigger = any> {
 		this.source.outgoing.push(this);
 	}
 
-	on(eventType: new (...args: any[]) => TTrigger): this {
+	on(eventType: types.Constructor<TTrigger>): this {
 		this.eventType = eventType;
 
 		return this;
 	}
 
-	when(guard: (trigger: TTrigger) => boolean): this {
+	when(guard: types.Predicate<TTrigger>): this {
 		this.guard = guard;
 
 		return this;
@@ -43,7 +43,7 @@ export class Transition<TTrigger = any> {
 		return this;
 	}
 
-	effect(...actions: Array<(trigger: TTrigger) => any>): this {
+	effect(...actions: Array<types.Consumer<TTrigger>>): this {
 		this.traverseActions.push(...actions);
 
 		return this;

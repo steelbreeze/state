@@ -1,4 +1,4 @@
-import { log, Vertex, Region, State } from '.';
+import { types, log, Vertex, Region, State } from '.';
 
 
 export class Instance {
@@ -27,7 +27,7 @@ export class Instance {
 		});
 	}
 
-	transaction<TReturn>(operation: () => TReturn): TReturn {
+	transaction<TReturn>(operation: types.Producer<TReturn>): TReturn {
 		try {
 			const result = operation();												// perform the transactional operation
 

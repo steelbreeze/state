@@ -3,6 +3,7 @@
  * Finite state machine for TypeScript and JavaScript
  */
 
+export { types } from './types';
 export { log } from './log';
 export { random } from './random';
 

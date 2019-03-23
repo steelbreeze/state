@@ -1,3 +1,4 @@
+import { types } from '.';
 /**
  * Logging integration for state; provides callbacks for logging events thereby allowing integration of third party logging tools.
  */
@@ -20,7 +21,7 @@ export declare namespace log {
      * @param categories The categorory or categories for which the consumer callback will be invoked.
      * @returns Returns an id for the consumer so that it can be removed if desired.
      */
-    function add(consumer: (message: string) => any, ...categories: number[]): number;
+    function add(consumer: types.Consumer<string>, ...categories: number[]): number;
     /**
      * Removes a log event consumer.
      * @param index The id of the consumer previously returned by the add function.
@@ -32,5 +33,5 @@ export declare namespace log {
      * @param category The category of message.
      * @remarks The producer callback will only be called if there is a registered consumer for the category of message.
      */
-    function write(producer: () => string, category: number): void;
+    function write(producer: types.Producer<string>, category: number): void;
 }

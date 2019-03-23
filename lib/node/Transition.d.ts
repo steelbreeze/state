@@ -1,4 +1,4 @@
-import { TransitionKind, Vertex, Instance } from '.';
+import { types, TransitionKind, Vertex, Instance } from '.';
 export declare class Transition<TTrigger = any> {
     readonly source: Vertex;
     target: Vertex;
@@ -7,10 +7,10 @@ export declare class Transition<TTrigger = any> {
     private traverseActions;
     private strategy;
     constructor(source: Vertex);
-    on(eventType: new (...args: any[]) => TTrigger): this;
-    when(guard: (trigger: TTrigger) => boolean): this;
+    on(eventType: types.Constructor<TTrigger>): this;
+    when(guard: types.Predicate<TTrigger>): this;
     to(target: Vertex, kind?: TransitionKind): this;
-    effect(...actions: Array<(trigger: TTrigger) => any>): this;
+    effect(...actions: Array<types.Consumer<TTrigger>>): this;
     evaluate(trigger: any): boolean;
     doTraverse(instance: Instance, history: boolean, trigger: any): void;
     execute(instance: Instance, history: boolean, trigger: any): void;

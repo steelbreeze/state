@@ -1,29 +1,29 @@
-import { NamedElement, Vertex, Region, Instance } from '.';
+import { types, NamedElement, Vertex, Region, Instance } from '.';
 
 export class State extends Vertex {
 	children: Array<Region> = [];
-	private deferrableTrigger: Array<new (...args: any[]) => any> = [];
+	private deferrableTrigger: Array<types.Constructor<any>> = [];
 	private defaultRegion: Region | undefined;
-	private entryActions: Array<(trigger: any) => any> = [];
-	private exitActions: Array<(trigger: any) => any> = [];
+	private entryActions: Array<types.Consumer<any>> = [];
+	private exitActions: Array<types.Consumer<any>> = [];
 
 	public constructor(name: string, parent: State | Region | undefined = undefined) {
 		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
 	}
 
-	public entry(...actions: Array<(trigger: any) => any>): this {
+	public entry(...actions: Array<types.Consumer<any>>): this {
 		this.entryActions.push(...actions);
 
 		return this;
 	}
 
-	public exit(...actions: Array<(trigger: any) => any>): this {
+	public exit(...actions: Array<types.Consumer<any>>): this {
 		this.exitActions.push(...actions);
 
 		return this;
 	}
 
-	public defer(...type: (new (...args: any[]) => any)[]): this { // TODO: rename
+	public defer(...type: types.Constructor<any>[]): this {
 		this.deferrableTrigger.push(...type);
 
 		return this;
@@ -89,7 +89,7 @@ export class State extends Vertex {
 		return false;
 	}
 
-	getDeferred(instance: Instance): Array<new (...args: any[]) => any> {
+	getDeferred(instance: Instance): Array<types.Constructor<any>> {
 		return this.children.reduce((result, region) => result.concat(instance.getState(region).getDeferred(instance)), this.deferrableTrigger);
 	}
 

@@ -1,4 +1,4 @@
-import { Vertex, Region, State } from '.';
+import { types, Vertex, Region, State } from '.';
 export declare class Instance {
     readonly name: string;
     readonly root: State;
@@ -8,7 +8,7 @@ export declare class Instance {
     private deferredEventPool;
     constructor(name: string, root: State);
     evaluate(trigger: any): boolean;
-    transaction<TReturn>(operation: () => TReturn): TReturn;
+    transaction<TReturn>(operation: types.Producer<TReturn>): TReturn;
     defer(instance: Instance, trigger: any): void;
     evaluateDeferred(): void;
     setVertex(vertex: Vertex): void;
