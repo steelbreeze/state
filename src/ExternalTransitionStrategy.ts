@@ -3,7 +3,6 @@ import { TransitionStrategy } from './TransitionStrategy';
 
 /**
  * Logic used to traverse external transitions.
- * @internal
  */
 export class ExternalTransitionStrategy implements TransitionStrategy {
 	private readonly toExit: NamedElement;

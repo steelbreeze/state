@@ -1,5 +1,4 @@
 module.exports = {
-
 	out: './docs/api/v8',
 	readme: 'none',
 	mode: 'file',
@@ -8,5 +7,8 @@ module.exports = {
 	excludeNotExported: true,
 	excludePrivate: true,
 	excludeProtected: true,
-	stripInternal: true
+	stripInternal: 'true',
+	exclude: [
+		'**/*Strategy.ts'
+	]
 };

@@ -3,7 +3,6 @@ import { TransitionStrategy } from './TransitionStrategy';
 
 /**
  * Logic used to traverse internal transitions.
- * @internal
  */
 export class InternalTransitionStrategy implements TransitionStrategy {
 	constructor(source: Vertex, private readonly target: Vertex) {

@@ -81,7 +81,7 @@ export class State extends Vertex {
 
 	deferrable(instance: Instance, trigger: any): boolean {
 		if (this.deferrableTriggers.indexOf(trigger.constructor) !== -1) {
-			instance.defer(instance, trigger);
+			instance.defer(trigger);
 
 			return true
 		}
