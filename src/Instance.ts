@@ -53,8 +53,9 @@ export class Instance {
 	private transaction<TReturn>(operation: types.Producer<TReturn>): TReturn {
 		try {
 			const result = operation();												// perform the transactional operation
+			const keys = Object.keys(this.dirtyState);
 
-			for (let keys = Object.keys(this.dirtyState), i = keys.length; i--;) {	// update the active state configuration
+			for (let i = 0, l = keys.length; i < l; ++i) {							// update the active state configuration
 				this.cleanState[keys[i]] = this.dirtyState[keys[i]];
 			}
 
@@ -76,17 +77,17 @@ export class Instance {
 	defer(trigger: any): void {
 		log.write(() => `${this} deferring ${trigger}`, log.Evaluate);
 
-		this.deferredEventPool.unshift(trigger);
+		this.deferredEventPool.push(trigger);
 	}
 
 	/**
 	 * Evaluates trigger events in the deferred event pool.
 	 */
 	private evaluateDeferred(): void {
-		for (let i = this.deferredEventPool.length; i--;) {
+		for (let i = 0, l = this.deferredEventPool.length; i < l; ++i) {
 			const trigger = this.deferredEventPool[i];
 
-			if (trigger && this.root.getDeferrableTriggers(this).indexOf(trigger.constructor) === -1) {
+			if (trigger && this.root.getDeferrableTriggers(this).indexOf(trigger.constructor) === -1) { // TODO: revalidate logic
 				delete this.deferredEventPool[i];
 
 				log.write(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
