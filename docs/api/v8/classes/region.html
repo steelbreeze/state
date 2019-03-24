@@ -64,6 +64,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A region is a container of vertices (states and pseudo states) within a state machine model.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -90,18 +97,12 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="region.html#children" class="tsd-kind-icon">children</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="region.html#initial" class="tsd-kind-icon">initial</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="region.html#parent" class="tsd-kind-icon">parent</a></li>
 							</ul>
 						</section>
-						<section class="tsd-index-section tsd-is-external">
+						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="region.html#doentertail" class="tsd-kind-icon">do<wbr>Enter<wbr>Tail</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="region.html#doexit" class="tsd-kind-icon">do<wbr>Exit</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="region.html#getparent" class="tsd-kind-icon">get<wbr>Parent</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="region.html#iscomplete" class="tsd-kind-icon">is<wbr>Complete</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="region.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
 							</ul>
 						</section>
@@ -120,16 +121,31 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Region.ts#L5">Region.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/Region.ts#L19">Region.ts:19</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new instance of the Region class.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The name of the region.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>parent: <a href="state.html" class="tsd-signature-type">State</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The parent state of this region.</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="region.html" class="tsd-signature-type">Region</a></h4>
@@ -140,142 +156,23 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="children" class="tsd-anchor"></a>
-					<h3>children</h3>
-					<div class="tsd-signature tsd-kind-icon">children<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Region.ts#L4">Region.ts:4</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="initial" class="tsd-anchor"></a>
-					<h3>initial</h3>
-					<div class="tsd-signature tsd-kind-icon">initial<span class="tsd-signature-symbol">:</span> <a href="pseudostate.html" class="tsd-signature-type">PseudoState</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Region.ts#L5">Region.ts:5</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
 					<a name="parent" class="tsd-anchor"></a>
 					<h3>parent</h3>
 					<div class="tsd-signature tsd-kind-icon">parent<span class="tsd-signature-symbol">:</span> <a href="state.html" class="tsd-signature-type">State</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Region.ts#L7">Region.ts:7</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/Region.ts#L26">Region.ts:26</a></li>
 						</ul>
 					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The parent state of this region.</p>
+						</div>
+					</div>
 				</section>
 			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
+			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-					<a name="doentertail" class="tsd-anchor"></a>
-					<h3>do<wbr>Enter<wbr>Tail</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">do<wbr>Enter<wbr>Tail<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, history<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides NamedElement.doEnterTail</p>
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Region.ts#L23">Region.ts:23</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
-								</li>
-								<li>
-									<h5>history: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-								<li>
-									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-					<a name="doexit" class="tsd-anchor"></a>
-					<h3>do<wbr>Exit</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">do<wbr>Exit<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, history<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides NamedElement.doExit</p>
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Region.ts#L39">Region.ts:39</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
-								</li>
-								<li>
-									<h5>history: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-								<li>
-									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-					<a name="getparent" class="tsd-anchor"></a>
-					<h3>get<wbr>Parent</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>Parent<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="namedelement.html" class="tsd-signature-type">NamedElement</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides NamedElement.getParent</p>
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Region.ts#L13">Region.ts:13</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <a href="namedelement.html" class="tsd-signature-type">NamedElement</a>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">undefined</span>
-							</h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="iscomplete" class="tsd-anchor"></a>
-					<h3>is<wbr>Complete</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Complete<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Region.ts#L17">Region.ts:17</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="tostring" class="tsd-anchor"></a>
 					<h3>to<wbr>String</h3>
@@ -287,7 +184,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/NamedElement.ts#L98">NamedElement.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/NamedElement.ts#L98">NamedElement.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -335,25 +232,7 @@
 								<a href="region.html#constructor" class="tsd-kind-icon">constructor</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="region.html#children" class="tsd-kind-icon">children</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="region.html#initial" class="tsd-kind-icon">initial</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="region.html#parent" class="tsd-kind-icon">parent</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-								<a href="region.html#doentertail" class="tsd-kind-icon">do<wbr>Enter<wbr>Tail</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-								<a href="region.html#doexit" class="tsd-kind-icon">do<wbr>Exit</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-								<a href="region.html#getparent" class="tsd-kind-icon">get<wbr>Parent</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="region.html#iscomplete" class="tsd-kind-icon">is<wbr>Complete</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="region.html#tostring" class="tsd-kind-icon">to<wbr>String</a>

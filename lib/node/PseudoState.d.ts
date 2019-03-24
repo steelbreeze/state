@@ -1,9 +1,24 @@
-import { PseudoStateKind, Vertex, Region, State, Transition, Instance } from '.';
+import { PseudoStateKind, Vertex, Region, State, Transition } from '.';
+import { TransitionKind } from './TransitionKind';
+/**
+ * A pseudo state is a transient state within a region, once entered it will exit immediately.
+ */
 export declare class PseudoState extends Vertex {
     readonly kind: PseudoStateKind;
+    /** The 'else' outgoing transition if this is a junction or choice pseudo state. */
     private elseTransition;
+    /**
+     * Creates a new instance of the PseudoState class.
+     * @param name The name of the pseudo state.
+     * @param parent The parent region of the pseudo state; note that a state can also be used, in which case the default region of the state will become the pseudo states parent.
+     * @param kind The kind pseudo state which defines its behaviour and use.
+     */
     constructor(name: string, parent: State | Region, kind?: PseudoStateKind);
-    else(target: Vertex): Transition<any>;
-    isHistory(): boolean;
-    doEnterTail(instance: Instance, history: boolean, trigger: any): void;
+    /**
+     * Creates an 'else' transition from this pseudo state, which will be chosen if no other outgoing transition is found.
+     * @param target The target of the transition.
+     * @param kind The kind of the transition, specifying its behaviour.
+     * @returns Returns a new untyped transition.
+     */
+    else(target: Vertex, kind?: TransitionKind): Transition<any>;
 }

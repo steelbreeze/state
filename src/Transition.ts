@@ -53,7 +53,7 @@ export class Transition<TTrigger = any> {
 		return (this.eventType === undefined || trigger.constructor === this.eventType) && (this.guard === undefined || this.guard(trigger));
 	}
 
-	doTraverse(instance: Instance, history: boolean, trigger: any): void {
+	traverse(instance: Instance, history: boolean, trigger: any): void {
 		var transition: Transition = this;
 		const transitions: Array<Transition> = [transition];
 

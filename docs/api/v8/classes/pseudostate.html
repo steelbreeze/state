@@ -64,6 +64,13 @@
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
+			<section class="tsd-panel tsd-comment">
+				<div class="tsd-comment tsd-typography">
+					<div class="lead">
+						<p>A pseudo state is a transient state within a region, once entered it will exit immediately.</p>
+					</div>
+				</div>
+			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
@@ -91,16 +98,12 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="pseudostate.html#kind" class="tsd-kind-icon">kind</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pseudostate.html#outgoing" class="tsd-kind-icon">outgoing</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="pseudostate.html#doentertail" class="tsd-kind-icon">do<wbr>Enter<wbr>Tail</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="pseudostate.html#else" class="tsd-kind-icon">else</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pseudostate.html#isactive" class="tsd-kind-icon">is<wbr>Active</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="pseudostate.html#ishistory" class="tsd-kind-icon">is<wbr>History</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="pseudostate.html#on" class="tsd-kind-icon">on</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external"><a href="pseudostate.html#to" class="tsd-kind-icon">to</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="pseudostate.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
@@ -122,19 +125,39 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/PseudoState.ts#L5">PseudoState.ts:5</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/PseudoState.ts#L10">PseudoState.ts:10</a></li>
 								</ul>
 							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a new instance of the PseudoState class.</p>
+								</div>
+							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>name: <span class="tsd-signature-type">string</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The name of the pseudo state.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5>parent: <a href="state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol"> | </span><a href="region.html" class="tsd-signature-type">Region</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The parent region of the pseudo state; note that a state can also be used, in which case the default region of the state will become the pseudo states parent.</p>
+										</div>
+									</div>
 								</li>
 								<li>
 									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> kind: <a href="../enums/pseudostatekind.html" class="tsd-signature-type">PseudoStateKind</a><span class="tsd-signature-symbol"> =&nbsp;PseudoStateKind.Initial</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<div class="lead">
+											<p>The kind pseudo state which defines its behaviour and use.</p>
+										</div>
+									</div>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <a href="pseudostate.html" class="tsd-signature-type">PseudoState</a></h4>
@@ -150,129 +173,53 @@
 					<div class="tsd-signature tsd-kind-icon">kind<span class="tsd-signature-symbol">:</span> <a href="../enums/pseudostatekind.html" class="tsd-signature-type">PseudoStateKind</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/PseudoState.ts#L7">PseudoState.ts:7</a></li>
-						</ul>
-					</aside>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="outgoing" class="tsd-anchor"></a>
-					<h3>outgoing</h3>
-					<div class="tsd-signature tsd-kind-icon">outgoing<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
-					<aside class="tsd-sources">
-						<p>Inherited from <a href="vertex.html">Vertex</a>.<a href="vertex.html#outgoing">outgoing</a></p>
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Vertex.ts#L11">Vertex.ts:11</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/PseudoState.ts#L18">PseudoState.ts:18</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>The transitions originating from this vertex.</p>
+							<p>The kind pseudo state which defines its behaviour and use.</p>
 						</div>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-					<a name="doentertail" class="tsd-anchor"></a>
-					<h3>do<wbr>Enter<wbr>Tail</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">do<wbr>Enter<wbr>Tail<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a>, history<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span>, trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Overrides NamedElement.doEnterTail</p>
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/PseudoState.ts#L31">PseudoState.ts:31</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
-								</li>
-								<li>
-									<h5>history: <span class="tsd-signature-type">boolean</span></h5>
-								</li>
-								<li>
-									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="else" class="tsd-anchor"></a>
 					<h3>else</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">else<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">else<span class="tsd-signature-symbol">(</span>target<span class="tsd-signature-symbol">: </span><a href="vertex.html" class="tsd-signature-type">Vertex</a>, kind<span class="tsd-signature-symbol">?: </span><a href="../enums/transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/PseudoState.ts#L17">PseudoState.ts:17</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>target: <a href="vertex.html" class="tsd-signature-type">Vertex</a></h5>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-					<a name="isactive" class="tsd-anchor"></a>
-					<h3>is<wbr>Active</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Active<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<p>Inherited from <a href="vertex.html">Vertex</a>.<a href="vertex.html#isactive">isActive</a></p>
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Vertex.ts#L77">Vertex.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/PseudoState.ts#L32">PseudoState.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Tests the vertex to see if it is current part of the state machine instances active state configuration.</p>
+									<p>Creates an &#39;else&#39; transition from this pseudo state, which will be chosen if no other outgoing transition is found.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
+									<h5>target: <a href="vertex.html" class="tsd-signature-type">Vertex</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The instance to test.</p>
+										<p>The target of the transition.</p>
+									</div>
+								</li>
+								<li>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> kind: <a href="../enums/transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol"> =&nbsp;TransitionKind.External</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The kind of the transition, specifying its behaviour.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>Returns true if this vertex is active in the specified instance.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="ishistory" class="tsd-anchor"></a>
-					<h3>is<wbr>History</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>History<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/PseudoState.ts#L27">PseudoState.ts:27</a></li>
-								</ul>
-							</aside>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<p>Returns a new untyped transition.</p>
 						</li>
 					</ul>
 				</section>
@@ -287,25 +234,20 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="vertex.html">Vertex</a>.<a href="vertex.html#on">on</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Vertex.ts#L43">Vertex.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/Vertex.ts#L44">Vertex.ts:44</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates a new transition at this vertex triggered by an event of a specific type.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>remarks</dt>
-									<dd><p>The generic parameter TTrigger is not generally required as this will be</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
 									<h4>TTrigger</h4>
 									<div class="tsd-comment tsd-typography">
-										<p>The type of the triggering event.</p>
+										<p>The type of the triggering event; note that this can be derived from the type parameter.</p>
 									</div>
 								</li>
 							</ul>
@@ -334,7 +276,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="vertex.html">Vertex</a>.<a href="vertex.html#to">to</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Vertex.ts#L64">Vertex.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/Vertex.ts#L65">Vertex.ts:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -382,7 +324,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/NamedElement.ts#L98">NamedElement.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/NamedElement.ts#L98">NamedElement.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -405,7 +347,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="vertex.html">Vertex</a>.<a href="vertex.html#when">when</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Vertex.ts#L53">Vertex.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/Vertex.ts#L54">Vertex.ts:54</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -471,20 +413,8 @@
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
 								<a href="pseudostate.html#kind" class="tsd-kind-icon">kind</a>
 							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="pseudostate.html#outgoing" class="tsd-kind-icon">outgoing</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
-								<a href="pseudostate.html#doentertail" class="tsd-kind-icon">do<wbr>Enter<wbr>Tail</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
 								<a href="pseudostate.html#else" class="tsd-kind-icon">else</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external">
-								<a href="pseudostate.html#isactive" class="tsd-kind-icon">is<wbr>Active</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="pseudostate.html#ishistory" class="tsd-kind-icon">is<wbr>History</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-inherited tsd-is-external">
 								<a href="pseudostate.html#on" class="tsd-kind-icon">on</a>

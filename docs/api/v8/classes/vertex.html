@@ -98,15 +98,8 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Properties</h3>
-							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="vertex.html#outgoing" class="tsd-kind-icon">outgoing</a></li>
-							</ul>
-						</section>
-						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="vertex.html#isactive" class="tsd-kind-icon">is<wbr>Active</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-external"><a href="vertex.html#on" class="tsd-kind-icon">on</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-external"><a href="vertex.html#to" class="tsd-kind-icon">to</a></li>
 								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="vertex.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
@@ -117,57 +110,7 @@
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Properties</h2>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="outgoing" class="tsd-anchor"></a>
-					<h3>outgoing</h3>
-					<div class="tsd-signature tsd-kind-icon">outgoing<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="transition.html" class="tsd-signature-type">Transition</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> =&nbsp;[]</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Vertex.ts#L11">Vertex.ts:11</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The transitions originating from this vertex.</p>
-						</div>
-					</div>
-				</section>
-			</section>
-			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="isactive" class="tsd-anchor"></a>
-					<h3>is<wbr>Active</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">is<wbr>Active<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Vertex.ts#L77">Vertex.ts:77</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Tests the vertex to see if it is current part of the state machine instances active state configuration.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The instance to test.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>Returns true if this vertex is active in the specified instance.</p>
-						</li>
-					</ul>
-				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-external">
 					<a name="on" class="tsd-anchor"></a>
 					<h3>on</h3>
@@ -178,25 +121,20 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Vertex.ts#L43">Vertex.ts:43</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/Vertex.ts#L44">Vertex.ts:44</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Creates a new transition at this vertex triggered by an event of a specific type.</p>
 								</div>
-								<dl class="tsd-comment-tags">
-									<dt>remarks</dt>
-									<dd><p>The generic parameter TTrigger is not generally required as this will be</p>
-									</dd>
-								</dl>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
 							<ul class="tsd-type-parameters">
 								<li>
 									<h4>TTrigger</h4>
 									<div class="tsd-comment tsd-typography">
-										<p>The type of the triggering event.</p>
+										<p>The type of the triggering event; note that this can be derived from the type parameter.</p>
 									</div>
 								</li>
 							</ul>
@@ -224,7 +162,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Vertex.ts#L64">Vertex.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/Vertex.ts#L65">Vertex.ts:65</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -272,7 +210,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/NamedElement.ts#L98">NamedElement.ts:98</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/NamedElement.ts#L98">NamedElement.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -294,7 +232,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/b539dde/src/Vertex.ts#L53">Vertex.ts:53</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/757363f/src/Vertex.ts#L54">Vertex.ts:54</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -366,12 +304,6 @@
 					<li class="current tsd-kind-class tsd-is-external">
 						<a href="vertex.html" class="tsd-kind-icon">Vertex</a>
 						<ul>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="vertex.html#outgoing" class="tsd-kind-icon">outgoing</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="vertex.html#isactive" class="tsd-kind-icon">is<wbr>Active</a>
-							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-class tsd-has-type-parameter tsd-is-external">
 								<a href="vertex.html#on" class="tsd-kind-icon">on</a>
 							</li>

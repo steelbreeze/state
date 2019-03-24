@@ -12,7 +12,7 @@ export declare class Transition<TTrigger = any> {
     to(target: Vertex, kind?: TransitionKind): this;
     effect(...actions: Array<types.Consumer<TTrigger>>): this;
     evaluate(trigger: any): boolean;
-    doTraverse(instance: Instance, history: boolean, trigger: any): void;
+    traverse(instance: Instance, history: boolean, trigger: any): void;
     execute(instance: Instance, history: boolean, trigger: any): void;
     toString(): string;
 }

@@ -49,7 +49,7 @@ export class State extends Vertex {
 		return this.outgoing.length === 0;
 	}
 
-	public isComplete(instance: Instance): boolean {
+	isComplete(instance: Instance): boolean {
 		return !this.children.some(region => !region.isComplete(instance));
 	}
 

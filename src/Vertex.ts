@@ -7,8 +7,10 @@ import { types, TransitionKind, NamedElement, Region, Transition, Instance } fro
 export abstract class Vertex extends NamedElement {
 	/**
 	 * The transitions originating from this vertex.
+	 * @internal
+	 * @hidden
 	 */
-	public readonly outgoing: Array<Transition> = [];
+	readonly outgoing: Array<Transition> = [];
 
 	/**
 	 * Creates a new instance of the vertex class.
@@ -35,10 +37,9 @@ export abstract class Vertex extends NamedElement {
 
 	/**
 	 * Creates a new transition at this vertex triggered by an event of a specific type.
-	 * @param TTrigger The type of the triggering event.
+	 * @param TTrigger The type of the triggering event; note that this can be derived from the type parameter.
 	 * @param type The type (class name) of the triggering event.
 	 * @returns Returns a new typed transition. A typed transition being one whose guard condition and behaviour will accept a parameter of the same type specified.
-	 * @remarks The generic parameter TTrigger is not generally required as this will be
 	 */
 	public on<TTrigger>(type: types.Constructor<TTrigger>): Transition<TTrigger> {
 		return new Transition<TTrigger>(this).on(type);
@@ -70,11 +71,13 @@ export abstract class Vertex extends NamedElement {
 	}
 
 	/**
-	 * Tests the vertex to see if it is current part of the state machine instances active state configuration.
+	 * Tests the vertex to see if it part of the the active state configuration of a particular state machine instance.
 	 * @param instance The instance to test.
 	 * @returns Returns true if this vertex is active in the specified instance.
+	 * @internal
+	 * @hidden
 	 */
-	public isActive(instance: Instance): boolean {
+	isActive(instance: Instance): boolean {
 		return this.parent ? instance.getVertex(this.parent) === this : true;
 	}
 
@@ -91,7 +94,7 @@ export abstract class Vertex extends NamedElement {
 		const transition = this.getTransition(instance, trigger);
 
 		if (transition) {
-			transition.doTraverse(instance, history, trigger);
+			transition.traverse(instance, history, trigger);
 
 			return true;
 		}

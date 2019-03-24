@@ -71,7 +71,7 @@ export abstract class NamedElement {
 	}
 
 	/**
-	 * Performs the final steps required an element during a state transition including cascading the entry operation to child elements and completion transition.
+	 * Performs the final steps required to enter an element during a state transition including cascading the entry operation to child elements and completion transition.
 	 * @param instance The state machine instance that is entering the element.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
