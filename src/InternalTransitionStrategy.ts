@@ -16,4 +16,8 @@ export class InternalTransitionStrategy implements TransitionStrategy {
 
 	doExitSource(instance: Instance, history: boolean, trigger: any): void {
 	}
+
+	toString(): string {
+		return "internal";
+	}
 }

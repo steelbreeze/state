@@ -3,14 +3,14 @@ var assert = require("assert"),
 	state = require("../lib/node");
 
 var model = new state.State("compTest");
-var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
-
-var activity1 = new state.State("activity1", model);
-var activity2 = new state.State("activity2", model);
-var activity3 = new state.State("activity3", model);
-var junction1 = new state.PseudoState("junction1", model, state.PseudoStateKind.Junction);
-var junction2 = new state.PseudoState("junction2", model, state.PseudoStateKind.Junction);
-var end = new state.State("end", model);
+var region = new state.Region("region", model);
+var initial = new state.PseudoState("initial", region, state.PseudoStateKind.Initial);
+var activity1 = new state.State("activity1", region);
+var activity2 = new state.State("activity2", region);
+var activity3 = new state.State("activity3", region);
+var junction1 = new state.PseudoState("junction1", region, state.PseudoStateKind.Junction);
+var junction2 = new state.PseudoState("junction2", region, state.PseudoStateKind.Junction);
+var end = new state.State("end", region);
 
 var subInitial = new state.PseudoState("subInitial", activity2, state.PseudoStateKind.Initial);
 var subEnd = new state.State("subEnd", activity2);
@@ -27,7 +27,7 @@ var instance = new state.Instance("transitions", model);
 
 describe("test/transitions.js", function () {
 	it("Completion transitions should be triggered by state entry", function () {
-		assert.equal(end, instance.getLastKnownState(model.getDefaultRegion()));
+		assert.equal(end, instance.getLastKnownState(region));
 	});
 });
 

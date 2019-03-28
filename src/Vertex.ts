@@ -115,7 +115,7 @@ export abstract class Vertex extends NamedElement {
 	}
 
 	/**
-	 * Performs the initial steps required a vertex during a state transition; updates teh active state configuration.
+	 * Performs the initial steps required to enter a vertex during a state transition; updates teh active state configuration.
 	 * @param instance The state machine instance that is entering the element.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.

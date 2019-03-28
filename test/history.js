@@ -3,11 +3,11 @@ var assert = require("assert"),
 	state = require("../lib/node");
 
 var model = new state.State("history");
-
-var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
-var shallow = new state.State("shallow", model);
-var deep = new state.State("deep", model);
-var end = new state.State("final", model);
+var region = new state.Region("region", model);
+var initial = new state.PseudoState("initial", region, state.PseudoStateKind.Initial);
+var shallow = new state.State("shallow", region);
+var deep = new state.State("deep", region);
+var end = new state.State("final", region);
 
 var s1 = new state.State("s1", shallow);
 var s2 = new state.State("s2", shallow);
@@ -28,7 +28,7 @@ instance.evaluate("end");
 
 describe("test/history.js", function () {
 	it("Test should result in a completed state", function () {
-		assert.equal(end, instance.getLastKnownState(model.getDefaultRegion()));
+		assert.equal(end, instance.getLastKnownState(region));
 	});
 });
 

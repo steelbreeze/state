@@ -46,4 +46,8 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
 		this.toEnter.forEach((element, index) => element.doEnterHead(instance, history, trigger, this.toEnter[index + 1]));
 		this.toEnter[this.toEnter.length - 1].doEnterTail(instance, history, trigger);
 	}
+
+	toString(): string {
+		return "external";
+	}
 }

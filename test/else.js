@@ -3,13 +3,11 @@ var assert = require("assert"),
 	state = require("../lib/node");
 
 const model = new state.State("model");
-
-const initial = new state.PseudoState("initial", model);
-
-const choice = new state.PseudoState("choice", model, state.PseudoStateKind.Choice);
-const junction = new state.PseudoState("junction", model, state.PseudoStateKind.Junction);
-
-const finalState = new state.State("final", model);
+const region = new state.Region("region", model);
+const initial = new state.PseudoState("initial", region);
+const choice = new state.PseudoState("choice", region, state.PseudoStateKind.Choice);
+const junction = new state.PseudoState("junction", region, state.PseudoStateKind.Junction);
+const finalState = new state.State("final", region);
 
 var data = {};
 
@@ -22,7 +20,7 @@ var instance = new state.Instance("instance", model);
 
 describe("test/else.js", function () {
 	it("Test should result in a completed state", function () {
-		assert.equal(finalState, instance.getLastKnownState(model.getDefaultRegion()));
+		assert.equal(finalState, instance.getLastKnownState(region));
 	});
 
 	it("Else from choice transition fired appropriately", function () {

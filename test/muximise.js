@@ -3,11 +3,11 @@ var assert = require("assert"),
 	state = require("../lib/node");
 
 var model = new state.State("model");
-
-var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
-var ortho = new state.State("ortho", model);
-var simple = new state.State("simple", model);
-var final = new state.State("final", model);
+var region = new state.Region("region", model);
+var initial = new state.PseudoState("initial", region, state.PseudoStateKind.Initial);
+var ortho = new state.State("ortho", region);
+var simple = new state.State("simple", region);
+var final = new state.State("final", region);
 
 var r1 = new state.Region("r1", ortho);
 var r2 = new state.Region("r2", ortho);
@@ -62,7 +62,7 @@ describe("test/muximise.js", function () {
 			instance.evaluate("complete1");
 			instance.evaluate("complete2");
 
-			assert.equal(final, instance.getLastKnownState(model.getDefaultRegion()));
+			assert.equal(final, instance.getLastKnownState(region));
 		});
 	});
 });

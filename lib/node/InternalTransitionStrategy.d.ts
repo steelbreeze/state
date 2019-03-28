@@ -8,4 +8,5 @@ export declare class InternalTransitionStrategy implements TransitionStrategy {
     constructor(source: Vertex, target: Vertex);
     doEnterTarget(instance: Instance, history: boolean, trigger: any): void;
     doExitSource(instance: Instance, history: boolean, trigger: any): void;
+    toString(): string;
 }

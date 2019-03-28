@@ -27,4 +27,8 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 			this.vertexToEnter.doEnter(instance, history, trigger);
 		}
 	}
+
+	toString(): string {
+		return "local";
+	}
 }
