@@ -16,10 +16,10 @@
 		"coverage": "CODECLIMATE_REPO_TOKEN=3561ab0fd4d1343b66e838d1644595020a60a7445bb2d24ddb051f6f2a6ad5c2 codeclimate-test-reporter < ./coverage/lcov.info"
 	},
 	"devDependencies": {
-		"@types/mocha": "latest",
-		"@types/node": "latest",
-		"codeclimate-test-reporter": "latest",
-		"mocha": "latese",
+		"@types/mocha": "^5.2.5",
+		"@types/node": "^10.12.10",
+		"codeclimate-test-reporter": "^0.5.1",
+		"mocha": "^5.2.0",
 		"nyc": "latest",
 		"typescript": "latest"
 	},
