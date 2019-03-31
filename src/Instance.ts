@@ -109,10 +109,12 @@ export class Instance {
 	 */
 	setVertex(vertex: Vertex): void {
 		if (vertex.parent) {
-			this.dirtyVertex[vertex.parent.toString()] = vertex;
+			const region: Region = vertex.parent;
+
+			this.dirtyVertex[region.toString()] = vertex;
 
 			if (vertex instanceof State) {
-				this.dirtyState[vertex.parent.toString()] = vertex;
+				this.dirtyState[region.toString()] = vertex;
 			}
 		}
 	}

@@ -21,7 +21,7 @@
 		"codeclimate-test-reporter": "^0.5.1",
 		"mocha": "^5.2.0",
 		"nyc": "latest",
-		"typescript": "latest"
+		"typescript": "^3.3.0"
 	},
 	"repository": {
 		"type": "git",
