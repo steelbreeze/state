@@ -9,11 +9,9 @@ If you like @steelbreeze/state, please star it...
 [![Maintainability](https://api.codeclimate.com/v1/badges/ba16b2f2be9016842326/maintainability)](https://codeclimate.com/github/steelbreeze/state/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/ba16b2f2be9016842326/test_coverage)](https://codeclimate.com/github/steelbreeze/state/test_coverage)
 
-> **Notes:**
+> **Note:** v8 is now live and contains breaking changes but offers a further simplified code base performance improvements. See the [release notes](RELEASES.md) for more information.
 >
->v7 is now live and contains breaking changes but offers a much simplified code base and considerable performance improvements. See the [release notes](RELEASES.md) for more information.
->
->@steelbreeze/state the new home for [state.js](https://github.com/steelbreeze/state.js) and the versioning starts here from v6.0.0.
+> **Warning:** v8 does not yet contain any support for serialization due to the challanges brought by the introduction of deferred events which are cached within the state machine instance alongside the active state configuration. 
 
 ## Install
 ```shell
@@ -22,10 +20,12 @@ npm i @steelbreeze/state
 
 ## Usage
 The API is broken up into two distinct parts:
-1. A set of classes that represent a state machine model ([State](https://steelbreeze.net/state/api/v7/classes/state.html), [PseudoState](https://steelbreeze.net/state/api/v7/classes/pseudostate.html), [Region](https://steelbreeze.net/state/api/v7/classes/region.html), etc.);
-2. An interface ([IInstance](https://steelbreeze.net/state/api/v7/interfaces/iinstance.html)), and default implementation of that interface ([Instance](https://steelbreeze.net/state/api/v7/classes/instance.html)), to represent an instance of a state machine model. This embodies the *active state configuration* of a state machine instance, and enables multiple instances of the same state machine model.
+1. A set of classes that represent a state machine model ([State](https://steelbreeze.net/state/api/v8/classes/state.html), [PseudoState](https://steelbreeze.net/state/api/v8/classes/pseudostate.html), [Region](https://steelbreeze.net/state/api/v8/classes/region.html), etc.);
+2. An class managing the active state configuration of a state machine instance at runtime ([Instance](https://steelbreeze.net/state/api/v8/classes/instance.html)). 
 
-The full API reference can be found [here](https://steelbreeze.net/state/api/v7).
+Together, they enable multiple instances of the same state machine model.
+
+The full API reference can be found [here](https://steelbreeze.net/state/api/v8).
 
 ### TypeScript
 ```typescript
@@ -41,13 +41,13 @@ class MyEvent {
 }
 
 // log state entry, exit and trigger event evaluation
-log.add(message => console.info(message), log.Entry | log.Exit | log.Evaluate);
+state.log.add(message => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
 
 // create the state machine model elements
-const model = new State("model");
-const initial = new PseudoState("initial", model, PseudoStateKind.Initial);
-const stateA = new State("stateA", model);
-const stateB = new State("stateB", model);
+const model = new state.State("model");
+const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
+const stateA = new state.State("stateA", model);
+const stateB = new state.State("stateB", model);
 
 // create the transition from initial pseudo state to stateA
 initial.to(stateA);
@@ -56,7 +56,7 @@ initial.to(stateA);
 stateA.on(MyEvent).when(myEvent => myEvent.fieldB > 2).to(stateB);
 
 // create an instance of the state machine model
-let instance = new Instance("instance", model);
+let instance = new state.Instance("instance", model);
 
 // send the machine events for evaluation
 instance.evaluate(new MyEvent("test", 1));
@@ -134,14 +134,14 @@ instance.evaluate(new MyEvent("test", 3));
 The output of the above code will be:
 ```shell
 instance enter model
-instance enter model.model
-instance enter model.model.initial
-instance leave model.model.initial
-instance enter model.model.stateA
+instance enter model.default
+instance enter model.default.initial
+instance leave model.default.initial
+instance enter model.default.stateA
 instance evaluate {"fieldA":"test","fieldB":1}
 instance evaluate {"fieldA":"test","fieldB":3}
-instance leave model.model.stateA
-instance enter model.model.stateB
+instance leave model.default.stateA
+instance enter model.default.stateB
 ```
 > Note that in the example above, a *default region* is inserted as a child of ```model``` and parent of ```initial```, ```stateA``` and ```stateB```; the name of default regions copy their parent state hence seeing ```model.model``` in the output above. 
 ## License

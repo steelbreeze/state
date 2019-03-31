@@ -1,4 +1,4 @@
-import { log, State, PseudoState, PseudoStateKind, Instance } from "../lib/node";
+import * as state from "../lib/node";
 
 // create event class that a transition will respond to
 class MyEvent {
@@ -10,13 +10,13 @@ class MyEvent {
 }
 
 // log state entry, exit and trigger event evaluation
-log.add(message => console.info(message), log.Entry, log.Exit);
+state.log.add(message => console.info(message), state.log.Entry | state.log.Exit | state.log.Evaluate);
 
 // create the state machine model elements
-const model = new State("model");
-const initial = new PseudoState("initial", model, PseudoStateKind.Initial);
-const stateA = new State("stateA", model);
-const stateB = new State("stateB", model);
+const model = new state.State("model");
+const initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);
+const stateA = new state.State("stateA", model);
+const stateB = new state.State("stateB", model);
 
 // create the transition from initial pseudo state to stateA
 initial.to(stateA);
@@ -25,7 +25,7 @@ initial.to(stateA);
 stateA.on(MyEvent).when(myEvent => myEvent.fieldB > 2).to(stateB);
 
 // create an instance of the state machine model
-let instance = new Instance("instance", model);
+let instance = new state.Instance("instance", model);
 
 // send the machine events for evaluation
 instance.evaluate(new MyEvent("test", 1));

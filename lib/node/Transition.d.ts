@@ -6,7 +6,7 @@ import { types, TransitionKind, Vertex } from '.';
 export declare class Transition<TTrigger = any> {
     readonly source: Vertex;
     /**
-     * The target vertex of this transition.
+     * The target vertex of the transition.
      */
     target: Vertex;
     /**
