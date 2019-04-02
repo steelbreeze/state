@@ -6,6 +6,7 @@ This largely revolves around transition construction, taking the form:
 source.on(<i>event type</i>).when(<i>guard</i>).to(<i>target</i>).effect(<i>action</i>);
 </code>
 
+
 The <code>IInstance</code> interface has been removed an only a single implementation if the <code>Instance</code> class is provided due to the additional complexities introduced by deferred event evaluation and execution.
 
 Internally, performance improvements and code maintainabilty improvements.
