@@ -6,7 +6,7 @@ This largely revolves around transition construction, taking the form:
 source.on(eventType).when(guard).to(target).effect(action);
 ```
 
-The <code>IInstance</code> interface has been removed an only a single implementation if the <code>Instance</code> class is provided due to the additional complexities introduced by deferred event evaluation and execution.
+The <code>IInstance</code> interface has been removed an only a single implementation if the <code>Instance</code> class is provided due to the additional complexities introduced by deferred event evaluation and execution. JSON serialisation has been removed due to the complexities introduced by deferred events (which are stored in the Instance class.), with a more general serialisation API planned.
 
 Internally, performance improvements and code maintainabilty improvements.
 
