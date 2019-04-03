@@ -1,4 +1,4 @@
-import { types, NamedElement, Vertex, Region, Instance } from '.';
+import { types, NamedElement, Vertex, Region, Instance, Visitor } from '.';
 
 /**
  * A state is a situation in the lifecycle of the state machine that is stable between events.
@@ -15,7 +15,6 @@ export class State extends Vertex {
 	 * The types of events that may be deferred while in this state.
 	 */
 	private deferrableTriggers: Array<types.Constructor<any>> = [];
-
 
 	/**
 	 * The default region for a composite state where regions are not explicitly defined.
@@ -263,6 +262,19 @@ export class State extends Vertex {
 	completion(instance: Instance, history: boolean): void {
 		if (this.isComplete(instance)) {
 			super.evaluate(instance, history, this);
+		}
+	}
+
+	/**
+	 * Accepts a visitor and calls back its visitState method and cascade to child regions.
+	 * @param visitor The visitor to call back.
+	 * @param instance The optional state machine instance.
+	 */
+	public accept(visitor: Visitor, instance: Instance | undefined): void {
+		visitor.visitState(this, instance);
+
+		for(const region of this.children) {
+			region.accept(visitor, instance);
 		}
 	}
 }

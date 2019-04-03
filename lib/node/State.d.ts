@@ -1,4 +1,4 @@
-import { types, Vertex, Region } from '.';
+import { types, Vertex, Region, Instance, Visitor } from '.';
 /**
  * A state is a situation in the lifecycle of the state machine that is stable between events.
  */
@@ -63,4 +63,10 @@ export declare class State extends Vertex {
      * @returns Returns true if the state is a final state.
      */
     isFinal(): boolean;
+    /**
+     * Accepts a visitor and calls back its visitState method and cascade to child regions.
+     * @param visitor The visitor to call back.
+     * @param instance The optional state machine instance.
+     */
+    accept(visitor: Visitor, instance: Instance | undefined): void;
 }

@@ -1,5 +1,5 @@
 import { random } from './random';
-import { PseudoStateKind, Vertex, Region, State, Transition, Instance } from '.';
+import { PseudoStateKind, Vertex, Region, State, Transition, Instance, Visitor } from '.';
 import { TransitionKind } from './TransitionKind';
 
 /**
@@ -70,5 +70,14 @@ export class PseudoState extends Vertex {
 		if (this.kind !== PseudoStateKind.Junction) {
 			this.evaluate(instance, history, trigger);
 		}
+	}
+
+	/**
+	 * Accepts a visitor and calls back its visitPseudoState method.
+	 * @param visitor The visitor to call back.
+	 * @param instance The optional state machine instance.
+	 */
+	public accept(visitor: Visitor, instance: Instance | undefined): void {
+		visitor.visitPseudoState(this, instance);
 	}
 }

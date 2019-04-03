@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>random | @steelbreeze/state</title>
+	<title>Visitor | @steelbreeze/state</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,10 +54,10 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="random.html">random</a>
+					<a href="visitor.html">Visitor</a>
 				</li>
 			</ul>
-			<h1>Module random</h1>
+			<h1>Interface Visitor</h1>
 		</div>
 	</div>
 </header>
@@ -67,131 +67,137 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Module enabling fine grained control of random number generation used when selecting transitions from Choice Pseudo States.</p>
+						<p>Interface required of classes implementing the visitor pattern, used to walk a state machine model structure.</p>
 					</div>
 				</div>
+			</section>
+			<section class="tsd-panel tsd-hierarchy">
+				<h3>Hierarchy</h3>
+				<ul class="tsd-hierarchy">
+					<li>
+						<span class="target">Visitor</span>
+					</li>
+				</ul>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
 				<h2>Index</h2>
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section tsd-is-external">
-							<h3>Functions</h3>
+							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-external"><a href="random.html#get" class="tsd-kind-icon">get</a></li>
-								<li class="tsd-kind-function tsd-parent-kind-module tsd-is-external"><a href="random.html#set" class="tsd-kind-icon">set</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="visitor.html#visitpseudostate" class="tsd-kind-icon">visit<wbr>Pseudo<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="visitor.html#visitregion" class="tsd-kind-icon">visit<wbr>Region</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="visitor.html#visitstate" class="tsd-kind-icon">visit<wbr>State</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
-				<h2>Functions</h2>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
-					<a name="get" class="tsd-anchor"></a>
-					<h3>get</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get&lt;TSource&gt;<span class="tsd-signature-symbol">(</span>source<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TSource</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TSource</span></li>
+				<h2>Methods</h2>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="visitpseudostate" class="tsd-anchor"></a>
+					<h3>visit<wbr>Pseudo<wbr>State</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">visit<wbr>Pseudo<wbr>State<span class="tsd-signature-symbol">(</span>pseduoState<span class="tsd-signature-symbol">: </span><a href="../classes/pseudostate.html" class="tsd-signature-type">PseudoState</a>, instance<span class="tsd-signature-symbol">: </span><a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/9b0fff3/src/random.ts#L15">random.ts:15</a></li>
+									<li>Defined in Visitor.ts:19</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Returns a random element from an array.</p>
+									<p>Called when the visitor visits a pseudo state.</p>
 								</div>
 							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>TSource</h4>
-									<div class="tsd-comment tsd-typography">
-										<p>The type of elements within the source array.</p>
-									</div>
-								</li>
-							</ul>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>source: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TSource</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5>pseduoState: <a href="../classes/pseudostate.html" class="tsd-signature-type">PseudoState</a></h5>
+								</li>
+								<li>
+									<h5>instance: <a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The array to select a random element from.</p>
+										<p>The optional state machine instance.</p>
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">TSource</span></h4>
-							<p>Returns a random element from the soucre.</p>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-function tsd-parent-kind-module tsd-is-external">
-					<a name="set" class="tsd-anchor"></a>
-					<h3>set</h3>
-					<ul class="tsd-signatures tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">set<span class="tsd-signature-symbol">(</span>generator<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">function</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="visitregion" class="tsd-anchor"></a>
+					<h3>visit<wbr>Region</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">visit<wbr>Region<span class="tsd-signature-symbol">(</span>region<span class="tsd-signature-symbol">: </span><a href="../classes/region.html" class="tsd-signature-type">Region</a>, instance<span class="tsd-signature-symbol">: </span><a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/9b0fff3/src/random.ts#L23">random.ts:23</a></li>
+									<li>Defined in Visitor.ts:26</li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Sets the method used to generate random numbers</p>
+									<p>Called when the visitor visits a region.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>generator: <span class="tsd-signature-type">function</span></h5>
+									<h5>region: <a href="../classes/region.html" class="tsd-signature-type">Region</a></h5>
+								</li>
+								<li>
+									<h5>instance: <a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>A function that takes a ceiling and returns a random number between 0 and ceiling - 1</p>
+										<p>The optional state machine instance.</p>
 									</div>
-									<ul class="tsd-parameters">
-										<li class="tsd-parameter-siganture">
-											<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>ceiling<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-											</ul>
-											<ul class="tsd-descriptions">
-												<li class="tsd-description">
-													<h4 class="tsd-parameters-title">Parameters</h4>
-													<ul class="tsd-parameters">
-														<li>
-															<h5>ceiling: <span class="tsd-signature-type">number</span></h5>
-														</li>
-													</ul>
-													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-												</li>
-											</ul>
-										</li>
-									</ul>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">function</span></h4>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+					<a name="visitstate" class="tsd-anchor"></a>
+					<h3>visit<wbr>State</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">visit<wbr>State<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><a href="../classes/state.html" class="tsd-signature-type">State</a>, instance<span class="tsd-signature-symbol">: </span><a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Visitor.ts:12</li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Called when the visitor visits a state.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
-								<li class="tsd-parameter-siganture">
-									<ul class="tsd-signatures tsd-kind-type-literal tsd-is-not-exported">
-										<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>max<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">number</span></li>
-									</ul>
-									<ul class="tsd-descriptions">
-										<li class="tsd-description">
-											<h4 class="tsd-parameters-title">Parameters</h4>
-											<ul class="tsd-parameters">
-												<li>
-													<h5>max: <span class="tsd-signature-type">number</span></h5>
-												</li>
-											</ul>
-											<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">number</span></h4>
-										</li>
-									</ul>
+								<li>
+									<h5>state: <a href="../classes/state.html" class="tsd-signature-type">State</a></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The state being visited.</p>
+									</div>
+								</li>
+								<li>
+									<h5>instance: <a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>The optional state machine instance.</p>
+									</div>
 								</li>
 							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -203,28 +209,55 @@
 					<li class="globals  ">
 						<a href="../index.html"><em>Globals</em></a>
 					</li>
-					<li class="label tsd-is-external">
-						<span>Externals</span>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="log.html">log</a>
-					</li>
-					<li class="current tsd-kind-module tsd-is-external">
-						<a href="random.html">random</a>
-					</li>
-					<li class=" tsd-kind-module tsd-is-external">
-						<a href="types.html">types</a>
-					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-has-type-parameter tsd-is-external">
-						<a href="random.html#get" class="tsd-kind-icon">get</a>
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="../enums/pseudostatekind.html" class="tsd-kind-icon">Pseudo<wbr>State<wbr>Kind</a>
 					</li>
-					<li class=" tsd-kind-function tsd-parent-kind-module tsd-is-external">
-						<a href="random.html#set" class="tsd-kind-icon">set</a>
+					<li class=" tsd-kind-enum tsd-is-external">
+						<a href="../enums/transitionkind.html" class="tsd-kind-icon">Transition<wbr>Kind</a>
 					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/instance.html" class="tsd-kind-icon">Instance</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/pseudostate.html" class="tsd-kind-icon">Pseudo<wbr>State</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/region.html" class="tsd-kind-icon">Region</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/state.html" class="tsd-kind-icon">State</a>
+					</li>
+					<li class=" tsd-kind-class tsd-has-type-parameter tsd-is-external">
+						<a href="../classes/transition.html" class="tsd-kind-icon">Transition</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="../classes/vertex.html" class="tsd-kind-icon">Vertex</a>
+					</li>
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-interface tsd-is-external">
+						<a href="visitor.html" class="tsd-kind-icon">Visitor</a>
+						<ul>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="visitor.html#visitpseudostate" class="tsd-kind-icon">visit<wbr>Pseudo<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="visitor.html#visitregion" class="tsd-kind-icon">visit<wbr>Region</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
+								<a href="visitor.html#visitstate" class="tsd-kind-icon">visit<wbr>State</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+				<ul class="after-current">
 				</ul>
 			</nav>
 		</div>

@@ -1,4 +1,4 @@
-import { types, TransitionKind, NamedElement, Region, Transition } from '.';
+import { types, TransitionKind, NamedElement, Region, Transition, Instance, Visitor } from '.';
 /**
  * Represents an element within a state machine model hierarchy that can be the source or target of a transition.
  * Vertices are contained within regions.
@@ -33,4 +33,10 @@ export declare abstract class Vertex extends NamedElement {
      * @returns Returns a new transition; if TTrigger is specified, a typed transition will be returned.
      */
     to<TTrigger = any>(target: Vertex, kind?: TransitionKind): Transition<any>;
+    /**
+     * Accepts a visitor.
+     * @param visitor The visitor to call back.
+     * @param instance The optional state machine instance.
+     */
+    abstract accept(visitor: Visitor, instance: Instance | undefined): void;
 }

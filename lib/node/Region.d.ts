@@ -1,4 +1,4 @@
-import { NamedElement, State } from '.';
+import { NamedElement, State, Instance, Visitor } from '.';
 /**
  * A region is a container of vertices (states and pseudo states) within a state machine model.
  */
@@ -10,4 +10,10 @@ export declare class Region extends NamedElement {
      * @param parent The parent state of this region.
      */
     constructor(name: string, parent: State);
+    /**
+     * Accepts a visitor and calls back its visitRegion method and cascade to child vertices.
+     * @param visitor The visitor to call back.
+     * @param instance The optional state machine instance.
+     */
+    accept(visitor: Visitor, instance: Instance | undefined): void;
 }

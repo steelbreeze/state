@@ -1,4 +1,4 @@
-import { types, TransitionKind, NamedElement, Region, Transition, Instance } from '.';
+import { types, TransitionKind, NamedElement, Region, Transition, Instance, Visitor } from '.';
 
 /**
  * Represents an element within a state machine model hierarchy that can be the source or target of a transition.
@@ -127,4 +127,11 @@ export abstract class Vertex extends NamedElement {
 
 		instance.setVertex(this);
 	}
+
+	/**
+	 * Accepts a visitor.
+	 * @param visitor The visitor to call back.
+	 * @param instance The optional state machine instance.
+	 */
+	public abstract accept(visitor: Visitor, instance: Instance | undefined): void;
 }

@@ -1,4 +1,4 @@
-import { PseudoStateKind, Vertex, Region, State, Transition } from '.';
+import { PseudoStateKind, Vertex, Region, State, Transition, Instance, Visitor } from '.';
 import { TransitionKind } from './TransitionKind';
 /**
  * A pseudo state is a transient state within a region, once entered it will exit immediately.
@@ -21,4 +21,10 @@ export declare class PseudoState extends Vertex {
      * @returns Returns a new untyped transition.
      */
     else(target: Vertex, kind?: TransitionKind): Transition<any>;
+    /**
+     * Accepts a visitor and calls back its visitPseudoState method.
+     * @param visitor The visitor to call back.
+     * @param instance The optional state machine instance.
+     */
+    accept(visitor: Visitor, instance: Instance | undefined): void;
 }

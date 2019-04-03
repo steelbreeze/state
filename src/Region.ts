@@ -1,4 +1,4 @@
-import { PseudoStateKind, NamedElement, Vertex, State, PseudoState, Instance } from '.';
+import { PseudoStateKind, NamedElement, Vertex, State, PseudoState, Instance, Visitor } from '.';
 
 /**
  * A region is a container of vertices (states and pseudo states) within a state machine model.
@@ -87,5 +87,18 @@ export class Region extends NamedElement {
 		instance.getVertex(this).doExit(instance, history, trigger);
 
 		super.doExit(instance, history, trigger);
+	}
+
+	/**
+	 * Accepts a visitor and calls back its visitRegion method and cascade to child vertices.
+	 * @param visitor The visitor to call back.
+	 * @param instance The optional state machine instance.
+	 */
+	public accept(visitor: Visitor, instance: Instance | undefined): void {
+		visitor.visitRegion(this, instance);
+
+		for(const vertex of this.children) {
+			vertex.accept(visitor, instance);
+		}
 	}
 }
