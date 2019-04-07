@@ -78,7 +78,7 @@ export abstract class Vertex extends NamedElement {
 	 * @hidden
 	 */
 	isActive(instance: Instance): boolean {
-		return this.parent ? instance.getVertex(this.parent) === this : true;
+		return this.parent === undefined || instance.getVertex(this.parent) === this;
 	}
 
 	/**

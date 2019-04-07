@@ -158,14 +158,8 @@ export class State extends Vertex {
 	delegate(instance: Instance, history: boolean, trigger: any): boolean {
 		let result: boolean = false;
 
-		for (const region of this.children) {
-			if (instance.getState(region).evaluate(instance, history, trigger)) {
-				result = true;
-
-				if (this.parent && instance.getState(this.parent) !== this) {
-					break;
-				}
-			}
+		for (let i = 0, l = this.children.length; i < l && this.isActive(instance); ++i) {					// delegate to all children unless one causes a transition away from this state
+			result = instance.getState(this.children[i]).evaluate(instance, history, trigger) || result;
 		}
 
 		return result;
@@ -272,7 +266,7 @@ export class State extends Vertex {
 	public accept(visitor: Visitor): void {
 		visitor.visitStateHead(this);
 
-		for(const region of this.children) {
+		for (const region of this.children) {
 			region.accept(visitor);
 		}
 
