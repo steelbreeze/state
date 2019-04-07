@@ -131,7 +131,6 @@ export abstract class Vertex extends NamedElement {
 	/**
 	 * Accepts a visitor.
 	 * @param visitor The visitor to call back.
-	 * @param instance The optional state machine instance.
 	 */
-	public abstract accept(visitor: Visitor, instance: Instance | undefined): void;
+	public abstract accept(visitor: Visitor): void;
 }

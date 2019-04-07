@@ -57,7 +57,7 @@
 					<a href="visitor.html">Visitor</a>
 				</li>
 			</ul>
-			<h1>Interface Visitor</h1>
+			<h1>Class Visitor</h1>
 		</div>
 	</div>
 </header>
@@ -67,7 +67,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Interface required of classes implementing the visitor pattern, used to walk a state machine model structure.</p>
+						<p>Base for classes implementing the visitor pattern, used to walk a state machine model structure.</p>
 					</div>
 				</div>
 			</section>
@@ -76,6 +76,11 @@
 				<ul class="tsd-hierarchy">
 					<li>
 						<span class="target">Visitor</span>
+						<ul class="tsd-hierarchy">
+							<li>
+								<a href="jsonserializer.html" class="tsd-signature-type">JSONSerializer</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -86,9 +91,12 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="visitor.html#visitpseudostate" class="tsd-kind-icon">visit<wbr>Pseudo<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="visitor.html#visitregion" class="tsd-kind-icon">visit<wbr>Region</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-is-external"><a href="visitor.html#visitstate" class="tsd-kind-icon">visit<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="visitor.html#visitpseudostatehead" class="tsd-kind-icon">visit<wbr>Pseudo<wbr>State<wbr>Head</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="visitor.html#visitpseudostatetail" class="tsd-kind-icon">visit<wbr>Pseudo<wbr>State<wbr>Tail</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="visitor.html#visitregionhead" class="tsd-kind-icon">visit<wbr>Region<wbr>Head</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="visitor.html#visitregiontail" class="tsd-kind-icon">visit<wbr>Region<wbr>Tail</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="visitor.html#visitstatehead" class="tsd-kind-icon">visit<wbr>State<wbr>Head</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="visitor.html#visitstatetail" class="tsd-kind-icon">visit<wbr>State<wbr>Tail</a></li>
 							</ul>
 						</section>
 					</div>
@@ -96,104 +104,173 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="visitpseudostate" class="tsd-anchor"></a>
-					<h3>visit<wbr>Pseudo<wbr>State</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">visit<wbr>Pseudo<wbr>State<span class="tsd-signature-symbol">(</span>pseduoState<span class="tsd-signature-symbol">: </span><a href="../classes/pseudostate.html" class="tsd-signature-type">PseudoState</a>, instance<span class="tsd-signature-symbol">: </span><a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="visitpseudostatehead" class="tsd-anchor"></a>
+					<h3>visit<wbr>Pseudo<wbr>State<wbr>Head</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">visit<wbr>Pseudo<wbr>State<wbr>Head<span class="tsd-signature-symbol">(</span>pseduoState<span class="tsd-signature-symbol">: </span><a href="pseudostate.html" class="tsd-signature-type">PseudoState</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Visitor.ts:19</li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e37322e/src/Visitor.ts#L25">Visitor.ts:25</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Called when the visitor visits a pseudo state.</p>
+									<p>Called when the visitor starts to visit a pseudo state.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>pseduoState: <a href="../classes/pseudostate.html" class="tsd-signature-type">PseudoState</a></h5>
-								</li>
-								<li>
-									<h5>instance: <a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The optional state machine instance.</p>
-									</div>
+									<h5>pseduoState: <a href="pseudostate.html" class="tsd-signature-type">PseudoState</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="visitregion" class="tsd-anchor"></a>
-					<h3>visit<wbr>Region</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">visit<wbr>Region<span class="tsd-signature-symbol">(</span>region<span class="tsd-signature-symbol">: </span><a href="../classes/region.html" class="tsd-signature-type">Region</a>, instance<span class="tsd-signature-symbol">: </span><a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="visitpseudostatetail" class="tsd-anchor"></a>
+					<h3>visit<wbr>Pseudo<wbr>State<wbr>Tail</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">visit<wbr>Pseudo<wbr>State<wbr>Tail<span class="tsd-signature-symbol">(</span>pseduoState<span class="tsd-signature-symbol">: </span><a href="pseudostate.html" class="tsd-signature-type">PseudoState</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Visitor.ts:26</li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e37322e/src/Visitor.ts#L32">Visitor.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Called when the visitor visits a region.</p>
+									<p>Called when the visitor finished visiting a pseudo state.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>region: <a href="../classes/region.html" class="tsd-signature-type">Region</a></h5>
-								</li>
-								<li>
-									<h5>instance: <a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The optional state machine instance.</p>
-									</div>
+									<h5>pseduoState: <a href="pseudostate.html" class="tsd-signature-type">PseudoState</a></h5>
 								</li>
 							</ul>
 							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
 						</li>
 					</ul>
 				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-					<a name="visitstate" class="tsd-anchor"></a>
-					<h3>visit<wbr>State</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">visit<wbr>State<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><a href="../classes/state.html" class="tsd-signature-type">State</a>, instance<span class="tsd-signature-symbol">: </span><a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="visitregionhead" class="tsd-anchor"></a>
+					<h3>visit<wbr>Region<wbr>Head</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">visit<wbr>Region<wbr>Head<span class="tsd-signature-symbol">(</span>region<span class="tsd-signature-symbol">: </span><a href="region.html" class="tsd-signature-type">Region</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in Visitor.ts:12</li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e37322e/src/Visitor.ts#L39">Visitor.ts:39</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Called when the visitor visits a state.</p>
+									<p>Called when the visitor starts to visit a region; before child states are visited.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>state: <a href="../classes/state.html" class="tsd-signature-type">State</a></h5>
+									<h5>region: <a href="region.html" class="tsd-signature-type">Region</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="visitregiontail" class="tsd-anchor"></a>
+					<h3>visit<wbr>Region<wbr>Tail</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">visit<wbr>Region<wbr>Tail<span class="tsd-signature-symbol">(</span>region<span class="tsd-signature-symbol">: </span><a href="region.html" class="tsd-signature-type">Region</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e37322e/src/Visitor.ts#L46">Visitor.ts:46</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Called when the visitor finishes visiting a region; after child states are visited.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>region: <a href="region.html" class="tsd-signature-type">Region</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="visitstatehead" class="tsd-anchor"></a>
+					<h3>visit<wbr>State<wbr>Head</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">visit<wbr>State<wbr>Head<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><a href="state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e37322e/src/Visitor.ts#L11">Visitor.ts:11</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Called when the visitor starts to visit a state; before child regions are visited.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>state: <a href="state.html" class="tsd-signature-type">State</a></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The state being visited.</p>
 									</div>
 								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">any</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="visitstatetail" class="tsd-anchor"></a>
+					<h3>visit<wbr>State<wbr>Tail</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">visit<wbr>State<wbr>Tail<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><a href="state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/e37322e/src/Visitor.ts#L18">Visitor.ts:18</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Called when the visitor finishes visiting a state; after child regions are visited.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
 								<li>
-									<h5>instance: <a href="../classes/instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></h5>
+									<h5>state: <a href="state.html" class="tsd-signature-type">State</a></h5>
 									<div class="tsd-comment tsd-typography">
-										<p>The optional state machine instance.</p>
+										<p>The state being visited.</p>
 									</div>
 								</li>
 							</ul>
@@ -220,39 +297,51 @@
 						<a href="../enums/transitionkind.html" class="tsd-kind-icon">Transition<wbr>Kind</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/instance.html" class="tsd-kind-icon">Instance</a>
+						<a href="instance.html" class="tsd-kind-icon">Instance</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
+						<a href="jsonserializer.html" class="tsd-kind-icon">JSONSerializer</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/pseudostate.html" class="tsd-kind-icon">Pseudo<wbr>State</a>
+						<a href="namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/region.html" class="tsd-kind-icon">Region</a>
+						<a href="pseudostate.html" class="tsd-kind-icon">Pseudo<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/state.html" class="tsd-kind-icon">State</a>
+						<a href="region.html" class="tsd-kind-icon">Region</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="state.html" class="tsd-kind-icon">State</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter tsd-is-external">
-						<a href="../classes/transition.html" class="tsd-kind-icon">Transition</a>
+						<a href="transition.html" class="tsd-kind-icon">Transition</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/vertex.html" class="tsd-kind-icon">Vertex</a>
+						<a href="vertex.html" class="tsd-kind-icon">Vertex</a>
 					</li>
 				</ul>
 				<ul class="current">
-					<li class="current tsd-kind-interface tsd-is-external">
+					<li class="current tsd-kind-class tsd-is-external">
 						<a href="visitor.html" class="tsd-kind-icon">Visitor</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="visitor.html#visitpseudostate" class="tsd-kind-icon">visit<wbr>Pseudo<wbr>State</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="visitor.html#visitpseudostatehead" class="tsd-kind-icon">visit<wbr>Pseudo<wbr>State<wbr>Head</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="visitor.html#visitregion" class="tsd-kind-icon">visit<wbr>Region</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="visitor.html#visitpseudostatetail" class="tsd-kind-icon">visit<wbr>Pseudo<wbr>State<wbr>Tail</a>
 							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-is-external">
-								<a href="visitor.html#visitstate" class="tsd-kind-icon">visit<wbr>State</a>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="visitor.html#visitregionhead" class="tsd-kind-icon">visit<wbr>Region<wbr>Head</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="visitor.html#visitregiontail" class="tsd-kind-icon">visit<wbr>Region<wbr>Tail</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="visitor.html#visitstatehead" class="tsd-kind-icon">visit<wbr>State<wbr>Head</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="visitor.html#visitstatetail" class="tsd-kind-icon">visit<wbr>State<wbr>Tail</a>
 							</li>
 						</ul>
 					</li>

@@ -11,8 +11,6 @@ export declare class Instance {
     private dirtyState;
     /** The the last known active vertex during transaction execution. */
     private dirtyVertex;
-    /** The deferred triggers awaiting evaluation once the current active state configuration changes. */
-    private deferredEventPool;
     /**
      * Creates a new state machine instance conforming to a particular state machine model.
      * @param name The name of the state machine instance.

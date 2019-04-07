@@ -13,8 +13,12 @@ export class Instance {
 	/** The the last known active vertex during transaction execution. */
 	private dirtyVertex: Record<string, Vertex> = {};
 
-	/** The deferred triggers awaiting evaluation once the current active state configuration changes. */
-	private deferredEventPool: Array<any> = [];
+	/**
+	 * The deferred triggers awaiting evaluation once the current active state configuration changes.
+	 * @internal
+	 * @hidden
+	 */
+	deferredEventPool: Array<any> = [];
 
 	/**
 	 * Creates a new state machine instance conforming to a particular state machine model.

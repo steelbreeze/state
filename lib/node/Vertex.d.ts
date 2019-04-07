@@ -1,4 +1,4 @@
-import { types, TransitionKind, NamedElement, Region, Transition, Instance, Visitor } from '.';
+import { types, TransitionKind, NamedElement, Region, Transition, Visitor } from '.';
 /**
  * Represents an element within a state machine model hierarchy that can be the source or target of a transition.
  * Vertices are contained within regions.
@@ -36,7 +36,6 @@ export declare abstract class Vertex extends NamedElement {
     /**
      * Accepts a visitor.
      * @param visitor The visitor to call back.
-     * @param instance The optional state machine instance.
      */
-    abstract accept(visitor: Visitor, instance: Instance | undefined): void;
+    abstract accept(visitor: Visitor): void;
 }

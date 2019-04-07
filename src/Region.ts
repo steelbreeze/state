@@ -92,13 +92,14 @@ export class Region extends NamedElement {
 	/**
 	 * Accepts a visitor and calls back its visitRegion method and cascade to child vertices.
 	 * @param visitor The visitor to call back.
-	 * @param instance The optional state machine instance.
 	 */
-	public accept(visitor: Visitor, instance: Instance | undefined): void {
-		visitor.visitRegion(this, instance);
+	public accept(visitor: Visitor): void {
+		visitor.visitRegionHead(this);
 
 		for(const vertex of this.children) {
-			vertex.accept(visitor, instance);
+			vertex.accept(visitor);
 		}
+
+		visitor.visitRegionTail(this);
 	}
 }

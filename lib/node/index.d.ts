@@ -15,3 +15,4 @@ export { PseudoState } from './PseudoState';
 export { Transition } from './Transition';
 export { Instance } from './Instance';
 export { Visitor } from './Visitor';
+export { JSONSerializer } from './JSON';

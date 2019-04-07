@@ -1,19 +1,5 @@
 var state = require("../lib/node");
-
-// create a visitor that just logs
-class MyVisitor {
-	visitPseudoState(p) {
-		state.log.write(() => `Visiting ${p}`, state.log.User);
-	}
-
-	visitState(s) {
-		state.log.write(() => `Visiting ${s}`, state.log.User);
-	}
-
-	visitRegion(r) {
-		state.log.write(() => `Visiting ${r}`, state.log.User);
-	}
-}
+var assert = require("assert");
 
 // create event class that a transition will respond to
 class MyEvent {
@@ -23,7 +9,7 @@ class MyEvent {
 }
 
 // log state entry, exit and trigger event evaluation
-state.log.add(message => console.info(message), state.log.User);
+//state.log.add(message => console.info(message), state.log.User);
 
 // create the state machine model elements
 const model = new state.State("model");
@@ -44,4 +30,13 @@ let instance = new state.Instance("instance", model);
 instance.evaluate(new MyEvent("test", 1));
 instance.evaluate(new MyEvent("test", 3));
 
-model.accept(new MyVisitor());
+
+describe("test/visitor.js", function () {
+	it("A JSON serialized representation of a state machine instance can be produced by visiting a state machine", function () {
+		let json = new state.JSONSerializer(instance);
+
+		model.accept(json);
+
+		assert.equal(json.toString(), `{"name":"model","children":[{"name":"default","activeState":"stateB","children":[{"name":"stateA","children":[]},{"name":"stateB","children":[]}]}]}`);
+	});
+});

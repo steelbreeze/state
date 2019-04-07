@@ -1,27 +1,48 @@
 import { PseudoState, State, Region, Instance } from ".";
 
 /**
- * Interface required of classes implementing the visitor pattern, used to walk a state machine model structure.
+ * Base for classes implementing the visitor pattern, used to walk a state machine model structure.
  */
-export interface Visitor {
+export class Visitor {
 	/**
-	 * Called when the visitor visits a state.
+	 * Called when the visitor starts to visit a state; before child regions are visited.
 	 * @param state The state being visited.
-	 * @param instance The optional state machine instance.
 	 */
-	visitState(state: State, instance: Instance | undefined): any;
+	visitStateHead(state: State): any {		
+	}
 
 	/**
-	 * Called when the visitor visits a pseudo state.
-	 * @param pseudoState The pseudo state being visited.
-	 * @param instance The optional state machine instance.
+	 * Called when the visitor finishes visiting a state; after child regions are visited.
+	 * @param state The state being visited.
 	 */
-	visitPseudoState(pseduoState: PseudoState, instance: Instance | undefined): any;
+	visitStateTail(state: State): any {		
+	}
+
+	/**
+	 * Called when the visitor starts to visit a pseudo state.
+	 * @param pseudoState The pseudo state being visited.
+	 */
+	visitPseudoStateHead(pseduoState: PseudoState): any {		
+	}
 	
 	/**
-	 * Called when the visitor visits a region.
-	 * @param state The state being visited.
-	 * @param instance The optional state machine instance.
+	 * Called when the visitor finished visiting a pseudo state.
+	 * @param pseudoState The pseudo state being visited.
 	 */
-	visitRegion(region: Region, instance: Instance | undefined): any;
+	visitPseudoStateTail(pseduoState: PseudoState): any {		
+	}
+	
+	/**
+	 * Called when the visitor starts to visit a region; before child states are visited.
+	 * @param state The state being visited.
+	 */
+	visitRegionHead(region: Region): any {
+	}
+
+	/**
+	 * Called when the visitor finishes visiting a region; after child states are visited.
+	 * @param state The state being visited.
+	 */
+	visitRegionTail(region: Region): any {
+	}
 }

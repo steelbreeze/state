@@ -75,9 +75,9 @@ export class PseudoState extends Vertex {
 	/**
 	 * Accepts a visitor and calls back its visitPseudoState method.
 	 * @param visitor The visitor to call back.
-	 * @param instance The optional state machine instance.
 	 */
-	public accept(visitor: Visitor, instance: Instance | undefined): void {
-		visitor.visitPseudoState(this, instance);
+	public accept(visitor: Visitor): void {
+		visitor.visitPseudoStateHead(this);
+		visitor.visitPseudoStateTail(this);
 	}
 }

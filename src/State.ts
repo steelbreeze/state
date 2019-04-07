@@ -266,15 +266,16 @@ export class State extends Vertex {
 	}
 
 	/**
-	 * Accepts a visitor and calls back its visitState method and cascade to child regions.
+	 * Accepts a visitor and calls visitor.visitStateHead method, cascades to child regions then calls the visitor.visitStateTail.
 	 * @param visitor The visitor to call back.
-	 * @param instance The optional state machine instance.
 	 */
-	public accept(visitor: Visitor, instance: Instance | undefined): void {
-		visitor.visitState(this, instance);
+	public accept(visitor: Visitor): void {
+		visitor.visitStateHead(this);
 
 		for(const region of this.children) {
-			region.accept(visitor, instance);
+			region.accept(visitor);
 		}
+
+		visitor.visitStateTail(this);
 	}
 }
