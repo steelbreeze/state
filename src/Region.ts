@@ -60,9 +60,8 @@ export class Region extends NamedElement {
 	 * @hidden
 	 */
 	doEnterTail(instance: Instance, history: boolean, trigger: any): void {
-		const historyActive = history || (this.initial && this.initial.isHistory());
 		const current = instance.getState(this);
-		const starting = historyActive && current ? current : this.initial;
+		const starting = history || (this.initial && this.initial.isHistory()) && current ? current : this.initial;
 
 		if (starting) {
 			starting.doEnter(instance, history || (this.initial!.kind === PseudoStateKind.DeepHistory), trigger);
