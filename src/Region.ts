@@ -60,16 +60,12 @@ export class Region extends NamedElement {
 	 * @hidden
 	 */
 	doEnterTail(instance: Instance, history: boolean, trigger: any): void {
-		let current: State | undefined;
-		let starting: Vertex | undefined = this.initial;
-
-		if ((history || (this.initial && this.initial.isHistory())) && (current = instance.getState(this))) {
-			starting = current;
-			history = history || (this.initial!.kind === PseudoStateKind.DeepHistory);
-		}
+		const historyActive = history || (this.initial && this.initial.isHistory());
+		const current = instance.getState(this);
+		const starting = historyActive && current ? current : this.initial;
 
 		if (starting) {
-			starting.doEnter(instance, history, trigger);
+			starting.doEnter(instance, history || (this.initial!.kind === PseudoStateKind.DeepHistory), trigger);
 		} else {
 			throw new Error(`${instance} unable to find initial or history vertex at ${this}`);
 		}
@@ -96,7 +92,7 @@ export class Region extends NamedElement {
 	public accept(visitor: Visitor): void {
 		visitor.visitRegionHead(this);
 
-		for(const vertex of this.children) {
+		for (const vertex of this.children) {
 			vertex.accept(visitor);
 		}
 
