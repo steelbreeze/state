@@ -61,12 +61,12 @@ export class Region extends NamedElement {
 	 */
 	doEnterTail(instance: Instance, history: boolean, trigger: any): void {
 		const current = instance.getState(this);
-		const starting = history || (this.initial && this.initial.isHistory()) && current ? current : this.initial;
+		const starting = (history || (this.initial && this.initial.isHistory) && current) ? current : this.initial;
 
 		if (starting) {
 			starting.doEnter(instance, history || (this.initial!.kind === PseudoStateKind.DeepHistory), trigger);
-		} else {
-			throw new Error(`${instance} unable to find initial or history vertex at ${this}`);
+//		} else {
+//			throw new Error(`${instance} unable to find initial or history vertex at ${this}`);
 		}
 	}
 

@@ -33,7 +33,7 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
 			nextTarget = targetAncestors.next();
 		}
 
-		if (target instanceof PseudoState && target.isHistory()) {
+		if (target instanceof PseudoState && target.isHistory) {
 			this.toEnter.pop();
 		}
 	}

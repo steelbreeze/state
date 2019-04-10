@@ -9,6 +9,8 @@ export class PseudoState extends Vertex {
 	/** The 'else' outgoing transition if this is a junction or choice pseudo state. */
 	private elseTransition: Transition | undefined;
 
+	public readonly isHistory: boolean;
+
 	/**
 	 * Creates a new instance of the PseudoState class.
 	 * @param name The name of the pseudo state.
@@ -18,7 +20,9 @@ export class PseudoState extends Vertex {
 	public constructor(name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
 		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
 
-		if (this.kind === PseudoStateKind.Initial || this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory) {
+		this.isHistory = this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
+
+		if (this.kind === PseudoStateKind.Initial || this.isHistory) {
 			this.parent!.initial = this;
 		}
 	}
@@ -40,9 +44,9 @@ export class PseudoState extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	isHistory(): boolean {
-		return this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
-	}
+//	isHistory(): boolean {
+//		return this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
+//	}
 
 	/**
 	 * Selects an outgoing transition from this pseudo state based on the trigger event.

@@ -7,6 +7,7 @@ export declare class PseudoState extends Vertex {
     readonly kind: PseudoStateKind;
     /** The 'else' outgoing transition if this is a junction or choice pseudo state. */
     private elseTransition;
+    readonly isHistory: boolean;
     /**
      * Creates a new instance of the PseudoState class.
      * @param name The name of the pseudo state.
