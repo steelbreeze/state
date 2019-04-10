@@ -88,10 +88,8 @@ export class Instance {
 	 * Evaluates trigger events in the deferred event pool.
 	 */
 	private evaluateDeferred(): void {
-		for (let i = 0, l = this.deferredEventPool.length; i < l; ++i) {
-			const trigger = this.deferredEventPool[i];
-
-			if (trigger && this.root.getDeferrableTriggers(this).indexOf(trigger.constructor) === -1) { // TODO: revalidate logic
+		this.deferredEventPool.forEach((trigger, i) => {
+			if (trigger && this.root.getDeferrableTriggers(this).indexOf(trigger.constructor) === -1) {
 				delete this.deferredEventPool[i];
 
 				log.write(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
@@ -99,10 +97,10 @@ export class Instance {
 				if (this.root.evaluate(this, false, trigger)) {
 					this.evaluateDeferred();
 
-					break;
+					return;
 				}
 			}
-		}
+		});
 	}
 
 	/**

@@ -65,8 +65,6 @@ export class Region extends NamedElement {
 
 		if (starting) {
 			starting.doEnter(instance, history || (this.initial!.kind === PseudoStateKind.DeepHistory), trigger);
-//		} else {
-//			throw new Error(`${instance} unable to find initial or history vertex at ${this}`);
 		}
 	}
 
