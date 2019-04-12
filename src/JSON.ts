@@ -31,7 +31,7 @@ export class JSONSerializer extends Visitor {
 		super();
 	}
 
-	visitStateHead(state: State) {
+	visitState(state: State) {
 		const jsonState = new JSONState(state);
 
 		this.stateMap[state.toString()] = jsonState;
@@ -43,7 +43,7 @@ export class JSONSerializer extends Visitor {
 		}
 	}
 
-	visitRegionHead(region: Region) {
+	visitRegion(region: Region) {
 		const lastKnownState = this.instance.getLastKnownState(region);
 		const jsonRegion = new JSONRegion(region, lastKnownState ? lastKnownState.name : undefined);
 

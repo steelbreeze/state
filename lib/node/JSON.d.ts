@@ -19,8 +19,8 @@ export declare class JSONSerializer extends Visitor {
     private stateMap;
     private regionMap;
     constructor(instance: Instance, deferedEventSerializer?: types.Function<any, any> | undefined);
-    visitStateHead(state: State): void;
-    visitRegionHead(region: Region): void;
+    visitState(state: State): void;
+    visitRegion(region: Region): void;
     toString(): string;
 }
 export {};

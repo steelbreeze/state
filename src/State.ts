@@ -264,7 +264,7 @@ export class State extends Vertex {
 	 * @param visitor The visitor to call back.
 	 */
 	public accept(visitor: Visitor): void {
-		visitor.visitStateHead(this);
+		visitor.visitState(this);
 
 		for (const region of this.children) {
 			region.accept(visitor);

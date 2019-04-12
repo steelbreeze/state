@@ -62,10 +62,9 @@ export class Region extends NamedElement {
 	doEnterTail(instance: Instance, history: boolean, trigger: any): void {
 		const current = instance.getState(this);
 		const starting = (history || (this.initial && this.initial.isHistory) && current) ? current : this.initial;
+		const deepHistory = history || (this.initial !== undefined && this.initial.kind === PseudoStateKind.DeepHistory);
 
-		if (starting) {
-			starting.doEnter(instance, history || (this.initial !== undefined && this.initial.kind === PseudoStateKind.DeepHistory), trigger);
-		}
+		starting!.doEnter(instance, deepHistory, trigger);
 	}
 
 	/**
@@ -87,7 +86,7 @@ export class Region extends NamedElement {
 	 * @param visitor The visitor to call back.
 	 */
 	public accept(visitor: Visitor): void {
-		visitor.visitRegionHead(this);
+		visitor.visitRegion(this);
 
 		for (const vertex of this.children) {
 			vertex.accept(visitor);

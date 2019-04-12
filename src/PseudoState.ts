@@ -81,7 +81,7 @@ export class PseudoState extends Vertex {
 	 * @param visitor The visitor to call back.
 	 */
 	public accept(visitor: Visitor): void {
-		visitor.visitPseudoStateHead(this);
+		visitor.visitPseudoState(this);
 		visitor.visitPseudoStateTail(this);
 	}
 }
