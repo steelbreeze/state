@@ -8,7 +8,7 @@ export abstract class NamedElement {
 	/**
 	 * The fully qualified name of the element; a composition of the name of element and all its parent elements.
 	 */
-	private readonly qualifiedName: string;
+	public readonly qualifiedName: string;
 
 	/**
 	 * Creates a new instance of an element.

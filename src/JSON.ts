@@ -34,10 +34,10 @@ export class JSONSerializer extends Visitor {
 	visitState(state: State) {
 		const jsonState = new JSONState(state);
 
-		this.stateMap[state.toString()] = jsonState;
+		this.stateMap[state.qualifiedName] = jsonState;
 
 		if (state.parent !== undefined) {
-			this.regionMap[state.parent.toString()].children.push(jsonState);
+			this.regionMap[state.parent.qualifiedName].children.push(jsonState);
 		} else {
 			this.root = jsonState;
 		}
@@ -47,9 +47,9 @@ export class JSONSerializer extends Visitor {
 		const lastKnownState = this.instance.getLastKnownState(region);
 		const jsonRegion = new JSONRegion(region, lastKnownState ? lastKnownState.name : undefined);
 
-		this.regionMap[region.toString()] = jsonRegion;
+		this.regionMap[region.qualifiedName] = jsonRegion;
 
-		this.stateMap[region.parent.toString()].children.push(jsonRegion);
+		this.stateMap[region.parent.qualifiedName].children.push(jsonRegion);
 	}
 
 

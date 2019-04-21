@@ -111,12 +111,12 @@ export class Instance {
 	 */
 	setVertex(vertex: Vertex): void {
 		if (vertex.parent) {
-			const region: Region = vertex.parent;
+			const regionName = vertex.parent.qualifiedName;
 
-			this.dirtyVertex[region.toString()] = vertex;
+			this.dirtyVertex[regionName] = vertex;
 
 			if (vertex instanceof State) {
-				this.dirtyState[region.toString()] = vertex;
+				this.dirtyState[regionName] = vertex;
 			}
 		}
 	}
@@ -129,7 +129,7 @@ export class Instance {
 	 * @hidden
 	 */
 	getState(region: Region): State {
-		return this.dirtyState[region.toString()] || this.cleanState[region.toString()];
+		return this.dirtyState[region.qualifiedName] || this.cleanState[region.qualifiedName];
 	}
 
 	/**
@@ -141,7 +141,7 @@ export class Instance {
 	 * @hidden
 	 */
 	getVertex(region: Region): Vertex {
-		return this.dirtyVertex[region.toString()] || this.cleanState[region.toString()];
+		return this.dirtyVertex[region.qualifiedName] || this.cleanState[region.qualifiedName];
 	}
 
 	/**
@@ -150,7 +150,7 @@ export class Instance {
 	 * @returns Returns the last known state of the region or undefined if the region has not been entered.
 	 */
 	public getLastKnownState(region: Region): State | undefined {
-		return this.cleanState[region.toString()];
+		return this.cleanState[region.qualifiedName];
 	}
 
 	/**

@@ -7,11 +7,11 @@ import { LocalTransitionStrategy } from './LocalTransitionStrategy';
 /**
  * Maps TransitionKind to a TransitionStrategy.
  */
-const TransitionStrategyMap = {
-	external: ExternalTransitionStrategy,
-	internal: InternalTransitionStrategy,
-	local: LocalTransitionStrategy
-}
+const TransitionStrategyMap: types.Constructor<TransitionStrategy>[] = [];
+
+TransitionStrategyMap[TransitionKind.External] = ExternalTransitionStrategy;
+TransitionStrategyMap[TransitionKind.Internal] = InternalTransitionStrategy;
+TransitionStrategyMap[TransitionKind.Local] = LocalTransitionStrategy;
 
 /**
  * A transition changes the active state configuration of a state machine by specifying the valid transitions between states and the trigger events that cause them to be traversed.
