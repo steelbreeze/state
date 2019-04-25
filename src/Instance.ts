@@ -114,10 +114,20 @@ export class Instance {
 			const regionName = vertex.parent.qualifiedName;
 
 			this.dirtyVertex[regionName] = vertex;
+		}
+	}
 
-			if (vertex instanceof State) {
-				this.dirtyState[regionName] = vertex;
-			}
+	/**
+	 * Updates the transactional state on a change in the active state winth a region.
+	 * @param state The state to set as the currently active state for a region.
+	 * @internal
+	 * @hidden
+	 */
+	setState(state: State): void {
+		if (state.parent) {
+			const regionName = state.parent.qualifiedName;
+
+			this.dirtyState[regionName] = state;
 		}
 	}
 

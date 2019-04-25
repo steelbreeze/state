@@ -10,7 +10,7 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 	constructor(private readonly source: Vertex, private readonly target: Vertex) {
 	}
 
-	doExitSource(instance: Instance, history: boolean, trigger: any): void { // TODO: review logic 
+	doExitSource(instance: Instance, history: boolean, trigger: any): void { 
 		this.vertexToEnter = this.target;
 
 		while (this.vertexToEnter.parent && this.vertexToEnter.parent.parent && !this.vertexToEnter.parent.parent.isActive(instance)) {

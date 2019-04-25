@@ -37,17 +37,6 @@ export class PseudoState extends Vertex {
 		return this.elseTransition = new Transition<any>(this).to(target, kind).when(() => false);
 	}
 
-
-	/**
-	 * Tests a pseudo state to determine if it is a history pseudo state.
-	 * @returns Returns true if the pseudo state is a history pseudo state.
-	 * @internal
-	 * @hidden
-	 */
-//	isHistory(): boolean {
-//		return this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
-//	}
-
 	/**
 	 * Selects an outgoing transition from this pseudo state based on the trigger event.
 	 * @param instance The state machine instance.

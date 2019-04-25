@@ -111,7 +111,7 @@ export abstract class Vertex extends NamedElement {
 	 * @hidden
 	 */
 	getTransition(instance: Instance, trigger: any): Transition | undefined {
-		return this.outgoing.filter(transition => transition.evaluate(trigger))[0]; // TODO: use Array.find
+		return this.outgoing.find(transition => transition.evaluate(trigger));
 	}
 
 	/**
