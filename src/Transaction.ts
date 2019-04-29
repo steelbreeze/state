@@ -21,7 +21,7 @@ export class Transaction {
 	 * @hidden
 	 * @internal
 	 */
-	constructor(public instance: Instance) {
+	constructor(public readonly instance: Instance) {
 	}
 
 	/** 
