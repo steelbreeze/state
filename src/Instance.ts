@@ -6,7 +6,7 @@ import { Transaction } from './Transaction';
  */
 export class Instance {
 	/** The stable active state configuration of the state machine. */
-	private cleanState: Record<string, State> = {};
+	private activeStateConfiguration: Record<string, State> = {};
 
 	/**
 	 * The deferred triggers awaiting evaluation once the current active state configuration changes.
@@ -21,7 +21,7 @@ export class Instance {
 	 * @param root The root state of the state machine instance.
 	 */
 	public constructor(public readonly name: string, public readonly root: State) {
-		this.transaction((transaction: Transaction) => this.root.doEnter(transaction, false, this.root), new Transaction(this)); // enter the root element
+		this.transactional((transaction: Transaction) => this.root.doEnter(transaction, false, this.root), new Transaction(this)); // enter the root element
 	}
 
 	/**
@@ -32,13 +32,13 @@ export class Instance {
 	public evaluate(trigger: any): boolean {
 		log.write(() => `${this} evaluate ${trigger}`, log.Evaluate);
 
-		return this.transaction((transaction: Transaction) => {
-			const result = this.root.evaluate(transaction, false, trigger);	// evaluate the trigger event
+		return this.transactional((transaction: Transaction) => {
+			const result = this.root.evaluate(transaction, false, trigger);		// evaluate the trigger event
 
-			if (result && this.deferredEventPool.length !== 0) {					// if there are deferred events, process them
+			if (result && this.deferredEventPool.length !== 0) {				// if there are deferred events, process them
 				this.evaluateDeferred(transaction);
 
-				this.deferredEventPool = this.deferredEventPool.filter(t => t);		// repack the deferred event pool
+				this.deferredEventPool = this.deferredEventPool.filter(t => t);	// repack the deferred event pool
 			}
 
 			return result;
@@ -48,15 +48,17 @@ export class Instance {
 	/**
 	 * Performs an operation that may alter the active state configuration with a transaction.
 	 * @param operation The operation to perform within a transaction.
+	 * @param transaction The current transaction being executed.
+	 * @return Returns the result of the operation.
 	 */
-	private transaction<TReturn>(operation: (transaction: Transaction) => TReturn, tx: Transaction): TReturn {
+	private transactional<TReturn>(operation: (transaction: Transaction) => TReturn, transaction: Transaction): TReturn {
 		try {
-			return operation(tx);
+			return operation(transaction);
 		}
 
 		finally {
-			for (let k = Object.keys(tx.dirtyState), i = 0, l = k.length; i < l; ++i) {
-				this.cleanState[k[i]] = tx.dirtyState[k[i]];
+			for (let k = Object.keys(transaction.lastKnownState), i = k.length; i--;) {
+				this.activeStateConfiguration[k[i]] = transaction.lastKnownState[k[i]];
 			}
 		}
 	}
@@ -98,7 +100,7 @@ export class Instance {
 	 * @returns Returns the last known state of the region or undefined if the region has not been entered.
 	 */
 	public getState(region: Region): State | undefined {
-		return this.cleanState[region.qualifiedName];
+		return this.activeStateConfiguration[region.qualifiedName];
 	}
 
 	/**

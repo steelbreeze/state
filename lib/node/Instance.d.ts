@@ -6,7 +6,7 @@ export declare class Instance {
     readonly name: string;
     readonly root: State;
     /** The stable active state configuration of the state machine. */
-    private cleanState;
+    private activeStateConfiguration;
     /**
      * Creates a new state machine instance conforming to a particular state machine model.
      * @param name The name of the state machine instance.
@@ -22,8 +22,10 @@ export declare class Instance {
     /**
      * Performs an operation that may alter the active state configuration with a transaction.
      * @param operation The operation to perform within a transaction.
+     * @param transaction The current transaction being executed.
+     * @return Returns the result of the operation.
      */
-    private transaction;
+    private transactional;
     /**
      * Evaluates trigger events in the deferred event pool.
      */
