@@ -21,6 +21,7 @@ export declare class Instance {
     evaluate(trigger: any): boolean;
     /**
      * Performs an operation that may alter the active state configuration with a transaction.
+     * @param TReturn The return type of the transactional operation.
      * @param operation The operation to perform within a transaction.
      * @param transaction The current transaction being executed.
      * @return Returns the result of the operation.
