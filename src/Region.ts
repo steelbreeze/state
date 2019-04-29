@@ -1,4 +1,5 @@
-import { PseudoStateKind, NamedElement, Vertex, State, PseudoState, Transaction, Visitor } from '.';
+import { PseudoStateKind, NamedElement, Vertex, State, PseudoState, Visitor } from '.';
+import { Transaction } from './Transaction';
 
 /**
  * A region is a container of vertices (states and pseudo states) within a state machine model.

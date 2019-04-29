@@ -1,4 +1,5 @@
-import { types, TransitionKind, NamedElement, Region, Transition, Visitor } from '.';
+import { TransitionKind, NamedElement, Region, Transition, Visitor } from '.';
+import { types } from './types';
 /**
  * Represents an element within a state machine model hierarchy that can be the source or target of a transition.
  * Vertices are contained within regions.

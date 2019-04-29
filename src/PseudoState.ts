@@ -1,5 +1,6 @@
 import { random } from './random';
-import { PseudoStateKind, Vertex, Region, State, Transition, Transaction, Visitor } from '.';
+import { PseudoStateKind, Vertex, Region, State, Transition, Visitor } from '.';
+import { Transaction } from './Transaction';
 import { TransitionKind } from './TransitionKind';
 
 /**

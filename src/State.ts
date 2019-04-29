@@ -1,4 +1,6 @@
-import { types, NamedElement, Vertex, Region, Transaction, Visitor } from '.';
+import { NamedElement, Vertex, Region, Visitor } from '.';
+import { Transaction } from './Transaction';
+import { types } from './types';
 
 /**
  * A state is a situation in the lifecycle of the state machine that is stable between events.

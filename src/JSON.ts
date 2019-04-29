@@ -1,4 +1,5 @@
-import { types, NamedElement, State, Region, Instance, Visitor } from '.';
+import { NamedElement, State, Region, Instance, Visitor } from '.';
+import { types } from './types';
 
 class JSONNode {
 	readonly name: String;

@@ -1,4 +1,4 @@
-import { Transaction } from '.';
+import { Transaction } from './Transaction';
 
 /**
  * @internal

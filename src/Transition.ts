@@ -1,8 +1,10 @@
-import { types, log, PseudoStateKind, TransitionKind, Vertex, PseudoState, Transaction } from '.';
+import { log, PseudoStateKind, TransitionKind, Vertex, PseudoState } from '.';
+import { Transaction } from './Transaction';
 import { TransitionStrategy } from './TransitionStrategy';
 import { ExternalTransitionStrategy } from './ExternalTransitionStrategy';
 import { InternalTransitionStrategy } from './InternalTransitionStrategy';
 import { LocalTransitionStrategy } from './LocalTransitionStrategy';
+import { types } from './types';
 
 /**
  * Maps TransitionKind to a TransitionStrategy.

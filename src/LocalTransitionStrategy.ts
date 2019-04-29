@@ -1,4 +1,5 @@
-import { Vertex, Transaction } from '.';
+import { Vertex } from '.';
+import { Transaction } from './Transaction';
 import { TransitionStrategy } from './TransitionStrategy';
 
 /**

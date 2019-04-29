@@ -1,4 +1,5 @@
-import { log, Transaction } from '.';
+import { log } from '.';
+import { Transaction } from './Transaction';
 
 /**
  * Represents an element within a state machine model hierarchy.

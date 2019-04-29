@@ -1,4 +1,5 @@
-import { log, Region, State, Transaction } from '.';
+import { log, Region, State } from '.';
+import { Transaction } from './Transaction';
 
 /**
  * Represents an instance of a state machine model at runtime; there can be many seperate state machine instances using a common model.

@@ -1,4 +1,5 @@
-import { NamedElement, Vertex, PseudoState, Transaction } from '.';
+import { NamedElement, Vertex, PseudoState } from '.';
+import { Transaction } from './Transaction';
 import { TransitionStrategy } from './TransitionStrategy';
 
 /**

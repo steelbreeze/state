@@ -1,4 +1,4 @@
-import { types } from '.';
+import { types } from './types';
 /**
  * Logging integration for state; provides callbacks for logging events thereby allowing integration of third party logging tools.
  */
