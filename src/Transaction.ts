@@ -7,16 +7,20 @@ import { Vertex, State, Region, Instance } from './';
  */
 export class Transaction {
 	/**
-	 * The last known state within a given region.
+	 * The transactional active state configuration of the state machine.
 	 * @hidden
 	 * @internal
 	 */
-	readonly lastKnownState: Record<string, State> = {};
+	readonly activeStateConfiguration: Record<string, State> = {};
 
 	/** The last known vertex within a given region. */
-	private readonly dirtyVertex: Record<string, Vertex> = {};
+	private readonly lastKnownVertex: Record<string, Vertex> = {};
 
-	/** Creates a new instance of the Transaction class. */
+	/**
+	 * Creates a new instance of the Transaction class.
+	 * @hidden
+	 * @internal
+	 */
 	constructor(public instance: Instance) {
 	}
 
@@ -28,7 +32,7 @@ export class Transaction {
 	 */
 	setState(state: State) {
 		if(state.parent) {
-			this.lastKnownState[state.parent.qualifiedName] = state;
+			this.activeStateConfiguration[state.parent.qualifiedName] = state;
 		}
 	}
 
@@ -40,7 +44,7 @@ export class Transaction {
 	 * @internal
 	 */
 	getState(region: Region): State {
-		return this.lastKnownState[region.qualifiedName] || this.instance.getState(region);
+		return this.activeStateConfiguration[region.qualifiedName] || this.instance.getState(region);
 	}
 
 	/** 
@@ -51,7 +55,7 @@ export class Transaction {
 	 */
 	setVertex(vertex: Vertex) {
 		if(vertex.parent) {
-			this.dirtyVertex[vertex.parent.qualifiedName] = vertex;
+			this.lastKnownVertex[vertex.parent.qualifiedName] = vertex;
 		}
 	}
 
@@ -63,6 +67,6 @@ export class Transaction {
 	 * @internal
 	 */
 	getVertex(region: Region): Vertex {
-		return this.dirtyVertex[region.qualifiedName] || this.instance.getState(region);
+		return this.lastKnownVertex[region.qualifiedName] || this.instance.getState(region);
 	}
 }

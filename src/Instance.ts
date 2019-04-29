@@ -1,5 +1,4 @@
-import { log, Region, State } from '.';
-import { Transaction } from './Transaction';
+import { log, Region, State, Transaction } from '.';
 
 /**
  * Represents an instance of a state machine model at runtime; there can be many seperate state machine instances using a common model.
@@ -21,7 +20,7 @@ export class Instance {
 	 * @param root The root state of the state machine instance.
 	 */
 	public constructor(public readonly name: string, public readonly root: State) {
-		this.transactional((transaction: Transaction) => this.root.doEnter(transaction, false, this.root), new Transaction(this)); // enter the root element
+		this.transactional((transaction: Transaction) => this.root.doEnter(transaction, false, this.root)); // enter the root element
 	}
 
 	/**
@@ -42,26 +41,22 @@ export class Instance {
 			}
 
 			return result;
-		}, new Transaction(this));
+		});
 	}
 
 	/**
 	 * Performs an operation that may alter the active state configuration with a transaction.
 	 * @param TReturn The return type of the transactional operation.
 	 * @param operation The operation to perform within a transaction.
-	 * @param transaction The current transaction being executed.
+	 * @param transaction The current transaction being executed; if not passed explicitly, one will be created on demand.
 	 * @return Returns the result of the operation.
 	 */
-	private transactional<TReturn>(operation: (transaction: Transaction) => TReturn, transaction: Transaction): TReturn {
-		try {
-			return operation(transaction);
-		}
+	private transactional<TReturn>(operation: (transaction: Transaction) => TReturn, transaction: Transaction = new Transaction(this)): TReturn {
+		const result = operation(transaction);
 
-		finally {
-			for (let k = Object.keys(transaction.lastKnownState), i = k.length; i--;) {
-				this.activeStateConfiguration[k[i]] = transaction.lastKnownState[k[i]];
-			}
-		}
+		Object.assign(this.activeStateConfiguration, transaction.activeStateConfiguration);
+
+		return result;
 	}
 
 	/**
