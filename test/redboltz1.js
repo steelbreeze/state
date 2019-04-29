@@ -48,6 +48,6 @@ instance.evaluate(new Event2("event2b"));
 
 describe('test/redboltz1', function () {
 	it('States can defer events for subsiquent evaluation', function () {
-		assert.equal(state5, instance.getLastKnownState(region));
+		assert.equal(state5, instance.getState(region));
 	});
 });

@@ -1,4 +1,4 @@
-import { NamedElement, Vertex, PseudoState, Instance } from '.';
+import { NamedElement, Vertex, PseudoState, Transaction } from '.';
 import { TransitionStrategy } from './TransitionStrategy';
 
 /**
@@ -38,13 +38,13 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
 		}
 	}
 
-	doExitSource(instance: Instance, history: boolean, trigger: any): void {
-		this.toExit.doExit(instance, history, trigger);
+	doExitSource(transaction: Transaction, history: boolean, trigger: any): void {
+		this.toExit.doExit(transaction, history, trigger);
 	}
 
-	doEnterTarget(instance: Instance, history: boolean, trigger: any): void {
-		this.toEnter.forEach((element, index) => element.doEnterHead(instance, history, trigger, this.toEnter[index + 1]));
-		this.toEnter[this.toEnter.length - 1].doEnterTail(instance, history, trigger);
+	doEnterTarget(transaction: Transaction, history: boolean, trigger: any): void {
+		this.toEnter.forEach((element, index) => element.doEnterHead(transaction, history, trigger, this.toEnter[index + 1]));
+		this.toEnter[this.toEnter.length - 1].doEnterTail(transaction, history, trigger);
 	}
 
 	toString(): string {

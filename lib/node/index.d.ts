@@ -14,5 +14,6 @@ export { State } from './State';
 export { PseudoState } from './PseudoState';
 export { Transition } from './Transition';
 export { Instance } from './Instance';
+export { Transaction } from './Transaction';
 export { Visitor } from './Visitor';
 export { JSONSerializer } from './JSON';

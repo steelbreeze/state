@@ -1,4 +1,4 @@
-import { types, TransitionKind, NamedElement, Region, Transition, Instance, Visitor } from '.';
+import { types, TransitionKind, NamedElement, Region, Transition, Transaction, Visitor } from '.';
 
 /**
  * Represents an element within a state machine model hierarchy that can be the source or target of a transition.
@@ -72,29 +72,29 @@ export abstract class Vertex extends NamedElement {
 
 	/**
 	 * Tests the vertex to see if it part of the the active state configuration of a particular state machine instance.
-	 * @param instance The instance to test.
+	 * @param transaction The current transaction being executed.
 	 * @returns Returns true if this vertex is active in the specified instance.
 	 * @internal
 	 * @hidden
 	 */
-	isActive(instance: Instance): boolean {
-		return this.parent === undefined || instance.getVertex(this.parent) === this;
+	isActive(transaction: Transaction): boolean {
+		return this.parent === undefined || transaction.getVertex(this.parent) === this;
 	}
 
 	/**
 	 * Evaluates a trigger event at this vertex to determine if it will trigger an outgoing transition.
-	 * @param instance The state machine instance.
+	 * @param transaction The current transaction being executed.
 	 * @param history True if deep history semantics are in play.
 	 * @param trigger The trigger event.
 	 * @returns Returns true if one of outgoing transitions guard conditions passed.
 	 * @internal
 	 * @hidden
 	 */
-	evaluate(instance: Instance, history: boolean, trigger: any): boolean {
-		const transition = this.getTransition(instance, trigger);
+	evaluate(transaction: Transaction, history: boolean, trigger: any): boolean {
+		const transition = this.getTransition(trigger);
 
 		if (transition) {
-			transition.traverse(instance, history, trigger);
+			transition.traverse(transaction, history, trigger);
 
 			return true;
 		}
@@ -104,28 +104,27 @@ export abstract class Vertex extends NamedElement {
 
 	/**
 	 * Selects an outgoing transition from this vertex based on the trigger event.
-	 * @param instance The state machine instance.
 	 * @param trigger The trigger event.
 	 * @returns Returns a transition or undefined if none were found.
 	 * @internal
 	 * @hidden
 	 */
-	getTransition(instance: Instance, trigger: any): Transition | undefined {
+	getTransition(trigger: any): Transition | undefined {
 		return this.outgoing.find(transition => transition.evaluate(trigger));
 	}
 
 	/**
 	 * Performs the initial steps required to enter a vertex during a state transition; updates teh active state configuration.
-	 * @param instance The state machine instance that is entering the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterHead(instance: Instance, history: boolean, trigger: any, next: NamedElement | undefined): void {
-		super.doEnterHead(instance, history, trigger, next);
+	doEnterHead(transaction: Transaction, history: boolean, trigger: any, next: NamedElement | undefined): void {
+		super.doEnterHead(transaction, history, trigger, next);
 
-		instance.setVertex(this);
+		transaction.setVertex(this);
 	}
 
 	/**

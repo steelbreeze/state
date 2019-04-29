@@ -1,4 +1,4 @@
-import { types, NamedElement, Vertex, Region, Instance, Visitor } from '.';
+import { types, NamedElement, Vertex, Region, Transaction, Visitor } from '.';
 
 /**
  * A state is a situation in the lifecycle of the state machine that is stable between events.
@@ -122,13 +122,13 @@ export class State extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	isComplete(instance: Instance): boolean {
-		return !this.children.some(region => !region.isComplete(instance));
+	isComplete(transaction: Transaction): boolean {
+		return !this.children.some(region => !region.isComplete(transaction));
 	}
 
 	/**
 	 * Evaluates a trigger event at this state to determine if it will trigger an outgoing transition.
-	 * @param instance The state machine instance.
+	 * @param transaction The current transaction being executed.
 	 * @param history True if deep history semantics are in play.
 	 * @param trigger The trigger event.
 	 * @returns Returns true if one of outgoing transitions guard conditions passed.
@@ -136,11 +136,11 @@ export class State extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	evaluate(instance: Instance, history: boolean, trigger: any): boolean {
-		const result = this.delegate(instance, history, trigger) || super.evaluate(instance, history, trigger) || this.deferrable(instance, trigger);
+	evaluate(transaction: Transaction, history: boolean, trigger: any): boolean {
+		const result = this.delegate(transaction, history, trigger) || super.evaluate(transaction, history, trigger) || this.deferrable(transaction, trigger);
 
 		if (result) {
-			this.completion(instance, history);
+			this.completion(transaction, history);
 		}
 
 		return result;
@@ -148,18 +148,18 @@ export class State extends Vertex {
 
 	/**
 	 * Delegates a trigger event to the children of this state to determine if it will trigger an outgoing transition.
-	 * @param instance The state machine instance.
+	 * @param transaction The current transaction being executed.
 	 * @param history True if deep history semantics are in play.
 	 * @param trigger The trigger event.
 	 * @returns Returns true if a child state processed the trigger.
 	 * @internal
 	 * @hidden
 	 */
-	delegate(instance: Instance, history: boolean, trigger: any): boolean {
+	delegate(transaction: Transaction, history: boolean, trigger: any): boolean {
 		let result: boolean = false;
 
-		for (let i = 0, l = this.children.length; i < l && this.isActive(instance); ++i) {					// delegate to all children unless one causes a transition away from this state
-			result = instance.getState(this.children[i]).evaluate(instance, history, trigger) || result;
+		for (let i = 0, l = this.children.length; i < l && this.isActive(transaction); ++i) {					// delegate to all children unless one causes a transition away from this state
+			result = transaction.getState(this.children[i]).evaluate(transaction, history, trigger) || result;
 		}
 
 		return result;
@@ -167,15 +167,15 @@ export class State extends Vertex {
 
 	/**
 	 * Tests the trigger event to see if it can be deferred from this state.
-	 * @param instance The state machine instance.
+	 * @param transaction The current transaction being executed.
 	 * @param trigger The trigger event.
 	 * @returns Returns true if the type of the trigger event matched one of the user defined deferrable event types.
 	 * @internal
 	 * @hidden
 	 */
-	deferrable(instance: Instance, trigger: any): boolean {
+	deferrable(transaction: Transaction, trigger: any): boolean {
 		if (this.deferrableTriggers.indexOf(trigger.constructor) !== -1) {
-			instance.defer(trigger);
+			transaction.instance.defer(trigger);
 
 			return true
 		}
@@ -185,79 +185,79 @@ export class State extends Vertex {
 
 	/**
 	 * Returns the list of deferable event types from the current active state configuration.
-	 * @param instance The state machine instance.
+	 * @param transaction The current transaction being executed.
 	 * @returns Returns an array of the deferable event types from the current active state configuration.
 	 * @internal
 	 * @hidden
 	 */
-	getDeferrableTriggers(instance: Instance): Array<types.Constructor<any>> {
-		return this.children.reduce((result, region) => result.concat(instance.getState(region).getDeferrableTriggers(instance)), this.deferrableTriggers);
+	getDeferrableTriggers(transaction: Transaction): Array<types.Constructor<any>> {
+		return this.children.reduce((result, region) => result.concat(transaction.getState(region).getDeferrableTriggers(transaction)), this.deferrableTriggers);
 	}
 
 	/**
 	 * Performs the initial steps required to enter a state during a state transition; updates teh active state configuration.
-	 * @param instance The state machine instance that is entering the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterHead(instance: Instance, history: boolean, trigger: any, next: NamedElement | undefined): void {
+	doEnterHead(transaction: Transaction, history: boolean, trigger: any, next: NamedElement | undefined): void {
 		if (next) {
 			this.children.forEach(region => {
 				if (region !== next) {
-					region.doEnter(instance, history, trigger);
+					region.doEnter(transaction, history, trigger);
 				}
 			});
 		}
 
-		super.doEnterHead(instance, history, trigger, next);
+		super.doEnterHead(transaction, history, trigger, next);
 
-		instance.setState(this);
+		transaction.setState(this);
 
 		this.entryActions.forEach(action => action(trigger));
 	}
 
 	/**
 	 * Performs the final steps required to enter a state during a state transition including cascading the entry operation to child elements and completion transition.
-	 * @param instance The state machine instance that is entering the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterTail(instance: Instance, history: boolean, trigger: any): void {
-		this.children.forEach(region => region.doEnter(instance, history, trigger));
+	doEnterTail(transaction: Transaction, history: boolean, trigger: any): void {
+		this.children.forEach(region => region.doEnter(transaction, history, trigger));
 
-		this.completion(instance, history);
+		this.completion(transaction, history);
 	}
 
 	/**
 	 * Exits a state during a state transition.
-	 * @param instance The state machine instance that is exiting the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of exit.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doExit(instance: Instance, history: boolean, trigger: any): void {
-		this.children.forEach(region => region.doExit(instance, history, trigger));
+	doExit(transaction: Transaction, history: boolean, trigger: any): void {
+		this.children.forEach(region => region.doExit(transaction, history, trigger));
 
-		super.doExit(instance, history, trigger);
+		super.doExit(transaction, history, trigger);
 
 		this.exitActions.forEach(action => action(trigger));
 	}
 
 	/**
 	 * Evaluates completion transitions at the state.
-	 * @param instance The state machine instance that is exiting the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of exit.
 	 * @internal
 	 * @hidden
 	 */
-	completion(instance: Instance, history: boolean): void {
-		if (this.isComplete(instance)) {
-			super.evaluate(instance, history, this);
+	completion(transaction: Transaction, history: boolean): void {
+		if (this.isComplete(transaction)) {
+			super.evaluate(transaction, history, this);
 		}
 	}
 

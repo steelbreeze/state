@@ -1,4 +1,4 @@
-import { PseudoStateKind, NamedElement, Vertex, State, PseudoState, Instance, Visitor } from '.';
+import { PseudoStateKind, NamedElement, Vertex, State, PseudoState, Transaction, Visitor } from '.';
 
 /**
  * A region is a container of vertices (states and pseudo states) within a state machine model.
@@ -45,40 +45,40 @@ export class Region extends NamedElement {
 	 * @internal
 	 * @hidden 
 	 */
-	isComplete(instance: Instance): boolean {
-		const currentState = instance.getState(this);
+	isComplete(transaction: Transaction): boolean {
+		const currentState = transaction.getState(this);
 
 		return currentState && currentState.isFinal();
 	}
 
 	/**
 	 * Performs the final steps required to enter the region dueing state transition; enters the region using the initial pseudo state or history logic.
-	 * @param instance The state machine instance that is entering the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterTail(instance: Instance, history: boolean, trigger: any): void {
-		const current = instance.getState(this);
+	doEnterTail(transaction: Transaction, history: boolean, trigger: any): void {
+		const current = transaction.getState(this);
 		const starting = (history || (this.initial && this.initial.isHistory)) && current ? current : this.initial;
 		const deepHistory = history || (this.initial !== undefined && this.initial.kind === PseudoStateKind.DeepHistory);
 
-		starting!.doEnter(instance, deepHistory, trigger);
+		starting!.doEnter(transaction, deepHistory, trigger);
 	}
 
 	/**
 	 * Exits a region during a state transition.
-	 * @param instance The state machine instance that is exiting the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of exit.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doExit(instance: Instance, history: boolean, trigger: any): void {
-		instance.getVertex(this).doExit(instance, history, trigger);
+	doExit(transaction: Transaction, history: boolean, trigger: any): void {
+		transaction.getVertex(this).doExit(transaction, history, trigger);
 
-		super.doExit(instance, history, trigger);
+		super.doExit(transaction, history, trigger);
 	}
 
 	/**

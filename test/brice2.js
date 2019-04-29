@@ -32,7 +32,7 @@ describe("test/brice2.js", function () {
 	});
 
 	it("Internal transitions fire completion events if switch set", function () {
-		assert.equal(S2, instance.getLastKnownState(region));
+		assert.equal(S2, instance.getState(region));
 	});
 });
 

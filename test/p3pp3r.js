@@ -43,8 +43,8 @@ describe("test/p3pp3r.js", function () {
 	it("All regions of orthogonal state must be exited during the to transition", function () {
 		instance.evaluate("event2");
 
-		assert.equal(state2, instance.getLastKnownState(region));
-		assert.equal(state4, instance.getLastKnownState(regionB));
+		assert.equal(state2, instance.getState(region));
+		assert.equal(state4, instance.getState(regionB));
 	});
 });
 

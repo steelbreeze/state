@@ -44,7 +44,7 @@ export class JSONSerializer extends Visitor {
 	}
 
 	visitRegion(region: Region) {
-		const lastKnownState = this.instance.getLastKnownState(region);
+		const lastKnownState = this.instance.getState(region);
 		const jsonRegion = new JSONRegion(region, lastKnownState ? lastKnownState.name : undefined);
 
 		this.regionMap[region.qualifiedName] = jsonRegion;

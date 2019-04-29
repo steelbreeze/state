@@ -7,10 +7,6 @@ export declare class Instance {
     readonly root: State;
     /** The stable active state configuration of the state machine. */
     private cleanState;
-    /** The changes made to the active state configuration during transaction execution. */
-    private dirtyState;
-    /** The the last known active vertex during transaction execution. */
-    private dirtyVertex;
     /**
      * Creates a new state machine instance conforming to a particular state machine model.
      * @param name The name of the state machine instance.
@@ -37,7 +33,7 @@ export declare class Instance {
      * @param region The region to find the last know state of.
      * @returns Returns the last known state of the region or undefined if the region has not been entered.
      */
-    getLastKnownState(region: Region): State | undefined;
+    getState(region: Region): State | undefined;
     /**
      * Returns the name of the state machine instance.
      * @returns Returns the name of the state machine instance.

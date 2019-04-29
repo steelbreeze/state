@@ -1,4 +1,4 @@
-import { types, log, PseudoStateKind, TransitionKind, Vertex, PseudoState, Instance } from '.';
+import { types, log, PseudoStateKind, TransitionKind, Vertex, PseudoState, Transaction } from '.';
 import { TransitionStrategy } from './TransitionStrategy';
 import { ExternalTransitionStrategy } from './ExternalTransitionStrategy';
 import { InternalTransitionStrategy } from './InternalTransitionStrategy';
@@ -124,39 +124,39 @@ export class Transition<TTrigger = any> {
 
 	/**
 	 * Traverses a composite transition.
-	 * @param instance The state machine instance.
+	 * @param transaction The current transaction being executed.
 	 * @param history True if deep history semantics are in play.
 	 * @param trigger The trigger event.
 	 * @internal
 	 * @hidden
 	 */
-	traverse(instance: Instance, history: boolean, trigger: any): void {
+	traverse(transaction: Transaction, history: boolean, trigger: any): void {
 		var transition: Transition = this;
 		const transitions: Array<Transition> = [transition];
 
 		while (transition.target instanceof PseudoState && transition.target.kind === PseudoStateKind.Junction) {
-			transitions.push(transition = transition.target.getTransition(instance, trigger)!);
+			transitions.push(transition = transition.target.getTransition(trigger)!);
 		}
 
-		transitions.forEach(t => t.execute(instance, history, trigger));
+		transitions.forEach(t => t.execute(transaction, history, trigger));
 	}
 
 	/**
 	 * Traverses an individual transition.
-	 * @param instance The state machine instance.
+	 * @param transaction The current transaction being executed.
 	 * @param history True if deep history semantics are in play.
 	 * @param trigger The trigger event.
 	 * @internal
 	 * @hidden
 	 */
-	execute(instance: Instance, history: boolean, trigger: any): void {
-		log.write(() => `${instance} traverse ${this}`, log.Transition);
+	execute(transaction: Transaction, history: boolean, trigger: any): void {
+		log.write(() => `${transaction.instance} traverse ${this}`, log.Transition);
 
-		this.strategy.doExitSource(instance, history, trigger);
+		this.strategy.doExitSource(transaction, history, trigger);
 
 		this.traverseActions.forEach(action => action(trigger));
 
-		this.strategy.doEnterTarget(instance, history, trigger);
+		this.strategy.doEnterTarget(transaction, history, trigger);
 	}
 
 	/**

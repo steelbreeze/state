@@ -1,4 +1,4 @@
-import { log, Instance } from '.';
+import { log, Transaction } from '.';
 
 /**
  * Represents an element within a state machine model hierarchy.
@@ -47,49 +47,49 @@ export abstract class NamedElement {
 
 	/**
 	 * Enters an element during a state transition.
-	 * @param instance The state machine instance that is entering the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnter(instance: Instance, history: boolean, trigger: any): void {
-		this.doEnterHead(instance, history, trigger, undefined);
-		this.doEnterTail(instance, history, trigger);
+	doEnter(transaction: Transaction, history: boolean, trigger: any): void {
+		this.doEnterHead(transaction, history, trigger, undefined);
+		this.doEnterTail(transaction, history, trigger);
 	}
 
 	/**
 	 * Performs the initial steps required to enter an element during a state transition.
-	 * @param instance The state machine instance that is entering the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterHead(instance: Instance, history: boolean, trigger: any, next: NamedElement | undefined): void {
-		log.write(() => `${instance} enter ${this}`, log.Entry);
+	doEnterHead(transaction: Transaction, history: boolean, trigger: any, next: NamedElement | undefined): void {
+		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 	}
 
 	/**
 	 * Performs the final steps required to enter an element during a state transition including cascading the entry operation to child elements and completion transition.
-	 * @param instance The state machine instance that is entering the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	abstract doEnterTail(instance: Instance, history: boolean, trigger: any): void;
+	abstract doEnterTail(transaction: Transaction, history: boolean, trigger: any): void;
 
 	/**
 	 * Exits an element during a state transition.
-	 * @param instance The state machine instance that is exiting the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of exit.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doExit(instance: Instance, history: boolean, trigger: any): void {
-		log.write(() => `${instance} leave ${this}`, log.Exit);
+	doExit(transaction: Transaction, history: boolean, trigger: any): void {
+		log.write(() => `${transaction.instance} leave ${this}`, log.Exit);
 	}
 
 	/**

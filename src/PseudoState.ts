@@ -1,5 +1,5 @@
 import { random } from './random';
-import { PseudoStateKind, Vertex, Region, State, Transition, Instance, Visitor } from '.';
+import { PseudoStateKind, Vertex, Region, State, Transition, Transaction, Visitor } from '.';
 import { TransitionKind } from './TransitionKind';
 
 /**
@@ -39,29 +39,29 @@ export class PseudoState extends Vertex {
 
 	/**
 	 * Selects an outgoing transition from this pseudo state based on the trigger event.
-	 * @param instance The state machine instance.
+	 * @param transaction The current transaction being executed.
 	 * @param trigger The trigger event.
 	 * @returns Returns a transition or undefined if none were found.
 	 * @internal
 	 * @hidden
 	 */
-	getTransition(instance: Instance, trigger: any): Transition | undefined {
-		const transition = this.kind === PseudoStateKind.Choice ? random.get(this.outgoing.filter(transition => transition.evaluate(trigger))) : super.getTransition(instance, trigger);
+	getTransition(trigger: any): Transition | undefined {
+		const transition = this.kind === PseudoStateKind.Choice ? random.get(this.outgoing.filter(transition => transition.evaluate(trigger))) : super.getTransition(trigger);
 
 		return transition || this.elseTransition;
 	}
 
 	/**
 	 * Immediately exits the pseudo state on entry; note that for junction pseudo states, this is managed in Transition.traverse
-	 * @param instance The state machine instance that is entering the element.
+	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterTail(instance: Instance, history: boolean, trigger: any): void {
+	doEnterTail(transaction: Transaction, history: boolean, trigger: any): void {
 		if (this.kind !== PseudoStateKind.Junction) {
-			this.evaluate(instance, history, trigger);
+			this.evaluate(transaction, history, trigger);
 		}
 	}
 

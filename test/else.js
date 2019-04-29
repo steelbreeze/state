@@ -20,7 +20,7 @@ var instance = new state.Instance("instance", model);
 
 describe("test/else.js", function () {
 	it("Test should result in a completed state", function () {
-		assert.equal(finalState, instance.getLastKnownState(region));
+		assert.equal(finalState, instance.getState(region));
 	});
 
 	it("Else from choice transition fired appropriately", function () {

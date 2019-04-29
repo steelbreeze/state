@@ -24,7 +24,7 @@ describe("test/internal.js", function () {
 	it("Internal transitions do not trigger a state transition", function () {
 		instance.evaluate("internal");
 
-		assert.equal(target, instance.getLastKnownState(region));
+		assert.equal(target, instance.getState(region));
 		assert.equal(1, entryCount);
 		assert.equal(0, exitCount);
 		assert.equal(1, transitionCount);
@@ -34,7 +34,7 @@ describe("test/internal.js", function () {
 
 		instance.evaluate("to");
 
-		assert.equal(target, instance.getLastKnownState(region));
+		assert.equal(target, instance.getState(region));
 		assert.equal(2, entryCount);
 		assert.equal(1, exitCount);
 		assert.equal(2, transitionCount);

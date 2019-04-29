@@ -1,4 +1,5 @@
-import { types, log, Vertex, Region, State } from '.';
+import { log, Region, State } from '.';
+import { Transaction } from './Transaction';
 
 /**
  * Represents an instance of a state machine model at runtime; there can be many seperate state machine instances using a common model.
@@ -6,12 +7,6 @@ import { types, log, Vertex, Region, State } from '.';
 export class Instance {
 	/** The stable active state configuration of the state machine. */
 	private cleanState: Record<string, State> = {};
-
-	/** The changes made to the active state configuration during transaction execution. */
-	private dirtyState: Record<string, State> = {};
-
-	/** The the last known active vertex during transaction execution. */
-	private dirtyVertex: Record<string, Vertex> = {};
 
 	/**
 	 * The deferred triggers awaiting evaluation once the current active state configuration changes.
@@ -26,7 +21,7 @@ export class Instance {
 	 * @param root The root state of the state machine instance.
 	 */
 	public constructor(public readonly name: string, public readonly root: State) {
-		this.transaction(() => this.root.doEnter(this, false, this.root));			// enter the root element
+		this.transaction((transaction: Transaction) => this.root.doEnter(transaction, false, this.root), new Transaction(this)); // enter the root element
 	}
 
 	/**
@@ -37,38 +32,32 @@ export class Instance {
 	public evaluate(trigger: any): boolean {
 		log.write(() => `${this} evaluate ${trigger}`, log.Evaluate);
 
-		return this.transaction(() => {
-			const result = this.root.evaluate(this, false, trigger);				// evaluate the trigger event
+		return this.transaction((transaction: Transaction) => {
+			const result = this.root.evaluate(transaction, false, trigger);	// evaluate the trigger event
 
 			if (result && this.deferredEventPool.length !== 0) {					// if there are deferred events, process them
-				this.evaluateDeferred();
+				this.evaluateDeferred(transaction);
 
 				this.deferredEventPool = this.deferredEventPool.filter(t => t);		// repack the deferred event pool
 			}
 
 			return result;
-		});
+		}, new Transaction(this));
 	}
 
 	/**
 	 * Performs an operation that may alter the active state configuration with a transaction.
 	 * @param operation The operation to perform within a transaction.
 	 */
-	private transaction<TReturn>(operation: types.Producer<TReturn>): TReturn {
+	private transaction<TReturn>(operation: (transaction: Transaction) => TReturn, tx: Transaction): TReturn {
 		try {
-			const result = operation();												// perform the transactional operation
-			const keys = Object.keys(this.dirtyState);
-
-			for (let i = 0, l = keys.length; i < l; ++i) {							// update the active state configuration
-				this.cleanState[keys[i]] = this.dirtyState[keys[i]];
-			}
-
-			return result;
+			return operation(tx);
 		}
 
 		finally {
-			this.dirtyState = {};													// reset the dirty state
-			this.dirtyVertex = {};
+			for (let k = Object.keys(tx.dirtyState), i = 0, l = k.length; i < l; ++i) {
+				this.cleanState[k[i]] = tx.dirtyState[k[i]];
+			}
 		}
 	}
 
@@ -87,15 +76,15 @@ export class Instance {
 	/**
 	 * Evaluates trigger events in the deferred event pool.
 	 */
-	private evaluateDeferred(): void {
+	private evaluateDeferred(transaction: Transaction): void {
 		this.deferredEventPool.forEach((trigger, i) => {
-			if (trigger && this.root.getDeferrableTriggers(this).indexOf(trigger.constructor) === -1) {
+			if (trigger && this.root.getDeferrableTriggers(transaction).indexOf(trigger.constructor) === -1) {
 				delete this.deferredEventPool[i];
 
 				log.write(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
 
-				if (this.root.evaluate(this, false, trigger)) {
-					this.evaluateDeferred();
+				if (this.root.evaluate(transaction, false, trigger)) {
+					this.evaluateDeferred(transaction);
 
 					return;
 				}
@@ -104,62 +93,11 @@ export class Instance {
 	}
 
 	/**
-	 * Updates the transactional state on a change in the active vertex winth a region.
-	 * @param vertex The vertex to set as the currently active vertex for a region.
-	 * @internal
-	 * @hidden
-	 */
-	setVertex(vertex: Vertex): void {
-		if (vertex.parent) {
-			const regionName = vertex.parent.qualifiedName;
-
-			this.dirtyVertex[regionName] = vertex;
-		}
-	}
-
-	/**
-	 * Updates the transactional state on a change in the active state winth a region.
-	 * @param state The state to set as the currently active state for a region.
-	 * @internal
-	 * @hidden
-	 */
-	setState(state: State): void {
-		if (state.parent) {
-			const regionName = state.parent.qualifiedName;
-
-			this.dirtyState[regionName] = state;
-		}
-	}
-
-	/**
-	 * Retrieves the last known state for a region while in a transaction.
-	 * @param region The region to return the last know state of.
-	 * @returns Returns the last knows state or undefined if the region has not been entered.
-	 * @internal
-	 * @hidden
-	 */
-	getState(region: Region): State {
-		return this.dirtyState[region.qualifiedName] || this.cleanState[region.qualifiedName];
-	}
-
-	/**
-	 * Retrieves the last known vertex for a region while in a transaction.
-	 * @param region The region to return the last know vertex of.
-	 * @returns Returns the last knows vertex or undefined if the region has not been entered.
-	 * @remarks This differs slightly from getState in that the last know vertex could be a pseudo state.
-	 * @internal
-	 * @hidden
-	 */
-	getVertex(region: Region): Vertex {
-		return this.dirtyVertex[region.qualifiedName] || this.cleanState[region.qualifiedName];
-	}
-
-	/**
 	 * Returns the last known state of a region from the stable active state configuration.
 	 * @param region The region to find the last know state of.
 	 * @returns Returns the last known state of the region or undefined if the region has not been entered.
 	 */
-	public getLastKnownState(region: Region): State | undefined {
+	public getState(region: Region): State | undefined {
 		return this.cleanState[region.qualifiedName];
 	}
 

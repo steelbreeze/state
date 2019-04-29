@@ -1,11 +1,11 @@
-import { Instance } from '.';
+import { Transaction } from '.';
 
 /**
  * @internal
  */
 export interface TransitionStrategy {
-	doExitSource(instance: Instance, history: boolean, trigger: any): void;
-	doEnterTarget(instance: Instance, history: boolean, trigger: any): void;
+	doExitSource(transaction: Transaction, history: boolean, trigger: any): void;
+	doEnterTarget(transaction: Transaction, history: boolean, trigger: any): void;
 
 	toString(): string;
 }

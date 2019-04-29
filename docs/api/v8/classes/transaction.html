@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Instance | @steelbreeze/state</title>
+	<title>Transaction | @steelbreeze/state</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -54,28 +54,21 @@
 					<a href="../index.html">Globals</a>
 				</li>
 				<li>
-					<a href="instance.html">Instance</a>
+					<a href="transaction.html">Transaction</a>
 				</li>
 			</ul>
-			<h1>Class Instance</h1>
+			<h1>Class Transaction</h1>
 		</div>
 	</div>
 </header>
 <div class="container container-main">
 	<div class="row">
 		<div class="col-8 col-content">
-			<section class="tsd-panel tsd-comment">
-				<div class="tsd-comment tsd-typography">
-					<div class="lead">
-						<p>Represents an instance of a state machine model at runtime; there can be many seperate state machine instances using a common model.</p>
-					</div>
-				</div>
-			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Instance</span>
+						<span class="target">Transaction</span>
 					</li>
 				</ul>
 			</section>
@@ -86,22 +79,23 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="instance.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="transaction.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="instance.html#name" class="tsd-kind-icon">name</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="instance.html#root" class="tsd-kind-icon">root</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="transaction.html#dirtystate" class="tsd-kind-icon">dirty<wbr>State</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-external"><a href="transaction.html#instance" class="tsd-kind-icon">instance</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#evaluate" class="tsd-kind-icon">evaluate</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#getstate" class="tsd-kind-icon">get<wbr>State</a></li>
-								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="instance.html#tostring" class="tsd-kind-icon">to<wbr>String</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="transaction.html#getstate" class="tsd-kind-icon">get<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="transaction.html#getvertex" class="tsd-kind-icon">get<wbr>Vertex</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="transaction.html#setstate" class="tsd-kind-icon">set<wbr>State</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-class tsd-is-external"><a href="transaction.html#setvertex" class="tsd-kind-icon">set<wbr>Vertex</a></li>
 							</ul>
 						</section>
 					</div>
@@ -113,40 +107,22 @@
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
 					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">new <wbr>Instance<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, root<span class="tsd-signature-symbol">: </span><a href="state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a></li>
+						<li class="tsd-signature tsd-kind-icon">new <wbr>Transaction<span class="tsd-signature-symbol">(</span>instance<span class="tsd-signature-symbol">: </span><a href="instance.html" class="tsd-signature-type">Instance</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="transaction.html" class="tsd-signature-type">Transaction</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/8e105a6/src/Instance.ts#L16">Instance.ts:16</a></li>
+									<li>Defined in Transaction.ts:5</li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Creates a new state machine instance conforming to a particular state machine model.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5>name: <span class="tsd-signature-type">string</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The name of the state machine instance.</p>
-										</div>
-									</div>
-								</li>
-								<li>
-									<h5>root: <a href="state.html" class="tsd-signature-type">State</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<div class="lead">
-											<p>The root state of the state machine instance.</p>
-										</div>
-									</div>
+									<h5>instance: <a href="instance.html" class="tsd-signature-type">Instance</a></h5>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="instance.html" class="tsd-signature-type">Instance</a></h4>
+							<h4 class="tsd-returns-title">Returns <a href="transaction.html" class="tsd-signature-type">Transaction</a></h4>
 						</li>
 					</ul>
 				</section>
@@ -154,125 +130,117 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="name" class="tsd-anchor"></a>
-					<h3>name</h3>
-					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<a name="dirtystate" class="tsd-anchor"></a>
+					<h3>dirty<wbr>State</h3>
+					<div class="tsd-signature tsd-kind-icon">dirty<wbr>State<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><a href="state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/8e105a6/src/Instance.ts#L23">Instance.ts:23</a></li>
+							<li>Defined in Transaction.ts:4</li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The name of the state machine instance.</p>
-						</div>
-					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-external">
-					<a name="root" class="tsd-anchor"></a>
-					<h3>root</h3>
-					<div class="tsd-signature tsd-kind-icon">root<span class="tsd-signature-symbol">:</span> <a href="state.html" class="tsd-signature-type">State</a></div>
+					<a name="instance" class="tsd-anchor"></a>
+					<h3>instance</h3>
+					<div class="tsd-signature tsd-kind-icon">instance<span class="tsd-signature-symbol">:</span> <a href="instance.html" class="tsd-signature-type">Instance</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/8e105a6/src/Instance.ts#L23">Instance.ts:23</a></li>
+							<li>Defined in Transaction.ts:7</li>
 						</ul>
 					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The root state of the state machine instance.</p>
-						</div>
-					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="evaluate" class="tsd-anchor"></a>
-					<h3>evaluate</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">evaluate<span class="tsd-signature-symbol">(</span>trigger<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/8e105a6/src/Instance.ts#L32">Instance.ts:32</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Evaluates a trigger event to see if it causes a state transition.</p>
-								</div>
-							</div>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>trigger: <span class="tsd-signature-type">any</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The trigger event to evaluate.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4>
-							<p>Returns true if the trigger event caused a change in the active state configuration or was deferred.</p>
-						</li>
-					</ul>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
 					<a name="getstate" class="tsd-anchor"></a>
 					<h3>get<wbr>State</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">get<wbr>State<span class="tsd-signature-symbol">(</span>region<span class="tsd-signature-symbol">: </span><a href="region.html" class="tsd-signature-type">Region</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>State<span class="tsd-signature-symbol">(</span>region<span class="tsd-signature-symbol">: </span><a href="region.html" class="tsd-signature-type">Region</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="state.html" class="tsd-signature-type">State</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/8e105a6/src/Instance.ts#L100">Instance.ts:100</a></li>
+									<li>Defined in Transaction.ts:16</li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the last known state of a region from the stable active state configuration.</p>
-								</div>
-							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
 									<h5>region: <a href="region.html" class="tsd-signature-type">Region</a></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>The region to find the last know state of.</p>
-									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="state.html" class="tsd-signature-type">State</a>
-								<span class="tsd-signature-symbol"> | </span>
-								<span class="tsd-signature-type">undefined</span>
-							</h4>
-							<p>Returns the last known state of the region or undefined if the region has not been entered.</p>
+							<h4 class="tsd-returns-title">Returns <a href="state.html" class="tsd-signature-type">State</a></h4>
 						</li>
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
-					<a name="tostring" class="tsd-anchor"></a>
-					<h3>to<wbr>String</h3>
+					<a name="getvertex" class="tsd-anchor"></a>
+					<h3>get<wbr>Vertex</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">to<wbr>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></li>
+						<li class="tsd-signature tsd-kind-icon">get<wbr>Vertex<span class="tsd-signature-symbol">(</span>region<span class="tsd-signature-symbol">: </span><a href="region.html" class="tsd-signature-type">Region</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="vertex.html" class="tsd-signature-type">Vertex</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/8e105a6/src/Instance.ts#L108">Instance.ts:108</a></li>
+									<li>Defined in Transaction.ts:26</li>
 								</ul>
 							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Returns the name of the state machine instance.</p>
-								</div>
-							</div>
-							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4>
-							<p>Returns the name of the state machine instance.</p>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>region: <a href="region.html" class="tsd-signature-type">Region</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="vertex.html" class="tsd-signature-type">Vertex</a></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="setstate" class="tsd-anchor"></a>
+					<h3>set<wbr>State</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>State<span class="tsd-signature-symbol">(</span>state<span class="tsd-signature-symbol">: </span><a href="state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Transaction.ts:10</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>state: <a href="state.html" class="tsd-signature-type">State</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-external">
+					<a name="setvertex" class="tsd-anchor"></a>
+					<h3>set<wbr>Vertex</h3>
+					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
+						<li class="tsd-signature tsd-kind-icon">set<wbr>Vertex<span class="tsd-signature-symbol">(</span>vertex<span class="tsd-signature-symbol">: </span><a href="vertex.html" class="tsd-signature-type">Vertex</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in Transaction.ts:20</li>
+								</ul>
+							</aside>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>vertex: <a href="vertex.html" class="tsd-signature-type">Vertex</a></h5>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4>
 						</li>
 					</ul>
 				</section>
@@ -294,33 +262,9 @@
 					<li class=" tsd-kind-enum tsd-is-external">
 						<a href="../enums/transitionkind.html" class="tsd-kind-icon">Transition<wbr>Kind</a>
 					</li>
-				</ul>
-				<ul class="current">
-					<li class="current tsd-kind-class tsd-is-external">
+					<li class=" tsd-kind-class tsd-is-external">
 						<a href="instance.html" class="tsd-kind-icon">Instance</a>
-						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
-								<a href="instance.html#constructor" class="tsd-kind-icon">constructor</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="instance.html#name" class="tsd-kind-icon">name</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
-								<a href="instance.html#root" class="tsd-kind-icon">root</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="instance.html#evaluate" class="tsd-kind-icon">evaluate</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="instance.html#getstate" class="tsd-kind-icon">get<wbr>State</a>
-							</li>
-							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
-								<a href="instance.html#tostring" class="tsd-kind-icon">to<wbr>String</a>
-							</li>
-						</ul>
 					</li>
-				</ul>
-				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="jsonserializer.html" class="tsd-kind-icon">JSONSerializer</a>
 					</li>
@@ -336,9 +280,36 @@
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="state.html" class="tsd-kind-icon">State</a>
 					</li>
-					<li class=" tsd-kind-class tsd-is-external">
+				</ul>
+				<ul class="current">
+					<li class="current tsd-kind-class tsd-is-external">
 						<a href="transaction.html" class="tsd-kind-icon">Transaction</a>
+						<ul>
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+								<a href="transaction.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="transaction.html#dirtystate" class="tsd-kind-icon">dirty<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-external">
+								<a href="transaction.html#instance" class="tsd-kind-icon">instance</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="transaction.html#getstate" class="tsd-kind-icon">get<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="transaction.html#getvertex" class="tsd-kind-icon">get<wbr>Vertex</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="transaction.html#setstate" class="tsd-kind-icon">set<wbr>State</a>
+							</li>
+							<li class=" tsd-kind-method tsd-parent-kind-class tsd-is-external">
+								<a href="transaction.html#setvertex" class="tsd-kind-icon">set<wbr>Vertex</a>
+							</li>
+						</ul>
 					</li>
+				</ul>
+				<ul class="after-current">
 					<li class=" tsd-kind-class tsd-has-type-parameter tsd-is-external">
 						<a href="transition.html" class="tsd-kind-icon">Transition</a>
 					</li>

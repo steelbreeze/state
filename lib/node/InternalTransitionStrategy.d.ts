@@ -1,4 +1,4 @@
-import { Vertex, Instance } from '.';
+import { Vertex, Transaction } from '.';
 import { TransitionStrategy } from './TransitionStrategy';
 /**
  * Logic used to traverse internal transitions.
@@ -6,7 +6,7 @@ import { TransitionStrategy } from './TransitionStrategy';
 export declare class InternalTransitionStrategy implements TransitionStrategy {
     private readonly target;
     constructor(source: Vertex, target: Vertex);
-    doEnterTarget(instance: Instance, history: boolean, trigger: any): void;
-    doExitSource(instance: Instance, history: boolean, trigger: any): void;
+    doEnterTarget(transaction: Transaction, history: boolean, trigger: any): void;
+    doExitSource(transaction: Transaction, history: boolean, trigger: any): void;
     toString(): string;
 }

@@ -1,4 +1,4 @@
-import { Vertex, Instance } from '.';
+import { Vertex, Transaction } from '.';
 import { TransitionStrategy } from './TransitionStrategy';
 
 /**
@@ -10,21 +10,21 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 	constructor(private readonly source: Vertex, private readonly target: Vertex) {
 	}
 
-	doExitSource(instance: Instance, history: boolean, trigger: any): void { 
+	doExitSource(transaction: Transaction, history: boolean, trigger: any): void { 
 		this.vertexToEnter = this.target;
 
-		while (this.vertexToEnter.parent && this.vertexToEnter.parent.parent && !this.vertexToEnter.parent.parent.isActive(instance)) {
+		while (this.vertexToEnter.parent && this.vertexToEnter.parent.parent && !this.vertexToEnter.parent.parent.isActive(transaction)) {
 			this.vertexToEnter = this.vertexToEnter.parent.parent;
 		}
 
-		if (!this.vertexToEnter.isActive(instance) && this.vertexToEnter.parent) {
-			instance.getVertex(this.vertexToEnter.parent).doExit(instance, history, trigger);
+		if (!this.vertexToEnter.isActive(transaction) && this.vertexToEnter.parent) {
+			transaction.getVertex(this.vertexToEnter.parent).doExit(transaction, history, trigger);
 		}
 	}
 
-	doEnterTarget(instance: Instance, history: boolean, trigger: any): void {
-		if (this.vertexToEnter && !this.vertexToEnter.isActive(instance)) {
-			this.vertexToEnter.doEnter(instance, history, trigger);
+	doEnterTarget(transaction: Transaction, history: boolean, trigger: any): void {
+		if (this.vertexToEnter && !this.vertexToEnter.isActive(transaction)) {
+			this.vertexToEnter.doEnter(transaction, history, trigger);
 		}
 	}
 
