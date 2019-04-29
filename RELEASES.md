@@ -1,3 +1,9 @@
+## v8.1.0
+Added stronger transaction management by way of an internal transaction class and removal of unnecessary members and methods from Instance class.
+
+### Breaking changes
+Instance.getLastKnownState remamed Instance.getState.
+
 ## v8.0.0
 Removal of the deprecated features in the v7 codebase.
 This largely revolves around transition construction, taking the form:
