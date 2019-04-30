@@ -1,6 +1,8 @@
 ## v8.1.0
 Added stronger transaction management by way of an internal transaction class and removal of unnecessary members and methods from Instance class.
 
+Added an extendable Visitor class and JSON serializer.
+
 ### Breaking changes
 Instance.getLastKnownState remamed Instance.getState.
 
