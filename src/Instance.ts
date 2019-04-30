@@ -5,7 +5,7 @@ import { Transaction } from './Transaction';
  * Represents an instance of a state machine model at runtime; there can be many seperate state machine instances using a common model.
  */
 export class Instance {
-	/** The stable active state configuration of the state machine. */
+	/** The stable active state configuration of the state machine, conveying the last known state for each region. */
 	private activeStateConfiguration: Record<string, State> = {};
 
 	/**

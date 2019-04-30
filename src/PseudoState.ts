@@ -40,7 +40,6 @@ export class PseudoState extends Vertex {
 
 	/**
 	 * Selects an outgoing transition from this pseudo state based on the trigger event.
-	 * @param transaction The current transaction being executed.
 	 * @param trigger The trigger event.
 	 * @returns Returns a transition or undefined if none were found.
 	 * @internal

@@ -5,7 +5,7 @@ import { Region, State } from '.';
 export declare class Instance {
     readonly name: string;
     readonly root: State;
-    /** The stable active state configuration of the state machine. */
+    /** The stable active state configuration of the state machine, conveying the last known state for each region. */
     private activeStateConfiguration;
     /**
      * Creates a new state machine instance conforming to a particular state machine model.
