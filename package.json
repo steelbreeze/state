@@ -1,6 +1,6 @@
 {
 	"name": "@steelbreeze/state",
-	"version": "8.1.0",
+	"version": "8.1.1",
 	"description": "Finite state machine for TypeScript and JavaScript",
 	"main": "lib/node/index.js",
 	"typings": "lib/node/index.d.ts",
@@ -21,7 +21,7 @@
 		"codeclimate-test-reporter": "^0.5.1",
 		"mocha": "^5.2.0",
 		"nyc": "latest",
-		"typescript": "^3.3.0"
+		"typescript": "^3.5.1"
 	},
 	"repository": {
 		"type": "git",
