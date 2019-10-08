@@ -2,6 +2,7 @@
  * @module state
  * Finite state machine for TypeScript and JavaScript
  */
+export { types } from './types';
 export { log } from './log';
 export { random } from './random';
 export { PseudoStateKind } from './PseudoStateKind';
@@ -15,4 +16,3 @@ export { Transition } from './Transition';
 export { Instance } from './Instance';
 export { Visitor } from './Visitor';
 export { JSONSerializer } from './JSON';
-export { types } from './types';
