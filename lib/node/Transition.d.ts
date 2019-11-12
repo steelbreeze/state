@@ -35,7 +35,7 @@ export declare class Transition<TTrigger = any> {
      * @param actions The action, or actions to call with the trigger event as a parameter.
      * @return Returns the transitions thereby allowing a fluent style transition construction.
      */
-    effect(...actions: Array<types.Consumer<TTrigger>>): this;
+    effect(...actions: Array<types.Behaviour<TTrigger>>): this;
     /**
      * Returns the transition in string form.
      */

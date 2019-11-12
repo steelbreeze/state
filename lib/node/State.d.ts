@@ -31,13 +31,13 @@ export declare class State extends Vertex {
      * @param actions One or callbacks that will be passed the trigger event.
      * @return Returns the state thereby allowing a fluent style state construction.
      */
-    entry(...actions: types.Consumer<any>[]): this;
+    entry(...actions: types.Behaviour<any>[]): this;
     /**
      * Adds a user-defined behaviour to call on state exit.
      * @param actions One or callbacks that will be passed the trigger event.
      * @return Returns the state thereby allowing a fluent style state construction.
      */
-    exit(...actions: Array<types.Consumer<any>>): this;
+    exit(...actions: Array<types.Behaviour<any>>): this;
     /**
      * Adds the types of trigger event that can .
      * @param actions One or callbacks that will be passed the trigger event.

@@ -7,6 +7,8 @@ export declare class Instance {
     readonly root: State;
     /** The stable active state configuration of the state machine, conveying the last known state for each region. */
     private activeStateConfiguration;
+    /** The currently active transaction */
+    private transaction;
     /**
      * Creates a new state machine instance conforming to a particular state machine model.
      * @param name The name of the state machine instance.
@@ -23,7 +25,6 @@ export declare class Instance {
      * Performs an operation that may alter the active state configuration with a transaction.
      * @param TReturn The return type of the transactional operation.
      * @param operation The operation to perform within a transaction.
-     * @param transaction The current transaction being executed; if not passed explicitly, one will be created on demand.
      * @return Returns the result of the operation.
      */
     private transactional;

@@ -26,12 +26,12 @@ export class State extends Vertex {
 	/**
 	 * The user-defined actions that will be called upon state entry.
 	 */
-	private entryActions: Array<types.Consumer<any>> = [];
+	private entryActions: Array<types.Behaviour<any>> = [];
 
 	/**
 	 * The user-defined actions that will be called upon state exit.
 	 */
-	private exitActions: Array<types.Consumer<any>> = [];
+	private exitActions: Array<types.Behaviour<any>> = [];
 
 	/**
 	 * Creates a new instance of the state class.
@@ -47,7 +47,7 @@ export class State extends Vertex {
 	 * @param actions One or callbacks that will be passed the trigger event.
 	 * @return Returns the state thereby allowing a fluent style state construction.
 	 */
-	public entry(...actions: types.Consumer<any>[]): this {
+	public entry(...actions: types.Behaviour<any>[]): this {
 		this.entryActions.push(...actions);
 
 		return this;
@@ -58,7 +58,7 @@ export class State extends Vertex {
 	 * @param actions One or callbacks that will be passed the trigger event.
 	 * @return Returns the state thereby allowing a fluent style state construction.
 	 */
-	public exit(...actions: Array<types.Consumer<any>>): this {
+	public exit(...actions: Array<types.Behaviour<any>>): this {
 		this.exitActions.push(...actions);
 
 		return this;
@@ -217,7 +217,7 @@ export class State extends Vertex {
 
 		transaction.setState(this);
 
-		this.entryActions.forEach(action => action(trigger));
+		this.entryActions.forEach(action => action(trigger, transaction.instance));
 	}
 
 	/**
@@ -247,7 +247,7 @@ export class State extends Vertex {
 
 		super.doExit(transaction, history, trigger);
 
-		this.exitActions.forEach(action => action(trigger));
+		this.exitActions.forEach(action => action(trigger, transaction.instance));
 	}
 
 	/**

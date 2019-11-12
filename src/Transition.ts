@@ -44,7 +44,7 @@ export class Transition<TTrigger = any> {
 	 * @internal
 	 * @hidden
 	 */
-	private traverseActions: Array<types.Consumer<TTrigger>> = [];
+	private traverseActions: Array<types.Behaviour<TTrigger>> = [];
 
 	/**
 	 * The precise semantics of the transition traversal based on the transition type.
@@ -107,7 +107,7 @@ export class Transition<TTrigger = any> {
 	 * @param actions The action, or actions to call with the trigger event as a parameter.
 	 * @return Returns the transitions thereby allowing a fluent style transition construction.
 	 */
-	effect(...actions: Array<types.Consumer<TTrigger>>): this {
+	effect(...actions: Array<types.Behaviour<TTrigger>>): this {
 		this.traverseActions.push(...actions);
 
 		return this;
@@ -156,7 +156,7 @@ export class Transition<TTrigger = any> {
 
 		this.strategy.doExitSource(transaction, history, trigger);
 
-		this.traverseActions.forEach(action => action(trigger));
+		this.traverseActions.forEach(action => action(trigger, transaction.instance));
 
 		this.strategy.doEnterTarget(transaction, history, trigger);
 	}

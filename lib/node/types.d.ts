@@ -1,3 +1,4 @@
+import { Instance } from "./Instance";
 /**
  * Generic types to simplify the specification of function prototypes used in callbacks.
  */
@@ -6,6 +7,8 @@ export declare namespace types {
     type Constructor<T> = new (...args: any[]) => T;
     /** Prototype of a function taking a single argument of a specific type and returning anything. */
     type Consumer<T> = (arg: T) => any;
+    /** Prototype of a function taking a single argument of a specific type and returning anything. */
+    type Behaviour<T> = (arg: T, instance: Instance) => any;
     /** Prototype for any function taking a single parameter. */
     type Function<T, R> = (arg: T) => R;
     /** Prototype of a function taking a single argument of a specific type and returning a boolean result. */

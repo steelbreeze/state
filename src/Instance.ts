@@ -8,6 +8,9 @@ export class Instance {
 	/** The stable active state configuration of the state machine, conveying the last known state for each region. */
 	private activeStateConfiguration: Record<string, State> = {};
 
+	/** The currently active transaction */
+	private transaction: Transaction | undefined;
+
 	/**
 	 * The deferred triggers awaiting evaluation once the current active state configuration changes.
 	 * @internal
@@ -21,7 +24,15 @@ export class Instance {
 	 * @param root The root state of the state machine instance.
 	 */
 	public constructor(public readonly name: string, public readonly root: State) {
-		this.transactional((transaction: Transaction) => this.root.doEnter(transaction, false, this.root)); // enter the root element
+		this.transactional((transaction: Transaction) => {
+			this.root.doEnter(transaction, false, this.root); // enter the root element
+
+			if (this.deferredEventPool.length !== 0) {
+				this.evaluateDeferred(transaction);
+
+				this.deferredEventPool = this.deferredEventPool.filter(t => t);	// repack the deferred event pool
+			}
+		});
 	}
 
 	/**
@@ -32,32 +43,43 @@ export class Instance {
 	public evaluate(trigger: any): boolean {
 		log.write(() => `${this} evaluate ${trigger}`, log.Evaluate);
 
-		return this.transactional((transaction: Transaction) => {
-			const result = this.root.evaluate(transaction, false, trigger);		// evaluate the trigger event
+		if (this.transaction) {
+			this.defer(trigger);
 
-			if (result && this.deferredEventPool.length !== 0) {				// if there are deferred events, process them
-				this.evaluateDeferred(transaction);
+			return false;
+		} else {
+			return this.transactional((transaction: Transaction) => {
+				const result = this.root.evaluate(transaction, false, trigger);		// evaluate the trigger event
 
-				this.deferredEventPool = this.deferredEventPool.filter(t => t);	// repack the deferred event pool
-			}
+				if (result && this.deferredEventPool.length !== 0) {				// if there are deferred events, process them
+					this.evaluateDeferred(transaction);
 
-			return result;
-		});
+					this.deferredEventPool = this.deferredEventPool.filter(t => t);	// repack the deferred event pool
+				}
+
+				return result;
+			});
+		}
 	}
 
 	/**
 	 * Performs an operation that may alter the active state configuration with a transaction.
 	 * @param TReturn The return type of the transactional operation.
 	 * @param operation The operation to perform within a transaction.
-	 * @param transaction The current transaction being executed; if not passed explicitly, one will be created on demand.
 	 * @return Returns the result of the operation.
 	 */
-	private transactional<TReturn>(operation: (transaction: Transaction) => TReturn, transaction: Transaction = new Transaction(this)): TReturn {
-		const result = operation(transaction);
+	private transactional<TReturn>(operation: (transaction: Transaction) => TReturn): TReturn {
+		try {
+			this.transaction = new Transaction(this);
 
-		Object.assign(this.activeStateConfiguration, transaction.activeStateConfiguration);
+			const result = operation(this.transaction);
 
-		return result;
+			Object.assign(this.activeStateConfiguration, this.transaction.activeStateConfiguration);
+
+			return result;
+		} finally {
+			this.transaction = undefined;
+		}
 	}
 
 	/**
