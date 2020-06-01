@@ -114,6 +114,7 @@
 			fill: #EF6C00;
 
 		}
+
 		*/
 	</style>
 </head>
@@ -140,9 +141,8 @@
 					<p>The example below shows a working state machine, modelling a cassette player, with the current
 						state highlighted
 						(as this is a hierarchical machine, you will see the nesting of current state).</p>
-
 				</article>
-				<article>
+				<article class="widget">
 					<h1>Model</h1>
 					<p>The model is implemented in JavaScript as a script in the page, see the page source for details.
 					</p>
@@ -416,45 +416,48 @@
 						</g>
 					</svg>
 				</article>
-					<article>
-						<h1>Events</h1>
-						<p>Use the buttons below to send triggering events into the machine for evaluation.</p>
-						<button class="ripple" onclick="instance.evaluate(new Play());">play</button>
-						<button class="ripple" onclick="instance.evaluate(new Pause());">pause</button>
-						<button class="ripple" onclick="instance.evaluate(new Stop());">stop</button>
-						<button class="ripple" onclick="instance.evaluate(new Flip());">flip</button>
-					</article>
-					<article>
-						<h1>Outputs</h1>
-						<p>Below are the outputs of the state machine, in this example controlling the cassette players
-							head and motor</p>
-						<p>Head: <span id="head">disengaged</span></p>
-						<p>Motor: <span id="motor">stopped</span></p>
-					</article>
+				<article class="widget">
+					<h1>Events</h1>
+					<p>Use the buttons below to send triggering events into the machine for evaluation.</p>
+					<button class="ripple" onclick="instance.evaluate(new Play());">play</button>
+					<button class="ripple" onclick="instance.evaluate(new Pause());">pause</button>
+					<button class="ripple" onclick="instance.evaluate(new Stop());">stop</button>
+					<button class="ripple" onclick="instance.evaluate(new Flip());">flip</button>
+				</article>
+				<article class="widget">
+					<h1>Outputs</h1>
+					<p>Below are the outputs of the state machine, in this example controlling the cassette players
+						head and motor</p>
+					<p>Head: <span id="head">disengaged</span></p>
+					<p>Motor: <span id="motor">stopped</span></p>
+				</article>
+				<article>
+					<p>Links: <a href="https://github.com/steelbreeze/state">Github</a></p>
+				</article>
 			</div>
 		</div>
 		<div class="mainSection">
 			<div class="fixedWidth">
 
-					<article>
-						<h1>Notes</h1>
-						<p>In addition to basic state transitions, this example shows a few more advanced features:
-							first, deep history is
-							specified in
-							the operational state, meaning when returning from the flipped state, the machine will
-							revert to the state it was
-							in
-							prior to entering the flipped state; next, there are two transitions that respond to the
-							Stop event, this
-							shows depth-first evaluation; last, the transition from stopped to running crosses the
-							region boundary within the
-							active state such that there is no need for an initial state; last, the stopped state can
-							defer the Pause event
-							for evaluation after it has been exited.</p>
-						<p>The active state configuration changes colour on state entry/exit with transparency to show
-							the nesting of the
-							current state. If you open your browser console you will see some further log output.</p>
-					</article>
+				<article>
+					<h1>Notes</h1>
+					<p>In addition to basic state transitions, this example shows a few more advanced features:
+						first, deep history is
+						specified in
+						the operational state, meaning when returning from the flipped state, the machine will
+						revert to the state it was
+						in
+						prior to entering the flipped state; next, there are two transitions that respond to the
+						Stop event, this
+						shows depth-first evaluation; last, the transition from stopped to running crosses the
+						region boundary within the
+						active state such that there is no need for an initial state; last, the stopped state can
+						defer the Pause event
+						for evaluation after it has been exited.</p>
+					<p>The active state configuration changes colour on state entry/exit with transparency to show
+						the nesting of the
+						current state. If you open your browser console you will see some further log output.</p>
+				</article>
 			</div>
 		</div>
 	</main>
@@ -522,9 +525,9 @@
 		running.entry(startMotor).exit(stopMotor);
 
 		// colour the states on entry/exit
-//		operational.entry(function () { document.getElementById("operational").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("operational").setAttribute("class", "st1"); });
+		//		operational.entry(function () { document.getElementById("operational").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("operational").setAttribute("class", "st1"); });
 		stopped.entry(function () { document.getElementById("stopped").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("stopped").setAttribute("class", "st1"); });
-//		active.entry(function () { document.getElementById("active").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("active").setAttribute("class", "st1"); });
+		//		active.entry(function () { document.getElementById("active").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("active").setAttribute("class", "st1"); });
 		running.entry(function () { document.getElementById("running").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("running").setAttribute("class", "st1"); });
 		paused.entry(function () { document.getElementById("paused").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("paused").setAttribute("class", "st1"); });
 		flipped.entry(function () { document.getElementById("flipped").setAttribute("class", "st1 active"); }).exit(function () { document.getElementById("flipped").setAttribute("class", "st1"); });
