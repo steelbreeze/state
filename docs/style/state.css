@@ -14,7 +14,7 @@ svg {
   stroke: rgba(249, 170, 51, 0.87);
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 2;
+  stroke-width: 2px;
 }
 
 /* labels */
@@ -29,21 +29,21 @@ svg {
   stroke: rgba(249, 170, 51, 0.87);
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 2;
+  stroke-width: 2px;
 }
 
 /* arrow heads */
 .st6 {
   stroke: rgba(249, 170, 51, 0.87);
   stroke-opacity: 1;
-  stroke-width: 0.23;
+  stroke-width: 0.4px;
 }
 
 /* start/stop fills */
 .st7 {
   stroke-linecap: round;
   stroke-linejoin: round;
-  stroke-width: 1;
+  stroke-width: 2px;
   stroke: rgba(249, 170, 51, 0.87);
   fill: #232F34;
 }
@@ -52,7 +52,7 @@ svg {
   font-size: 12px;
   overflow: visible;
   stroke-linecap: square;
-  stroke-miterlimit: 3;
+  stroke-miterlimit: 2px;
 }
 
 .active {

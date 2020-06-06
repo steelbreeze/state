@@ -4,6 +4,7 @@ $fsmFill: $ReplyDarkBlue;
 $fsmLine: rgba($ReplyOrange, 87%);
 $fsmText: rgba($ReplyOrange, 87%);
 $fsmCurrent: $ReplyBlue;
+$fsmLineWidth: 2px;
 
 		svg {
 			width: 100%;
@@ -21,38 +22,36 @@ $fsmCurrent: $ReplyBlue;
 			stroke: $fsmLine;
 			stroke-linecap: round;
 			stroke-linejoin: round;
-			stroke-width: 2
+			stroke-width: $fsmLineWidth;
 		}
 
 		/* labels */
 		.st2 {
 			font-size: 0.85em;
 			fill: $fsmText;
-;
 		}
 
 		/* arrow lines */
 		.st5 {
 			marker-end: url(#mrkr3-23);
-					stroke: $fsmLine;
-;
+			stroke: $fsmLine;
 			stroke-linecap: round;
 			stroke-linejoin: round;
-			stroke-width: 2
+			stroke-width: $fsmLineWidth;
 		}
 
 		/* arrow heads */
 		.st6 {
 			stroke: $fsmLine;
 			stroke-opacity: 1;
-			stroke-width: 0.23;
+			stroke-width: $fsmLineWidth / 5;
 		}
 
 		/* start/stop fills */
 		.st7 {
 			stroke-linecap: round;
 			stroke-linejoin: round;
-			stroke-width: 1;
+			stroke-width: $fsmLineWidth;
 			stroke: $fsmLine;
 			fill: $fsmFill;
 		}
@@ -61,7 +60,7 @@ $fsmCurrent: $ReplyBlue;
 			font-size: 12px;
 			overflow: visible;
 			stroke-linecap: square;
-			stroke-miterlimit: 3
+			stroke-miterlimit: $fsmLineWidth;
 		}
 
 		.active {
