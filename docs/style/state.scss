@@ -1,8 +1,8 @@
 @import './reply.scss';
 
 $fsmFill: $ReplyDarkBlue;
-$fsmLine: $ReplyOrange;
-$fsmText: $ReplyOrange;
+$fsmLine: rgba($ReplyOrange, 87%);
+$fsmText: rgba($ReplyOrange, 87%);
 $fsmCurrent: $ReplyBlue;
 
 		svg {
