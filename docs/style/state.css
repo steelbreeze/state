@@ -1,0 +1,68 @@
+/*
+$fsmFill: $ReplyLightBlue;
+$fsmLine: $ReplyGrey;
+$fsmText: $ReplyGrey;
+$fsmCurrent: $ReplyDarkBlue;
+*/
+svg {
+  width: 100%;
+  margin-top: 1em;
+}
+
+/* state fill */
+.st1 {
+  fill: #232F34;
+}
+
+/* state borders */
+.st1,
+.st3 {
+  stroke: #F9AA33;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+/* labels */
+.st2 {
+  font-size: 0.85em;
+  fill: #F9AA33;
+}
+
+/* arrow lines */
+.st5 {
+  marker-end: url(#mrkr3-23);
+  stroke: #F9AA33;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+/* arrow heads */
+.st6 {
+  stroke: #F9AA33;
+  stroke-opacity: 1;
+  stroke-width: 0.23;
+}
+
+/* start/stop fills */
+.st7 {
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1;
+  stroke: #F9AA33;
+  fill: #232F34;
+}
+
+.st8 {
+  font-size: 12px;
+  overflow: visible;
+  stroke-linecap: square;
+  stroke-miterlimit: 3;
+}
+
+.active {
+  fill: #344955;
+}
+
+/*# sourceMappingURL=state.css.map */

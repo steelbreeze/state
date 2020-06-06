@@ -1,0 +1,69 @@
+@import './reply.scss';
+
+$fsmFill: $ReplyDarkBlue;
+$fsmLine: $ReplyOrange;
+$fsmText: $ReplyOrange;
+$fsmCurrent: $ReplyBlue;
+
+		svg {
+			width: 100%;
+			margin-top: 1em;
+		}
+
+		/* state fill */
+		.st1 {
+			fill: $fsmFill;
+		}
+
+		/* state borders */
+		.st1,
+		.st3 {
+			stroke: $fsmLine;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			stroke-width: 2
+		}
+
+		/* labels */
+		.st2 {
+			font-size: 0.85em;
+			fill: $fsmText;
+;
+		}
+
+		/* arrow lines */
+		.st5 {
+			marker-end: url(#mrkr3-23);
+					stroke: $fsmLine;
+;
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			stroke-width: 2
+		}
+
+		/* arrow heads */
+		.st6 {
+			stroke: $fsmLine;
+			stroke-opacity: 1;
+			stroke-width: 0.23;
+		}
+
+		/* start/stop fills */
+		.st7 {
+			stroke-linecap: round;
+			stroke-linejoin: round;
+			stroke-width: 1;
+			stroke: $fsmLine;
+			fill: $fsmFill;
+		}
+
+		.st8 {
+			font-size: 12px;
+			overflow: visible;
+			stroke-linecap: square;
+			stroke-miterlimit: 3
+		}
+
+		.active {
+			fill: $fsmCurrent;
+        }

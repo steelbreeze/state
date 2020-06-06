@@ -11,112 +11,12 @@
 	<title>Executable finite state machines</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="https://steelbreeze.net/style/steelbreeze.css">
+	<link rel="stylesheet" href="./style/state.css">
+	<link rel="stylesheet" href="./style/controls.css">
 	<style type="text/css">
-		/*
-	        body {
-            font-family: Arial, Helvetica, sans-serif;
-            margin: 0;
-            padding: 0;
 
-            background-color: #FAFAFA;
-            color: #37474F;
-        }
-*/
-		.ripple {
-			background-position: center;
-			transition: background 0.8s;
-		}
-
-		.ripple:hover {
-			background: rgba(245, 124, 0, 0.65) radial-gradient(circle, transparent 1%, rgba(245, 124, 0, 0.65) 1%) center/15000%;
-		}
-
-		.ripple:active {
-			background-color: rgba(245, 124, 0, 0.5);
-			background-size: 100%;
-			transition: background 0s;
-		}
-
-		button {
-			border: none;
-			border-radius: 2px;
-			padding: 0.5em 1em;
-			font-size: 16px;
-			text-transform: uppercase;
-			cursor: pointer;
-			color: white;
-			background-color: rgba(245, 124, 0, 0.87);
-
-			box-shadow: 0 0 4px #999;
-			outline: none;
-		}
-
-		button+button {
-			margin-left: 0.5em;
-		}
-
-		svg {
-			margin-top: 1em;
-		}
-
-		/* state borders */
-		.st1,
-		.st3 {
-			stroke: rgba(255, 255, 255, 0.87);
-			stroke-linecap: round;
-			stroke-linejoin: round;
-			stroke-width: 2
-		}
-
-		/* labels */
-		.st2 {
-			font-size: 0.85em;
-			fill: rgba(255, 255, 255, 0.87);
-		}
-
-		/* arrow lines */
-		.st5 {
-			marker-end: url(#mrkr3-23);
-			stroke: rgba(255, 255, 255, 0.87);
-			stroke-linecap: round;
-			stroke-linejoin: round;
-			stroke-width: 2
-		}
-
-		/* arrow heads */
-		.st6 {
-			stroke: rgba(255, 255, 255, 0.87);
-			stroke-opacity: 1;
-			stroke-width: 0.23;
-		}
-
-		/* start/stop fills */
-		.st7 {
-			stroke-linecap: round;
-			stroke-linejoin: round;
-			stroke-width: 1;
-			stroke: rgba(255, 255, 255, 0.87);
-			fill: rgba(255, 255, 255, 0.87);
-		}
-
-		.st8 {
-			font-size: 12px;
-			overflow: visible;
-			stroke-linecap: square;
-			stroke-miterlimit: 3
-		}
-
-		.st1 {
-			fill: #4A6572;
-		}
-
-		.active {
-			fill: #EF6C00;
-
-		}
-
-		*/
 	</style>
+
 </head>
 
 <body>
