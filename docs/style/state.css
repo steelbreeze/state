@@ -5,13 +5,13 @@ svg {
 
 /* state fill */
 .st1 {
-  fill: #232F34;
+  fill: rgba(249, 170, 51, 0);
 }
 
 /* state borders */
 .st1,
 .st3 {
-  stroke: rgba(249, 170, 51, 0.87);
+  stroke: rgba(255, 255, 255, 0.6);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2px;
@@ -20,13 +20,13 @@ svg {
 /* labels */
 .st2 {
   font-size: 0.85em;
-  fill: rgba(249, 170, 51, 0.87);
+  fill: rgba(255, 255, 255, 0.87);
 }
 
 /* arrow lines */
 .st5 {
   marker-end: url(#mrkr3-23);
-  stroke: rgba(249, 170, 51, 0.87);
+  stroke: rgba(255, 255, 255, 0.6);
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2px;
@@ -34,7 +34,7 @@ svg {
 
 /* arrow heads */
 .st6 {
-  stroke: rgba(249, 170, 51, 0.87);
+  stroke: rgba(255, 255, 255, 0.6);
   stroke-opacity: 1;
   stroke-width: 0.4px;
 }
@@ -44,8 +44,8 @@ svg {
   stroke-linecap: round;
   stroke-linejoin: round;
   stroke-width: 2px;
-  stroke: rgba(249, 170, 51, 0.87);
-  fill: #232F34;
+  stroke: rgba(255, 255, 255, 0.6);
+  fill: rgba(249, 170, 51, 0);
 }
 
 .st8 {
@@ -56,7 +56,7 @@ svg {
 }
 
 .active {
-  fill: #344955;
+  fill: rgba(0, 0, 0, 0.25);
 }
 
 /*# sourceMappingURL=state.css.map */
