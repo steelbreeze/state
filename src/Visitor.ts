@@ -1,4 +1,4 @@
-import { PseudoState, State, Region, Instance } from ".";
+import { PseudoState, State, Region } from ".";
 
 /**
  * Base for classes implementing the visitor pattern, used to walk a state machine model structure.
