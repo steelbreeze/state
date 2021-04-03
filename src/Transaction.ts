@@ -11,10 +11,10 @@ export class Transaction {
 	 * @hidden
 	 * @internal
 	 */
-	readonly activeStateConfiguration: Record<string, State> = {};
+	 readonly activeStateConfiguration: Map<Region, State> = new Map<Region, State>();
 
 	/** The last known vertex within a given region. */
-	private readonly lastKnownVertex: Record<string, Vertex> = {};
+	private readonly lastKnownVertex: Map<Region, Vertex> = new Map<Region, Vertex>();
 
 	/**
 	 * Creates a new instance of the Transaction class.
@@ -32,7 +32,7 @@ export class Transaction {
 	 */
 	setState(state: State) {
 		if(state.parent) {
-			this.activeStateConfiguration[state.parent.qualifiedName] = state;
+			this.activeStateConfiguration.set(state.parent, state);
 		}
 	}
 
@@ -44,7 +44,7 @@ export class Transaction {
 	 * @internal
 	 */
 	getState(region: Region): State {
-		return this.activeStateConfiguration[region.qualifiedName] || this.instance.getState(region);
+		return this.activeStateConfiguration.get(region) || this.instance.getState(region);
 	}
 
 	/** 
@@ -55,7 +55,7 @@ export class Transaction {
 	 */
 	setVertex(vertex: Vertex) {
 		if(vertex.parent) {
-			this.lastKnownVertex[vertex.parent.qualifiedName] = vertex;
+			this.lastKnownVertex.set(vertex.parent, vertex);
 		}
 	}
 
@@ -67,6 +67,6 @@ export class Transaction {
 	 * @internal
 	 */
 	getVertex(region: Region): Vertex {
-		return this.lastKnownVertex[region.qualifiedName] || this.instance.getState(region);
+		return this.lastKnownVertex.get(region) || this.instance.getState(region);
 	}
 }

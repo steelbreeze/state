@@ -6,7 +6,7 @@ import { Transaction } from './Transaction';
  */
 export class Instance {
 	/** The stable active state configuration of the state machine, conveying the last known state for each region. */
-	private activeStateConfiguration: Record<string, State> = {};
+	private activeStateConfiguration: Map<Region, State> = new Map<Region, State>();
 
 	/** The currently active transaction */
 	private transaction: Transaction | undefined;
@@ -74,7 +74,9 @@ export class Instance {
 
 			const result = operation(this.transaction);
 
-			Object.assign(this.activeStateConfiguration, this.transaction.activeStateConfiguration);
+			for (const [key, value] of this.transaction.activeStateConfiguration) {
+				this.activeStateConfiguration.set(key, value);
+			}
 
 			return result;
 		} finally {
@@ -118,8 +120,8 @@ export class Instance {
 	 * @param region The region to find the last know state of.
 	 * @returns Returns the last known state of the region or undefined if the region has not been entered.
 	 */
-	public getState(region: Region): State | undefined {
-		return this.activeStateConfiguration[region.qualifiedName];
+	public getState(region: Region): State {
+		return this.activeStateConfiguration.get(region)!; // TODO: remove !
 	}
 
 	/**
