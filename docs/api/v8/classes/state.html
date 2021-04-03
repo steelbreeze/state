@@ -91,12 +91,14 @@
 						<section class="tsd-index-section tsd-is-external">
 							<h3>Constructors</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-external"><a href="state.html#constructor" class="tsd-kind-icon">constructor</a></li>
+								<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external"><a href="state.html#constructor" class="tsd-kind-icon">constructor</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section tsd-is-inherited tsd-is-external">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="state.html#name" class="tsd-kind-icon">name</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="state.html#parent" class="tsd-kind-icon">parent</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external"><a href="state.html#qualifiedname" class="tsd-kind-icon">qualified<wbr>Name</a></li>
 							</ul>
 						</section>
@@ -122,17 +124,18 @@
 			</section>
 			<section class="tsd-panel-group tsd-member-group tsd-is-external">
 				<h2>Constructors</h2>
-				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+				<section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 					<a name="constructor" class="tsd-anchor"></a>
 					<h3>constructor</h3>
-					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+					<ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 						<li class="tsd-signature tsd-kind-icon">new <wbr>State<span class="tsd-signature-symbol">(</span>name<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, parent<span class="tsd-signature-symbol">?: </span><a href="state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol"> | </span><a href="region.html" class="tsd-signature-type">Region</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="state.html" class="tsd-signature-type">State</a></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
+								<p>Overrides Vertex.__constructor</p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/State.ts#L34">State.ts:34</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/State.ts#L34">State.ts:34</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -151,7 +154,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> parent: <a href="state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol"> | </span><a href="region.html" class="tsd-signature-type">Region</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> =&nbsp;undefined</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> parent: <a href="state.html" class="tsd-signature-type">State</a><span class="tsd-signature-symbol"> | </span><a href="region.html" class="tsd-signature-type">Region</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> = undefined</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<div class="lead">
 											<p>The parent region of the state; note that another state can also be used, in which case the default region of the state will become this states parent. If parent is left undefined, then this state is the root of the state machine hierarchy.</p>
@@ -167,13 +170,45 @@
 			<section class="tsd-panel-group tsd-member-group tsd-is-inherited tsd-is-external">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="name" class="tsd-anchor"></a>
+					<h3>name</h3>
+					<div class="tsd-signature tsd-kind-icon">name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#name">name</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/NamedElement.ts#L19">NamedElement.ts:19</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The name of the element.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+					<a name="parent" class="tsd-anchor"></a>
+					<h3>parent</h3>
+					<div class="tsd-signature tsd-kind-icon">parent<span class="tsd-signature-symbol">:</span> <a href="region.html" class="tsd-signature-type">Region</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="vertex.html">Vertex</a>.<a href="vertex.html#parent">parent</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/Vertex.ts#L22">Vertex.ts:22</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>The parent region of this vertex.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 					<a name="qualifiedname" class="tsd-anchor"></a>
 					<h3>qualified<wbr>Name</h3>
 					<div class="tsd-signature tsd-kind-icon">qualified<wbr>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#qualifiedname">qualifiedName</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/NamedElement.ts#L12">NamedElement.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/NamedElement.ts#L12">NamedElement.ts:12</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -196,7 +231,7 @@
 							<aside class="tsd-sources">
 								<p>Overrides <a href="vertex.html">Vertex</a>.<a href="vertex.html#accept">accept</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/State.ts#L270">State.ts:270</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/State.ts#L270">State.ts:270</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -227,7 +262,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/State.ts#L72">State.ts:72</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/State.ts#L72">State.ts:72</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -250,13 +285,13 @@
 					<a name="entry" class="tsd-anchor"></a>
 					<h3>entry</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">entry<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>actions<span class="tsd-signature-symbol">: </span><a href="../modules/types.html#consumer" class="tsd-signature-type">Consumer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">entry<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>actions<span class="tsd-signature-symbol">: </span><a href="../modules/types.html#behaviour" class="tsd-signature-type">Behaviour</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/State.ts#L50">State.ts:50</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/State.ts#L50">State.ts:50</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -267,7 +302,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>actions: <a href="../modules/types.html#consumer" class="tsd-signature-type">Consumer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>actions: <a href="../modules/types.html#behaviour" class="tsd-signature-type">Behaviour</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">[]</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>One or callbacks that will be passed the trigger event.</p>
 									</div>
@@ -282,13 +317,13 @@
 					<a name="exit" class="tsd-anchor"></a>
 					<h3>exit</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-external">
-						<li class="tsd-signature tsd-kind-icon">exit<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>actions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/types.html#consumer" class="tsd-signature-type">Consumer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
+						<li class="tsd-signature tsd-kind-icon">exit<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">...</span>actions<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/types.html#behaviour" class="tsd-signature-type">Behaviour</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">this</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/State.ts#L61">State.ts:61</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/State.ts#L61">State.ts:61</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -299,7 +334,7 @@
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
 								<li>
-									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>actions: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/types.html#consumer" class="tsd-signature-type">Consumer</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
+									<h5><span class="tsd-flag ts-flagRest">Rest</span> <span class="tsd-signature-symbol">...</span>actions: <span class="tsd-signature-type">Array</span><span class="tsd-signature-symbol">&lt;</span><a href="../modules/types.html#behaviour" class="tsd-signature-type">Behaviour</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>One or callbacks that will be passed the trigger event.</p>
 									</div>
@@ -320,7 +355,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/State.ts#L100">State.ts:100</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/State.ts#L100">State.ts:100</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -343,7 +378,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/State.ts#L116">State.ts:116</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/State.ts#L116">State.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -366,7 +401,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/State.ts#L108">State.ts:108</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/State.ts#L108">State.ts:108</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -389,7 +424,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/State.ts#L92">State.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/State.ts#L92">State.ts:92</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -413,7 +448,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="vertex.html">Vertex</a>.<a href="vertex.html#on">on</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/Vertex.ts#L46">Vertex.ts:46</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/Vertex.ts#L46">Vertex.ts:46</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -455,7 +490,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="vertex.html">Vertex</a>.<a href="vertex.html#to">to</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/Vertex.ts#L67">Vertex.ts:67</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/Vertex.ts#L67">Vertex.ts:67</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -481,7 +516,7 @@
 									</div>
 								</li>
 								<li>
-									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> kind: <a href="../enums/transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol"> =&nbsp;TransitionKind.External</span></h5>
+									<h5><span class="tsd-flag ts-flagDefault value">Default value</span> kind: <a href="../enums/transitionkind.html" class="tsd-signature-type">TransitionKind</a><span class="tsd-signature-symbol"> = TransitionKind.External</span></h5>
 									<div class="tsd-comment tsd-typography">
 										<p>The kind of the transition, specifying its behaviour.</p>
 									</div>
@@ -503,7 +538,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="namedelement.html">NamedElement</a>.<a href="namedelement.html#tostring">toString</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/NamedElement.ts#L99">NamedElement.ts:99</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/NamedElement.ts#L99">NamedElement.ts:99</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -526,7 +561,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="vertex.html">Vertex</a>.<a href="vertex.html#when">when</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/87978ec/src/Vertex.ts#L56">Vertex.ts:56</a></li>
+									<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/Vertex.ts#L56">Vertex.ts:56</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -579,7 +614,16 @@
 						<a href="instance.html" class="tsd-kind-icon">Instance</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
+						<a href="jsonnode.html" class="tsd-kind-icon">JSONNode</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="jsonregion.html" class="tsd-kind-icon">JSONRegion</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
 						<a href="jsonserializer.html" class="tsd-kind-icon">JSONSerializer</a>
+					</li>
+					<li class=" tsd-kind-class tsd-is-external">
+						<a href="jsonstate.html" class="tsd-kind-icon">JSONState</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
@@ -595,8 +639,14 @@
 					<li class="current tsd-kind-class tsd-is-external">
 						<a href="state.html" class="tsd-kind-icon">State</a>
 						<ul>
-							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-external">
+							<li class=" tsd-kind-constructor tsd-parent-kind-class tsd-is-overwrite tsd-is-external">
 								<a href="state.html#constructor" class="tsd-kind-icon">constructor</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="state.html#name" class="tsd-kind-icon">name</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
+								<a href="state.html#parent" class="tsd-kind-icon">parent</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-class tsd-is-inherited tsd-is-external">
 								<a href="state.html#qualifiedname" class="tsd-kind-icon">qualified<wbr>Name</a>
@@ -650,6 +700,9 @@
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="visitor.html" class="tsd-kind-icon">Visitor</a>
 					</li>
+					<li class=" tsd-kind-variable tsd-is-external">
+						<a href="../index.html#transitionstrategymap" class="tsd-kind-icon">Transition<wbr>Strategy<wbr>Map</a>
+					</li>
 				</ul>
 			</nav>
 		</div>
@@ -659,63 +712,11 @@
 	<div class="container">
 		<h2>Legend</h2>
 		<div class="tsd-legend-group">
-			<ul class="tsd-legend">
-				<li class="tsd-kind-module"><span class="tsd-kind-icon">Module</span></li>
-				<li class="tsd-kind-object-literal"><span class="tsd-kind-icon">Object literal</span></li>
-				<li class="tsd-kind-variable"><span class="tsd-kind-icon">Variable</span></li>
-				<li class="tsd-kind-function"><span class="tsd-kind-icon">Function</span></li>
-				<li class="tsd-kind-function tsd-has-type-parameter"><span class="tsd-kind-icon">Function with type parameter</span></li>
-				<li class="tsd-kind-index-signature"><span class="tsd-kind-icon">Index signature</span></li>
-				<li class="tsd-kind-type-alias"><span class="tsd-kind-icon">Type alias</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-enum"><span class="tsd-kind-icon">Enumeration</span></li>
-				<li class="tsd-kind-enum-member"><span class="tsd-kind-icon">Enumeration member</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-enum"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-enum"><span class="tsd-kind-icon">Method</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-interface"><span class="tsd-kind-icon">Interface</span></li>
-				<li class="tsd-kind-interface tsd-has-type-parameter"><span class="tsd-kind-icon">Interface with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-interface"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-interface"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-interface"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-interface"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-class"><span class="tsd-kind-icon">Class</span></li>
-				<li class="tsd-kind-class tsd-has-type-parameter"><span class="tsd-kind-icon">Class with type parameter</span></li>
-				<li class="tsd-kind-constructor tsd-parent-kind-class"><span class="tsd-kind-icon">Constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class"><span class="tsd-kind-icon">Property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class"><span class="tsd-kind-icon">Method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class"><span class="tsd-kind-icon">Accessor</span></li>
-				<li class="tsd-kind-index-signature tsd-parent-kind-class"><span class="tsd-kind-icon">Index signature</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-constructor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited constructor</span></li>
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-inherited"><span class="tsd-kind-icon">Inherited accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-protected"><span class="tsd-kind-icon">Protected accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private property</span></li>
-				<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private method</span></li>
-				<li class="tsd-kind-accessor tsd-parent-kind-class tsd-is-private"><span class="tsd-kind-icon">Private accessor</span></li>
-			</ul>
-			<ul class="tsd-legend">
-				<li class="tsd-kind-property tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static property</span></li>
-				<li class="tsd-kind-call-signature tsd-parent-kind-class tsd-is-static"><span class="tsd-kind-icon">Static method</span></li>
-			</ul>
 		</div>
 	</div>
 </footer>
 <div class="container tsd-generator">
-	<p>Generated using <a href="http://typedoc.org/" target="_blank">TypeDoc</a></p>
+	<p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p>
 </div>
 <div class="overlay"></div>
 <script src="../assets/js/main.js"></script>

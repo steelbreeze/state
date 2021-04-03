@@ -78,6 +78,7 @@ export class Instance {
 				this.activeStateConfiguration.set(key, value);
 			}
 
+
 			return result;
 		} finally {
 			this.transaction = undefined;
