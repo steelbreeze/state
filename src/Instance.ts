@@ -25,13 +25,9 @@ export class Instance {
 	 */
 	public constructor(public readonly name: string, public readonly root: State) {
 		this.transactional((transaction: Transaction) => {
-			this.root.doEnter(transaction, false, this.root); // enter the root element
+			this.root.doEnter(transaction, false, this.root);	// enter the root element
 
-			if (this.deferredEventPool.length !== 0) {
-				this.evaluateDeferred(transaction);
-
-				this.deferredEventPool = this.deferredEventPool.filter(t => t);	// repack the deferred event pool
-			}
+			this.evaluateDeferred(transaction);					// the process of initialisation may have caused a deferred event
 		});
 	}
 
@@ -49,12 +45,10 @@ export class Instance {
 			return false;
 		} else {
 			return this.transactional((transaction: Transaction) => {
-				const result = this.root.evaluate(transaction, false, trigger);		// evaluate the trigger event
+				const result = this.root.evaluate(transaction, false, trigger);	// evaluate the trigger event
 
-				if (result && this.deferredEventPool.length !== 0) {				// if there are deferred events, process them
+				if (result) {
 					this.evaluateDeferred(transaction);
-
-					this.deferredEventPool = this.deferredEventPool.filter(t => t);	// repack the deferred event pool
 				}
 
 				return result;
@@ -78,7 +72,6 @@ export class Instance {
 				this.activeStateConfiguration.set(key, value);
 			}
 
-
 			return result;
 		} finally {
 			this.transaction = undefined;
@@ -99,21 +92,26 @@ export class Instance {
 
 	/**
 	 * Evaluates trigger events in the deferred event pool.
+	 * @hidden
 	 */
 	private evaluateDeferred(transaction: Transaction): void {
-		this.deferredEventPool.forEach((trigger, i) => {
-			if (trigger && this.root.getDeferrableTriggers(transaction).indexOf(trigger.constructor) === -1) {
-				delete this.deferredEventPool[i];
+		if (this.deferredEventPool.length !== 0) {
+			this.deferredEventPool.forEach((trigger, i) => {
+				if (trigger && this.root.getDeferrableTriggers(transaction).indexOf(trigger.constructor) === -1) {
+					delete this.deferredEventPool[i];
 
-				log.write(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
+					log.write(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
 
-				if (this.root.evaluate(transaction, false, trigger)) {
-					this.evaluateDeferred(transaction);
+					if (this.root.evaluate(transaction, false, trigger)) {
+						this.evaluateDeferred(transaction);
 
-					return;
+						return;
+					}
 				}
-			}
-		});
+			});
+
+			this.deferredEventPool = this.deferredEventPool.filter(t => t);	// repack the deferred event pool
+		}
 	}
 
 	/**

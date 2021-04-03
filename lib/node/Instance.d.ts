@@ -30,6 +30,7 @@ export declare class Instance {
     private transactional;
     /**
      * Evaluates trigger events in the deferred event pool.
+     * @hidden
      */
     private evaluateDeferred;
     /**
