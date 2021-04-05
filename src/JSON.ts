@@ -25,8 +25,9 @@ class JSONRegion extends JSONNode {
 export class JSONSerializer extends Visitor {
 	public root: JSONState | undefined;
 
-	private stateMap: Record<string, JSONState> = {};
-	private regionMap: Record<string, JSONRegion> = {};
+	private stateMap: Map<State, JSONState> = new Map<State, JSONState>();
+	private regionMap: Map<Region, JSONRegion> = new Map<Region, JSONRegion>();
+
 
 	public constructor(private readonly instance: Instance, private readonly deferedEventSerializer: types.Function<any, any> | undefined = undefined) {
 		super();
@@ -35,10 +36,10 @@ export class JSONSerializer extends Visitor {
 	visitState(state: State) {
 		const jsonState = new JSONState(state);
 
-		this.stateMap[state.qualifiedName] = jsonState;
+		this.stateMap.set(state, jsonState);
 
 		if (state.parent !== undefined) {
-			this.regionMap[state.parent.qualifiedName].children.push(jsonState);
+			this.regionMap.get(state.parent)!.children.push(jsonState); // TODO: fix !
 		} else {
 			this.root = jsonState;
 		}
@@ -48,9 +49,9 @@ export class JSONSerializer extends Visitor {
 		const lastKnownState = this.instance.getState(region);
 		const jsonRegion = new JSONRegion(region, lastKnownState ? lastKnownState.name : undefined);
 
-		this.regionMap[region.qualifiedName] = jsonRegion;
+		this.regionMap.set(region, jsonRegion);
 
-		this.stateMap[region.parent.qualifiedName].children.push(jsonRegion);
+		this.stateMap.get(region.parent)!.children.push(jsonRegion); // TODO: fix !
 	}
 
 
