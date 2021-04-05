@@ -64,16 +64,20 @@ export class Instance {
 	 */
 	private transactional<TReturn>(operation: (transaction: Transaction) => TReturn): TReturn {
 		try {
+			// create a new transaction
 			this.transaction = new Transaction(this);
 
+			// perform the requested operation
 			const result = operation(this.transaction);
 
+			// update the instance active state configuration from the transaction
 			for (const [key, value] of this.transaction.activeStateConfiguration) {
 				this.activeStateConfiguration.set(key, value);
 			}
 
 			return result;
 		} finally {
+			// remove the transaction
 			this.transaction = undefined;
 		}
 	}
@@ -96,7 +100,9 @@ export class Instance {
 	 */
 	private evaluateDeferred(transaction: Transaction): void {
 		if (this.deferredEventPool.length !== 0) {
-			this.deferredEventPool.forEach((trigger, i) => {
+			for (let i = 0; i < this.deferredEventPool.length; i++) {
+				const trigger = this.deferredEventPool[i];
+
 				if (trigger && this.root.getDeferrableTriggers(transaction).indexOf(trigger.constructor) === -1) {
 					delete this.deferredEventPool[i];
 
@@ -105,10 +111,10 @@ export class Instance {
 					if (this.root.evaluate(transaction, false, trigger)) {
 						this.evaluateDeferred(transaction);
 
-						return;
+						break;
 					}
 				}
-			});
+			}
 
 			this.deferredEventPool = this.deferredEventPool.filter(t => t);	// repack the deferred event pool
 		}
