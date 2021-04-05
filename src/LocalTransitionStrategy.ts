@@ -19,7 +19,11 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 		}
 
 		if (!this.vertexToEnter.isActive(transaction) && this.vertexToEnter.parent) {
-			transaction.getVertex(this.vertexToEnter.parent).doExit(transaction, history, trigger);
+			const vertex = transaction.getVertex(this.vertexToEnter.parent);
+			
+			if(vertex) {
+				vertex.doExit(transaction, history, trigger);
+			}
 		}
 	}
 

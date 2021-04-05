@@ -43,7 +43,7 @@ export class Transaction {
 	 * @hidden
 	 * @internal
 	 */
-	getState(region: Region): State {
+	getState(region: Region): State | undefined {
 		return this.activeStateConfiguration.get(region) || this.instance.getState(region);
 	}
 
@@ -66,7 +66,7 @@ export class Transaction {
 	 * @hidden
 	 * @internal
 	 */
-	getVertex(region: Region): Vertex {
+	getVertex(region: Region): Vertex | undefined {
 		return this.lastKnownVertex.get(region) || this.instance.getState(region);
 	}
 }

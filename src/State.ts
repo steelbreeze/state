@@ -161,7 +161,11 @@ export class State extends Vertex {
 		let result: boolean = false;
 
 		for (let i = 0, l = this.children.length; i < l && this.isActive(transaction); ++i) {					// delegate to all children unless one causes a transition away from this state
-			result = transaction.getState(this.children[i]).evaluate(transaction, history, trigger) || result;
+			const state = transaction.getState(this.children[i]);
+
+			if(state) {
+				result = state.evaluate(transaction, history, trigger) || result;
+			}
 		}
 
 		return result;
@@ -193,7 +197,11 @@ export class State extends Vertex {
 	 * @hidden
 	 */
 	getDeferrableTriggers(transaction: Transaction): Array<types.Constructor<any>> {
-		return this.children.reduce((result, region) => result.concat(transaction.getState(region).getDeferrableTriggers(transaction)), this.deferrableTriggers);
+		return this.children.reduce((result, region) => {
+			const state = transaction.getState(region);
+
+			return state !== undefined ? result.concat(state.getDeferrableTriggers(transaction)) : result;
+		}, this.deferrableTriggers);
 	}
 
 	/**

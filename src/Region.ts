@@ -49,7 +49,7 @@ export class Region extends NamedElement {
 	isComplete(transaction: Transaction): boolean {
 		const currentState = transaction.getState(this);
 
-		return currentState && currentState.isFinal();
+		return currentState !== undefined && currentState.isFinal();
 	}
 
 	/**
@@ -77,8 +77,12 @@ export class Region extends NamedElement {
 	 * @hidden
 	 */
 	doExit(transaction: Transaction, history: boolean, trigger: any): void {
-		transaction.getVertex(this).doExit(transaction, history, trigger);
-
+		const vertex = transaction.getVertex(this);
+		
+		if(vertex) {
+			vertex.doExit(transaction, history, trigger);
+		}
+		
 		super.doExit(transaction, history, trigger);
 	}
 
