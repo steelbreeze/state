@@ -25,9 +25,8 @@ class JSONRegion extends JSONNode {
 export class JSONSerializer extends Visitor {
 	public root: JSONState | undefined;
 
-	private stateMap: Map<State, JSONState> = new Map<State, JSONState>();
-	private regionMap: Map<Region, JSONRegion> = new Map<Region, JSONRegion>();
-
+	private stateMap: Map<NamedElement, JSONState> = new Map<NamedElement, JSONState>();
+	private regionMap: Map<NamedElement, JSONRegion> = new Map<NamedElement, JSONRegion>();
 
 	public constructor(private readonly instance: Instance, private readonly deferedEventSerializer: types.Function<any, any> | undefined = undefined) {
 		super();
