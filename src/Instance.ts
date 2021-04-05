@@ -1,4 +1,4 @@
-import { log, Region, State } from '.';
+import { log, State } from '.';
 import { NamedElement } from './NamedElement';
 import { Transaction } from './Transaction';
 

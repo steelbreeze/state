@@ -17,7 +17,7 @@ class JSONState extends JSONNode {
 class JSONRegion extends JSONNode {
 	public readonly children: Array<JSONState> = [];
 
-	constructor(region: Region, public readonly activeState: string | undefined) {
+	constructor(region: NamedElement, public readonly activeState: string | undefined) {
 		super(region);
 	}
 }

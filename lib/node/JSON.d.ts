@@ -11,7 +11,7 @@ declare class JSONState extends JSONNode {
 declare class JSONRegion extends JSONNode {
     readonly activeState: string | undefined;
     readonly children: Array<JSONState>;
-    constructor(region: Region, activeState: string | undefined);
+    constructor(region: NamedElement, activeState: string | undefined);
 }
 export declare class JSONSerializer extends Visitor {
     private readonly instance;
