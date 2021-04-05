@@ -1,5 +1,4 @@
-import { Vertex, State, Instance } from './';
-import { NamedElement } from './NamedElement';
+import { NamedElement, Vertex, State, Instance } from './';
 
 /**
  * Represents a transaction within the execution of a state machine.

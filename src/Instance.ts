@@ -1,5 +1,4 @@
-import { log, State } from '.';
-import { NamedElement } from './NamedElement';
+import { log, NamedElement, State } from '.';
 import { Transaction } from './Transaction';
 
 /**
