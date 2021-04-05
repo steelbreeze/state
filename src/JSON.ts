@@ -39,7 +39,11 @@ export class JSONSerializer extends Visitor {
 		this.stateMap.set(state, jsonState);
 
 		if (state.parent !== undefined) {
-			this.regionMap.get(state.parent)!.children.push(jsonState); // TODO: fix !
+			const parent = this.regionMap.get(state.parent);
+
+			if (parent) {
+				parent.children.push(jsonState);
+			}
 		} else {
 			this.root = jsonState;
 		}
@@ -51,7 +55,11 @@ export class JSONSerializer extends Visitor {
 
 		this.regionMap.set(region, jsonRegion);
 
-		this.stateMap.get(region.parent)!.children.push(jsonRegion); // TODO: fix !
+		const parent = this.stateMap.get(region.parent);
+
+		if (parent) {
+			parent.children.push(jsonRegion);
+		}
 	}
 
 
