@@ -23,30 +23,6 @@ export abstract class NamedElement {
 	}
 
 	/**
-	 * Returns the parent element of this element.
-	 * @returns Returns the parent element of this element or undefined if the element is the root element of the hierarchy.
-	 * @internal
-	 * @hidden
-	 */
-	abstract getParent(): NamedElement | undefined;
-
-	/**
-	 * Returns the ancestry of this element from the root element of the hierarchy to this element.
-	 * @returns Returns an iterable iterator used to process the ancestors.
-	 * @internal
-	 * @hidden
-	 */
-	*getAncestors(): IterableIterator<NamedElement> {
-		const parent = this.getParent();
-
-		if (parent) {
-			yield* parent.getAncestors();
-		}
-
-		yield this;
-	}
-
-	/**
 	 * Enters an element during a state transition.
 	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.

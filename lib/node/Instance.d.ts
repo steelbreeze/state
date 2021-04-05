@@ -1,5 +1,4 @@
-import { State } from '.';
-import { NamedElement } from './NamedElement';
+import { NamedElement, State } from '.';
 /**
  * Represents an instance of a state machine model at runtime; there can be many seperate state machine instances using a common model.
  */

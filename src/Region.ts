@@ -30,16 +30,6 @@ export class Region extends NamedElement {
 		parent.children.push(this);
 	}
 
-	/**
-	 * Returns the parent element of this region.
-	 * @returns Returns the parent element of this element.
-	 * @internal
-	 * @hidden
-	 */
-	getParent(): NamedElement | undefined {
-		return this.parent;
-	}
-
 	/** 
 	 * Tests a state machine instance to see if this region is complete within it.
 	 * A region is complete if it's current state is a final state (one with no outgoing transitions).

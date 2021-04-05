@@ -28,16 +28,6 @@ export abstract class Vertex extends NamedElement {
 	}
 
 	/**
-	 * Returns the parent element of this element.
-	 * @returns Returns the parent element of this element or undefined if the element is the root element of the hierarchy.
-	 * @internal
-	 * @hidden
-	 */
-	getParent(): NamedElement | undefined {
-		return this.parent;
-	}
-
-	/**
 	 * Creates a new transition at this vertex triggered by an event of a specific type.
 	 * @param TTrigger The type of the triggering event; note that this can be derived from the type parameter.
 	 * @param type The type (class name) of the triggering event.

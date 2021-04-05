@@ -1,4 +1,4 @@
-import { NamedElement, Vertex, PseudoState } from '.';
+import { NamedElement, Region, Vertex, PseudoState } from '.';
 import { Transaction } from './Transaction';
 import { TransitionStrategy } from './TransitionStrategy';
 
@@ -10,8 +10,8 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
 	private readonly toEnter: Array<NamedElement>;
 
 	constructor(source: Vertex, target: Vertex) {
-		const sourceAncestors = source.getAncestors();
-		const targetAncestors = target.getAncestors();
+		const sourceAncestors = ancestry(source);
+		const targetAncestors = ancestry(target);
 		let prevSource = sourceAncestors.next();
 		let prevTarget = targetAncestors.next();
 		let nextSource = sourceAncestors.next();
@@ -51,4 +51,19 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
 	toString(): string {
 		return "external";
 	}
+}
+
+
+/**
+ * Returns the ancestry of this element from the root element of the hierarchy to this element.
+ * @returns Returns an iterable iterator used to process the ancestors.
+ * @internal
+ * @hidden
+ */
+function* ancestry(element: Region | Vertex): IterableIterator<NamedElement> {
+	if (element.parent) {
+		yield* ancestry(element.parent);
+	}
+
+	yield element;
 }
