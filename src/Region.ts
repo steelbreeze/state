@@ -65,7 +65,11 @@ export class Region extends NamedElement {
 		const starting = (history || (this.initial && this.initial.isHistory)) && current ? current : this.initial;
 		const deepHistory = history || (this.initial !== undefined && this.initial.kind === PseudoStateKind.DeepHistory);
 
-		starting!.doEnter(transaction, deepHistory, trigger);
+		if (starting) {
+			starting.doEnter(transaction, deepHistory, trigger);
+		} else {
+			throw new Error(`Unable to find starting state in region ${this}`);
+		}
 	}
 
 	/**
@@ -78,11 +82,11 @@ export class Region extends NamedElement {
 	 */
 	doExit(transaction: Transaction, history: boolean, trigger: any): void {
 		const vertex = transaction.getVertex(this);
-		
-		if(vertex) {
+
+		if (vertex) {
 			vertex.doExit(transaction, history, trigger);
 		}
-		
+
 		super.doExit(transaction, history, trigger);
 	}
 
