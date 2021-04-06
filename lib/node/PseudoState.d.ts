@@ -1,5 +1,4 @@
 import { PseudoStateKind, Vertex, Region, State, Transition, Visitor } from '.';
-import { Transaction } from './Transaction';
 import { TransitionKind } from './TransitionKind';
 /**
  * A pseudo state is a transient state within a region, once entered it will exit immediately.
@@ -18,7 +17,6 @@ export declare class PseudoState extends Vertex {
      * @param kind The kind pseudo state which defines its behaviour and use.
      */
     constructor(name: string, parent: State | Region, kind?: PseudoStateKind);
-    isActive(transaction: Transaction): boolean;
     /**
      * Creates an 'else' transition from this pseudo state, which will be chosen if no other outgoing transition is found.
      * @param target The target of the transition.

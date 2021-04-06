@@ -72,7 +72,9 @@ export abstract class Vertex extends NamedElement {
 	 * @internal
 	 * @hidden
 	 */
-	abstract isActive(transaction: Transaction): boolean;
+	 isActive(transaction: Transaction): boolean {
+		return this.parent === undefined || transaction.getVertex(this.parent) === this;
+	}
 
 	/**
 	 * Evaluates a trigger event at this vertex to determine if it will trigger an outgoing transition.

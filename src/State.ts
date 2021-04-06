@@ -45,11 +45,7 @@ export class State extends Vertex {
 		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 	}
-
-	isActive(transaction: Transaction): boolean {
-		return this.parent === undefined || transaction.getVertex(this.parent) === this;
-	}
-
+	
 	/**
 	 * Adds a user-defined behaviour to call on state entry.
 	 * @param actions One or callbacks that will be passed the trigger event.

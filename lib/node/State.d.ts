@@ -1,5 +1,4 @@
 import { Vertex, Region, Visitor } from '.';
-import { Transaction } from './Transaction';
 import { types } from './types';
 /**
  * A state is a situation in the lifecycle of the state machine that is stable between events.
@@ -29,7 +28,6 @@ export declare class State extends Vertex {
      * @param parent The parent region of the state; note that another state can also be used, in which case the default region of the state will become this states parent. If parent is left undefined, then this state is the root of the state machine hierarchy.
      */
     constructor(name: string, parent?: State | Region | undefined);
-    isActive(transaction: Transaction): boolean;
     /**
      * Adds a user-defined behaviour to call on state entry.
      * @param actions One or callbacks that will be passed the trigger event.

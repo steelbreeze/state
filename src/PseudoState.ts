@@ -32,10 +32,6 @@ export class PseudoState extends Vertex {
 		}
 	}
 
-	isActive(transaction: Transaction): boolean {
-		return transaction.getVertex(this.parent) === this;
-	}
-
 	/**
 	 * Creates an 'else' transition from this pseudo state, which will be chosen if no other outgoing transition is found.
 	 * @param target The target of the transition.
