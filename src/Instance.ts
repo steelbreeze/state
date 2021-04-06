@@ -1,4 +1,4 @@
-import { log, NamedElement, State } from '.';
+import { log, Region, State } from '.';
 import { Transaction } from './Transaction';
 
 /**
@@ -6,7 +6,7 @@ import { Transaction } from './Transaction';
  */
 export class Instance {
 	/** The stable active state configuration of the state machine, conveying the last known state for each region. */
-	private activeStateConfiguration: Map<NamedElement, State> = new Map<NamedElement, State>();
+	private activeStateConfiguration = new Map<Region, State>();
 
 	/** The currently active transaction */
 	private transaction: Transaction | undefined;
@@ -125,7 +125,7 @@ export class Instance {
 	 * @param region The region to find the last know state of.
 	 * @returns Returns the last known state of the region or undefined if the region has not been entered.
 	 */
-	public getState(region: NamedElement): State | undefined {
+	public getState(region: Region): State | undefined {
 		return this.activeStateConfiguration.get(region);
 	}
 

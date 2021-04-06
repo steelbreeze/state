@@ -1,4 +1,4 @@
-import { NamedElement, State } from '.';
+import { Region, State } from '.';
 /**
  * Represents an instance of a state machine model at runtime; there can be many seperate state machine instances using a common model.
  */
@@ -38,7 +38,7 @@ export declare class Instance {
      * @param region The region to find the last know state of.
      * @returns Returns the last known state of the region or undefined if the region has not been entered.
      */
-    getState(region: NamedElement): State | undefined;
+    getState(region: Region): State | undefined;
     /**
      * Returns the name of the state machine instance.
      * @returns Returns the name of the state machine instance.

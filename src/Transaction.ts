@@ -1,4 +1,4 @@
-import { NamedElement, Vertex, State, Instance } from './';
+import { Region, Vertex, State, Instance } from './';
 
 /**
  * Represents a transaction within the execution of a state machine.
@@ -11,10 +11,10 @@ export class Transaction {
 	 * @hidden
 	 * @internal
 	 */
-	 readonly activeStateConfiguration: Map<NamedElement, State> = new Map<NamedElement, State>();
+	 readonly activeStateConfiguration = new Map<Region, State>();
 
 	/** The last known vertex within a given region. */
-	private readonly lastKnownVertex: Map<NamedElement, Vertex> = new Map<NamedElement, Vertex>();
+	private readonly lastKnownVertex = new Map<Region, Vertex>();
 
 	/**
 	 * Creates a new instance of the Transaction class.
@@ -31,7 +31,7 @@ export class Transaction {
 	 * @hidden
 	 * @internal
 	 */
-	getState(region: NamedElement): State | undefined {
+	getState(region: Region): State | undefined {
 		return this.activeStateConfiguration.get(region) || this.instance.getState(region);
 	}
 
@@ -58,7 +58,7 @@ export class Transaction {
 	 * @hidden
 	 * @internal
 	 */
-	getVertex(region: NamedElement): Vertex | undefined {
+	getVertex(region: Region): Vertex | undefined {
 		return this.lastKnownVertex.get(region) || this.instance.getState(region);
 	}
 }
