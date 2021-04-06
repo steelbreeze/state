@@ -91,7 +91,7 @@ export class Transition<TTrigger = any> {
 
 		if(kind === TransitionKind.External) {
 			this.strategy = new ExternalTransitionStrategy(this.source, this.target);
-		} else if(kind === TransitionKind.Local) {
+		} else {
 			this.strategy = new LocalTransitionStrategy(this.source, this.target);
 		}
 
