@@ -1,11 +1,11 @@
-import { types } from './types';
+import { Consumer, Producer } from './types';
 
 /**
  * Logging integration for state; provides callbacks for logging events thereby allowing integration of third party logging tools.
  */
 export namespace log {
 	/** The registered logging consumers. */
-	const consumers: Array<{ consumer: types.Consumer<string>, category: number }> = [];
+	const consumers: Array<{ consumer: Consumer<string>, category: number }> = [];
 
 	/** Logging category used when new state machine elements are created. */
 	export const Create = 1;
@@ -31,7 +31,7 @@ export namespace log {
 	 * @param categories The categorory or categories for which the consumer callback will be invoked.
 	 * @returns Returns an id for the consumer so that it can be removed if desired.
 	 */
-	export function add(consumer: types.Consumer<string>, ...categories: number[]): number {
+	export function add(consumer: Consumer<string>, ...categories: number[]): number {
 		return consumers.push({ consumer, category: categories.reduce((p, c) => p | c) });
 	}
 
@@ -49,7 +49,7 @@ export namespace log {
 	 * @param category The category of message.
 	 * @remarks The producer callback will only be called if there is a registered consumer for the category of message.
 	 */
-	export function write(producer: types.Producer<string>, category: number): void {
+	export function write(producer: Producer<string>, category: number): void {
 		let message: string | undefined;
 
 		for (const consumer of consumers) {

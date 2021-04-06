@@ -1,5 +1,5 @@
 import { NamedElement, State, Region, Instance, Visitor } from '.';
-import { types } from './types';
+import { Function } from './types';
 
 class JSONNode {
 	readonly name: String;
@@ -28,7 +28,7 @@ export class JSONSerializer extends Visitor {
 	private stateMap: Map<NamedElement, JSONState> = new Map<NamedElement, JSONState>();
 	private regionMap: Map<NamedElement, JSONRegion> = new Map<NamedElement, JSONRegion>();
 
-	public constructor(private readonly instance: Instance, private readonly deferedEventSerializer: types.Function<any, any> | undefined = undefined) {
+	public constructor(private readonly instance: Instance, private readonly deferedEventSerializer: Function<any, any> | undefined = undefined) {
 		super();
 	}
 

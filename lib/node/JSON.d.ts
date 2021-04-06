@@ -1,5 +1,5 @@
 import { NamedElement, State, Region, Instance, Visitor } from '.';
-import { types } from './types';
+import { Function } from './types';
 declare class JSONNode {
     readonly name: String;
     constructor(element: NamedElement);
@@ -19,7 +19,7 @@ export declare class JSONSerializer extends Visitor {
     root: JSONState | undefined;
     private stateMap;
     private regionMap;
-    constructor(instance: Instance, deferedEventSerializer?: types.Function<any, any> | undefined);
+    constructor(instance: Instance, deferedEventSerializer?: Function<any, any> | undefined);
     visitState(state: State): void;
     visitRegion(region: Region): void;
     toString(): string;

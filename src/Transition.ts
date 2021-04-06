@@ -4,7 +4,7 @@ import { TransitionStrategy } from './TransitionStrategy';
 import { ExternalTransitionStrategy } from './ExternalTransitionStrategy';
 import { InternalTransitionStrategy } from './InternalTransitionStrategy';
 import { LocalTransitionStrategy } from './LocalTransitionStrategy';
-import { types } from './types';
+import { Behaviour, Constructor, Predicate } from './types';
 
 /**
  * A transition changes the active state configuration of a state machine by specifying the valid transitions between states and the trigger events that cause them to be traversed.
@@ -21,21 +21,21 @@ export class Transition<TTrigger = any> {
 	 * @internal
 	 * @hidden
 	 */
-	private eventType: types.Constructor<TTrigger> | undefined;
+	private eventType: Constructor<TTrigger> | undefined;
 
 	/**
 	 * The optional guard condition that can further restrict the transition being traversed.
 	 * @internal
 	 * @hidden
 	 */
-	private guard: types.Predicate<TTrigger> = () => true;
+	private guard: Predicate<TTrigger> = () => true;
 
 	/**
 	 * The user defined actions that will be called on transition traversal.
 	 * @internal
 	 * @hidden
 	 */
-	private traverseActions: Array<types.Behaviour<TTrigger>> = [];
+	private traverseActions: Array<Behaviour<TTrigger>> = [];
 
 	/**
 	 * The precise semantics of the transition traversal based on the transition type.
@@ -62,7 +62,7 @@ export class Transition<TTrigger = any> {
 	 * @param eventType The type of trigger event that will cause this transition to be traversed.
 	 * @return Returns the transitions thereby allowing a fluent style transition construction.
 	 */
-	on(eventType: types.Constructor<TTrigger>): this {
+	on(eventType: Constructor<TTrigger>): this {
 		this.eventType = eventType;
 
 		return this;
@@ -74,7 +74,7 @@ export class Transition<TTrigger = any> {
 	 * @return Returns the transitions thereby allowing a fluent style transition construction.
 	 * @remarks It is recommended that this is used in conjunction with the on method, which will first test the type of the trigger event.
 	 */
-	when(guard: types.Predicate<TTrigger>): this {
+	when(guard: Predicate<TTrigger>): this {
 		this.guard = guard;
 
 		return this;
@@ -103,7 +103,7 @@ export class Transition<TTrigger = any> {
 	 * @param actions The action, or actions to call with the trigger event as a parameter.
 	 * @return Returns the transitions thereby allowing a fluent style transition construction.
 	 */
-	effect(...actions: Array<types.Behaviour<TTrigger>>): this {
+	effect(...actions: Array<Behaviour<TTrigger>>): this {
 		this.traverseActions.push(...actions);
 
 		return this;

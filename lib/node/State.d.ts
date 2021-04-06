@@ -1,5 +1,5 @@
 import { Vertex, Region, Visitor } from '.';
-import { types } from './types';
+import { Behaviour, Constructor } from './types';
 /**
  * A state is a situation in the lifecycle of the state machine that is stable between events.
  */
@@ -33,19 +33,19 @@ export declare class State extends Vertex {
      * @param actions One or callbacks that will be passed the trigger event.
      * @return Returns the state thereby allowing a fluent style state construction.
      */
-    entry(...actions: types.Behaviour<any>[]): this;
+    entry(...actions: Behaviour<any>[]): this;
     /**
      * Adds a user-defined behaviour to call on state exit.
      * @param actions One or callbacks that will be passed the trigger event.
      * @return Returns the state thereby allowing a fluent style state construction.
      */
-    exit(...actions: Array<types.Behaviour<any>>): this;
+    exit(...actions: Array<Behaviour<any>>): this;
     /**
      * Adds the types of trigger event that can .
      * @param actions One or callbacks that will be passed the trigger event.
      * @return Returns the state thereby allowing a fluent style state construction.
      */
-    defer(...type: types.Constructor<any>[]): this;
+    defer(...type: Constructor<any>[]): this;
     /**
      * Tests a state to see if it is a simple state, one without and child regions.
      * @returns Returns true if the state is a simple state.

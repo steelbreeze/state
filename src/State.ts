@@ -1,6 +1,6 @@
 import { NamedElement, Vertex, Region, Visitor } from '.';
 import { Transaction } from './Transaction';
-import { types } from './types';
+import { Behaviour, Constructor } from './types';
 
 /**
  * A state is a situation in the lifecycle of the state machine that is stable between events.
@@ -19,7 +19,7 @@ export class State extends Vertex {
 	/**
 	 * The types of events that may be deferred while in this state.
 	 */
-	private deferrableTriggers: Array<types.Constructor<any>> = [];
+	private deferrableTriggers: Array<Constructor<any>> = [];
 
 	/**
 	 * The default region for a composite state where regions are not explicitly defined.
@@ -29,12 +29,12 @@ export class State extends Vertex {
 	/**
 	 * The user-defined actions that will be called upon state entry.
 	 */
-	private entryActions: Array<types.Behaviour<any>> = [];
+	private entryActions: Array<Behaviour<any>> = [];
 
 	/**
 	 * The user-defined actions that will be called upon state exit.
 	 */
-	private exitActions: Array<types.Behaviour<any>> = [];
+	private exitActions: Array<Behaviour<any>> = [];
 
 	/**
 	 * Creates a new instance of the state class.
@@ -55,7 +55,7 @@ export class State extends Vertex {
 	 * @param actions One or callbacks that will be passed the trigger event.
 	 * @return Returns the state thereby allowing a fluent style state construction.
 	 */
-	public entry(...actions: types.Behaviour<any>[]): this {
+	public entry(...actions: Behaviour<any>[]): this {
 		this.entryActions.push(...actions);
 
 		return this;
@@ -66,7 +66,7 @@ export class State extends Vertex {
 	 * @param actions One or callbacks that will be passed the trigger event.
 	 * @return Returns the state thereby allowing a fluent style state construction.
 	 */
-	public exit(...actions: Array<types.Behaviour<any>>): this {
+	public exit(...actions: Array<Behaviour<any>>): this {
 		this.exitActions.push(...actions);
 
 		return this;
@@ -77,7 +77,7 @@ export class State extends Vertex {
 	 * @param actions One or callbacks that will be passed the trigger event.
 	 * @return Returns the state thereby allowing a fluent style state construction.
 	 */
-	public defer(...type: types.Constructor<any>[]): this {
+	public defer(...type: Constructor<any>[]): this {
 		this.deferrableTriggers.push(...type);
 
 		return this;
@@ -204,7 +204,7 @@ export class State extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	getDeferrableTriggers(transaction: Transaction): Array<types.Constructor<any>> {
+	getDeferrableTriggers(transaction: Transaction): Array<Constructor<any>> {
 		return this.children.reduce((result, region) => {
 			const state = transaction.getState(region);
 

@@ -1,6 +1,6 @@
 import { TransitionKind, NamedElement, Region, Transition } from '.';
 import { Transaction } from './Transaction';
-import { types } from './types';
+import { Constructor, Predicate } from './types';
 
 /**
  * Represents an element within a state machine model hierarchy that can be the source or target of a transition.
@@ -32,7 +32,7 @@ export abstract class Vertex extends NamedElement {
 	 * @param type The type (class name) of the triggering event.
 	 * @returns Returns a new typed transition. A typed transition being one whose guard condition and behaviour will accept a parameter of the same type specified.
 	 */
-	public on<TTrigger>(type: types.Constructor<TTrigger>): Transition<TTrigger> {
+	public on<TTrigger>(type: Constructor<TTrigger>): Transition<TTrigger> {
 		return new Transition<TTrigger>(this).on(type);
 	}
 
@@ -42,7 +42,7 @@ export abstract class Vertex extends NamedElement {
 	 * @param guard The guard condition to determine if the transition should be traversed.
 	 * @returns Returns a new transition; if TTrigger is specified, a typed transition will be returned.
 	 */
-	public when<TTrigger = any>(guard: types.Predicate<TTrigger>): Transition<TTrigger> {
+	public when<TTrigger = any>(guard: Predicate<TTrigger>): Transition<TTrigger> {
 		return new Transition<TTrigger>(this).when(guard);
 	}
 
