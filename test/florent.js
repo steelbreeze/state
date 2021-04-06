@@ -44,5 +44,3 @@ describe("test/florent.js", function () {
 		assert.equal(idle, instance.getState(onRegion));
 	});
 });
-
-//setLogger(oldConsole);

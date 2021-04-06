@@ -2,11 +2,9 @@ import { Region, State } from '.';
 /**
  * Represents an instance of a state machine model at runtime; there can be many seperate state machine instances using a common model.
  */
-export declare class Instance {
+export declare class Instance extends Map<Region, State> {
     readonly name: string;
     readonly root: State;
-    /** The stable active state configuration of the state machine, conveying the last known state for each region. */
-    private activeStateConfiguration;
     /** The currently active transaction */
     private transaction;
     /**

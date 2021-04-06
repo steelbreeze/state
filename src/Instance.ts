@@ -4,10 +4,7 @@ import { Transaction } from './Transaction';
 /**
  * Represents an instance of a state machine model at runtime; there can be many seperate state machine instances using a common model.
  */
-export class Instance {
-	/** The stable active state configuration of the state machine, conveying the last known state for each region. */
-	private activeStateConfiguration = new Map<Region, State>();
-
+export class Instance extends Map<Region, State> {
 	/** The currently active transaction */
 	private transaction: Transaction | undefined;
 
@@ -24,6 +21,8 @@ export class Instance {
 	 * @param root The root state of the state machine instance.
 	 */
 	public constructor(public readonly name: string, public readonly root: State) {
+		super();
+
 		this.transactional((transaction: Transaction) => {
 			this.root.doEnter(transaction, false, this.root);	// enter the root element
 
@@ -72,7 +71,7 @@ export class Instance {
 
 			// update the instance active state configuration from the transaction
 			for (const [key, value] of this.transaction) {
-				this.activeStateConfiguration.set(key, value);
+				this.set(key, value);
 			}
 
 			return result;
@@ -126,7 +125,7 @@ export class Instance {
 	 * @returns Returns the last known state of the region or undefined if the region has not been entered.
 	 */
 	public getState(region: Region): State | undefined {
-		return this.activeStateConfiguration.get(region);
+		return this.get(region);
 	}
 
 	/**

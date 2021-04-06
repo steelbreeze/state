@@ -1,0 +1,336 @@
+
+> @steelbreeze/state@8.2.0 test
+> nyc --reporter=lcov mocha
+
+instance enter model
+instance enter model.default
+instance enter model.default.initial
+instance leave model.default.initial
+instance enter model.default.stateA
+instance evaluate {"fieldA":1,"fieldB":2}
+instance deferring {"fieldA":1,"fieldB":2}
+instance evaluate deferred {"fieldA":1,"fieldB":2}
+instance leave model.default.stateA
+instance enter model.default.stateB
+hellkow B
+p3pp3r enter model
+p3pp3r enter model.region
+p3pp3r enter model.region.initial
+p3pp3r leave model.region.initial
+p3pp3r enter model.region.state1
+p3pp3r enter model.region.state1.regionA
+p3pp3r enter model.region.state1.regionA.initialA
+p3pp3r leave model.region.state1.regionA.initialA
+p3pp3r enter model.region.state1.regionA.state3
+p3pp3r enter model.region.state1.regionB
+p3pp3r enter model.region.state1.regionB.initialB
+p3pp3r leave model.region.state1.regionB.initialB
+p3pp3r enter model.region.state1.regionB.state4
+p3pp3r enter model.region.state1.regionB.state4.regionBa
+p3pp3r enter model.region.state1.regionB.state4.regionBa.initialBa
+p3pp3r leave model.region.state1.regionB.state4.regionBa.initialBa
+p3pp3r enter model.region.state1.regionB.state4.regionBa.state6
+p3pp3r enter model.region.state1.regionB.state4.regionBb
+p3pp3r enter model.region.state1.regionB.state4.regionBb.initialBb
+p3pp3r leave model.region.state1.regionB.state4.regionBb.initialBb
+p3pp3r enter model.region.state1.regionB.state4.regionBb.state7
+params enter model
+params enter model.default
+params enter model.default.initial
+params leave model.default.initial
+params enter model.default.first
+params evaluate [object Object]
+params leave model.default.first
+params enter model.default.second
+redboltz1 enter model
+redboltz1 enter model.region
+redboltz1 enter model.region.initial
+redboltz1 leave model.region.initial
+redboltz1 enter model.region.state1
+redboltz1 evaluate event1a
+redboltz1 deferring event1a
+redboltz1 evaluate event1b
+redboltz1 deferring event1b
+redboltz1 evaluate event2a
+redboltz1 leave model.region.state1
+redboltz1 enter model.region.state2
+redboltz1 evaluate event2b
+redboltz1 leave model.region.state2
+redboltz1 enter model.region.state3
+redboltz1 evaluate deferred event1a
+redboltz1 leave model.region.state3
+redboltz1 enter model.region.state4
+redboltz1 evaluate deferred event1b
+redboltz1 leave model.region.state4
+redboltz1 enter model.region.state5
+redboltz2 enter model
+redboltz2 enter model.region
+redboltz2 enter model.region.initial
+redboltz2 leave model.region.initial
+redboltz2 enter model.region.state1
+redboltz2 evaluate event1
+redboltz2 deferring event1
+redboltz2 evaluate event2
+redboltz2 leave model.region.state1
+redboltz2 enter model.region.state2
+redboltz2 leave model.region.state2
+redboltz2 enter model.region.state3
+redboltz2 evaluate deferred event1
+redboltz2 leave model.region.state3
+redboltz2 enter model.region.state4
+redboltz3 enter model
+redboltz3 enter model.region
+redboltz3 enter model.region.initial
+redboltz3 leave model.region.initial
+redboltz3 enter model.region.s1
+redboltz3 evaluate e1
+redboltz3 deferring e1
+redboltz3 evaluate e2
+redboltz3 deferring e2
+redboltz3 evaluate e3
+redboltz3 deferring e3
+redboltz3 evaluate e4
+redboltz3 leave model.region.s1
+redboltz3 enter model.region.s2
+redboltz3 evaluate deferred e2
+redboltz3 leave model.region.s2
+redboltz3 enter model.region.s3
+redboltz3 evaluate deferred e1
+redboltz3 leave model.region.s3
+redboltz3 enter model.region.s4
+redboltz3 evaluate deferred e3
+second-pass enter model
+second-pass enter model.default
+second-pass enter model.default.initial
+second-pass leave model.default.initial
+second-pass enter model.default.identify
+second-pass evaluate Continue
+second-pass leave model.default.identify
+second-pass enter model.default.exception_1
+second-pass evaluate No
+second-pass leave model.default.exception_1
+second-pass enter model.default.A
+second-pass enter model.default.A.default
+second-pass enter model.default.A.default.A_initial
+second-pass leave model.default.A.default.A_initial
+second-pass enter model.default.A.default.A_1
+second-pass evaluate Yes
+second-pass leave model.default.A.default.A_1
+second-pass enter model.default.A.default.A_2
+second-pass evaluate Yes
+second-pass leave model.default.A.default.A_2
+second-pass enter model.default.A.default.A_pass
+second-pass leave model.default.A.default.A_pass
+second-pass leave model.default.A.default
+second-pass leave model.default.A
+second-pass enter model.default.model_pass
+second-pass leave model.default.model_pass
+second-pass enter model.default.identify
+second-pass evaluate Continue
+second-pass leave model.default.identify
+second-pass enter model.default.exception_1
+second-pass evaluate No
+second-pass leave model.default.exception_1
+second-pass enter model.default.A
+second-pass enter model.default.A.default
+second-pass enter model.default.A.default.A_initial
+second-pass leave model.default.A.default.A_initial
+second-pass enter model.default.A.default.A_1
+static enter model
+static enter model.region
+static enter model.region.initial
+static leave model.region.initial
+static enter model.region.junction1
+static leave model.region.junction1
+static enter model.region.junction2
+static leave model.region.junction2
+static enter model.region.success
+transitions enter compTest
+transitions enter compTest.region
+transitions enter compTest.region.initial
+transitions leave compTest.region.initial
+transitions enter compTest.region.activity1
+transitions leave compTest.region.activity1
+transitions enter compTest.region.activity2
+transitions enter compTest.region.activity2.default
+transitions enter compTest.region.activity2.default.subInitial
+transitions leave compTest.region.activity2.default.subInitial
+transitions enter compTest.region.activity2.default.subEnd
+transitions leave compTest.region.activity2.default.subEnd
+transitions leave compTest.region.activity2.default
+transitions leave compTest.region.activity2
+transitions enter compTest.region.junction1
+transitions leave compTest.region.junction1
+transitions enter compTest.region.junction2
+transitions leave compTest.region.junction2
+transitions enter compTest.region.activity3
+transitions leave compTest.region.activity3
+transitions enter compTest.region.end
+instance enter model
+instance enter model.default
+instance enter model.default.initial
+instance leave model.default.initial
+instance enter model.default.stateA
+instance evaluate {"fieldA":"test","fieldB":1}
+instance evaluate {"fieldA":"test","fieldB":3}
+instance leave model.default.stateA
+instance enter model.default.stateB
+
+
+  test/brice.js
+brice evaluate a
+brice leave model.default.composite1.region1.state1
+brice enter model.default.composite1.region1.state2
+    ✓ Transitions should be selected depth-first
+
+  test/brice2.js
+    ✓ Internal transitions are evaluated on completion events
+    ✓ Internal transitions fire completion events if switch set
+
+  test/callbacks.js
+    User defined behavior
+      ✓ State exit behavior called
+      ✓ State entry behavior called
+      ✓ State transition behavior called
+
+  test/choice.js
+    With an random distribution, we process all messages (and test the true random nature)
+      ✓ choice pseudo state transitions all selected randomly
+    With an non-random distribution, each path is called equally
+      ✓ choice pseudo state transition selection alignmed to random function used
+
+  test/directEntry
+    ✓ Direct entry to a region that is part of an orthogonal state should trigger entry to sibling regions
+
+  test/callbacks.js
+instance evaluate move
+    ✓ Model will not respond to events
+    With the full model defined:
+instance evaluate move
+instance leave model.default.stateA
+instance enter model.default.stateB
+      ✓ Model will respond to events
+
+  test/else.js
+    ✓ Test should result in a completed state
+    ✓ Else from choice transition fired appropriately
+    ✓ Else from junction transition fired appropriately
+
+  test/florent.js
+florent evaluate ReleaseInput
+florent leave model.default.on.onRegion.idle
+florent enter model.default.on.onRegion.showMoveItemPattern
+florent evaluate Disable
+florent leave model.default.on.onRegion.showMoveItemPattern
+florent leave model.default.on.onRegion
+florent leave model.default.on
+florent enter model.default.off
+florent evaluate Enable
+florent leave model.default.off
+florent enter model.default.on
+florent enter model.default.on.onRegion
+florent enter model.default.on.onRegion.showMoveItemPattern
+florent evaluate ReleaseInput
+florent leave model.default.on.onRegion.showMoveItemPattern
+florent enter model.default.on.onRegion.hideMoveItemPattern
+florent leave model.default.on.onRegion.hideMoveItemPattern
+florent enter model.default.on.onRegion.idle
+florent evaluate Disable
+florent leave model.default.on.onRegion.idle
+florent leave model.default.on.onRegion
+florent leave model.default.on
+florent enter model.default.off
+florent evaluate Enable
+florent leave model.default.off
+florent enter model.default.on
+florent enter model.default.on.onRegion
+florent enter model.default.on.onRegion.idle
+    ✓ History semantics should set the regions active state configuration to the last known state
+
+  test/fungiboletus.js
+fungiboletus enter model
+fungiboletus enter model.default
+fungiboletus enter model.default.initial
+fungiboletus leave model.default.initial
+fungiboletus enter model.default.defaultState
+fungiboletus evaluate { type: 'abc' }
+    ✓ Completion transition evaluation after internal transition should use the source vertex as the trigger event
+
+  test/history.js
+    ✓ Test should result in a completed state
+
+  test/internal.js
+internal evaluate internal
+    ✓ Internal transitions do not trigger a state transition
+internal evaluate to
+internal leave model.region.state
+internal enter model.region.state
+    ✓ External transitions do trigger a state transition
+
+  test/joel.js
+    ✓ When a regions leaves via a pseudo state, than pseudo state is left and not the last known state
+
+  Local transition tests
+    ✓ External transition fired OK
+
+  test/muximise.js
+    State type tests
+      ✓ simple state isSimple
+      ✓ State.isComposite
+      ✓ State.isOrthogonal
+    Orthogonal state completion
+muximise evaluate complete1
+muximise leave model.region.ortho.r1.s1
+muximise enter model.region.ortho.r1.f1
+muximise evaluate complete2
+muximise leave model.region.ortho.r2.s2
+muximise enter model.region.ortho.r2.f2
+muximise leave model.region.ortho.r1.f1
+muximise leave model.region.ortho.r1
+muximise leave model.region.ortho.r2.f2
+muximise leave model.region.ortho.r2
+muximise leave model.region.ortho
+muximise enter model.region.final
+      ✓ Completion transition fires once all regions of an orthogonal state are complete
+
+  test/p3pp3r.js
+p3pp3r evaluate event2
+p3pp3r leave model.region.state1.regionA.state3
+p3pp3r leave model.region.state1.regionA
+p3pp3r leave model.region.state1.regionB.state4.regionBa.state6
+p3pp3r leave model.region.state1.regionB.state4.regionBa
+p3pp3r leave model.region.state1.regionB.state4.regionBb.state7
+p3pp3r leave model.region.state1.regionB.state4.regionBb
+p3pp3r leave model.region.state1.regionB.state4
+p3pp3r leave model.region.state1.regionB
+p3pp3r leave model.region.state1
+p3pp3r enter model.region.state2
+    ✓ All regions of orthogonal state must be exited during the to transition
+
+  test/params.js
+    ✓ Multiple parameters available to exit behavior
+    ✓ Multiple parameters available to entry behavior
+    ✓ Multiple parameters available to transition behavior
+
+  test/redboltz1
+    ✓ States can defer events for subsiquent evaluation
+
+  test/redboltz2
+    ✓ Deferred events are evaluated after completion transitions
+
+  test/redboltz3
+    ✓ Deferred events are evaluated after completion transitions
+
+  test/static.js
+    ✓ Junction transitions implement a static conditional branch
+    ✓ Junction transitions call all transition behavior after guards have been tested
+
+  test/transitions.js
+    ✓ Completion transitions should be triggered by state entry
+
+  test/visitor.js
+    ✓ A JSON serialized representation of a state machine instance can be produced by visiting a state machine
+
+
+  36 passing (19ms)
+
