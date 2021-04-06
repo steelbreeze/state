@@ -6,6 +6,8 @@ There is also minor refactoring for performance increase and code size redution.
 ### Breaking changes
 TransitionKind.Internal has been removed as it was redundant. All transitions when initially created have internal transition semantics which can then be modified to be external or local transitions later.
 
+Replace Instance.getState with Instance.get.
+
 ## v8.1.3
 Allow calls to Instance.evaluate within an entry/exit and transition actions.
 

@@ -18,7 +18,7 @@ var instance = new state.Instance("directEntry", model);
 
 describe('test/directEntry', function () {
 	it('Direct entry to a region that is part of an orthogonal state should trigger entry to sibling regions', function () {
-		assert.equal(stateA1a, instance.getState(regionA1));
-		assert.equal(stateA2a, instance.getState(regionA2));
+		assert.equal(stateA1a, instance.get(regionA1));
+		assert.equal(stateA2a, instance.get(regionA2));
 	});
 });

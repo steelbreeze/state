@@ -62,7 +62,7 @@ describe("test/muximise.js", function () {
 			instance.evaluate("complete1");
 			instance.evaluate("complete2");
 
-			assert.equal(final, instance.getState(region));
+			assert.equal(final, instance.get(region));
 		});
 	});
 });

@@ -35,12 +35,12 @@ describe("test/florent.js", function () {
 		instance.evaluate("Disable");
 		instance.evaluate("Enable");
 
-		assert.equal(showMoveItemPattern, instance.getState(onRegion));
+		assert.equal(showMoveItemPattern, instance.get(onRegion));
 
 		instance.evaluate("ReleaseInput");
 		instance.evaluate("Disable");
 		instance.evaluate("Enable");
 
-		assert.equal(idle, instance.getState(onRegion));
+		assert.equal(idle, instance.get(onRegion));
 	});
 });

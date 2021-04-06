@@ -25,7 +25,7 @@ var instance = new state.Instance("static", model);
 describe("test/static.js", function () {
 	it("Junction transitions implement a static conditional branch", function () {
 		
-		assert.equal(pass, instance.getState(region));
+		assert.equal(pass, instance.get(region));
 	});
 
 	it("Junction transitions call all transition behavior after guards have been tested", function () {

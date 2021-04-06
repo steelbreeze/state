@@ -27,7 +27,7 @@ var instance = new state.Instance("transitions", model);
 
 describe("test/transitions.js", function () {
 	it("Completion transitions should be triggered by state entry", function () {
-		assert.equal(end, instance.getState(region));
+		assert.equal(end, instance.get(region));
 	});
 });
 

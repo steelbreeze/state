@@ -120,15 +120,6 @@ export class Instance extends Map<Region, State> {
 	}
 
 	/**
-	 * Returns the last known state of a region from the stable active state configuration.
-	 * @param region The region to find the last know state of.
-	 * @returns Returns the last known state of the region or undefined if the region has not been entered.
-	 */
-	public getState(region: Region): State | undefined {
-		return this.get(region);
-	}
-
-	/**
 	 * Returns the name of the state machine instance.
 	 * @returns Returns the name of the state machine instance.
 	 */

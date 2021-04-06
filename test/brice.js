@@ -22,6 +22,6 @@ describe("test/brice.js", function () {
 	it("Transitions should be selected depth-first", function () {
 		instance.evaluate("a");
 
-		assert.equal(state2, instance.getState(region1));
+		assert.equal(state2, instance.get(region1));
 	});
 });

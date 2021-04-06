@@ -28,7 +28,7 @@ instance.evaluate("end");
 
 describe("test/history.js", function () {
 	it("Test should result in a completed state", function () {
-		assert.equal(end, instance.getState(region));
+		assert.equal(end, instance.get(region));
 	});
 });
 

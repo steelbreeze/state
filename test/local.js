@@ -44,6 +44,6 @@ instance.evaluate("to");
 
 describe("Local transition tests", function () {
 	it("External transition fired OK", function () {
-		assert.equal(bStateII, instance.getState(regionB));
+		assert.equal(bStateII, instance.get(regionB));
 	});
 });

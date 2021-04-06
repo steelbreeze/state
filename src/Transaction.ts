@@ -26,7 +26,7 @@ export class Transaction extends Map<Region,State> {
 	 * @internal
 	 */
 	getState(region: Region): State | undefined {
-		return this.get(region) || this.instance.getState(region);
+		return this.get(region) || this.instance.get(region);
 	}
 
 	/** 
@@ -53,6 +53,6 @@ export class Transaction extends Map<Region,State> {
 	 * @internal
 	 */
 	getVertex(region: Region): Vertex | undefined {
-		return this.lastKnownVertex.get(region) || this.instance.getState(region);
+		return this.lastKnownVertex.get(region) || this.instance.get(region);
 	}
 }
