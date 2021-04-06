@@ -10,7 +10,7 @@ export class Region extends NamedElement {
 	 * @internal
 	 * @hidden
 	 */
-	children: Array<Vertex> = [];
+	children: Array<State | PseudoState> = [];
 
 	/**
 	 * The initial pseudo state, defining the starting vertex when region is entered.

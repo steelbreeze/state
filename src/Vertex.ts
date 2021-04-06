@@ -1,4 +1,4 @@
-import { TransitionKind, NamedElement, Region, Transition, Visitor } from '.';
+import { TransitionKind, NamedElement, Region, Transition } from '.';
 import { Transaction } from './Transaction';
 import { types } from './types';
 
@@ -24,10 +24,6 @@ export abstract class Vertex extends NamedElement {
 	 */
 	protected constructor(name: string, parent: Region | undefined) {
 		super(name, parent);
-
-		if (parent) {
-			parent.children.push(this);
-		}
 	}
 
 	/**
@@ -117,10 +113,4 @@ export abstract class Vertex extends NamedElement {
 
 		transaction.setVertex(this);
 	}
-
-	/**
-	 * Accepts a visitor.
-	 * @param visitor The visitor to call back.
-	 */
-	public abstract accept(visitor: Visitor): void;
 }

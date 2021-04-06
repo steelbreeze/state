@@ -25,6 +25,8 @@ export class PseudoState extends Vertex {
 		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 
+		this.parent.children.push(this);
+
 		this.isHistory = this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
 
 		if (this.kind === PseudoStateKind.Initial || this.isHistory) {

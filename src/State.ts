@@ -44,6 +44,10 @@ export class State extends Vertex {
 	public constructor(name: string, parent: State | Region | undefined = undefined) {
 		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
+
+		if (this.parent) {
+			this.parent.children.push(this);
+		}
 	}
 	
 	/**
