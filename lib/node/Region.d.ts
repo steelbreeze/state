@@ -10,6 +10,7 @@ export declare class Region extends NamedElement {
      * @param parent The parent state of this region.
      */
     constructor(name: string, parent: State);
+    getParent(): State;
     /**
      * Accepts a visitor and calls back its visitRegion method and cascade to child vertices.
      * @param visitor The visitor to call back.

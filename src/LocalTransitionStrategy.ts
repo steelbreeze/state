@@ -13,13 +13,14 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 
 	doExitSource(transaction: Transaction, history: boolean, trigger: any): void { 
 		this.vertexToEnter = this.target;
+		const parent = this.vertexToEnter.parent;
 
-		while (this.vertexToEnter.parent && this.vertexToEnter.parent.parent && !this.vertexToEnter.parent.parent.isActive(transaction)) {
-			this.vertexToEnter = this.vertexToEnter.parent.parent;
+		while (parent && parent.parent && !parent.parent.isActive(transaction)) {
+			this.vertexToEnter = parent.parent;
 		}
 
-		if (!this.vertexToEnter.isActive(transaction) && this.vertexToEnter.parent) {
-			const vertex = transaction.getVertex(this.vertexToEnter.parent);
+		if (!this.vertexToEnter.isActive(transaction) && parent) {
+			const vertex = transaction.getVertex(parent);
 			
 			if(vertex) {
 				vertex.doExit(transaction, history, trigger);

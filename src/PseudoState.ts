@@ -7,6 +7,9 @@ import { TransitionKind } from './TransitionKind';
  * A pseudo state is a transient state within a region, once entered it will exit immediately.
  */
 export class PseudoState extends Vertex {
+	/** The parent region of the vertex. */
+	public readonly parent: Region;
+
 	/** The 'else' outgoing transition if this is a junction or choice pseudo state. */
 	private elseTransition: Transition | undefined;
 
@@ -20,12 +23,17 @@ export class PseudoState extends Vertex {
 	 */
 	public constructor(name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
 		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
+		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 
 		this.isHistory = this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
 
 		if (this.kind === PseudoStateKind.Initial || this.isHistory) {
-			this.parent!.initial = this;
+			this.parent.initial = this;
 		}
+	}
+
+	isActive(transaction: Transaction): boolean {
+		return transaction.getVertex(this.parent) === this;
 	}
 
 	/**

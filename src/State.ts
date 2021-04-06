@@ -6,6 +6,9 @@ import { types } from './types';
  * A state is a situation in the lifecycle of the state machine that is stable between events.
  */
 export class State extends Vertex {
+	/** The parent region of the vertex. */
+	public readonly parent: Region | undefined;
+
 	/**
 	 * The child regions of the state.
 	 * @internal
@@ -40,6 +43,11 @@ export class State extends Vertex {
 	 */
 	public constructor(name: string, parent: State | Region | undefined = undefined) {
 		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
+		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
+	}
+
+	isActive(transaction: Transaction): boolean {
+		return this.parent === undefined || transaction.getVertex(this.parent) === this;
 	}
 
 	/**

@@ -5,7 +5,8 @@ import { types } from './types';
  * Vertices are contained within regions.
  */
 export declare abstract class Vertex extends NamedElement {
-    readonly parent: Region | undefined;
+    /** The parent region of the vertex. */
+    abstract parent: Region | undefined;
     /**
      * Creates a new instance of the vertex class.
      * @param name The name of the vertex.

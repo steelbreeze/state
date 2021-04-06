@@ -7,6 +7,9 @@ import { types } from './types';
  * Vertices are contained within regions.
  */
 export abstract class Vertex extends NamedElement {
+	/** The parent region of the vertex. */
+	abstract parent: Region | undefined;
+
 	/**
 	 * The transitions originating from this vertex.
 	 * @internal
@@ -19,11 +22,11 @@ export abstract class Vertex extends NamedElement {
 	 * @param name The name of the vertex.
 	 * @param parent The parent region of this vertex.
 	 */
-	protected constructor(name: string, public readonly parent: Region | undefined) {
+	protected constructor(name: string, parent: Region | undefined) {
 		super(name, parent);
 
-		if (this.parent) {
-			this.parent.children.push(this);
+		if (parent) {
+			parent.children.push(this);
 		}
 	}
 
@@ -69,9 +72,7 @@ export abstract class Vertex extends NamedElement {
 	 * @internal
 	 * @hidden
 	 */
-	isActive(transaction: Transaction): boolean {
-		return this.parent === undefined || transaction.getVertex(this.parent) === this;
-	}
+	abstract isActive(transaction: Transaction): boolean;
 
 	/**
 	 * Evaluates a trigger event at this vertex to determine if it will trigger an outgoing transition.
