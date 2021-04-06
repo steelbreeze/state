@@ -1,3 +1,11 @@
+## v8.2.0
+This release has bumped the JavaScript version to ES2018. This then enables the use of the built-in Map collection class.
+
+There is also minor refactoring for performance increase and code size redution.
+
+### Breaking changes
+TransitionKind.Internal has been removed as it was redundant. All transitions when initially created have internal transition semantics which can then be modified to be external or local transitions later.
+
 ## v8.1.3
 Allow calls to Instance.evaluate within an entry/exit and transition actions.
 
