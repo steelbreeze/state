@@ -5,14 +5,7 @@ import { Region, Vertex, State, Instance } from './';
  * @hidden
  * @internal
  */
-export class Transaction {
-	/**
-	 * The transactional active state configuration of the state machine.
-	 * @hidden
-	 * @internal
-	 */
-	 readonly activeStateConfiguration = new Map<Region, State>();
-
+export class Transaction extends Map<Region,State> {
 	/** The last known vertex within a given region. */
 	private readonly lastKnownVertex = new Map<Region, Vertex>();
 
@@ -22,6 +15,7 @@ export class Transaction {
 	 * @internal
 	 */
 	constructor(public readonly instance: Instance) {
+		super();
 	}
 
 	/** 
@@ -32,7 +26,7 @@ export class Transaction {
 	 * @internal
 	 */
 	getState(region: Region): State | undefined {
-		return this.activeStateConfiguration.get(region) || this.instance.getState(region);
+		return this.get(region) || this.instance.getState(region);
 	}
 
 	/** 
@@ -46,7 +40,7 @@ export class Transaction {
 			this.lastKnownVertex.set(vertex.parent, vertex);
 
 			if(vertex instanceof State) {
-				this.activeStateConfiguration.set(vertex.parent, vertex);
+				this.set(vertex.parent, vertex);
 			}
 		}
 	}

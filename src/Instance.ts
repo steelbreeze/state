@@ -71,7 +71,7 @@ export class Instance {
 			const result = operation(this.transaction);
 
 			// update the instance active state configuration from the transaction
-			for (const [key, value] of this.transaction.activeStateConfiguration) {
+			for (const [key, value] of this.transaction) {
 				this.activeStateConfiguration.set(key, value);
 			}
 
