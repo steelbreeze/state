@@ -25,18 +25,6 @@ export class Transaction {
 	}
 
 	/** 
-	 * Updates the last known state of the transaction.
-	 * @param state The state to set as the last known state of its parent region.
-	 * @hidden
-	 * @internal
-	 */
-	setState(state: State) {
-		if(state.parent) {
-			this.activeStateConfiguration.set(state.parent, state);
-		}
-	}
-
-	/** 
 	 * Returns the last known state of a given region within the transaction.
 	 * @param region The region to return the last known state of.
 	 * @returns Returns the last know state from the transaction cache; if not found, it defers to the state machine instance active state configuration.
@@ -56,6 +44,10 @@ export class Transaction {
 	setVertex(vertex: Vertex) {
 		if(vertex.parent) {
 			this.lastKnownVertex.set(vertex.parent, vertex);
+
+			if(vertex instanceof State) {
+				this.activeStateConfiguration.set(vertex.parent, vertex);
+			}
 		}
 	}
 

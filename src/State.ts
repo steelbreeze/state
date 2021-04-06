@@ -227,8 +227,6 @@ export class State extends Vertex {
 
 		super.doEnterHead(transaction, history, trigger, next);
 
-		transaction.setState(this);
-
 		this.entryActions.forEach(action => action(trigger, transaction.instance));
 	}
 
