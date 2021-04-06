@@ -58,10 +58,6 @@ export abstract class Vertex extends NamedElement {
 	 * @returns Returns a new transition; if TTrigger is specified, a typed transition will be returned.
 	 */
 	public to<TTrigger = any>(target: Vertex, kind: TransitionKind = TransitionKind.External): Transition<any> {
-		if(kind === TransitionKind.Internal && target !== this) {
-			throw new Error( `Internal transitions must have the same source and target states.`);
-		}
-
 		return new Transition<TTrigger>(this).to(target, kind);
 	}
 

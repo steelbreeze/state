@@ -7,15 +7,6 @@ import { LocalTransitionStrategy } from './LocalTransitionStrategy';
 import { types } from './types';
 
 /**
- * Maps TransitionKind to a TransitionStrategy.
- */
-const TransitionStrategyMap: types.Constructor<TransitionStrategy>[] = [];
-
-TransitionStrategyMap[TransitionKind.External] = ExternalTransitionStrategy;
-TransitionStrategyMap[TransitionKind.Internal] = InternalTransitionStrategy;
-TransitionStrategyMap[TransitionKind.Local] = LocalTransitionStrategy;
-
-/**
  * A transition changes the active state configuration of a state machine by specifying the valid transitions between states and the trigger events that cause them to be traversed.
  * @param TTrigger The type of trigger event that this transition will respond to.
  */
@@ -61,7 +52,7 @@ export class Transition<TTrigger = any> {
 	 */
 	constructor(public readonly source: Vertex) {
 		this.target = source;
-		this.strategy = new TransitionStrategyMap[TransitionKind.Internal](this.source, this.target);
+		this.strategy = new InternalTransitionStrategy(this.source, this.target);
 
 		this.source.outgoing.push(this);
 	}
@@ -97,7 +88,12 @@ export class Transition<TTrigger = any> {
 	 */
 	to(target: Vertex, kind: TransitionKind = TransitionKind.External): this {
 		this.target = target;
-		this.strategy = new TransitionStrategyMap[kind](this.source, this.target);
+
+		if(kind === TransitionKind.External) {
+			this.strategy = new ExternalTransitionStrategy(this.source, this.target);
+		} else if(kind === TransitionKind.Local) {
+			this.strategy = new LocalTransitionStrategy(this.source, this.target);
+		}
 
 		return this;
 	}
