@@ -4,7 +4,7 @@ import { TransitionStrategy } from './TransitionStrategy';
 import { ExternalTransitionStrategy } from './ExternalTransitionStrategy';
 import { InternalTransitionStrategy } from './InternalTransitionStrategy';
 import { LocalTransitionStrategy } from './LocalTransitionStrategy';
-import { Behaviour, Constructor, Predicate } from './types';
+import { Behaviour, Predicate, Producer } from './types';
 
 /**
  * A transition changes the active state configuration of a state machine by specifying the valid transitions between states and the trigger events that cause them to be traversed.
@@ -21,7 +21,7 @@ export class Transition<TTrigger = any> {
 	 * @internal
 	 * @hidden
 	 */
-	private eventType: Constructor<TTrigger> | undefined;
+	private eventType: Producer<TTrigger> | undefined;
 
 	/**
 	 * The optional guard condition that can further restrict the transition being traversed.
@@ -62,7 +62,7 @@ export class Transition<TTrigger = any> {
 	 * @param eventType The type of trigger event that will cause this transition to be traversed.
 	 * @return Returns the transitions thereby allowing a fluent style transition construction.
 	 */
-	on(eventType: Constructor<TTrigger>): this {
+	on(eventType: Producer<TTrigger>): this {
 		this.eventType = eventType;
 
 		return this;

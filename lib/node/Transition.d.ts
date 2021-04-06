@@ -1,5 +1,5 @@
 import { TransitionKind, Vertex } from '.';
-import { Behaviour, Constructor, Predicate } from './types';
+import { Behaviour, Predicate, Producer } from './types';
 /**
  * A transition changes the active state configuration of a state machine by specifying the valid transitions between states and the trigger events that cause them to be traversed.
  * @param TTrigger The type of trigger event that this transition will respond to.
@@ -15,7 +15,7 @@ export declare class Transition<TTrigger = any> {
      * @param eventType The type of trigger event that will cause this transition to be traversed.
      * @return Returns the transitions thereby allowing a fluent style transition construction.
      */
-    on(eventType: Constructor<TTrigger>): this;
+    on(eventType: Producer<TTrigger>): this;
     /**
      * Adds an guard condition to the transition; it will only be traversed if the guard condition evaluates true for a given trigger event.
      * @param guard A boolean predicate callback that takes the trigger event as a parameter.

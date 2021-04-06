@@ -1,6 +1,6 @@
 import { NamedElement, Vertex, Region, Visitor } from '.';
 import { Transaction } from './Transaction';
-import { Behaviour, Constructor } from './types';
+import { Behaviour, Producer } from './types';
 
 /**
  * A state is a situation in the lifecycle of the state machine that is stable between events.
@@ -19,7 +19,7 @@ export class State extends Vertex {
 	/**
 	 * The types of events that may be deferred while in this state.
 	 */
-	private deferrableTriggers: Array<Constructor<any>> = [];
+	private deferrableTriggers: Array<Producer<any>> = [];
 
 	/**
 	 * The default region for a composite state where regions are not explicitly defined.
@@ -77,7 +77,7 @@ export class State extends Vertex {
 	 * @param actions One or callbacks that will be passed the trigger event.
 	 * @return Returns the state thereby allowing a fluent style state construction.
 	 */
-	public defer(...type: Constructor<any>[]): this {
+	public defer(...type: Producer<any>[]): this {
 		this.deferrableTriggers.push(...type);
 
 		return this;
@@ -204,7 +204,7 @@ export class State extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	getDeferrableTriggers(transaction: Transaction): Array<Constructor<any>> {
+	getDeferrableTriggers(transaction: Transaction): Array<Producer<any>> {
 		return this.children.reduce((result, region) => {
 			const state = transaction.getState(region);
 

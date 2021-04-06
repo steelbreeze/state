@@ -1,5 +1,5 @@
 import { Vertex, Region, Visitor } from '.';
-import { Behaviour, Constructor } from './types';
+import { Behaviour, Producer } from './types';
 /**
  * A state is a situation in the lifecycle of the state machine that is stable between events.
  */
@@ -45,7 +45,7 @@ export declare class State extends Vertex {
      * @param actions One or callbacks that will be passed the trigger event.
      * @return Returns the state thereby allowing a fluent style state construction.
      */
-    defer(...type: Constructor<any>[]): this;
+    defer(...type: Producer<any>[]): this;
     /**
      * Tests a state to see if it is a simple state, one without and child regions.
      * @returns Returns true if the state is a simple state.
