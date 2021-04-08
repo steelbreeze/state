@@ -52,7 +52,7 @@ export class Transition<TTrigger = any> {
 	 */
 	constructor(public readonly source: Vertex) {
 		this.target = source;
-		this.strategy = new InternalTransitionStrategy(this.source, this.target);
+		this.strategy = new InternalTransitionStrategy(this.target);
 
 		this.source.outgoing.push(this);
 	}
@@ -92,7 +92,7 @@ export class Transition<TTrigger = any> {
 		if(kind === TransitionKind.External) {
 			this.strategy = new ExternalTransitionStrategy(this.source, this.target);
 		} else {
-			this.strategy = new LocalTransitionStrategy(this.source, this.target);
+			this.strategy = new LocalTransitionStrategy(this.target);
 		}
 
 		return this;

@@ -8,7 +8,7 @@ import { TransitionStrategy } from './TransitionStrategy';
 export class LocalTransitionStrategy implements TransitionStrategy {
 	vertexToEnter: Vertex | undefined;
 
-	constructor(private readonly source: Vertex, private readonly target: Vertex) {
+	constructor(private readonly target: Vertex) {
 	}
 
 	doExitSource(transaction: Transaction, history: boolean, trigger: any): void { 

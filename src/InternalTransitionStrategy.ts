@@ -6,16 +6,16 @@ import { TransitionStrategy } from './TransitionStrategy';
  * Logic used to traverse internal transitions.
  */
 export class InternalTransitionStrategy implements TransitionStrategy {
-	constructor(source: Vertex, private readonly target: Vertex) {
+	constructor(private readonly target: Vertex) {
 	}
 
-	doEnterTarget(transaction: Transaction, history: boolean, trigger: any): void {
+	doEnterTarget(transaction: Transaction, history: boolean): void {
 		if (this.target instanceof State) {
 			this.target.completion(transaction, history);
 		}
 	}
 
-	doExitSource(transaction: Transaction, history: boolean, trigger: any): void {
+	doExitSource(): void {
 	}
 
 	toString(): string {
