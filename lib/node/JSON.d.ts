@@ -1,17 +1,18 @@
-import { NamedElement, State, Region, Instance, Visitor } from '.';
+import { State, Region, Instance, Visitor } from '.';
 import { Function } from './types';
 declare class JSONNode {
     readonly name: String;
-    constructor(element: NamedElement);
+    constructor(element: Region | State);
 }
 declare class JSONState extends JSONNode {
     deferredEventPool: Array<any> | undefined;
     readonly children: Array<JSONRegion>;
+    constructor(state: State);
 }
 declare class JSONRegion extends JSONNode {
     readonly activeState: string | undefined;
     readonly children: Array<JSONState>;
-    constructor(region: NamedElement, activeState: string | undefined);
+    constructor(region: Region, activeState: string | undefined);
 }
 export declare class JSONSerializer extends Visitor {
     private readonly instance;

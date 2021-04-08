@@ -1,10 +1,10 @@
-import { PseudoStateKind, NamedElement, State, PseudoState, Visitor } from '.';
+import { log, PseudoStateKind, State, PseudoState, Visitor } from '.';
 import { Transaction } from './Transaction';
 
 /**
  * A region is a container of vertices (states and pseudo states) within a state machine model.
  */
-export class Region extends NamedElement {
+export class Region {
 	/**
 	 * The child  vertices of this region.
 	 * @internal
@@ -24,14 +24,10 @@ export class Region extends NamedElement {
 	 * @param name The name of the region.
 	 * @param parent The parent state of this region.
 	 */
-	public constructor(name: string, public readonly parent: State) {
-		super(name, parent);
+	public constructor(public readonly name: string, public readonly parent: State) {
+		log.write(() => `Created ${this}`, log.Create);
 
 		parent.children.push(this);
-	}
-
-	getParent(): State {
-		return this.parent;
 	}
 
 	/** 
@@ -44,6 +40,31 @@ export class Region extends NamedElement {
 		const currentState = transaction.get(this);
 
 		return currentState !== undefined && currentState.isFinal();
+	}
+
+	/**
+	 * Enters an element during a state transition.
+	 * @param transaction The current transaction being executed.
+	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
+	 * @param trigger The event that triggered the state transition.
+	 * @internal
+	 * @hidden
+	 */
+	doEnter(transaction: Transaction, history: boolean, trigger: any): void {
+		this.doEnterHead(transaction);
+		this.doEnterTail(transaction, history, trigger);
+	}
+	
+	/**
+	 * Performs the initial steps required to enter an element during a state transition.
+	 * @param transaction The current transaction being executed.
+	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
+	 * @param trigger The event that triggered the state transition.
+	 * @internal
+	 * @hidden
+	 */
+	doEnterHead(transaction: Transaction): void {
+		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 	}
 
 	/**
@@ -81,7 +102,7 @@ export class Region extends NamedElement {
 			vertex.doExit(transaction, history, trigger);
 		}
 
-		super.doExit(transaction, history, trigger);
+		log.write(() => `${transaction.instance} leave ${this}`, log.Exit);
 	}
 
 	/**
@@ -97,4 +118,11 @@ export class Region extends NamedElement {
 
 		visitor.visitRegionTail(this);
 	}
+
+	/**
+	 * Returns the element in string form; the fully qualified name of the element.
+	 */
+	public toString(): string {
+		return `${this.parent}.${this.name}`;
+	}	
 }

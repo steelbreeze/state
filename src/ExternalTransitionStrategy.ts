@@ -1,4 +1,4 @@
-import { NamedElement, Region, Vertex, PseudoState } from '.';
+import { Region, Vertex, PseudoState } from '.';
 import { Transaction } from './Transaction';
 import { TransitionStrategy } from './TransitionStrategy';
 
@@ -6,8 +6,8 @@ import { TransitionStrategy } from './TransitionStrategy';
  * Logic used to traverse external transitions.
  */
 export class ExternalTransitionStrategy implements TransitionStrategy {
-	private readonly toExit: NamedElement;
-	private readonly toEnter: Array<NamedElement>;
+	private readonly toExit: Region | Vertex;
+	private readonly toEnter: Array<Region | Vertex>;
 
 	constructor(source: Vertex, target: Vertex) {
 		const sourceAncestors = ancestry(source);
@@ -59,7 +59,7 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
  * @internal
  * @hidden
  */
-function* ancestry(element: Region | Vertex): IterableIterator<NamedElement> {
+function* ancestry(element: Region | Vertex): IterableIterator<Region | Vertex> {
 	if (element.parent) {
 		yield* ancestry(element.parent);
 	}

@@ -1,4 +1,4 @@
-import { TransitionKind, NamedElement, Region, Transition } from '.';
+import { log, TransitionKind, Region, Transition } from '.';
 import { Transaction } from './Transaction';
 import { Constructor, Predicate } from './types';
 
@@ -6,7 +6,7 @@ import { Constructor, Predicate } from './types';
  * Represents an element within a state machine model hierarchy that can be the source or target of a transition.
  * Vertices are contained within regions.
  */
-export abstract class Vertex extends NamedElement {
+export abstract class Vertex {
 	/** The parent region of the vertex. */
 	abstract parent: Region | undefined;
 
@@ -22,8 +22,8 @@ export abstract class Vertex extends NamedElement {
 	 * @param name The name of the vertex.
 	 * @param parent The parent region of this vertex.
 	 */
-	protected constructor(name: string, parent: Region | undefined) {
-		super(name, parent);
+	protected constructor(public readonly name: string, parent: Region | undefined) {
+		log.write(() => `Created ${this}`, log.Create);
 	}
 
 	/**
@@ -101,6 +101,19 @@ export abstract class Vertex extends NamedElement {
 	}
 
 	/**
+	 * Enters an element during a state transition.
+	 * @param transaction The current transaction being executed.
+	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
+	 * @param trigger The event that triggered the state transition.
+	 * @internal
+	 * @hidden
+	 */
+	doEnter(transaction: Transaction, history: boolean, trigger: any): void {
+		this.doEnterHead(transaction, history, trigger, undefined);
+		this.doEnterTail(transaction, history, trigger);
+	}
+
+	/**
 	 * Performs the initial steps required to enter a vertex during a state transition; updates teh active state configuration.
 	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
@@ -108,9 +121,38 @@ export abstract class Vertex extends NamedElement {
 	 * @internal
 	 * @hidden
 	 */
-	doEnterHead(transaction: Transaction, history: boolean, trigger: any, next: NamedElement | undefined): void {
-		super.doEnterHead(transaction, history, trigger, next);
+	doEnterHead(transaction: Transaction, history: boolean, trigger: any, next: Vertex | Region | undefined): void {
+		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 
 		transaction.setVertex(this);
 	}
+
+	/**
+	 * Performs the final steps required to enter an element during a state transition including cascading the entry operation to child elements and completion transition.
+	 * @param transaction The current transaction being executed.
+	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
+	 * @param trigger The event that triggered the state transition.
+	 * @internal
+	 * @hidden
+	 */
+	 abstract doEnterTail(transaction: Transaction, history: boolean, trigger: any): void;
+
+	/**
+	 * Exits an element during a state transition.
+	 * @param transaction The current transaction being executed.
+	 * @param history Flag used to denote deep history semantics are in force at the time of exit.
+	 * @param trigger The event that triggered the state transition.
+	 * @internal
+	 * @hidden
+	 */
+	 doExit(transaction: Transaction, history: boolean, trigger: any): void {
+		log.write(() => `${transaction.instance} leave ${this}`, log.Exit);
+	}	
+
+	/**
+	 * Returns the element in string form; the fully qualified name of the element.
+	 */
+	public toString(): string {
+		return this.parent ? `${this.parent}.${this.name}` : this.name;
+	}	
 }

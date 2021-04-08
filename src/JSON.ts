@@ -1,10 +1,10 @@
-import { NamedElement, State, Region, Instance, Visitor } from '.';
+import { State, Region, Instance, Visitor } from '.';
 import { Function } from './types';
 
 class JSONNode {
 	readonly name: String;
 
-	public constructor(element: NamedElement) {
+	public constructor(element: Region | State) {
 		this.name = element.name;
 	}
 }
@@ -12,12 +12,16 @@ class JSONNode {
 class JSONState extends JSONNode {
 	deferredEventPool: Array<any> | undefined;
 	readonly children: Array<JSONRegion> = [];
+
+	constructor(state: State) {
+		super(state);
+	}
 }
 
 class JSONRegion extends JSONNode {
 	public readonly children: Array<JSONState> = [];
 
-	constructor(region: NamedElement, public readonly activeState: string | undefined) {
+	constructor(region: Region, public readonly activeState: string | undefined) {
 		super(region);
 	}
 }
@@ -25,8 +29,8 @@ class JSONRegion extends JSONNode {
 export class JSONSerializer extends Visitor {
 	public root: JSONState | undefined;
 
-	private stateMap: Map<NamedElement, JSONState> = new Map<NamedElement, JSONState>();
-	private regionMap: Map<NamedElement, JSONRegion> = new Map<NamedElement, JSONRegion>();
+	private stateMap: Map<State, JSONState> = new Map<State, JSONState>();
+	private regionMap: Map<Region, JSONRegion> = new Map<Region, JSONRegion>();
 
 	public constructor(private readonly instance: Instance, private readonly deferedEventSerializer: Function<any, any> | undefined = undefined) {
 		super();

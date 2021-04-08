@@ -1,4 +1,4 @@
-import { NamedElement, Vertex, Region, Visitor } from '.';
+import { Vertex, Region, Visitor } from '.';
 import { Transaction } from './Transaction';
 import { Behaviour, Constructor } from './types';
 
@@ -220,7 +220,7 @@ export class State extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	doEnterHead(transaction: Transaction, history: boolean, trigger: any, next: NamedElement | undefined): void {
+	doEnterHead(transaction: Transaction, history: boolean, trigger: any, next: Region | undefined): void {
 		if (next) {
 			this.children.forEach(region => {
 				if (region !== next) {
