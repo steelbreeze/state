@@ -1,5 +1,5 @@
 import { TransitionKind, NamedElement, Region, Transition } from '.';
-import { Predicate, Producer } from './types';
+import { Constructor, Predicate } from './types';
 /**
  * Represents an element within a state machine model hierarchy that can be the source or target of a transition.
  * Vertices are contained within regions.
@@ -19,7 +19,7 @@ export declare abstract class Vertex extends NamedElement {
      * @param type The type (class name) of the triggering event.
      * @returns Returns a new typed transition. A typed transition being one whose guard condition and behaviour will accept a parameter of the same type specified.
      */
-    on<TTrigger>(type: Producer<TTrigger>): Transition<TTrigger>;
+    on<TTrigger>(type: Constructor<TTrigger>): Transition<TTrigger>;
     /**
      * Creates a new transition at this vertex with a guard condition.
      * @param TTrigger The type of the triggering event.

@@ -41,7 +41,7 @@ export class Region extends NamedElement {
 	 * @hidden 
 	 */
 	isComplete(transaction: Transaction): boolean {
-		const currentState = transaction.getState(this);
+		const currentState = transaction.get(this);
 
 		return currentState !== undefined && currentState.isFinal();
 	}
@@ -55,7 +55,7 @@ export class Region extends NamedElement {
 	 * @hidden
 	 */
 	doEnterTail(transaction: Transaction, history: boolean, trigger: any): void {
-		const current = transaction.getState(this);
+		const current = transaction.get(this);
 		const starting = (history || (this.initial && this.initial.isHistory)) && current ? current : this.initial;
 		const deepHistory = history || (this.initial !== undefined && this.initial.kind === PseudoStateKind.DeepHistory);
 

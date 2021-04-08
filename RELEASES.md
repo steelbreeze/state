@@ -1,5 +1,5 @@
 ## v8.2.0
-This release has bumped the JavaScript version to ES2018. This then enables the use of the built-in Map collection class.
+This release has bumped the JavaScript version to ES2015. This then enables the use of the built-in Map collection class.
 
 There is also minor refactoring for performance increase and code size redution.
 

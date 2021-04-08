@@ -2,7 +2,8 @@ import { log, Region, State } from '.';
 import { Transaction } from './Transaction';
 
 /**
- * Represents an instance of a state machine model at runtime; there can be many seperate state machine instances using a common model.
+ * Represents an instance of a state machine model at runtime; contains the active state configuration and manages transactions.
+ * There can be many seperate state machine instances using a common model.
  */
 export class Instance extends Map<Region, State> {
 	/** The currently active transaction */
@@ -69,7 +70,7 @@ export class Instance extends Map<Region, State> {
 			// perform the requested operation
 			const result = operation(this.transaction);
 
-			// update the instance active state configuration from the transaction
+			// commit the transaction by updating the active state configuration
 			for (const [key, value] of this.transaction) {
 				this.set(key, value);
 			}

@@ -13,7 +13,7 @@ var MyEvent = /** @class */ (function () {
     return MyEvent;
 }());
 // log state entry, exit and trigger event evaluation
-state.log.add(function (message) { return console.info(message); }, state.log.Entry | state.log.Exit | state.log.Evaluate);
+state.log.add(function (message) { return console.info(message); }, state.log.Entry | state.log.Exit | state.log.Evaluate | state.log.Transition);
 // create the state machine model elements
 var model = new state.State("model");
 var initial = new state.PseudoState("initial", model, state.PseudoStateKind.Initial);

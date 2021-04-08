@@ -25,8 +25,8 @@ export class Transaction extends Map<Region,State> {
 	 * @hidden
 	 * @internal
 	 */
-	getState(region: Region): State | undefined {
-		return this.get(region) || this.instance.get(region);
+	get(region: Region): State | undefined {
+		return super.get(region) || this.instance.get(region);
 	}
 
 	/** 
