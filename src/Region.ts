@@ -1,4 +1,4 @@
-import { PseudoStateKind, NamedElement, Vertex, State, PseudoState, Visitor } from '.';
+import { PseudoStateKind, NamedElement, State, PseudoState, Visitor } from '.';
 import { Transaction } from './Transaction';
 
 /**

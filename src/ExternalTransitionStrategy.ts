@@ -53,7 +53,6 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
 	}
 }
 
-
 /**
  * Returns the ancestry of this element from the root element of the hierarchy to this element.
  * @returns Returns an iterable iterator used to process the ancestors.
