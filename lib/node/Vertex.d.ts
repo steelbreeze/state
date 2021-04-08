@@ -13,7 +13,7 @@ export declare abstract class Vertex {
      * @param name The name of the vertex.
      * @param parent The parent region of this vertex.
      */
-    protected constructor(name: string, parent: Region | undefined);
+    protected constructor(name: string);
     /**
      * Creates a new transition at this vertex triggered by an event of a specific type.
      * @param TTrigger The type of the triggering event; note that this can be derived from the type parameter.

@@ -42,7 +42,7 @@ export class State extends Vertex {
 	 * @param parent The parent region of the state; note that another state can also be used, in which case the default region of the state will become this states parent. If parent is left undefined, then this state is the root of the state machine hierarchy.
 	 */
 	public constructor(name: string, parent: State | Region | undefined = undefined) {
-		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
+		super(name);
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 
 		if (this.parent) {

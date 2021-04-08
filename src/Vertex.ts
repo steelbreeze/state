@@ -22,7 +22,7 @@ export abstract class Vertex {
 	 * @param name The name of the vertex.
 	 * @param parent The parent region of this vertex.
 	 */
-	protected constructor(public readonly name: string, parent: Region | undefined) {
+	protected constructor(public readonly name: string) {
 		log.write(() => `Created ${this}`, log.Create);
 	}
 

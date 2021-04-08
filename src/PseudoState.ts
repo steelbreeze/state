@@ -22,7 +22,7 @@ export class PseudoState extends Vertex {
 	 * @param kind The kind pseudo state which defines its behaviour and use.
 	 */
 	public constructor(name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
-		super(name, parent instanceof State ? parent.getDefaultRegion() : parent);
+		super(name);
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 
 		this.parent.children.push(this);
