@@ -4,6 +4,7 @@ import { TransitionStrategy } from './TransitionStrategy';
 
 /**
  * Logic used to traverse internal transitions.
+ * Internal transitions just execute transition traversal behaviour, then can trigger completion transitions.
  */
 export class InternalTransitionStrategy implements TransitionStrategy {
 	constructor(private readonly target: Vertex) {

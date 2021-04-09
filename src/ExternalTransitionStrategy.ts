@@ -6,39 +6,41 @@ import { TransitionStrategy } from './TransitionStrategy';
  * Logic used to traverse external transitions.
  */
 export class ExternalTransitionStrategy implements TransitionStrategy {
+	/** The element that will need to be exited when the transition is traversed. This is not necessarily the source of the transition, but the element beneath the least common ancestor of the source and target on the source side. */
 	private readonly toExit: Region | Vertex;
+
+	/** The elements that will need to be entered when the transition is traversed. */
 	private readonly toEnter: Array<Region | Vertex>;
 
+	/**
+	 * Creates a new instance of an external transition strategy; this determines the entry and exit actions that will be called when the transition is traversed.
+	 * @param source The source vertex of the transition.
+	 * @param target The target vertex of the transition.
+	 */
 	constructor(source: Vertex, target: Vertex) {
-		// get the ancestry of the source and target vertices
-		const sourceAncestors = ancestry(source);
-		const targetAncestors = ancestry(target);
+		// create iterators over the source and target vertex ancestry
+		const sourceIterator = ancestry(source);
+		const targetIterator = ancestry(target);
 
-		// initialse iterators, both current ones and one before the pre
-		let prevSource = sourceAncestors.next();
-		let prevTarget = targetAncestors.next();
-		let nextSource = sourceAncestors.next();
-		let nextTarget = targetAncestors.next();
+		// get the first result from each iterator (this will always be the state machine root element)
+		let sourceResult = sourceIterator.next();
+		let targetResult = targetIterator.next();
 
-		// iterate past the common ancestors
-		while (prevSource.value === prevTarget.value && !nextSource.done && !nextTarget.done) {
-			prevSource = nextSource;
-			prevTarget = nextTarget;
+		// iterate through all the common ancestors
+		do {
+			this.toExit = sourceResult.value;
+			this.toEnter = [targetResult.value];
 
-			nextSource = sourceAncestors.next();
-			nextTarget = targetAncestors.next();
-		}
+			sourceResult = sourceIterator.next();
+			targetResult = targetIterator.next();
 
-		// the element to exit is the one past the last common ancestor on the source side
-		this.toExit = prevSource.value;
+		} while (this.toExit === this.toEnter[0] && !sourceResult.done && !targetResult.done);
 
 		// all elements past the common ancestor on the target side must be entered
-		this.toEnter = [prevTarget.value];
+		while (!targetResult.done) {
+			this.toEnter.push(targetResult.value);
 
-		while (!nextTarget.done) {
-			this.toEnter.push(nextTarget.value);
-
-			nextTarget = targetAncestors.next();
+			targetResult = targetIterator.next();
 		}
 
 		// if the target is a history pseudo state, remove it (as normal history behaviour its the parent region is required)
