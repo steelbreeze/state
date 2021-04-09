@@ -1,0 +1,7 @@
+## other configuration excluded from example...
+exclude_patterns:
+- "examples/"
+- "lib/"
+- "test/"
+- "**/*.d.ts"
+- "**/*.js"
