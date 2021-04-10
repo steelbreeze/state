@@ -10,7 +10,7 @@ export class Region {
 	 * @internal
 	 * @hidden
 	 */
-	children: Array<State | PseudoState> = [];
+	vertices: Array<State | PseudoState> = [];
 
 	/**
 	 * The initial pseudo state, defining the starting vertex when region is entered.
@@ -27,7 +27,7 @@ export class Region {
 	public constructor(public readonly name: string, public readonly parent: State) {
 		log.write(() => `Created ${this}`, log.Create);
 
-		parent.children.push(this);
+		parent.regions.push(this);
 	}
 
 	/** 
@@ -111,9 +111,7 @@ export class Region {
 	public accept(visitor: Visitor): void {
 		visitor.visitRegion(this);
 
-		for (const vertex of this.children) {
-			vertex.accept(visitor);
-		}
+		this.vertices.forEach(vertex => vertex.accept(visitor));
 
 		visitor.visitRegionTail(this);
 	}

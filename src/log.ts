@@ -52,10 +52,10 @@ export namespace log {
 	export function write(producer: Producer<string>, category: number): void {
 		let message: string | undefined;
 
-		for (const consumer of consumers) {
+		consumers.forEach(consumer => {
 			if (consumer && category & consumer.category) {
 				consumer.consumer(message || (message = producer()));
 			}
-		}
+		});
 	}
 }

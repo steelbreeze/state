@@ -14,7 +14,7 @@ export class State extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	children: Array<Region> = [];
+	regions: Array<Region> = [];
 
 	/**
 	 * The types of events that may be deferred while in this state.
@@ -46,7 +46,7 @@ export class State extends Vertex {
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 
 		if (this.parent) {
-			this.parent.children.push(this);
+			this.parent.vertices.push(this);
 		}
 	}
 	
@@ -98,7 +98,7 @@ export class State extends Vertex {
 	 * @returns Returns true if the state is a simple state.
 	 */
 	public isSimple(): boolean {
-		return this.children.length === 0;
+		return this.regions.length === 0;
 	}
 
 	/**
@@ -106,7 +106,7 @@ export class State extends Vertex {
 	 * @returns Returns true if the state is a composite state.
 	 */
 	public isComposite(): boolean {
-		return this.children.length > 0;
+		return this.regions.length > 0;
 	}
 
 	/**
@@ -114,7 +114,7 @@ export class State extends Vertex {
 	 * @returns Returns true if the state is an orthogonal state.
 	 */
 	public isOrthogonal(): boolean {
-		return this.children.length > 1;
+		return this.regions.length > 1;
 	}
 
 	/**
@@ -133,7 +133,7 @@ export class State extends Vertex {
 	 * @hidden
 	 */
 	isComplete(transaction: Transaction): boolean {
-		return !this.children.some(region => !region.isComplete(transaction));
+		return !this.regions.some(region => !region.isComplete(transaction));
 	}
 
 	/**
@@ -168,8 +168,8 @@ export class State extends Vertex {
 	delegate(transaction: Transaction, history: boolean, trigger: any): boolean {
 		let result: boolean = false;
 
-		for (let i = 0, l = this.children.length; i < l && this.isActive(transaction); ++i) {					// delegate to all children unless one causes a transition away from this state
-			const state = transaction.get(this.children[i]);
+		for (let i = 0, l = this.regions.length; i < l && this.isActive(transaction); ++i) {					// delegate to all children unless one causes a transition away from this state
+			const state = transaction.get(this.regions[i]);
 
 			if(state) {
 				result = state.evaluate(transaction, history, trigger) || result;
@@ -205,7 +205,7 @@ export class State extends Vertex {
 	 * @hidden
 	 */
 	getDeferrableTriggers(transaction: Transaction): Array<Constructor<any>> {
-		return this.children.reduce((result, region) => {
+		return this.regions.reduce((result, region) => {
 			const state = transaction.get(region);
 
 			return state !== undefined ? result.concat(state.getDeferrableTriggers(transaction)) : result;
@@ -222,7 +222,7 @@ export class State extends Vertex {
 	 */
 	doEnterHead(transaction: Transaction, history: boolean, trigger: any, next: Region | undefined): void {
 		if (next) {
-			this.children.forEach(region => {
+			this.regions.forEach(region => {
 				if (region !== next) {
 					region.doEnter(transaction, history, trigger);
 				}
@@ -243,7 +243,7 @@ export class State extends Vertex {
 	 * @hidden
 	 */
 	doEnterTail(transaction: Transaction, history: boolean, trigger: any): void {
-		this.children.forEach(region => region.doEnter(transaction, history, trigger));
+		this.regions.forEach(region => region.doEnter(transaction, history, trigger));
 
 		this.completion(transaction, history);
 	}
@@ -257,7 +257,7 @@ export class State extends Vertex {
 	 * @hidden
 	 */
 	doExit(transaction: Transaction, history: boolean, trigger: any): void {
-		this.children.forEach(region => region.doExit(transaction, history, trigger));
+		this.regions.forEach(region => region.doExit(transaction, history, trigger));
 
 		super.doExit(transaction, history, trigger);
 
@@ -284,9 +284,7 @@ export class State extends Vertex {
 	public accept(visitor: Visitor): void {
 		visitor.visitState(this);
 
-		for (const region of this.children) {
-			region.accept(visitor);
-		}
+		this.regions.forEach(region => region.accept(visitor));
 
 		visitor.visitStateTail(this);
 	}

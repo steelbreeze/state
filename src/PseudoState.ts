@@ -23,7 +23,7 @@ export class PseudoState extends Vertex {
 		super(name);
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 
-		this.parent.children.push(this);
+		this.parent.vertices.push(this);
 
 		if (this.kind & PseudoStateKind.Starting) {
 			this.parent.initial = this;
