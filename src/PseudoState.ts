@@ -13,8 +13,6 @@ export class PseudoState extends Vertex {
 	/** The 'else' outgoing transition if this is a junction or choice pseudo state. */
 	private elseTransition: Transition | undefined;
 
-	public readonly isHistory: boolean;
-
 	/**
 	 * Creates a new instance of the PseudoState class.
 	 * @param name The name of the pseudo state.
@@ -27,11 +25,18 @@ export class PseudoState extends Vertex {
 
 		this.parent.children.push(this);
 
-		this.isHistory = this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
-
-		if (this.kind === PseudoStateKind.Initial || this.isHistory) {
+		if (this.is(PseudoStateKind.Starting)) {
 			this.parent.initial = this;
 		}
+	}
+
+	/**
+	 * Tests a pseudo state to determine if it is a particular kind, or one of a set of kinds.
+	 * @param kind The pseudo state kind, or kinds (bitwise or).
+	 * @returns 
+	 */
+	is(kind: PseudoStateKind) : boolean {
+		return !!(this.kind & kind);
 	}
 
 	/**
