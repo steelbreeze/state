@@ -42,7 +42,7 @@ export class LocalTransitionStrategy implements TransitionStrategy {
  * @hidden
  */
 function toEnter(transaction: Transaction, vertex: Vertex): Vertex {
-	while (vertex && vertex.parent && vertex.parent.parent && vertex.parent.parent.isActive(transaction)) {
+	while (vertex && vertex.parent && vertex.parent.parent && !vertex.parent.parent.isActive(transaction)) {
 		vertex = vertex.parent.parent;
 	}
 
