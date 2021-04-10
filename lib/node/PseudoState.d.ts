@@ -17,12 +17,6 @@ export declare class PseudoState extends Vertex {
      */
     constructor(name: string, parent: State | Region, kind?: PseudoStateKind);
     /**
-     * Tests a pseudo state to determine if it is a particular kind, or one of a set of kinds.
-     * @param kind The pseudo state kind, or kinds (bitwise or).
-     * @returns
-     */
-    is(kind: PseudoStateKind): boolean;
-    /**
      * Creates an 'else' transition from this pseudo state, which will be chosen if no other outgoing transition is found.
      * @param target The target of the transition.
      * @param kind The kind of the transition, specifying its behaviour.

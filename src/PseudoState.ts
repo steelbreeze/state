@@ -25,18 +25,9 @@ export class PseudoState extends Vertex {
 
 		this.parent.children.push(this);
 
-		if (this.is(PseudoStateKind.Starting)) {
+		if (this.kind & PseudoStateKind.Starting) {
 			this.parent.initial = this;
 		}
-	}
-
-	/**
-	 * Tests a pseudo state to determine if it is a particular kind, or one of a set of kinds.
-	 * @param kind The pseudo state kind, or kinds (bitwise or).
-	 * @returns 
-	 */
-	is(kind: PseudoStateKind) : boolean {
-		return !!(this.kind & kind);
 	}
 
 	/**

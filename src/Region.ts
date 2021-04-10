@@ -127,5 +127,5 @@ export class Region {
 }
 
 function isHistory(region: Region, kind: PseudoStateKind): boolean {
-	return region.initial !== undefined && region.initial.is(kind);
+	return region.initial !== undefined && !!(region.initial.kind & kind);
 }
