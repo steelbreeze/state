@@ -11,18 +11,13 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 	constructor(private readonly target: Vertex) {
 	}
 
-	doExitSource(transaction: Transaction, history: boolean, trigger: any): void { 
-		this.vertexToEnter = this.target;
-		const parent = this.vertexToEnter.parent;
+	doExitSource(transaction: Transaction, history: boolean, trigger: any): void {
+		this.vertexToEnter = toEnter(transaction, this.target);
 
-		while (parent && parent.parent && !parent.parent.isActive(transaction)) {
-			this.vertexToEnter = parent.parent;
-		}
+		if (!this.vertexToEnter.isActive(transaction) && this.vertexToEnter.parent) {
+			const vertex = transaction.getVertex(this.vertexToEnter.parent);
 
-		if (!this.vertexToEnter.isActive(transaction) && parent) {
-			const vertex = transaction.getVertex(parent);
-			
-			if(vertex) {
+			if (vertex) {
 				vertex.doExit(transaction, history, trigger);
 			}
 		}
@@ -37,4 +32,19 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 	toString(): string {
 		return "local";
 	}
+}
+
+/**
+ * Determines the vertex that will need to be entered; the first non-active vertex in the ancestry above the target vertex.
+ * @param transaction 
+ * @param vertex 
+ * @returns 
+ * @hidden
+ */
+function toEnter(transaction: Transaction, vertex: Vertex): Vertex {
+	while (vertex && vertex.parent && vertex.parent.parent && vertex.parent.parent.isActive(transaction)) {
+		vertex = vertex.parent.parent;
+	}
+
+	return vertex;
 }
