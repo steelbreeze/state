@@ -3,3 +3,4 @@ exclude_paths:
 - examples/
 - test/
 - lib/
+- docs/
