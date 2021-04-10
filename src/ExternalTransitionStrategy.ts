@@ -45,7 +45,7 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
 		}
 
 		// if the target is a history pseudo state, remove it (as normal history behaviour its the parent region is required)
-		if (target instanceof PseudoState && target.is(PseudoStateKind.DeepHistory | PseudoStateKind.ShallowHistory)) {
+		if (target instanceof PseudoState && target.is(PseudoStateKind.History)) {
 			this.toEnter.pop();
 		}
 	}
