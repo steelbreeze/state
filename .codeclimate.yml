@@ -1,4 +1,5 @@
 ---
 exclude_paths:
+- examples/
 - test/
 - lib/
