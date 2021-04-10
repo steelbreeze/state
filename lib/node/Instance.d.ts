@@ -32,6 +32,7 @@ export declare class Instance extends Map<Region, State> {
      * @hidden
      */
     private evaluateDeferred;
+    private processDeferred;
     /**
      * Returns the name of the state machine instance.
      * @returns Returns the name of the state machine instance.

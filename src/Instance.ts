@@ -100,24 +100,26 @@ export class Instance extends Map<Region, State> {
 	 */
 	private evaluateDeferred(transaction: Transaction): void {
 		if (this.deferredEventPool.length !== 0) {
-			for (let i = 0; i < this.deferredEventPool.length; i++) {
-				const trigger = this.deferredEventPool[i];
-
-				if (trigger && this.root.getDeferrableTriggers(transaction).indexOf(trigger.constructor) === -1) {
-					delete this.deferredEventPool[i];
-
-					log.write(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
-
-					if (this.root.evaluate(transaction, false, trigger)) {
-						this.evaluateDeferred(transaction);
-
-						break;
-					}
-				}
-			}
+			this.processDeferred(transaction);
 
 			this.deferredEventPool = this.deferredEventPool.filter(t => t);	// repack the deferred event pool
 		}
+	}
+
+	private processDeferred(transaction: Transaction): void {
+		this.deferredEventPool.forEach((trigger, i) => {
+			if (trigger && this.root.getDeferrableTriggers(transaction).indexOf(trigger.constructor) === -1) { // NOTE: test on trigger necessary as this is recursive and the pool may not have been repacked
+				delete this.deferredEventPool[i];
+
+				log.write(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
+
+				if (this.root.evaluate(transaction, false, trigger)) {
+					this.processDeferred(transaction);
+
+					return;
+				}
+			}
+		});
 	}
 
 	/**
