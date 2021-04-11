@@ -76,6 +76,7 @@ export class Region {
 	 * @hidden
 	 */
 	doEnterTail(transaction: Transaction, history: boolean, trigger: any): void {
+		/*
 		const current = transaction.get(this);
 		const starting = isHistory(this, PseudoStateKind.History) && current ? current : this.initial;
 
@@ -84,6 +85,18 @@ export class Region {
 		} else {
 			throw new Error(`Unable to find starting state in region ${this}`);
 		}
+		*/
+
+		const current = transaction.get(this);
+		const starting = (history || (this.initial && this.initial.isHistory)) && current ? current : this.initial;
+		const deepHistory = history || (this.initial !== undefined && this.initial.kind === PseudoStateKind.DeepHistory);
+
+		if (starting) {
+			starting.doEnter(transaction, deepHistory, trigger);
+		} else {
+			throw new Error(`Unable to find starting state in region ${this}`);
+		}
+
 	}
 
 	/**
@@ -123,7 +136,8 @@ export class Region {
 		return `${this.parent}.${this.name}`;
 	}	
 }
-
+/*
 function isHistory(region: Region, kind: PseudoStateKind): boolean {
 	return region.initial !== undefined && !!(region.initial.kind & kind);
 }
+*/
