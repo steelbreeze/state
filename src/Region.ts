@@ -54,7 +54,7 @@ export class Region {
 		this.doEnterHead(transaction);
 		this.doEnterTail(transaction, history, trigger);
 	}
-	
+
 	/**
 	 * Performs the initial steps required to enter an element during a state transition.
 	 * @param transaction The current transaction being executed.
@@ -77,21 +77,13 @@ export class Region {
 	 */
 	doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		const current = transaction.get(this);
-		const starting = deepHistory || this.is(PseudoStateKind.History) && current ? current : this.initial;
+		const starting = current && history(this, deepHistory, PseudoStateKind.History) ? current : this.initial;
 
 		if (starting) {
-			starting.doEnter(transaction, deepHistory || this.is(PseudoStateKind.DeepHistory), trigger);
+			starting.doEnter(transaction, history(this, deepHistory, PseudoStateKind.DeepHistory), trigger);
 		} else {
 			throw new Error(`Unable to find starting state in region ${this}`);
 		}
-	}
-
-	/**
-	 * Determines if the region has a particular history semantic.
-	 * @hidden 
-	 */
-	is(kind: PseudoStateKind): boolean {
-		return this.initial !== undefined && !!(this.initial.kind & kind);
 	}
 
 	/**
@@ -129,5 +121,13 @@ export class Region {
 	 */
 	public toString(): string {
 		return `${this.parent}.${this.name}`;
-	}	
+	}
+}
+
+/**
+ * Determines if the region has a particular history semantic.
+ * @hidden 
+ */
+function history(region: Region, deepHistory: boolean, kind: PseudoStateKind): boolean {
+	return deepHistory || (region.initial !== undefined && !!(region.initial.kind & kind));
 }
