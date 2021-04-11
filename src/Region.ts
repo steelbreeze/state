@@ -70,22 +70,28 @@ export class Region {
 	/**
 	 * Performs the final steps required to enter the region dueing state transition; enters the region using the initial pseudo state or history logic.
 	 * @param transaction The current transaction being executed.
-	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
+	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterTail(transaction: Transaction, history: boolean, trigger: any): void {
+	doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		const current = transaction.get(this);
-		const starting = (history || (this.initial && (this.initial.kind & PseudoStateKind.History))) && current ? current : this.initial;
-		const deepHistory = history || (this.initial !== undefined && this.initial.kind === PseudoStateKind.DeepHistory);
+		const starting = deepHistory || this.is(PseudoStateKind.History) && current ? current : this.initial;
 
 		if (starting) {
-			starting.doEnter(transaction, deepHistory, trigger);
+			starting.doEnter(transaction, deepHistory || this.is(PseudoStateKind.DeepHistory), trigger);
 		} else {
 			throw new Error(`Unable to find starting state in region ${this}`);
 		}
+	}
 
+	/**
+	 * Determines if the region has a particular history semantic.
+	 * @hidden 
+	 */
+	is(kind: PseudoStateKind): boolean {
+		return this.initial !== undefined && !!(this.initial.kind & kind);
 	}
 
 	/**
@@ -125,8 +131,3 @@ export class Region {
 		return `${this.parent}.${this.name}`;
 	}	
 }
-/*
-function isHistory(region: Region, kind: PseudoStateKind): boolean {
-	return region.initial !== undefined && !!(region.initial.kind & kind);
-}
-*/
