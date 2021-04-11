@@ -13,8 +13,6 @@ export class PseudoState extends Vertex {
 	/** The 'else' outgoing transition if this is a junction or choice pseudo state. */
 	private elseTransition: Transition | undefined;
 
-	public readonly isHistory: boolean;
-
 	/**
 	 * Creates a new instance of the PseudoState class.
 	 * @param name The name of the pseudo state.
@@ -24,8 +22,6 @@ export class PseudoState extends Vertex {
 	public constructor(name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
 		super(name);
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
-
-		this.isHistory = this.kind === PseudoStateKind.DeepHistory || this.kind === PseudoStateKind.ShallowHistory;
 
 		this.parent.vertices.push(this);
 
