@@ -1,4 +1,4 @@
-import { State, Visitor } from '.';
+import { PseudoStateKind, State, Visitor } from '.';
 /**
  * A region is a container of vertices (states and pseudo states) within a state machine model.
  */
@@ -11,6 +11,11 @@ export declare class Region {
      * @param parent The parent state of this region.
      */
     constructor(name: string, parent: State);
+    /**
+     * Determines if the region has a particular history semantic.
+     * @hidden
+     */
+    history(deepHistory: boolean, kind: PseudoStateKind): boolean;
     /**
      * Accepts a visitor and calls back its visitRegion method and cascade to child vertices.
      * @param visitor The visitor to call back.

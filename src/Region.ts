@@ -45,14 +45,14 @@ export class Region {
 	/**
 	 * Enters an element during a state transition.
 	 * @param transaction The current transaction being executed.
-	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
+	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnter(transaction: Transaction, history: boolean, trigger: any): void {
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		this.doEnterHead(transaction);
-		this.doEnterTail(transaction, history, trigger);
+		this.doEnterTail(transaction, deepHistory, trigger);
 	}
 
 	/**
@@ -77,28 +77,36 @@ export class Region {
 	 */
 	doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		const current = transaction.get(this);
-		const starting = current && history(this, deepHistory, PseudoStateKind.History) ? current : this.initial;
+		const starting = current && this.history(deepHistory, PseudoStateKind.History) ? current : this.initial;
 
 		if (starting) {
-			starting.doEnter(transaction, history(this, deepHistory, PseudoStateKind.DeepHistory), trigger);
+			starting.doEnter(transaction, this.history(deepHistory, PseudoStateKind.DeepHistory), trigger);
 		} else {
 			throw new Error(`Unable to find starting state in region ${this}`);
 		}
 	}
 
 	/**
+	 * Determines if the region has a particular history semantic.
+	 * @hidden 
+	 */
+	history(deepHistory: boolean, kind: PseudoStateKind): boolean {
+		return deepHistory || (this.initial !== undefined && !!(this.initial.kind & kind));
+	}
+
+	/**
 	 * Exits a region during a state transition.
 	 * @param transaction The current transaction being executed.
-	 * @param history Flag used to denote deep history semantics are in force at the time of exit.
+	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of exit.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doExit(transaction: Transaction, history: boolean, trigger: any): void {
+	doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		const vertex = transaction.getVertex(this);
 
 		if (vertex) {
-			vertex.doExit(transaction, history, trigger);
+			vertex.doExit(transaction, deepHistory, trigger);
 		}
 
 		log.write(() => `${transaction.instance} leave ${this}`, log.Exit);
@@ -122,12 +130,4 @@ export class Region {
 	public toString(): string {
 		return `${this.parent}.${this.name}`;
 	}
-}
-
-/**
- * Determines if the region has a particular history semantic.
- * @hidden 
- */
-function history(region: Region, deepHistory: boolean, kind: PseudoStateKind): boolean {
-	return deepHistory || (region.initial !== undefined && !!(region.initial.kind & kind));
 }

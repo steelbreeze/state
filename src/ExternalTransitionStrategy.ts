@@ -50,16 +50,16 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
 		}
 	}
 
-	doExitSource(transaction: Transaction, history: boolean, trigger: any): void {
-		this.toExit.doExit(transaction, history, trigger);
+	doExitSource(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+		this.toExit.doExit(transaction, deepHistory, trigger);
 	}
 
-	doEnterTarget(transaction: Transaction, history: boolean, trigger: any): void {
+	doEnterTarget(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		// enter, but do not cascade entry all elements from below the common ancestor to the target
-		this.toEnter.forEach((element, index) => element.doEnterHead(transaction, history, trigger, this.toEnter[index + 1]));
+		this.toEnter.forEach((element, index) => element.doEnterHead(transaction, deepHistory, trigger, this.toEnter[index + 1]));
 
 		// cascade entry from the target onwards
-		this.toEnter[this.toEnter.length - 1].doEnterTail(transaction, history, trigger);
+		this.toEnter[this.toEnter.length - 1].doEnterTail(transaction, deepHistory, trigger);
 	}
 
 	toString(): string {

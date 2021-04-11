@@ -56,14 +56,14 @@ export class PseudoState extends Vertex {
 	/**
 	 * Immediately exits the pseudo state on entry; note that for junction pseudo states, this is managed in Transition.traverse
 	 * @param transaction The current transaction being executed.
-	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
+	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterTail(transaction: Transaction, history: boolean, trigger: any): void {
+	doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		if (this.kind !== PseudoStateKind.Junction) {
-			this.evaluate(transaction, history, trigger);
+			this.evaluate(transaction, deepHistory, trigger);
 		}
 	}
 

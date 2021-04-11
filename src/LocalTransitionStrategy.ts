@@ -11,21 +11,21 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 	constructor(private readonly target: Vertex) {
 	}
 
-	doExitSource(transaction: Transaction, history: boolean, trigger: any): void {
+	doExitSource(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		this.vertexToEnter = toEnter(transaction, this.target);
 
 		if (!this.vertexToEnter.isActive(transaction) && this.vertexToEnter.parent) {
 			const vertex = transaction.getVertex(this.vertexToEnter.parent);
 
 			if (vertex) {
-				vertex.doExit(transaction, history, trigger);
+				vertex.doExit(transaction, deepHistory, trigger);
 			}
 		}
 	}
 
-	doEnterTarget(transaction: Transaction, history: boolean, trigger: any): void {
+	doEnterTarget(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		if (this.vertexToEnter && !this.vertexToEnter.isActive(transaction)) {
-			this.vertexToEnter.doEnter(transaction, history, trigger);
+			this.vertexToEnter.doEnter(transaction, deepHistory, trigger);
 		}
 	}
 

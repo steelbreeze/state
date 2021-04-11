@@ -15,7 +15,7 @@ export declare class ExternalTransitionStrategy implements TransitionStrategy {
      * @param target The target vertex of the transition.
      */
     constructor(source: Vertex, target: Vertex);
-    doExitSource(transaction: Transaction, history: boolean, trigger: any): void;
-    doEnterTarget(transaction: Transaction, history: boolean, trigger: any): void;
+    doExitSource(transaction: Transaction, deepHistory: boolean, trigger: any): void;
+    doEnterTarget(transaction: Transaction, deepHistory: boolean, trigger: any): void;
     toString(): string;
 }

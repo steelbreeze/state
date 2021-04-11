@@ -123,12 +123,12 @@ export class Transition<TTrigger = any> {
 	/**
 	 * Traverses a composite transition.
 	 * @param transaction The current transaction being executed.
-	 * @param history True if deep history semantics are in play.
+	 * @param deepHistory True if deep history semantics are in play.
 	 * @param trigger The trigger event.
 	 * @internal
 	 * @hidden
 	 */
-	traverse(transaction: Transaction, history: boolean, trigger: any): void {
+	traverse(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		var transition: Transition = this;
 		const transitions: Array<Transition> = [transition];
 
@@ -136,25 +136,25 @@ export class Transition<TTrigger = any> {
 			transitions.push(transition = transition.target.getTransition(trigger)!);
 		}
 
-		transitions.forEach(t => t.execute(transaction, history, trigger));
+		transitions.forEach(t => t.execute(transaction, deepHistory, trigger));
 	}
 
 	/**
 	 * Traverses an individual transition.
 	 * @param transaction The current transaction being executed.
-	 * @param history True if deep history semantics are in play.
+	 * @param deepHistory True if deep history semantics are in play.
 	 * @param trigger The trigger event.
 	 * @internal
 	 * @hidden
 	 */
-	execute(transaction: Transaction, history: boolean, trigger: any): void {
+	execute(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		log.write(() => `${transaction.instance} traverse ${this}`, log.Transition);
 
-		this.strategy.doExitSource(transaction, history, trigger);
+		this.strategy.doExitSource(transaction, deepHistory, trigger);
 
 		this.traverseActions.forEach(action => action(trigger, transaction.instance));
 
-		this.strategy.doEnterTarget(transaction, history, trigger);
+		this.strategy.doEnterTarget(transaction, deepHistory, trigger);
 	}
 
 	/**

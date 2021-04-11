@@ -10,9 +10,9 @@ export class InternalTransitionStrategy implements TransitionStrategy {
 	constructor(private readonly target: Vertex) {
 	}
 
-	doEnterTarget(transaction: Transaction, history: boolean): void {
+	doEnterTarget(transaction: Transaction, deepHistory: boolean): void {
 		if (this.target instanceof State) {
-			this.target.completion(transaction, history);
+			this.target.completion(transaction, deepHistory);
 		}
 	}
 

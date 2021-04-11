@@ -8,7 +8,7 @@ import { TransitionStrategy } from './TransitionStrategy';
 export declare class InternalTransitionStrategy implements TransitionStrategy {
     private readonly target;
     constructor(target: Vertex);
-    doEnterTarget(transaction: Transaction, history: boolean): void;
+    doEnterTarget(transaction: Transaction, deepHistory: boolean): void;
     doExitSource(): void;
     toString(): string;
 }

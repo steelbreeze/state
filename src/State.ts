@@ -139,18 +139,18 @@ export class State extends Vertex {
 	/**
 	 * Evaluates a trigger event at this state to determine if it will trigger an outgoing transition.
 	 * @param transaction The current transaction being executed.
-	 * @param history True if deep history semantics are in play.
+	 * @param deepHistory True if deep history semantics are in play.
 	 * @param trigger The trigger event.
 	 * @returns Returns true if one of outgoing transitions guard conditions passed.
 	 * @remarks Prior to evaluating the trigger against the outcoing transitions, it delegates the trigger to children for evaluation thereby implementing depth-first evaluation of trigger events.
 	 * @internal
 	 * @hidden
 	 */
-	evaluate(transaction: Transaction, history: boolean, trigger: any): boolean {
-		const result = this.delegate(transaction, history, trigger) || super.evaluate(transaction, history, trigger) || this.deferrable(transaction, trigger);
+	evaluate(transaction: Transaction, deepHistory: boolean, trigger: any): boolean {
+		const result = this.delegate(transaction, deepHistory, trigger) || super.evaluate(transaction, deepHistory, trigger) || this.deferrable(transaction, trigger);
 
 		if (result) {
-			this.completion(transaction, history);
+			this.completion(transaction, deepHistory);
 		}
 
 		return result;
@@ -159,20 +159,20 @@ export class State extends Vertex {
 	/**
 	 * Delegates a trigger event to the children of this state to determine if it will trigger an outgoing transition.
 	 * @param transaction The current transaction being executed.
-	 * @param history True if deep history semantics are in play.
+	 * @param deepHistory True if deep history semantics are in play.
 	 * @param trigger The trigger event.
 	 * @returns Returns true if a child state processed the trigger.
 	 * @internal
 	 * @hidden
 	 */
-	delegate(transaction: Transaction, history: boolean, trigger: any): boolean {
+	delegate(transaction: Transaction, deepHistory: boolean, trigger: any): boolean {
 		let result: boolean = false;
 
 		for (let i = 0, l = this.regions.length; i < l && this.isActive(transaction); ++i) {					// delegate to all children unless one causes a transition away from this state
 			const state = transaction.get(this.regions[i]);
 
 			if(state) {
-				result = state.evaluate(transaction, history, trigger) || result;
+				result = state.evaluate(transaction, deepHistory, trigger) || result;
 			}
 		}
 
@@ -215,21 +215,21 @@ export class State extends Vertex {
 	/**
 	 * Performs the initial steps required to enter a state during a state transition; updates teh active state configuration.
 	 * @param transaction The current transaction being executed.
-	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
+	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterHead(transaction: Transaction, history: boolean, trigger: any, next: Region | undefined): void {
+	doEnterHead(transaction: Transaction, deepHistory: boolean, trigger: any, next: Region | undefined): void {
 		if (next) {
 			this.regions.forEach(region => {
 				if (region !== next) {
-					region.doEnter(transaction, history, trigger);
+					region.doEnter(transaction, deepHistory, trigger);
 				}
 			});
 		}
 
-		super.doEnterHead(transaction, history, trigger, next);
+		super.doEnterHead(transaction, deepHistory, trigger, next);
 
 		this.entryActions.forEach(action => action(trigger, transaction.instance));
 	}
@@ -237,29 +237,29 @@ export class State extends Vertex {
 	/**
 	 * Performs the final steps required to enter a state during a state transition including cascading the entry operation to child elements and completion transition.
 	 * @param transaction The current transaction being executed.
-	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
+	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterTail(transaction: Transaction, history: boolean, trigger: any): void {
-		this.regions.forEach(region => region.doEnter(transaction, history, trigger));
+	doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+		this.regions.forEach(region => region.doEnter(transaction, deepHistory, trigger));
 
-		this.completion(transaction, history);
+		this.completion(transaction, deepHistory);
 	}
 
 	/**
 	 * Exits a state during a state transition.
 	 * @param transaction The current transaction being executed.
-	 * @param history Flag used to denote deep history semantics are in force at the time of exit.
+	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of exit.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doExit(transaction: Transaction, history: boolean, trigger: any): void {
-		this.regions.forEach(region => region.doExit(transaction, history, trigger));
+	doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+		this.regions.forEach(region => region.doExit(transaction, deepHistory, trigger));
 
-		super.doExit(transaction, history, trigger);
+		super.doExit(transaction, deepHistory, trigger);
 
 		this.exitActions.forEach(action => action(trigger, transaction.instance));
 	}
@@ -267,13 +267,13 @@ export class State extends Vertex {
 	/**
 	 * Evaluates completion transitions at the state.
 	 * @param transaction The current transaction being executed.
-	 * @param history Flag used to denote deep history semantics are in force at the time of exit.
+	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of exit.
 	 * @internal
 	 * @hidden
 	 */
-	completion(transaction: Transaction, history: boolean): void {
+	completion(transaction: Transaction, deepHistory: boolean): void {
 		if (this.isComplete(transaction)) {
-			super.evaluate(transaction, history, this);
+			super.evaluate(transaction, deepHistory, this);
 		}
 	}
 
