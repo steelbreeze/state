@@ -69,6 +69,11 @@
 					<div class="lead">
 						<p>Specifies the behaviour of transitions.</p>
 					</div>
+					<dl class="tsd-comment-tags">
+						<dt>remarks</dt>
+						<dd><p>As newly created Transitions are Local Transitions, there is no need to specify this within the TransitionKind enumeration.</p>
+						</dd>
+					</dl>
 				</div>
 			</section>
 			<section class="tsd-panel-group tsd-index-group">
@@ -79,7 +84,6 @@
 							<h3>Enumeration members</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external"><a href="transitionkind.html#external" class="tsd-kind-icon">External</a></li>
-								<li class="tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external"><a href="transitionkind.html#internal" class="tsd-kind-icon">Internal</a></li>
 								<li class="tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external"><a href="transitionkind.html#local" class="tsd-kind-icon">Local</a></li>
 							</ul>
 						</section>
@@ -94,7 +98,7 @@
 					<div class="tsd-signature tsd-kind-icon">External<span class="tsd-signature-symbol">:</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/TransitionKind.ts#L6">TransitionKind.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fce248f/src/TransitionKind.ts#L7">Users/david/Development/steelbreeze/state/src/TransitionKind.ts:7</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -104,27 +108,12 @@
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external">
-					<a name="internal" class="tsd-anchor"></a>
-					<h3>Internal</h3>
-					<div class="tsd-signature tsd-kind-icon">Internal<span class="tsd-signature-symbol">:</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/TransitionKind.ts#L9">TransitionKind.ts:9</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>An internal transition does not exit the source state; it only performs transition behaviour.</p>
-						</div>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external">
 					<a name="local" class="tsd-anchor"></a>
 					<h3>Local</h3>
 					<div class="tsd-signature tsd-kind-icon">Local<span class="tsd-signature-symbol">:</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fa05dcf/src/TransitionKind.ts#L12">TransitionKind.ts:12</a></li>
+							<li>Defined in <a href="https://github.com/steelbreeze/state/blob/fce248f/src/TransitionKind.ts#L10">Users/david/Development/steelbreeze/state/src/TransitionKind.ts:10</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -157,9 +146,6 @@
 								<a href="transitionkind.html#external" class="tsd-kind-icon">External</a>
 							</li>
 							<li class=" tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external">
-								<a href="transitionkind.html#internal" class="tsd-kind-icon">Internal</a>
-							</li>
-							<li class=" tsd-kind-enum-member tsd-parent-kind-enum tsd-is-external">
 								<a href="transitionkind.html#local" class="tsd-kind-icon">Local</a>
 							</li>
 						</ul>
@@ -182,9 +168,6 @@
 						<a href="../classes/jsonstate.html" class="tsd-kind-icon">JSONState</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
-						<a href="../classes/namedelement.html" class="tsd-kind-icon">Named<wbr>Element</a>
-					</li>
-					<li class=" tsd-kind-class tsd-is-external">
 						<a href="../classes/pseudostate.html" class="tsd-kind-icon">Pseudo<wbr>State</a>
 					</li>
 					<li class=" tsd-kind-class tsd-is-external">
@@ -202,8 +185,23 @@
 					<li class=" tsd-kind-class tsd-is-external">
 						<a href="../classes/visitor.html" class="tsd-kind-icon">Visitor</a>
 					</li>
-					<li class=" tsd-kind-variable tsd-is-external">
-						<a href="../index.html#transitionstrategymap" class="tsd-kind-icon">Transition<wbr>Strategy<wbr>Map</a>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter tsd-is-external">
+						<a href="../index.html#behaviour" class="tsd-kind-icon">Behaviour</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter tsd-is-external">
+						<a href="../index.html#constructor" class="tsd-kind-icon">Constructor</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter tsd-is-external">
+						<a href="../index.html#consumer" class="tsd-kind-icon">Consumer</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter tsd-is-external">
+						<a href="../index.html#function" class="tsd-kind-icon">Function</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter tsd-is-external">
+						<a href="../index.html#predicate" class="tsd-kind-icon">Predicate</a>
+					</li>
+					<li class=" tsd-kind-type-alias tsd-has-type-parameter tsd-is-external">
+						<a href="../index.html#producer" class="tsd-kind-icon">Producer</a>
 					</li>
 				</ul>
 			</nav>

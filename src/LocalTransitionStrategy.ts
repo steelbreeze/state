@@ -9,9 +9,10 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 	vertexToEnter: Vertex | undefined;
 
 	constructor(private readonly target: Vertex) {
+		// NOTE: local transition behaviour is dependant on the active state configuration at the time of execution, hence logic is in doExitSource
 	}
 
-	doExitSource(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+	doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		this.vertexToEnter = toEnter(transaction, this.target);
 
 		if (!this.vertexToEnter.isActive(transaction) && this.vertexToEnter.parent) {
@@ -23,7 +24,7 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 		}
 	}
 
-	doEnterTarget(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		if (this.vertexToEnter && !this.vertexToEnter.isActive(transaction)) {
 			this.vertexToEnter.doEnter(transaction, deepHistory, trigger);
 		}

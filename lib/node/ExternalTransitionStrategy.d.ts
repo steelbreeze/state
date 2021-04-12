@@ -3,6 +3,7 @@ import { Transaction } from './Transaction';
 import { TransitionStrategy } from './TransitionStrategy';
 /**
  * Logic used to traverse external transitions.
+ * @hidden
  */
 export declare class ExternalTransitionStrategy implements TransitionStrategy {
     /** The element that will need to be exited when the transition is traversed. This is not necessarily the source of the transition, but the element beneath the least common ancestor of the source and target on the source side. */
@@ -15,7 +16,7 @@ export declare class ExternalTransitionStrategy implements TransitionStrategy {
      * @param target The target vertex of the transition.
      */
     constructor(source: Vertex, target: Vertex);
-    doExitSource(transaction: Transaction, deepHistory: boolean, trigger: any): void;
-    doEnterTarget(transaction: Transaction, deepHistory: boolean, trigger: any): void;
+    doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void;
+    doEnter(transaction: Transaction, deepHistory: boolean, trigger: any): void;
     toString(): string;
 }

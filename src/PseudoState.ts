@@ -48,7 +48,7 @@ export class PseudoState extends Vertex {
 	 * @hidden
 	 */
 	getTransition(trigger: any): Transition | undefined {
-		const transition = this.kind === PseudoStateKind.Choice ? random.get(this.outgoing.filter(transition => transition.evaluate(trigger))) : super.getTransition(trigger);
+		const transition = this.kind & PseudoStateKind.Choice ? random.get(this.outgoing.filter(transition => transition.evaluate(trigger))) : super.getTransition(trigger);
 
 		return transition || this.elseTransition;
 	}
@@ -62,7 +62,7 @@ export class PseudoState extends Vertex {
 	 * @hidden
 	 */
 	doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		if (this.kind !== PseudoStateKind.Junction) {
+		if (!(this.kind & PseudoStateKind.Junction)) {
 			this.evaluate(transaction, deepHistory, trigger);
 		}
 	}

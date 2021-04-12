@@ -132,7 +132,7 @@ export class Transition<TTrigger = any> {
 		var transition: Transition = this;
 		const transitions: Array<Transition> = [transition];
 
-		while (transition.target instanceof PseudoState && transition.target.kind === PseudoStateKind.Junction) {
+		while (transition.target instanceof PseudoState && transition.target.kind & PseudoStateKind.Junction) {
 			transitions.push(transition = transition.target.getTransition(trigger)!);
 		}
 
@@ -150,11 +150,11 @@ export class Transition<TTrigger = any> {
 	execute(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		log.write(() => `${transaction.instance} traverse ${this}`, log.Transition);
 
-		this.strategy.doExitSource(transaction, deepHistory, trigger);
+		this.strategy.doExit(transaction, deepHistory, trigger);
 
 		this.traverseActions.forEach(action => action(trigger, transaction.instance));
 
-		this.strategy.doEnterTarget(transaction, deepHistory, trigger);
+		this.strategy.doEnter(transaction, deepHistory, trigger);
 	}
 
 	/**

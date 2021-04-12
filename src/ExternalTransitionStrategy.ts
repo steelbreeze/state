@@ -5,6 +5,7 @@ import { TransitionStrategy } from './TransitionStrategy';
 
 /**
  * Logic used to traverse external transitions.
+ * @hidden
  */
 export class ExternalTransitionStrategy implements TransitionStrategy {
 	/** The element that will need to be exited when the transition is traversed. This is not necessarily the source of the transition, but the element beneath the least common ancestor of the source and target on the source side. */
@@ -50,11 +51,11 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
 		}
 	}
 
-	doExitSource(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+	doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		this.toExit.doExit(transaction, deepHistory, trigger);
 	}
 
-	doEnterTarget(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		// enter, but do not cascade entry all elements from below the common ancestor to the target
 		this.toEnter.forEach((element, index) => element.doEnterHead(transaction, deepHistory, trigger, this.toEnter[index + 1]));
 
