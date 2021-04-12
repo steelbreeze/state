@@ -48,7 +48,7 @@ export class PseudoState extends Vertex {
 	 * @hidden
 	 */
 	getTransition(trigger: any): Transition | undefined {
-		const transition = this.kind & PseudoStateKind.Choice ? random.get(this.outgoing.filter(transition => transition.evaluate(trigger))) : super.getTransition(trigger);
+		const transition = this.kind & PseudoStateKind.Choice ? random(this.outgoing.filter(transition => transition.evaluate(trigger))) : super.getTransition(trigger);
 
 		return transition || this.elseTransition;
 	}
