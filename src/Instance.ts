@@ -25,9 +25,11 @@ export class Instance extends Map<Region, State> {
 		super();
 
 		this.transactional((transaction: Transaction) => {
-			this.root.doEnter(transaction, false, this.root);	// enter the root element
+			// enter the root element
+			this.root.doEnter(transaction, false, this.root);
 
-			this.evaluateDeferred(transaction);					// the process of initialisation may have caused a deferred event
+			// the process of initialisation may have caused a deferred event
+			this.evaluateDeferred(transaction);
 		});
 	}
 
@@ -95,25 +97,35 @@ export class Instance extends Map<Region, State> {
 	}
 
 	/**
-	 * Evaluates trigger events in the deferred event pool.
+	 * Evaluates deferred trigger events.
 	 * @hidden
 	 */
 	private evaluateDeferred(transaction: Transaction): void {
 		if (this.deferredEventPool.length !== 0) {
 			this.processDeferred(transaction);
 
-			this.deferredEventPool = this.deferredEventPool.filter(t => t);	// repack the deferred event pool
+			// repack the deferred event pool
+			this.deferredEventPool = this.deferredEventPool.filter(t => t);
 		}
 	}
 
+	/**
+	 * Processes the deferred event pool.
+	 * @hidden 
+	 */
 	private processDeferred(transaction: Transaction): void {
+		// iterate over the pool
 		this.deferredEventPool.forEach((trigger, i) => {
+			// if the deferred trigger is in the deferable event types from the current active state configuration, it can be processed
 			if (trigger && this.root.getDeferrableTriggers(transaction).indexOf(trigger.constructor) === -1) { // NOTE: test on trigger necessary as this is recursive and the pool may not have been repacked
+				// remove the event from the pool
 				delete this.deferredEventPool[i];
 
 				log.write(() => `${this} evaluate deferred ${trigger}`, log.Evaluate)
 
+				// process the event
 				if (this.root.evaluate(transaction, false, trigger)) {
+					// if the event caused a transition, we can test the pool from the start again
 					this.processDeferred(transaction);
 
 					return;

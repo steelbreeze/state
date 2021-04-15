@@ -4,6 +4,7 @@ import { TransitionStrategy } from './TransitionStrategy';
 
 /**
  * Logic used to traverse local transitions.
+ * @hidden
  */
 export class LocalTransitionStrategy implements TransitionStrategy {
 	vertexToEnter: Vertex | undefined;
@@ -12,9 +13,14 @@ export class LocalTransitionStrategy implements TransitionStrategy {
 		// NOTE: local transition behaviour is dependant on the active state configuration at the time of execution, hence logic is in doExitSource
 	}
 
+	/**
+	 * Leave the source of the transition as needed
+	 */
 	doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+		// Find the first inactive vertex abode the target
 		this.vertexToEnter = toEnter(transaction, this.target);
 
+		// exit the active sibling of the vertex to enter
 		if (!this.vertexToEnter.isActive(transaction) && this.vertexToEnter.parent) {
 			const vertex = transaction.getVertex(this.vertexToEnter.parent);
 

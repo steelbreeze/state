@@ -28,10 +28,14 @@ export declare class Instance extends Map<Region, State> {
      */
     private transactional;
     /**
-     * Evaluates trigger events in the deferred event pool.
+     * Evaluates deferred trigger events.
      * @hidden
      */
     private evaluateDeferred;
+    /**
+     * Processes the deferred event pool.
+     * @hidden
+     */
     private processDeferred;
     /**
      * Returns the name of the state machine instance.

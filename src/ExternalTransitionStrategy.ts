@@ -3,6 +3,8 @@ import { PseudoStateKind } from './PseudoStateKind';
 import { Transaction } from './Transaction';
 import { TransitionStrategy } from './TransitionStrategy';
 
+// TODO: replace classes with generator functions?
+
 /**
  * Logic used to traverse external transitions.
  * @hidden
@@ -30,12 +32,12 @@ export class ExternalTransitionStrategy implements TransitionStrategy {
 
 		// iterate through all the common ancestors
 		do {
+			// set the actual source/target elements
 			this.toExit = sourceResult.value;
 			this.toEnter = [targetResult.value];
 
 			sourceResult = sourceIterator.next();
 			targetResult = targetIterator.next();
-
 		} while (this.toExit === this.toEnter[0] && !sourceResult.done && !targetResult.done);
 
 		// all elements past the common ancestor on the target side must be entered
