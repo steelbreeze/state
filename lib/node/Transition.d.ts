@@ -1,5 +1,5 @@
-import { TransitionKind, Vertex } from '.';
 import { Behaviour, Constructor, Predicate } from './types';
+import { TransitionKind, Vertex } from '.';
 /**
  * A transition changes the active state configuration of a state machine by specifying the valid transitions between states and the trigger events that cause them to be traversed.
  * @param TTrigger The type of trigger event that this transition will respond to.
@@ -36,8 +36,4 @@ export declare class Transition<TTrigger = any> {
      * @return Returns the transitions thereby allowing a fluent style transition construction.
      */
     effect(...actions: Array<Behaviour<TTrigger>>): this;
-    /**
-     * Returns the transition in string form.
-     */
-    toString(): string;
 }

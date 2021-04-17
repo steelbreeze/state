@@ -1,10 +1,12 @@
-import { log, PseudoStateKind, TransitionKind, Vertex, PseudoState } from '.';
-import { Transaction } from './Transaction';
-import { TransitionStrategy } from './TransitionStrategy';
-import { ExternalTransitionStrategy } from './ExternalTransitionStrategy';
-import { InternalTransitionStrategy } from './InternalTransitionStrategy';
-import { LocalTransitionStrategy } from './LocalTransitionStrategy';
 import { Behaviour, Constructor, Predicate } from './types';
+import { log, PseudoStateKind, TransitionKind, Region, Vertex, PseudoState, State } from '.';
+import { Transaction } from './Transaction';
+
+/**
+ * Type of the transition strategy
+ * @hidden
+ */
+type TransitionStrategy<TTrigger> = (transaction: Transaction, deepHistory: boolean, trigger: any, actions: Array<Behaviour<TTrigger>>) => void;
 
 /**
  * A transition changes the active state configuration of a state machine by specifying the valid transitions between states and the trigger events that cause them to be traversed.
@@ -42,7 +44,7 @@ export class Transition<TTrigger = any> {
 	 * @internal
 	 * @hidden
 	 */
-	private strategy: TransitionStrategy;
+	private strategy: TransitionStrategy<TTrigger>;
 
 	/**
 	 * Creates a new instance of the Transition class. By defaily, this is an internal transition.
@@ -52,7 +54,7 @@ export class Transition<TTrigger = any> {
 	 */
 	constructor(public readonly source: Vertex) {
 		this.target = source;
-		this.strategy = new InternalTransitionStrategy(this.target);
+		this.strategy = internalTransition<TTrigger>(this.target);
 
 		this.source.outgoing.push(this);
 	}
@@ -89,10 +91,10 @@ export class Transition<TTrigger = any> {
 	to(target: Vertex, kind: TransitionKind = TransitionKind.External): this {
 		this.target = target;
 
-		if(kind === TransitionKind.External) {
-			this.strategy = new ExternalTransitionStrategy(this.source, this.target);
+		if (kind === TransitionKind.External) {
+			this.strategy = externalTransition<TTrigger>(this.source, this.target);
 		} else {
-			this.strategy = new LocalTransitionStrategy(this.target);
+			this.strategy = localTransition<TTrigger>(this.target);
 		}
 
 		return this;
@@ -148,19 +150,132 @@ export class Transition<TTrigger = any> {
 	 * @hidden
 	 */
 	execute(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		log.write(() => `${transaction.instance} traverse ${this}`, log.Transition);
+		this.strategy(transaction, deepHistory, trigger, this.traverseActions);
+	}
+}
 
-		this.strategy.doExit(transaction, deepHistory, trigger);
+/**
+ * Logic used to traverse internal transitions.
+ * @hidden
+ */
+ function internalTransition<TTrigger>(target: Vertex): TransitionStrategy<TTrigger> {
+	return (transaction: Transaction, deepHistory: boolean, trigger: any, actions: Array<Behaviour<TTrigger>>): void => {
+		log.write(() => `${transaction.instance} traverse internal transition at ${target}`, log.Transition);
 
-		this.traverseActions.forEach(action => action(trigger, transaction.instance));
+		actions.forEach(action => action(trigger, transaction.instance));
 
-		this.strategy.doEnter(transaction, deepHistory, trigger);
+		if (target instanceof State) {
+			target.completion(transaction, deepHistory);
+		}
+	}
+}
+
+/**
+ * Logic used to traverse local transitions.
+ * @hidden
+ */
+function localTransition<TTrigger>(target: Vertex): TransitionStrategy<TTrigger> {
+	return (transaction: Transaction, deepHistory: boolean, trigger: any, actions: Array<Behaviour<TTrigger>>): void => {
+		log.write(() => `${transaction.instance} traverse local transition to ${target}`, log.Transition);
+
+		// Find the first inactive vertex abode the target
+		const vertexToEnter = toEnter(transaction, target);
+
+		// exit the active sibling of the vertex to enter
+		if (!vertexToEnter.isActive(transaction) && vertexToEnter.parent) {
+			const vertex = transaction.getVertex(vertexToEnter.parent);
+
+			if (vertex) {
+				vertex.doExit(transaction, deepHistory, trigger);
+			}
+		}
+
+		actions.forEach(action => action(trigger, transaction.instance));
+
+		if (vertexToEnter && !vertexToEnter.isActive(transaction)) {
+			vertexToEnter.doEnter(transaction, deepHistory, trigger);
+		}
+	}
+}
+
+/**
+ * Logic used to external local transitions.
+ * @hidden
+ */
+ function externalTransition<TTrigger>(source: Vertex, target: Vertex): TransitionStrategy<TTrigger> {
+	let toExit: Region | Vertex | undefined;
+	let toEnter: Array<Region | Vertex> = [];
+
+	// create iterators over the source and target vertex ancestry
+	const sourceIterator = ancestry(source);
+	const targetIterator = ancestry(target);
+
+	// get the first result from each iterator (this will always be the state machine root element)
+	let sourceResult = sourceIterator.next();
+	let targetResult = targetIterator.next();
+
+	// iterate through all the common ancestors
+	do {
+		// set the actual source/target elements
+		toExit = sourceResult.value;
+		toEnter = [targetResult.value];
+
+		sourceResult = sourceIterator.next();
+		targetResult = targetIterator.next();
+	} while (toExit === toEnter[0] && !sourceResult.done && !targetResult.done);
+
+	// all elements past the common ancestor on the target side must be entered
+	while (!targetResult.done) {
+		toEnter.push(targetResult.value);
+
+		targetResult = targetIterator.next();
 	}
 
-	/**
-	 * Returns the transition in string form.
-	 */
-	public toString(): string {
-		return `${this.strategy} transition from ${this.source} to ${this.target}`;
+	// if the target is a history pseudo state, remove it (as normal history behaviour its the parent region is required)
+	if (target instanceof PseudoState && target.kind & PseudoStateKind.History) {
+		toEnter.pop();
 	}
+
+	return (transaction: Transaction, deepHistory: boolean, trigger: any, actions: Array<Behaviour<TTrigger>>): void => {
+		log.write(() => `${transaction.instance} traverse external transition from ${source} to ${target}`, log.Transition);
+
+		toExit!.doExit(transaction, deepHistory, trigger);
+
+		actions.forEach(action => action(trigger, transaction.instance));
+
+		// enter, but do not cascade entry all elements from below the common ancestor to the target
+		toEnter.forEach((element, index) => element.doEnterHead(transaction, deepHistory, trigger, toEnter[index + 1]));
+
+		// cascade entry from the target onwards
+		toEnter[toEnter.length - 1].doEnterTail(transaction, deepHistory, trigger);
+	}
+}
+
+/**
+* Returns the ancestry of this element from the root element of the hierarchy to this element.
+* @returns Returns an iterable iterator used to process the ancestors.
+* @internal
+* @hidden
+*/
+function* ancestry(element: Region | Vertex): IterableIterator<Region | Vertex> {
+	if (element.parent) {
+		yield* ancestry(element.parent);
+	}
+
+	yield element;
+}
+
+/**
+ * Determines the vertex that will need to be entered; the first non-active vertex in the ancestry above the target vertex.
+ * @param transaction 
+ * @param vertex 
+ * @returns 
+ * @hidden
+ */
+function toEnter(transaction: Transaction, vertex: Vertex): Vertex {
+	while (vertex.parent && vertex.parent.parent && !vertex.parent.parent.isActive(transaction)) {
+		vertex = vertex.parent.parent;
+	}
+
+	return vertex;
 }
