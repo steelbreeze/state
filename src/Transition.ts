@@ -44,7 +44,7 @@ export class Transition<TTrigger = any> {
 	 * @internal
 	 * @hidden
 	 */
-	private strategy: TransitionStrategy<TTrigger>;
+	private execute: TransitionStrategy<TTrigger>;
 
 	/**
 	 * Creates a new instance of the Transition class. By defaily, this is an internal transition.
@@ -54,7 +54,7 @@ export class Transition<TTrigger = any> {
 	 */
 	constructor(public readonly source: Vertex) {
 		this.target = source;
-		this.strategy = internalTransition<TTrigger>();
+		this.execute = internalTransition<TTrigger>();
 
 		this.source.outgoing.push(this);
 	}
@@ -92,9 +92,9 @@ export class Transition<TTrigger = any> {
 		this.target = target;
 
 		if (kind === TransitionKind.External) {
-			this.strategy = externalTransition<TTrigger>(this.source, this.target);
+			this.execute = externalTransition<TTrigger>(this.source, this.target);
 		} else {
-			this.strategy = localTransition<TTrigger>();
+			this.execute = localTransition<TTrigger>();
 		}
 
 		return this;
@@ -138,19 +138,7 @@ export class Transition<TTrigger = any> {
 			transitions.push(transition = transition.target.getTransition(trigger)!);
 		}
 
-		transitions.forEach(t => t.execute(transaction, deepHistory, trigger));
-	}
-
-	/**
-	 * Traverses an individual transition.
-	 * @param transaction The current transaction being executed.
-	 * @param deepHistory True if deep history semantics are in play.
-	 * @param trigger The trigger event.
-	 * @internal
-	 * @hidden
-	 */
-	execute(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		this.strategy(transaction, deepHistory, trigger, this);
+		transitions.forEach(t => t.execute(transaction, deepHistory, trigger, t));
 	}
 }
 
