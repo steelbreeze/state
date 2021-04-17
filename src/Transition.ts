@@ -6,7 +6,7 @@ import { Transaction } from './Transaction';
  * Type of the transition strategy
  * @hidden
  */
-type TransitionStrategy<TTrigger> = (transaction: Transaction, deepHistory: boolean, trigger: any, actions: Array<Behaviour<TTrigger>>) => void;
+type TransitionStrategy<TTrigger> = (transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>) => void;
 
 /**
  * A transition changes the active state configuration of a state machine by specifying the valid transitions between states and the trigger events that cause them to be traversed.
@@ -37,7 +37,7 @@ export class Transition<TTrigger = any> {
 	 * @internal
 	 * @hidden
 	 */
-	private traverseActions: Array<Behaviour<TTrigger>> = [];
+	actions: Array<Behaviour<TTrigger>> = [];
 
 	/**
 	 * The precise semantics of the transition traversal based on the transition type.
@@ -54,7 +54,7 @@ export class Transition<TTrigger = any> {
 	 */
 	constructor(public readonly source: Vertex) {
 		this.target = source;
-		this.strategy = internalTransition<TTrigger>(this.target);
+		this.strategy = internalTransition<TTrigger>();
 
 		this.source.outgoing.push(this);
 	}
@@ -94,7 +94,7 @@ export class Transition<TTrigger = any> {
 		if (kind === TransitionKind.External) {
 			this.strategy = externalTransition<TTrigger>(this.source, this.target);
 		} else {
-			this.strategy = localTransition<TTrigger>(this.target);
+			this.strategy = localTransition<TTrigger>();
 		}
 
 		return this;
@@ -106,7 +106,7 @@ export class Transition<TTrigger = any> {
 	 * @return Returns the transitions thereby allowing a fluent style transition construction.
 	 */
 	effect(...actions: Array<Behaviour<TTrigger>>): this {
-		this.traverseActions.push(...actions);
+		this.actions.push(...actions);
 
 		return this;
 	}
@@ -150,7 +150,7 @@ export class Transition<TTrigger = any> {
 	 * @hidden
 	 */
 	execute(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		this.strategy(transaction, deepHistory, trigger, this.traverseActions);
+		this.strategy(transaction, deepHistory, trigger, this);
 	}
 }
 
@@ -158,14 +158,14 @@ export class Transition<TTrigger = any> {
  * Logic used to traverse internal transitions.
  * @hidden
  */
- function internalTransition<TTrigger>(target: Vertex): TransitionStrategy<TTrigger> {
-	return (transaction: Transaction, deepHistory: boolean, trigger: any, actions: Array<Behaviour<TTrigger>>): void => {
-		log.write(() => `${transaction.instance} traverse internal transition at ${target}`, log.Transition);
+function internalTransition<TTrigger>(): TransitionStrategy<TTrigger> {
+	return (transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>): void => {
+		log.write(() => `${transaction.instance} traverse internal transition at ${transition.target}`, log.Transition);
 
-		actions.forEach(action => action(trigger, transaction.instance));
+		transition.actions.forEach(action => action(trigger, transaction.instance));
 
-		if (target instanceof State) {
-			target.completion(transaction, deepHistory);
+		if (transition.target instanceof State) {
+			transition.target.completion(transaction, deepHistory);
 		}
 	}
 }
@@ -174,12 +174,12 @@ export class Transition<TTrigger = any> {
  * Logic used to traverse local transitions.
  * @hidden
  */
-function localTransition<TTrigger>(target: Vertex): TransitionStrategy<TTrigger> {
-	return (transaction: Transaction, deepHistory: boolean, trigger: any, actions: Array<Behaviour<TTrigger>>): void => {
-		log.write(() => `${transaction.instance} traverse local transition to ${target}`, log.Transition);
+function localTransition<TTrigger>(): TransitionStrategy<TTrigger> {
+	return (transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>): void => {
+		log.write(() => `${transaction.instance} traverse local transition to ${transition.target}`, log.Transition);
 
 		// Find the first inactive vertex abode the target
-		const vertexToEnter = toEnter(transaction, target);
+		const vertexToEnter = toEnter(transaction, transition.target);
 
 		// exit the active sibling of the vertex to enter
 		if (!vertexToEnter.isActive(transaction) && vertexToEnter.parent) {
@@ -190,7 +190,7 @@ function localTransition<TTrigger>(target: Vertex): TransitionStrategy<TTrigger>
 			}
 		}
 
-		actions.forEach(action => action(trigger, transaction.instance));
+		transition.actions.forEach(action => action(trigger, transaction.instance));
 
 		if (vertexToEnter && !vertexToEnter.isActive(transaction)) {
 			vertexToEnter.doEnter(transaction, deepHistory, trigger);
@@ -202,7 +202,7 @@ function localTransition<TTrigger>(target: Vertex): TransitionStrategy<TTrigger>
  * Logic used to external local transitions.
  * @hidden
  */
- function externalTransition<TTrigger>(source: Vertex, target: Vertex): TransitionStrategy<TTrigger> {
+function externalTransition<TTrigger>(source: Vertex, target: Vertex): TransitionStrategy<TTrigger> {
 	let toExit: Region | Vertex | undefined;
 	let toEnter: Array<Region | Vertex> = [];
 
@@ -236,12 +236,12 @@ function localTransition<TTrigger>(target: Vertex): TransitionStrategy<TTrigger>
 		toEnter.pop();
 	}
 
-	return (transaction: Transaction, deepHistory: boolean, trigger: any, actions: Array<Behaviour<TTrigger>>): void => {
+	return (transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>): void => {
 		log.write(() => `${transaction.instance} traverse external transition from ${source} to ${target}`, log.Transition);
 
 		toExit!.doExit(transaction, deepHistory, trigger);
 
-		actions.forEach(action => action(trigger, transaction.instance));
+		transition.actions.forEach(action => action(trigger, transaction.instance));
 
 		// enter, but do not cascade entry all elements from below the common ancestor to the target
 		toEnter.forEach((element, index) => element.doEnterHead(transaction, deepHistory, trigger, toEnter[index + 1]));
