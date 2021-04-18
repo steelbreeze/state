@@ -19,18 +19,18 @@ export class Transition<TTrigger = any> {
 	public target: Vertex;
 
 	/**
-	 * The optional event type that will cause this transition to be traversed.
+	 * The optional guard condition that can restrict the transision being traversed based on trigger event type.
 	 * @internal
 	 * @hidden
 	 */
-	private eventType: Constructor<TTrigger> | undefined;
+	private typeGuard: Predicate<TTrigger> = () => true;
 
 	/**
-	 * The optional guard condition that can further restrict the transition being traversed.
+	 * The optional guard condition that can  restrict the transition being traversed based on user logic.
 	 * @internal
 	 * @hidden
 	 */
-	private guard: Predicate<TTrigger> = () => true;
+	private userGuard: Predicate<TTrigger> = () => true;
 
 	/**
 	 * The user defined actions that will be called on transition traversal.
@@ -65,7 +65,7 @@ export class Transition<TTrigger = any> {
 	 * @return Returns the transitions thereby allowing a fluent style transition construction.
 	 */
 	on(eventType: Constructor<TTrigger>): this {
-		this.eventType = eventType;
+		this.typeGuard = (trigger: any) => trigger.constructor === eventType;
 
 		return this;
 	}
@@ -77,7 +77,7 @@ export class Transition<TTrigger = any> {
 	 * @remarks It is recommended that this is used in conjunction with the on method, which will first test the type of the trigger event.
 	 */
 	when(guard: Predicate<TTrigger>): this {
-		this.guard = guard;
+		this.userGuard = guard;
 
 		return this;
 	}
@@ -119,7 +119,7 @@ export class Transition<TTrigger = any> {
 	 * @hidden
 	 */
 	evaluate(trigger: any): boolean {
-		return (this.eventType === undefined || trigger.constructor === this.eventType) && this.guard(trigger);
+		return this.typeGuard(trigger) && this.userGuard(trigger);
 	}
 
 	/**
