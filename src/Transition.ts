@@ -54,7 +54,7 @@ export class Transition<TTrigger = any> {
 	 */
 	constructor(public readonly source: Vertex) {
 		this.target = source;
-		this.execute = internalTransition<TTrigger>();
+		this.execute = internalTransition;
 
 		this.source.outgoing.push(this);
 	}
@@ -94,7 +94,7 @@ export class Transition<TTrigger = any> {
 		if (kind === TransitionKind.External) {
 			this.execute = externalTransition<TTrigger>(this.source, this.target);
 		} else {
-			this.execute = localTransition<TTrigger>();
+			this.execute = localTransition;
 		}
 
 		return this;
@@ -146,15 +146,13 @@ export class Transition<TTrigger = any> {
  * Logic used to traverse internal transitions.
  * @hidden
  */
-function internalTransition<TTrigger>(): TransitionStrategy<TTrigger> {
-	return (transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>): void => {
-		log.write(() => `${transaction.instance} traverse internal transition at ${transition.target}`, log.Transition);
+function internalTransition<TTrigger>(transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>): void {
+	log.write(() => `${transaction.instance} traverse internal transition at ${transition.target}`, log.Transition);
 
-		transition.actions.forEach(action => action(trigger, transaction.instance));
+	transition.actions.forEach(action => action(trigger, transaction.instance));
 
-		if (transition.target instanceof State) {
-			transition.target.completion(transaction, deepHistory);
-		}
+	if (transition.target instanceof State) {
+		transition.target.completion(transaction, deepHistory);
 	}
 }
 
@@ -162,27 +160,25 @@ function internalTransition<TTrigger>(): TransitionStrategy<TTrigger> {
  * Logic used to traverse local transitions.
  * @hidden
  */
-function localTransition<TTrigger>(): TransitionStrategy<TTrigger> {
-	return (transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>): void => {
-		log.write(() => `${transaction.instance} traverse local transition to ${transition.target}`, log.Transition);
+function localTransition<TTrigger>(transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>): void {
+	log.write(() => `${transaction.instance} traverse local transition to ${transition.target}`, log.Transition);
 
-		// Find the first inactive vertex abode the target
-		const vertexToEnter = toEnter(transaction, transition.target);
+	// Find the first inactive vertex abode the target
+	const vertexToEnter = toEnter(transaction, transition.target);
 
-		// exit the active sibling of the vertex to enter
-		if (!vertexToEnter.isActive(transaction) && vertexToEnter.parent) {
-			const vertex = transaction.getVertex(vertexToEnter.parent);
+	// exit the active sibling of the vertex to enter
+	if (!vertexToEnter.isActive(transaction) && vertexToEnter.parent) {
+		const vertex = transaction.getVertex(vertexToEnter.parent);
 
-			if (vertex) {
-				vertex.doExit(transaction, deepHistory, trigger);
-			}
+		if (vertex) {
+			vertex.doExit(transaction, deepHistory, trigger);
 		}
+	}
 
-		transition.actions.forEach(action => action(trigger, transaction.instance));
+	transition.actions.forEach(action => action(trigger, transaction.instance));
 
-		if (vertexToEnter && !vertexToEnter.isActive(transaction)) {
-			vertexToEnter.doEnter(transaction, deepHistory, trigger);
-		}
+	if (vertexToEnter && !vertexToEnter.isActive(transaction)) {
+		vertexToEnter.doEnter(transaction, deepHistory, trigger);
 	}
 }
 
