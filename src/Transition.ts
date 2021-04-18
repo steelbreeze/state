@@ -123,7 +123,7 @@ export class Transition<TTrigger = any> {
 	}
 
 	/**
-	 * Traverses a composite transition.
+	 * Traverses a transition.
 	 * @param transaction The current transaction being executed.
 	 * @param deepHistory True if deep history semantics are in play.
 	 * @param trigger The trigger event.
@@ -132,18 +132,22 @@ export class Transition<TTrigger = any> {
 	 */
 	traverse(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		var transition: Transition = this;
+		
+		// initilise the composite with the initial transition
 		const transitions: Array<Transition> = [transition];
 
+		// For junction pseudo states, we must follow the transitions prior to traversing them
 		while (transition.target instanceof PseudoState && transition.target.kind & PseudoStateKind.Junction) {
 			transitions.push(transition = transition.target.getTransition(trigger)!);
 		}
 
+		// execute the transition strategy for each transition in composite
 		transitions.forEach(t => t.execute(transaction, deepHistory, trigger, t));
 	}
 }
 
 /**
- * Logic used to traverse internal transitions.
+ * Internal transitions just execute the transition actions and then test for completion.
  * @hidden
  */
 function internalTransition<TTrigger>(transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>): void {
@@ -157,7 +161,7 @@ function internalTransition<TTrigger>(transaction: Transaction, deepHistory: boo
 }
 
 /**
- * Logic used to traverse local transitions.
+ * Local transitions find must find the most common inactive vertex in the target ancestry, then exit its active sibling and enter the inactive vertex.
  * @hidden
  */
 function localTransition<TTrigger>(transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>): void {
@@ -183,7 +187,7 @@ function localTransition<TTrigger>(transaction: Transaction, deepHistory: boolea
 }
 
 /**
- * Logic used to external local transitions.
+ * External transitions find the least common ancester between source and target, then exit the element below it on the source side and enter the sibling on the target side.
  * @hidden
  */
 function externalTransition<TTrigger>(source: Vertex, target: Vertex): TransitionStrategy<TTrigger> {
