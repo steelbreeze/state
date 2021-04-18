@@ -65,7 +65,7 @@ export abstract class Vertex {
 	 * @hidden
 	 */
 	 isActive(transaction: Transaction): boolean {
-		return this.parent === undefined || transaction.getVertex(this.parent) === this;
+		return !this.parent || transaction.getVertex(this.parent) === this;
 	}
 
 	/**

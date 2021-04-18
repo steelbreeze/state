@@ -41,7 +41,7 @@ export class JSONSerializer extends Visitor {
 
 		this.stateMap.set(state, jsonState);
 
-		if (state.parent !== undefined) {
+		if (state.parent) {
 			const parent = this.regionMap.get(state.parent);
 
 			if (parent) {
@@ -67,7 +67,7 @@ export class JSONSerializer extends Visitor {
 
 
 	public toString(): string {
-		if (this.instance.deferredEventPool.length !== 0 && this.deferedEventSerializer && this.root) {
+		if (this.instance.deferredEventPool.length && this.deferedEventSerializer && this.root) {
 			this.root.deferredEventPool = this.instance.deferredEventPool.map(this.deferedEventSerializer);
 		}
 

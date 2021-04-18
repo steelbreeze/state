@@ -208,7 +208,7 @@ export class State extends Vertex {
 		return this.regions.reduce((result, region) => {
 			const state = transaction.get(region);
 
-			return state !== undefined ? result.concat(state.getDeferrableTriggers(transaction)) : result;
+			return state ? result.concat(state.getDeferrableTriggers(transaction)) : result;
 		}, this.deferrableTriggers);
 	}
 

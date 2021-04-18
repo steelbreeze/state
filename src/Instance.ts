@@ -101,7 +101,7 @@ export class Instance extends Map<Region, State> {
 	 * @hidden
 	 */
 	private evaluateDeferred(transaction: Transaction): void {
-		if (this.deferredEventPool.length !== 0) {
+		if (this.deferredEventPool.length) {
 			this.processDeferred(transaction);
 
 			// repack the deferred event pool
