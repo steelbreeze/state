@@ -43,19 +43,6 @@ export class Region {
 	}
 
 	/**
-	 * Enters an element during a state transition.
-	 * @param transaction The current transaction being executed.
-	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
-	 * @param trigger The event that triggered the state transition.
-	 * @internal
-	 * @hidden
-	 */
-	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		this.doEnterHead(transaction);
-		this.doEnterTail(transaction, deepHistory, trigger);
-	}
-
-	/**
 	 * Performs the initial steps required to enter an element during a state transition.
 	 * @param transaction The current transaction being executed.
 	 * @param history Flag used to denote deep history semantics are in force at the time of entry.

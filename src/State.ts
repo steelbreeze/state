@@ -49,7 +49,7 @@ export class State extends Vertex {
 			this.parent.vertices.push(this);
 		}
 	}
-	
+
 	/**
 	 * Adds a user-defined behaviour to call on state entry.
 	 * @param actions One or callbacks that will be passed the trigger event.
@@ -171,7 +171,7 @@ export class State extends Vertex {
 		for (let i = 0, l = this.regions.length; i < l && this.isActive(transaction); ++i) {					// delegate to all children unless one causes a transition away from this state
 			const state = transaction.get(this.regions[i]);
 
-			if(state) {
+			if (state) {
 				result = state.evaluate(transaction, deepHistory, trigger) || result;
 			}
 		}
@@ -224,7 +224,8 @@ export class State extends Vertex {
 		if (next) {
 			this.regions.forEach(region => {
 				if (region !== next) {
-					region.doEnter(transaction, deepHistory, trigger);
+					region.doEnterHead(transaction);
+					region.doEnterTail(transaction, deepHistory, trigger);
 				}
 			});
 		}
@@ -243,7 +244,10 @@ export class State extends Vertex {
 	 * @hidden
 	 */
 	doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		this.regions.forEach(region => region.doEnter(transaction, deepHistory, trigger));
+		this.regions.forEach(region => {
+			region.doEnterHead(transaction);
+			region.doEnterTail(transaction, deepHistory, trigger)
+		});
 
 		this.completion(transaction, deepHistory);
 	}
