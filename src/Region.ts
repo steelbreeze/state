@@ -1,4 +1,4 @@
-import { log, PseudoStateKind, State, PseudoState, Visitor } from '.';
+import { log, Vertex, PseudoStateKind, State, PseudoState, Visitor } from '.';
 import { Transaction } from './Transaction';
 
 /**
@@ -41,44 +41,36 @@ export class Region {
 
 		return currentState !== undefined && currentState.isFinal();
 	}
-
+	
 	/**
-	 * Performs the initial steps required to enter an element during a state transition.
-	 * @param transaction The current transaction being executed.
-	 * @param history Flag used to denote deep history semantics are in force at the time of entry.
-	 * @param trigger The event that triggered the state transition.
-	 * @internal
-	 * @hidden
+	 * Determines if the region has a particular history semantic.
+	 * @hidden 
 	 */
-	doEnterHead(transaction: Transaction): void {
-		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
+	 history(deepHistory: boolean, kind: PseudoStateKind): boolean {
+		return deepHistory || (this.initial !== undefined && !!(this.initial.kind & kind));
 	}
 
-	/**
-	 * Performs the final steps required to enter the region dueing state transition; enters the region using the initial pseudo state or history logic.
+		/**
+	 * Enters an element during a state transition.
 	 * @param transaction The current transaction being executed.
 	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		const current = transaction.get(this);
-		const starting = current && this.history(deepHistory, PseudoStateKind.History) ? current : this.initial;
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, cascade: boolean, next: Vertex | Region | undefined): void {
+		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 
-		if (starting) {
-			starting.doEnter(transaction, this.history(deepHistory, PseudoStateKind.DeepHistory), trigger);
-		} else {
-			throw new Error(`Unable to find starting state in region ${this}`);
+		if (cascade) {
+			const current = transaction.get(this);
+			const starting = current && this.history(deepHistory, PseudoStateKind.History) ? current : this.initial;
+
+			if (starting) {
+				starting.doEnter(transaction, this.history(deepHistory, PseudoStateKind.DeepHistory), trigger, true, undefined);
+			} else {
+				throw new Error(`Unable to find starting state in region ${this}`);
+			}
 		}
-	}
-
-	/**
-	 * Determines if the region has a particular history semantic.
-	 * @hidden 
-	 */
-	history(deepHistory: boolean, kind: PseudoStateKind): boolean {
-		return deepHistory || (this.initial !== undefined && !!(this.initial.kind & kind));
 	}
 
 	/**

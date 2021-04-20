@@ -64,7 +64,7 @@ export abstract class Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	 isActive(transaction: Transaction): boolean {
+	isActive(transaction: Transaction): boolean {
 		return !this.parent || transaction.getVertex(this.parent) === this;
 	}
 
@@ -108,34 +108,7 @@ export abstract class Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		this.doEnterHead(transaction, deepHistory, trigger, undefined);
-		this.doEnterTail(transaction, deepHistory, trigger);
-	}
-
-	/**
-	 * Performs the initial steps required to enter a vertex during a state transition; updates teh active state configuration.
-	 * @param transaction The current transaction being executed.
-	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
-	 * @param trigger The event that triggered the state transition.
-	 * @internal
-	 * @hidden
-	 */
-	doEnterHead(transaction: Transaction, deepHistory: boolean, trigger: any, next: Vertex | Region | undefined): void {
-		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
-
-		transaction.setVertex(this);
-	}
-
-	/**
-	 * Performs the final steps required to enter an element during a state transition including cascading the entry operation to child elements and completion transition.
-	 * @param transaction The current transaction being executed.
-	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
-	 * @param trigger The event that triggered the state transition.
-	 * @internal
-	 * @hidden
-	 */
-	 abstract doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void;
+	abstract doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, cascade: boolean, next: Vertex | Region | undefined): void;
 
 	/**
 	 * Exits an element during a state transition.
@@ -145,14 +118,12 @@ export abstract class Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	 doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		log.write(() => `${transaction.instance} leave ${this}`, log.Exit);
-	}	
+	abstract doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void;
 
 	/**
 	 * Returns the element in string form; the fully qualified name of the element.
 	 */
 	public toString(): string {
 		return this.parent ? `${this.parent}.${this.name}` : this.name;
-	}	
+	}
 }

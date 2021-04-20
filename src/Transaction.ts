@@ -35,7 +35,7 @@ export class Transaction extends Map<Region,State> {
 	 * @hidden
 	 * @internal
 	 */
-	setVertex(vertex: Vertex) {
+	setVertex(vertex: Vertex) { // TODO: refactor set and setVertex
 		if(vertex.parent) {
 			this.lastKnownVertex.set(vertex.parent, vertex);
 

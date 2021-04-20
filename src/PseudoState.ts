@@ -1,5 +1,5 @@
 import { random } from './random';
-import { PseudoStateKind, Vertex, Region, State, Transition, Visitor } from '.';
+import { log, PseudoStateKind, Vertex, Region, State, Transition, Visitor } from '.';
 import { Transaction } from './Transaction';
 import { TransitionKind } from './TransitionKind';
 
@@ -54,17 +54,33 @@ export class PseudoState extends Vertex {
 	}
 
 	/**
-	 * Immediately exits the pseudo state on entry; note that for junction pseudo states, this is managed in Transition.traverse
+	 * Enters an element during a state transition.
 	 * @param transaction The current transaction being executed.
 	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		if (!(this.kind & PseudoStateKind.Junction)) {
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, cascade: boolean, next: Region | undefined): void {
+		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
+
+		transaction.setVertex(this);
+
+		if (cascade && !(this.kind & PseudoStateKind.Junction)) {
 			this.evaluate(transaction, deepHistory, trigger);
 		}
+	}
+
+	/**
+	 * Exits a state during a state transition.
+	 * @param transaction The current transaction being executed.
+	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of exit.
+	 * @param trigger The event that triggered the state transition.
+	 * @internal
+	 * @hidden
+	 */
+	doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+		log.write(() => `${transaction.instance} leave ${this}`, log.Exit);
 	}
 
 	/**

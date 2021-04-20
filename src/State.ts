@@ -1,4 +1,4 @@
-import { Vertex, Region, Visitor } from '.';
+import { log, Vertex, Region, Visitor } from '.';
 import { Transaction } from './Transaction';
 import { Behaviour, Constructor } from './types';
 
@@ -213,43 +213,39 @@ export class State extends Vertex {
 	}
 
 	/**
-	 * Performs the initial steps required to enter a state during a state transition; updates teh active state configuration.
+	 * Enters an element during a state transition.
 	 * @param transaction The current transaction being executed.
 	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doEnterHead(transaction: Transaction, deepHistory: boolean, trigger: any, next: Region | undefined): void {
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, cascade: boolean, next: Region | undefined): void { // TODO: can we combine cascade and next?
+		// enter siblings as necessary during non-cascaded entry
 		if (next) {
 			this.regions.forEach(region => {
 				if (region !== next) {
-					region.doEnterHead(transaction);
-					region.doEnterTail(transaction, deepHistory, trigger);
+					region.doEnter(transaction, deepHistory, trigger, true, undefined);
 				}
 			});
 		}
 
-		super.doEnterHead(transaction, deepHistory, trigger, next);
+		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 
+		// update the current state with details of this vertex
+		transaction.setVertex(this);
+
+		// call any entry behaviour
 		this.entryActions.forEach(action => action(trigger, transaction.instance));
-	}
 
-	/**
-	 * Performs the final steps required to enter a state during a state transition including cascading the entry operation to child elements and completion transition.
-	 * @param transaction The current transaction being executed.
-	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
-	 * @param trigger The event that triggered the state transition.
-	 * @internal
-	 * @hidden
-	 */
-	doEnterTail(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		this.regions.forEach(region => {
-			region.doEnterHead(transaction);
-			region.doEnterTail(transaction, deepHistory, trigger)
-		});
+		// cascade entry to child regions
+		if (cascade) {
+			this.regions.forEach(region => {
+				region.doEnter(transaction, deepHistory, trigger, true, undefined)
+			});
 
-		this.completion(transaction, deepHistory);
+			this.completion(transaction, deepHistory);
+		}
 	}
 
 	/**
@@ -261,10 +257,12 @@ export class State extends Vertex {
 	 * @hidden
 	 */
 	doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+		// cascade the exit
 		this.regions.forEach(region => region.doExit(transaction, deepHistory, trigger));
 
-		super.doExit(transaction, deepHistory, trigger);
+		log.write(() => `${transaction.instance} leave ${this}`, log.Exit);
 
+		// perform and exit actions
 		this.exitActions.forEach(action => action(trigger, transaction.instance));
 	}
 

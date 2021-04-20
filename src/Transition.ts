@@ -182,7 +182,7 @@ function localTransition<TTrigger>(transaction: Transaction, deepHistory: boolea
 	transition.actions.forEach(action => action(trigger, transaction.instance));
 
 	if (vertexToEnter && !vertexToEnter.isActive(transaction)) {
-		vertexToEnter.doEnter(transaction, deepHistory, trigger);
+		vertexToEnter.doEnter(transaction, deepHistory, trigger, true, undefined);
 	}
 }
 
@@ -231,11 +231,8 @@ function externalTransition<TTrigger>(source: Vertex, target: Vertex): Transitio
 
 		transition.actions.forEach(action => action(trigger, transaction.instance));
 
-		// enter, but do not cascade entry all elements from below the common ancestor to the target
-		toEnter.forEach((element, index) => element.doEnterHead(transaction, deepHistory, trigger, toEnter[index + 1]));
-
-		// cascade entry from the target onwards
-		toEnter[toEnter.length - 1].doEnterTail(transaction, deepHistory, trigger);
+		// enter all elements from below the common ancestor to the target; cascade entry for the target
+		toEnter.forEach((element, index) => element.doEnter(transaction, deepHistory, trigger, (index === toEnter.length -1), toEnter[index + 1]));
 	}
 }
 
