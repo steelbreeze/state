@@ -62,10 +62,9 @@ export class Region {
 		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 
 		if (!next) {
-			const current = transaction.get(this);
-			const starting = current && this.history(deepHistory, PseudoStateKind.History) ? current : this.initial;
+			const starting = (this.history(deepHistory, PseudoStateKind.History) ? transaction.get(this) : undefined) || this.initial;
 
-			if(starting) {
+			if (starting) {
 				starting.doEnter(transaction, this.history(deepHistory, PseudoStateKind.DeepHistory), trigger, undefined);
 			} else {
 				throw new Error(`No staring vertex found when entering region ${this}`);
