@@ -220,12 +220,12 @@ export class State extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, cascade: boolean, next: Region | undefined): void { // TODO: can we combine cascade and next?
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: Region | undefined): void {
 		// enter siblings as necessary during non-cascaded entry
 		if (next) {
 			this.regions.forEach(region => {
 				if (region !== next) {
-					region.doEnter(transaction, deepHistory, trigger, true, undefined);
+					region.doEnter(transaction, deepHistory, trigger, undefined);
 				}
 			});
 		}
@@ -238,12 +238,11 @@ export class State extends Vertex {
 		// call any entry behaviour
 		this.entryActions.forEach(action => action(trigger, transaction.instance));
 
-		// cascade entry to child regions
-		if (cascade) {
-			this.regions.forEach(region => {
-				region.doEnter(transaction, deepHistory, trigger, true, undefined)
-			});
+		if (!next) {
+			// cascade entry to child regions
+			this.regions.forEach(region => region.doEnter(transaction, deepHistory, trigger, undefined));
 
+			// look for and process completion transitions
 			this.completion(transaction, deepHistory);
 		}
 	}

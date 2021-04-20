@@ -26,7 +26,7 @@ export class Instance extends Map<Region, State> {
 
 		this.transactional((transaction: Transaction) => {
 			// enter the root element
-			this.root.doEnter(transaction, false, this.root, true, undefined);
+			this.root.doEnter(transaction, false, this.root, undefined);
 
 			// the process of initialisation may have caused a deferred event
 			this.evaluateDeferred(transaction);

@@ -1,4 +1,4 @@
-import { log, Vertex, PseudoStateKind, State, PseudoState, Visitor } from '.';
+import { log, PseudoStateKind, State, PseudoState, Visitor } from '.';
 import { Transaction } from './Transaction';
 
 /**
@@ -41,16 +41,16 @@ export class Region {
 
 		return currentState !== undefined && currentState.isFinal();
 	}
-	
+
 	/**
 	 * Determines if the region has a particular history semantic.
 	 * @hidden 
 	 */
-	 history(deepHistory: boolean, kind: PseudoStateKind): boolean {
+	history(deepHistory: boolean, kind: PseudoStateKind): boolean {
 		return deepHistory || (this.initial !== undefined && !!(this.initial.kind & kind));
 	}
 
-		/**
+	/**
 	 * Enters an element during a state transition.
 	 * @param transaction The current transaction being executed.
 	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
@@ -58,17 +58,17 @@ export class Region {
 	 * @internal
 	 * @hidden
 	 */
-	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, cascade: boolean, next: Vertex | Region | undefined): void {
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: any): void {
 		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 
-		if (cascade) {
+		if (!next) {
 			const current = transaction.get(this);
 			const starting = current && this.history(deepHistory, PseudoStateKind.History) ? current : this.initial;
 
-			if (starting) {
-				starting.doEnter(transaction, this.history(deepHistory, PseudoStateKind.DeepHistory), trigger, true, undefined);
+			if(starting) {
+				starting.doEnter(transaction, this.history(deepHistory, PseudoStateKind.DeepHistory), trigger, undefined);
 			} else {
-				throw new Error(`Unable to find starting state in region ${this}`);
+				throw new Error(`No staring vertex found when entering region ${this}`);
 			}
 		}
 	}

@@ -108,7 +108,7 @@ export abstract class Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	abstract doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, cascade: boolean, next: Vertex | Region | undefined): void;
+	abstract doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: any): void; // TODO: can next turn into cascade flag?
 
 	/**
 	 * Exits an element during a state transition.

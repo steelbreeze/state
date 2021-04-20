@@ -61,12 +61,12 @@ export class PseudoState extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, cascade: boolean, next: Region | undefined): void {
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: any): void {
 		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 
 		transaction.setVertex(this);
 
-		if (cascade && !(this.kind & PseudoStateKind.Junction)) {
+		if (!next && !(this.kind & PseudoStateKind.Junction)) {
 			this.evaluate(transaction, deepHistory, trigger);
 		}
 	}
