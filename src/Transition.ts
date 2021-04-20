@@ -224,17 +224,18 @@ function externalTransition<TTrigger>(source: Vertex, target: Vertex): Transitio
 		toEnter.pop();
 	}
 
+	// genrate the function to call when traversing the transition
 	return (transaction: Transaction, deepHistory: boolean, trigger: any, transition: Transition<TTrigger>): void => {
 		log.write(() => `${transaction.instance} traverse external transition from ${source} to ${target}`, log.Transition);
 
-		toExit!.doExit(transaction, deepHistory, trigger);
+		// exit the source vertex
+		toExit!.doExit(transaction, deepHistory, trigger); // TODO: remove !
 
+		// call the transition actions
 		transition.actions.forEach(action => action(trigger, transaction.instance));
 
-		// enter all elements from below the common ancestor to the target; cascade entry for the target
-		for(let i = 0, l = toEnter.length; i < l; ++i) {
-			toEnter[i].doEnter(transaction, deepHistory, trigger, toEnter[i + 1]);
-		}
+		// enter all elements from below the common ancestor to the target
+		toEnter.forEach((t, i) => t.doEnter(transaction, deepHistory, trigger, toEnter[i+1]));
 	}
 }
 
