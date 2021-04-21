@@ -21,6 +21,7 @@ export class PseudoState extends Vertex {
 	 */
 	public constructor(name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
 		super(name);
+		
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 
 		this.parent.vertices.push(this);

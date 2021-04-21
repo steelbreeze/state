@@ -82,11 +82,9 @@ export abstract class Vertex {
 
 		if (transition) {
 			transition.traverse(transaction, deepHistory, trigger);
-
-			return true;
 		}
 
-		return false;
+		return !!transition;
 	}
 
 	/**
