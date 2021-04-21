@@ -55,6 +55,7 @@ export class Region {
 	 * @param transaction The current transaction being executed.
 	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
+	 * @param next The next element to enter in a non-cascaded entry, driven by external transitions.
 	 * @internal
 	 * @hidden
 	 */

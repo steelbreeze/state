@@ -105,10 +105,11 @@ export abstract class Vertex {
 	 * @param transaction The current transaction being executed.
 	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of entry.
 	 * @param trigger The event that triggered the state transition.
+	 * @param next The next element to enter in a non-cascaded entry, driven by external transitions.
 	 * @internal
 	 * @hidden
 	 */
-	abstract doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: any): void; // TODO: can next turn into cascade flag?
+	abstract doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: any): void;
 
 	/**
 	 * Exits an element during a state transition.
