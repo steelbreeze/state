@@ -1,6 +1,6 @@
 import { PseudoState, State, Region } from ".";
 /**
- * Base for classes implementing the visitor pattern, used to walk a state machine model structure.
+ * Interface for classes implementing the visitor pattern, used to walk a state machine model structure.
  */
 export interface Visitor {
     /**
