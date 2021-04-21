@@ -2,7 +2,7 @@ import { PseudoState, State, Region } from ".";
 /**
  * Base for classes implementing the visitor pattern, used to walk a state machine model structure.
  */
-export declare class Visitor {
+export interface Visitor {
     /**
      * Called when the visitor starts to visit a state; before child regions are visited.
      * @param state The state being visited.

@@ -1,4 +1,5 @@
 import { State, Region, Instance, Visitor } from '.';
+import { PseudoState } from './PseudoState';
 import { Function } from './types';
 
 class JSONNode {
@@ -26,14 +27,19 @@ class JSONRegion extends JSONNode {
 	}
 }
 
-export class JSONSerializer extends Visitor {
+export class JSONSerializer implements Visitor {
 	public root: JSONState | undefined;
 
 	private stateMap: Map<State, JSONState> = new Map<State, JSONState>();
 	private regionMap: Map<Region, JSONRegion> = new Map<Region, JSONRegion>();
 
 	public constructor(private readonly instance: Instance, private readonly deferedEventSerializer: Function<any, any> | undefined = undefined) {
-		super();
+	}
+
+	visitPseudoState(pseduoState: PseudoState) {
+	}
+
+	visitPseudoStateTail(pseduoState: PseudoState) {
 	}
 
 	visitState(state: State) {
@@ -52,6 +58,9 @@ export class JSONSerializer extends Visitor {
 		}
 	}
 
+	visitStateTail(state: State) {
+	}
+
 	visitRegion(region: Region) {
 		const lastKnownState = this.instance.get(region);
 		const jsonRegion = new JSONRegion(region, lastKnownState ? lastKnownState.name : undefined);
@@ -65,6 +74,8 @@ export class JSONSerializer extends Visitor {
 		}
 	}
 
+	visitRegionTail(region: Region) {
+	}
 
 	public toString(): string {
 		if (this.instance.deferredEventPool.length && this.deferedEventSerializer && this.root) {
