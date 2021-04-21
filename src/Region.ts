@@ -1,4 +1,4 @@
-import { log, PseudoStateKind, State, PseudoState, Visitor } from '.';
+import { log, PseudoStateKind, Vertex, State, PseudoState, Visitor } from '.';
 import { Transaction } from './Transaction';
 
 /**
@@ -59,7 +59,7 @@ export class Region {
 	 * @internal
 	 * @hidden
 	 */
-	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: any): void {
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: Region | Vertex | undefined): void {
 		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 
 		if (!next) {

@@ -21,7 +21,7 @@ export class PseudoState extends Vertex {
 	 */
 	public constructor(name: string, parent: State | Region, public readonly kind: PseudoStateKind = PseudoStateKind.Initial) {
 		super(name);
-		
+
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 
 		this.parent.vertices.push(this);
@@ -63,7 +63,7 @@ export class PseudoState extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: any): void {
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: Region  |Vertex | undefined): void {
 		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 
 		transaction.setVertex(this);

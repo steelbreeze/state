@@ -221,7 +221,7 @@ export class State extends Vertex {
 	 * @internal
 	 * @hidden
 	 */
-	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: Region | undefined): void {
+	doEnter(transaction: Transaction, deepHistory: boolean, trigger: any, next: Region | Vertex | undefined): void {
 		// enter siblings as necessary during non-cascaded entry
 		if (next) {
 			this.regions.forEach(region => {
