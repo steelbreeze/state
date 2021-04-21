@@ -132,7 +132,7 @@ export class Transition<TTrigger = any> {
 	 */
 	traverse(transaction: Transaction, deepHistory: boolean, trigger: any): void {
 		var transition: Transition = this;
-		
+
 		// initilise the composite with the initial transition
 		const transitions: Array<Transition> = [transition];
 
@@ -235,7 +235,7 @@ function externalTransition<TTrigger>(source: Vertex, target: Vertex): Transitio
 		transition.actions.forEach(action => action(trigger, transaction.instance));
 
 		// enter all elements from below the common ancestor to the target
-		toEnter.forEach((t, i) => t.doEnter(transaction, deepHistory, trigger, toEnter[i+1]));
+		toEnter.forEach((t, i) => t.doEnter(transaction, deepHistory, trigger, toEnter[i + 1]));
 	}
 }
 
