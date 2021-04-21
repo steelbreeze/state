@@ -62,7 +62,7 @@ export class Region {
 		log.write(() => `${transaction.instance} enter ${this}`, log.Entry);
 
 		if (!next) {
-			const starting = (this.history(deepHistory, PseudoStateKind.History) ? transaction.get(this) : undefined) || this.initial;
+			const starting = this.history(deepHistory, PseudoStateKind.History) ? transaction.get(this) || this.initial : this.initial;
 
 			if (starting) {
 				starting.doEnter(transaction, this.history(deepHistory, PseudoStateKind.DeepHistory), trigger, undefined);
