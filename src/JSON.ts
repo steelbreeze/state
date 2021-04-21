@@ -1,5 +1,4 @@
-import { State, Region, Instance, Visitor } from '.';
-import { PseudoState } from './PseudoState';
+import { PseudoState, State, Region, Instance, Visitor } from '.';
 import { Function } from './types';
 
 class JSONNode {
