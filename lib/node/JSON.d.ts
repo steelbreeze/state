@@ -1,4 +1,4 @@
-import { PseudoState, State, Region, Instance, Visitor } from '.';
+import { State, Region, Instance, Visitor } from '.';
 import { Function } from './types';
 declare class JSONNode {
     readonly name: String;
@@ -21,12 +21,12 @@ export declare class JSONSerializer implements Visitor {
     private stateMap;
     private regionMap;
     constructor(instance: Instance, deferedEventSerializer?: Function<any, any> | undefined);
-    visitPseudoState(pseduoState: PseudoState): void;
-    visitPseudoStateTail(pseduoState: PseudoState): void;
+    visitPseudoState(): void;
+    visitPseudoStateTail(): void;
     visitState(state: State): void;
-    visitStateTail(state: State): void;
+    visitStateTail(): void;
     visitRegion(region: Region): void;
-    visitRegionTail(region: Region): void;
+    visitRegionTail(): void;
     toString(): string;
 }
 export {};

@@ -76,12 +76,10 @@ export class PseudoState extends Vertex {
 	/**
 	 * Exits a state during a state transition.
 	 * @param transaction The current transaction being executed.
-	 * @param deepHistory Flag used to denote deep history semantics are in force at the time of exit.
-	 * @param trigger The event that triggered the state transition.
 	 * @internal
 	 * @hidden
 	 */
-	doExit(transaction: Transaction, deepHistory: boolean, trigger: any): void {
+	doExit(transaction: Transaction): void {
 		log.write(() => `${transaction.instance} leave ${this}`, log.Exit);
 	}
 

@@ -1,4 +1,4 @@
-import { PseudoState, State, Region, Instance, Visitor } from '.';
+import { State, Region, Instance, Visitor } from '.';
 import { Function } from './types';
 
 class JSONNode {
@@ -35,10 +35,10 @@ export class JSONSerializer implements Visitor {
 	public constructor(private readonly instance: Instance, private readonly deferedEventSerializer: Function<any, any> | undefined = undefined) {
 	}
 
-	visitPseudoState(pseduoState: PseudoState) {
+	visitPseudoState() {
 	}
 
-	visitPseudoStateTail(pseduoState: PseudoState) {
+	visitPseudoStateTail() {
 	}
 
 	visitState(state: State) {
@@ -57,7 +57,7 @@ export class JSONSerializer implements Visitor {
 		}
 	}
 
-	visitStateTail(state: State) {
+	visitStateTail() {
 	}
 
 	visitRegion(region: Region) {
@@ -73,7 +73,7 @@ export class JSONSerializer implements Visitor {
 		}
 	}
 
-	visitRegionTail(region: Region) {
+	visitRegionTail() {
 	}
 
 	public toString(): string {
