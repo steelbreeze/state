@@ -20,7 +20,8 @@
 		"codeclimate-test-reporter": "^0.5.1",
 		"mocha": "^8.3.2",
 		"nyc": "latest",
-		"typescript": "^3.5.1"
+		"typescript": "^3.9.9",
+		"webpack-cli": "^4.6.0"
 	},
 	"repository": {
 		"type": "git",
@@ -41,5 +42,8 @@
 	"bugs": {
 		"url": "https://github.com/steelbreeze/state/issues"
 	},
-	"homepage": "https://steelbreeze.net/state"
+	"homepage": "https://steelbreeze.net/state",
+	"dependencies": {
+		"webpack": "^5.35.0"
+	}
 }

@@ -2,7 +2,10 @@
 Further refactoring for performance increase and code size redution.
 
 ### Breaking changes
-Make Visitor an interface.
+Downgrade Visitor from a class to an interface.
+
+### Other noteworthy changes
+Remove dependencies on globally installed tools; see [DEV.md].
 
 ## v8.2.0
 This release has bumped the JavaScript version to ES2015. This then enables the use of the built-in Map collection class.
