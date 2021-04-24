@@ -29,11 +29,13 @@ export enum PseudoStateKind {
 	ShallowHistory = 16,
 
 	/**
+	 * The set of pseudo state kinds that are history pseudi state kinds. 
 	 * @hidden
 	 */
 	History = DeepHistory | ShallowHistory,
 
 	/**
+	 * The set of pseudo state kinds that are starting pseudi state kinds. 
 	 * @hidden
 	 */
 	Starting = Initial | History
