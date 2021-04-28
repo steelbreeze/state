@@ -131,14 +131,14 @@ export class Transition<TTrigger = any> {
 	 * @hidden
 	 */
 	traverse(transaction: Transaction, deepHistory: boolean, trigger: any): void {
-		var transition: Transition = this;
+		var transition: Transition | undefined = this;
 
 		// initilise the composite with the initial transition
 		const transitions: Array<Transition> = [transition];
 
 		// For junction pseudo states, we must follow the transitions prior to traversing them
-		while (transition.target instanceof PseudoState && transition.target.kind & PseudoStateKind.Junction) {
-			transitions.push(transition = transition.target.getTransition(trigger)!);
+		while (transition.target instanceof PseudoState && (transition.target.kind & PseudoStateKind.Junction) && (transition = transition.target.getTransition(trigger))) {
+			transitions.push(transition);
 		}
 
 		// execute the transition strategy for each transition in composite
@@ -191,7 +191,6 @@ function localTransition<TTrigger>(transaction: Transaction, deepHistory: boolea
  * @hidden
  */
 function externalTransition<TTrigger>(source: Vertex, target: Vertex): TransitionStrategy<TTrigger> {
-	let toExit: Region | Vertex | undefined;
 	let toEnter: Array<Region | Vertex> = [];
 
 	// create iterators over the source and target vertex ancestry
@@ -205,12 +204,12 @@ function externalTransition<TTrigger>(source: Vertex, target: Vertex): Transitio
 	// iterate through all the common ancestors
 	do {
 		// set the actual source/target elements
-		toExit = sourceResult.value;
+		source = sourceResult.value;
 		toEnter = [targetResult.value];
 
 		sourceResult = sourceIterator.next();
 		targetResult = targetIterator.next();
-	} while (toExit === toEnter[0] && !sourceResult.done && !targetResult.done);
+	} while (source === toEnter[0] && !sourceResult.done && !targetResult.done);
 
 	// all elements past the common ancestor on the target side must be entered
 	while (!targetResult.done) {
@@ -229,7 +228,7 @@ function externalTransition<TTrigger>(source: Vertex, target: Vertex): Transitio
 		log.write(() => `${transaction.instance} traverse external transition from ${source} to ${target}`, log.Transition);
 
 		// exit the source vertex
-		toExit!.doExit(transaction, deepHistory, trigger); // TODO: remove !
+		source.doExit(transaction, deepHistory, trigger); // TODO: remove !
 
 		// call the transition actions
 		transition.actions.forEach(action => action(trigger, transaction.instance));

@@ -20,3 +20,8 @@ To package for the web, enter:
 npm run package
 ```
 The output will be in the folder ./lib/web with ./lib/web/state.js as the file to include in the ```<script>``` tag.
+## Document
+To create the HTML documentation for the public API:
+```shell
+npm run document
+```
