@@ -228,7 +228,7 @@ function externalTransition<TTrigger>(source: Vertex, target: Vertex): Transitio
 		log.write(() => `${transaction.instance} traverse external transition from ${source} to ${target}`, log.Transition);
 
 		// exit the source vertex
-		source.doExit(transaction, deepHistory, trigger); // TODO: remove !
+		source.doExit(transaction, deepHistory, trigger);
 
 		// call the transition actions
 		transition.actions.forEach(action => action(trigger, transaction.instance));
