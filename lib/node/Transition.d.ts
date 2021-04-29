@@ -1,4 +1,5 @@
-import { TransitionKind, Vertex } from '.';
+import { TransitionKind } from '.';
+import { Vertex } from './Vertex';
 import { Behaviour, Constructor, Predicate } from './types';
 /**
  * A transition changes the active state configuration of a state machine by specifying the valid transitions between states and the trigger events that cause them to be traversed.

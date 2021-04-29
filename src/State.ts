@@ -1,4 +1,5 @@
-import { log, Vertex, Region, Visitor } from '.';
+import { log, Region, Visitor } from '.';
+import { Vertex } from './Vertex';
 import { Transaction } from './Transaction';
 import { Behaviour, Constructor } from './types';
 

@@ -1,4 +1,5 @@
-import { Vertex, Region, Visitor } from '.';
+import { Region, Visitor } from '.';
+import { Vertex } from './Vertex';
 import { Behaviour, Constructor } from './types';
 /**
  * A state is a situation in the lifecycle of the state machine that is stable between events.

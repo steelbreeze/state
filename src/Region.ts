@@ -1,4 +1,5 @@
-import { log, PseudoStateKind, Vertex, State, PseudoState, Visitor } from '.';
+import { log, PseudoStateKind, State, PseudoState, Visitor } from '.';
+import { Vertex } from './Vertex';
 import { Transaction } from './Transaction';
 
 /**

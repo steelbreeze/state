@@ -9,8 +9,6 @@ export { random } from './random';
 export { PseudoStateKind } from './PseudoStateKind';
 export { TransitionKind } from './TransitionKind';
 
-export { Vertex } from './Vertex';
-
 export { Region } from './Region';
 export { State } from './State';
 export { PseudoState } from './PseudoState';

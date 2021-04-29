@@ -1,4 +1,5 @@
-import { Region, Vertex, State, Instance } from './';
+import { Region, State, Instance } from './';
+import { Vertex } from './Vertex';
 
 /**
  * Represents a transaction within the execution of a state machine.
