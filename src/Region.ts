@@ -6,11 +6,11 @@ import { Transaction } from './Transaction';
  */
 export class Region {
 	/**
-	 * The child  vertices of this region.
+	 * The child states of this region.
 	 * @internal
 	 * @hidden
 	 */
-	vertices: Array<State | PseudoState> = [];
+	 states: Array<State> = [];
 
 	/**
 	 * The initial pseudo state, defining the starting vertex when region is entered.
@@ -98,7 +98,7 @@ export class Region {
 	public accept(visitor: Visitor): void {
 		visitor.visitRegion(this);
 
-		this.vertices.forEach(vertex => vertex.accept(visitor));
+		this.states.forEach(vertex => vertex.accept(visitor));
 
 		visitor.visitRegionTail(this);
 	}

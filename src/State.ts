@@ -46,7 +46,7 @@ export class State extends Vertex {
 		this.parent = parent instanceof State ? parent.getDefaultRegion() : parent;
 
 		if (this.parent) {
-			this.parent.vertices.push(this);
+			this.parent.states.push(this);
 		}
 	}
 

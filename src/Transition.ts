@@ -191,8 +191,6 @@ function localTransition<TTrigger>(transaction: Transaction, deepHistory: boolea
  * @hidden
  */
 function externalTransition<TTrigger>(source: Vertex, target: Vertex): TransitionStrategy<TTrigger> {
-	let toEnter: Array<Region | Vertex> = [];
-
 	// create iterators over the source and target vertex ancestry
 	const sourceIterator = ancestry(source);
 	const targetIterator = ancestry(target);
@@ -200,6 +198,9 @@ function externalTransition<TTrigger>(source: Vertex, target: Vertex): Transitio
 	// get the first result from each iterator (this will always be the state machine root element)
 	let sourceResult = sourceIterator.next();
 	let targetResult = targetIterator.next();
+
+	// the set of elements that need to entered within the target ancestry
+	let toEnter: Array<Region | Vertex> = [];
 
 	// iterate through all the common ancestors
 	do {
