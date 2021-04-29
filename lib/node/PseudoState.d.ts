@@ -1,5 +1,4 @@
-import { PseudoStateKind, Vertex, Region, State, Transition, Visitor } from '.';
-import { TransitionKind } from './TransitionKind';
+import { PseudoStateKind, Vertex, Region, State, Transition, TransitionKind, Visitor } from '.';
 /**
  * A pseudo state is a transient state within a region, once entered it will exit immediately.
  */

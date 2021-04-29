@@ -1,4 +1,4 @@
-import { Instance } from "./Instance";
+import { Instance } from ".";
 /** Prototype of a class constructor. */
 export declare type Constructor<T> = new (...args: any[]) => T;
 /** Prototype of a function taking a single argument of a specific type and returning anything. */

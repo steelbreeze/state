@@ -1,7 +1,6 @@
-import { random } from './random';
-import { log, PseudoStateKind, Vertex, Region, State, Transition, Visitor } from '.';
+import { log, PseudoStateKind, Vertex, Region, State, Transition, TransitionKind, Visitor } from '.';
 import { Transaction } from './Transaction';
-import { TransitionKind } from './TransitionKind';
+import { random } from './random';
 
 /**
  * A pseudo state is a transient state within a region, once entered it will exit immediately.

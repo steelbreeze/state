@@ -1,6 +1,6 @@
-import { Behaviour, Constructor, Predicate } from './types';
 import { log, PseudoStateKind, TransitionKind, Region, Vertex, PseudoState, State } from '.';
 import { Transaction } from './Transaction';
+import { Behaviour, Constructor, Predicate } from './types';
 
 /**
  * Type of the transition strategy

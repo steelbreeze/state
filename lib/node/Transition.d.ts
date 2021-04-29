@@ -1,5 +1,5 @@
-import { Behaviour, Constructor, Predicate } from './types';
 import { TransitionKind, Vertex } from '.';
+import { Behaviour, Constructor, Predicate } from './types';
 /**
  * A transition changes the active state configuration of a state machine by specifying the valid transitions between states and the trigger events that cause them to be traversed.
  * @param TTrigger The type of trigger event that this transition will respond to.
