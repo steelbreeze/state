@@ -6,7 +6,10 @@ import { Region, State } from '.';
 export declare class Instance extends Map<Region, State> {
     readonly name: string;
     readonly root: State;
-    /** The currently active transaction */
+    /**
+     * The currently active transaction
+     * @hidden
+     */
     private transaction;
     /**
      * Creates a new state machine instance conforming to a particular state machine model.

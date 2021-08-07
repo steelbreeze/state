@@ -6,7 +6,10 @@ import { Transaction } from './Transaction';
  * There can be many seperate state machine instances using a common model.
  */
 export class Instance extends Map<Region, State> {
-	/** The currently active transaction */
+	/**
+	 * The currently active transaction
+	 * @hidden
+	 */
 	private transaction: Transaction | undefined;
 
 	/**
