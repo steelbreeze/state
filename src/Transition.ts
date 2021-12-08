@@ -1,7 +1,8 @@
+import { Constructor, Predicate } from '@steelbreeze/types';
 import { log, PseudoStateKind, TransitionKind, Region, PseudoState, State } from '.';
 import { Vertex } from './Vertex';
 import { Transaction } from './Transaction';
-import { Behaviour, Constructor, Predicate } from './types';
+import { Behaviour } from './types';
 
 /**
  * Type of the transition strategy

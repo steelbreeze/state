@@ -1,6 +1,6 @@
 import { log, TransitionKind, Region, Transition } from '.';
 import { Transaction } from './Transaction';
-import { Constructor, Predicate } from './types';
+import { Constructor, Predicate } from '@steelbreeze/types';
 
 /**
  * Represents an element within a state machine model hierarchy that can be the source or target of a transition.

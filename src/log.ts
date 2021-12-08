@@ -1,4 +1,4 @@
-import { Consumer, Producer } from './types';
+import { Consumer, Supplier } from '@steelbreeze/types';
 
 /**
  * Logging integration for state; provides callbacks for logging events thereby allowing integration of third party logging tools.
@@ -49,7 +49,7 @@ export namespace log {
 	 * @param category The category of message.
 	 * @remarks The producer callback will only be called if there is a registered consumer for the category of message.
 	 */
-	export function write(producer: Producer<string>, category: number): void {
+	export function write(producer: Supplier<string>, category: number): void {
 		let message: string | undefined;
 
 		consumers.forEach(consumer => {

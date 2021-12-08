@@ -1,5 +1,5 @@
+import { Function } from '@steelbreeze/types';
 import { State, Region, Instance, Visitor } from '.';
-import { Function } from './types';
 
 class JSONNode {
 	readonly name: String;
