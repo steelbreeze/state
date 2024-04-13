@@ -41,7 +41,7 @@
 		"TypeScript",
 		"JavaScript"
 	],
-	"author": "David Mesquita-Morris",
+	"author": "David Morris",
 	"license": "MIT",
 	"bugs": {
 		"url": "https://github.com/steelbreeze/state/issues"
